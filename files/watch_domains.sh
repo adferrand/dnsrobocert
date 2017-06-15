@@ -38,5 +38,5 @@ while true; do
         fi
     done
 
-    inotifywait -e close_write /etc/letsencrypt/domains.txt
+    inotifywait -e modify /etc/letsencrypt/domains.txt
 done
