@@ -20,7 +20,7 @@
 
 ## Container functionalities
 
-This Docker is designed to manage [Let's Encrypt](https://letsencrypt.org) SSL certificates based on DNS challenges.
+This Docker is designed to manage [Let's Encrypt](https://letsencrypt.org) SSL certificates based on [DNS challenges](https://tools.ietf.org/html/draft-ietf-acme-acme-01#page-44).
 
 * Let's Encrypt certificates generation by [Certbot](https://github.com/certbot/certbot) using DNS challenges,
 * Automated renewal of almost expired certificates using Cron Certbot task,
@@ -36,14 +36,14 @@ If you are reading theses lines, you certainly want to secure all your dockerize
 
 If you want to secure Web services through HTTPS, there is already plenty of great tools. In the Docker world, one can check traefik, or nginx-proxy + letsencrypt-nginx-proxy-companion. Basically, theses tools will allow automated and dynamic generation/renewal of SSL certificates, based on TLS or HTTP challenges, on top of a reverse proxy to encrypt everything through HTTPS.
 
-Excellent, but you could fall in one of the following categories, were DNS challenges are useful:
+Excellent, but you could fall in one of the following categories:
 
  1. You are in a firewalled network, and your HTTP/80 and HTTPS/443 ports are not opened to the outside world.
  2. You want to secure non-Web services (like LDAP, IMAP, POP, *etc.*) were the HTTPS protocol is of no use.
 
-For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall, theses two challenges, which are widely use in HTTP proxy approaches are not usable. Please note that traefik embed DNS challenges, but only for few DNS providers.
+For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall, theses two challenges, which are widely use in HTTP proxy approaches are not usable, you need to use a DNS challenge. Please note that traefik embed DNS challenges, but only for few DNS providers.
 
-For the second case, there is no website to use TLS or HTTP challenges. So you can of course create a "fake" website to validate the domain, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
+For the second case, there is no website to use TLS or HTTP challenges, and you should use a DNS challenge. So you can of course create a "fake" website to validate the domain, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
 
 The solution is a dedicated and specialized Docker service which handles the creation/renewal of Let's Encrypt certificates, and ensure their propagation in the relevant Docker services. It is the purpose of this container.
 
