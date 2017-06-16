@@ -20,15 +20,15 @@
 
 ## Container functionalities
 
-This Docker is designed to manage [https://letsencrypt.org](Let's Encrypt) SSL certificates based on DNS challenges.
+This Docker is designed to manage [Let's Encrypt](https://letsencrypt.org) SSL certificates based on DNS challenges.
 
-* Let's Encrypt certificates generation by [https://github.com/certbot/certbot](Certbot) using DNS challenges,
+* Let's Encrypt certificates generation by [Certbot](https://github.com/certbot/certbot) using DNS challenges,
 * Automated renewal of almost expired certificates using Cron Certbot task,
-* Standardized API throuh [https://github.com/AnalogJ/lexicon](Lexicon) library to insert the DNS challenge with various DNS providers
+* Standardized API throuh [Lexicon](https://github.com/AnalogJ/lexicon) library to insert the DNS challenge with various DNS providers
 * Centralized configuration file to maintain several certificates
 * Modification of container configuration without restart
 * Automated restart of specific containers when a certificate is renewed
-* Container built on top of [https://alpinelinux.org](Alpine Linux) distribution to reduce the footprint. Image size is below 100MB.
+* Container built on top of [Alpine Linux](https://alpinelinux.org) distribution to reduce the footprint. Image size is below 100MB.
 
 ## Why use this Docker ?
 
@@ -84,7 +84,7 @@ Following DNS provider are supported: AWS Route53, Cloudflare, CloudXNS, Digital
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
-Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [https://github.com/AnalogJ/lexicon#providers](Lexicon documentation). Once done, set the environment variables `LEXICON_[PROVIDER]_USER` and `LEXICON_[PROVIDER]_TOKEN` to this user/token. `[PROVIDER]` must be replaced by the value in capital case passed to the environment variable `LEXICON_PROVIDER`.
+Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, set the environment variables `LEXICON_[PROVIDER]_USER` and `LEXICON_[PROVIDER]_TOKEN` to this user/token. `[PROVIDER]` must be replaced by the value in capital case passed to the environment variable `LEXICON_PROVIDER`.
 
 For instance, if the provider is DigitalOcean, the user is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
 
