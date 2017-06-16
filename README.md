@@ -20,7 +20,7 @@
 
 ## Container functionalities
 
-This Docker is designed to manage [https://letsencrypt.org/](Let's Encrypt) SSL certificates based on DNS challenges.
+This Docker is designed to manage [https://letsencrypt.org](Let's Encrypt) SSL certificates based on DNS challenges.
 
 * Let's Encrypt certificates generation by [https://github.com/certbot/certbot](Certbot) using DNS challenges,
 * Automated renewal of almost expired certificates using Cron Certbot task,
@@ -28,7 +28,7 @@ This Docker is designed to manage [https://letsencrypt.org/](Let's Encrypt) SSL 
 * Centralized configuration file to maintain several certificates
 * Modification of container configuration without restart
 * Automated restart of specific containers when a certificate is renewed
-* Container built on top of [https://alpinelinux.org/](Alpine Linux) distribution to reduce the footprint. Image size is below 100MB.
+* Container built on top of [https://alpinelinux.org](Alpine Linux) distribution to reduce the footprint. Image size is below 100MB.
 
 ## Why use this Docker ?
 
