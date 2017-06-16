@@ -17,7 +17,7 @@ while true; do
         done
         echo ">>> Creating a certificate for domain(s): $entry"
         certbot certonly -n --manual --preferred-challenges=dns --manual-auth-hook /var/lib/letsencrypt/hooks/authenticator.sh --manual-cleanup-hook /var/lib/letsencrypt/hooks/cleanup.sh --manual-public-ip-logging-ok --expand $staging_cmd $domains_cmd
-    done < /etc/letsencrypt/domains.txt
+    done < /etc/letsencrypt/domains.conf
 
     echo "### Revoke and delete certificates if needed ####"
     for domain in `ls /etc/letsencrypt/live`; do
@@ -29,7 +29,7 @@ while true; do
                     break;
                 fi
             done
-        done < /etc/letsencrypt/domains.txt
+        done < /etc/letsencrypt/domains.conf
 
         if [ "$remove_domain" = true ]; then
             echo ">>> Removing the certificate $domain"
@@ -38,5 +38,5 @@ while true; do
         fi
     done
 
-    inotifywait -e modify /etc/letsencrypt/domains.txt
+    inotifywait -e modify /etc/letsencrypt/domains.conf
 done

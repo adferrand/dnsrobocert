@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Ensure domain.txt exists
-touch /etc/letsencrypt/domains.txt
+# Ensure domain.conf exists
+touch /etc/letsencrypt/domains.conf
 
 # Load crontab and incrontab
 crontab /etc/crontab
