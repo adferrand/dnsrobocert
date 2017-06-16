@@ -15,7 +15,6 @@ RUN apk --no-cache --update add rsyslog git openssl libffi inotify-tools supervi
 && pip install certbot \
 # Install lexicon
 && pip install requests[security] "dns-lexicon==$LEXICON_VERSION" \
-&& tldextract --update \
 # Prepare for first start, and clean
 && mkdir -p /var/lib/letsencrypt/hooks \
 && mkdir -p /etc/supervisord.d \
