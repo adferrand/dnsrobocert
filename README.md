@@ -106,14 +106,14 @@ For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth
 
 ## Run the container
 
-Once preparation is done, the container can be run. As said, `domains.cfg` must be mounted in the container, and API authentication variables must be passed as environment variables to the container.
+Once preparation is done, the container can be run. As said, `domains.conf` must be mounted in the container, and API authentication variables must be passed as environment variables to the container.
 
 For Cloudflare, with example described during preparation, run :
 
 ```bash
 docker run \
 	--name letsencrypt-dns \
-	--volume /etc/letsencrypt/domains.cfg:/etc/letsencrypt/domains.cfg \
+	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
 	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
@@ -121,7 +121,7 @@ docker run \
 	adferrand/letsencrypt-dns
 ```
 
-At start, the container will look to `domains.cfg` and generate the certificates if needed. Then a cron task is launched twice a day to regenerated certificates if needed. The certificates are located in the container at `/etc/letsencrypt/live/`.
+At start, the container will look to `domains.conf` and generate the certificates if needed. Then a cron task is launched twice a day to regenerated certificates if needed. The certificates are located in the container at `/etc/letsencrypt/live/`.
 
 ## Data persistency
 
@@ -134,7 +134,7 @@ If you want to share the generated certificates to the host (eg. in `/var/docker
 ```bash
 docker run \
 	--name letsencrypt-dns \
-	--volume /etc/letsencrypt/domains.cfg:/etc/letsencrypt/domains.cfg \
+	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
@@ -150,6 +150,7 @@ If you want to shared the generated certificates with other containers, mount th
 ```bash
 docker run \
 	--name letsencrypt-dns \
+    --volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
@@ -185,7 +186,7 @@ Once done, all specified containers will be restarted when the target certificat
 For example, we want to restart the container named `smtp` when the certificate `smtp.example.com` is renewed. Construct the following `domains.conf` file:
 
 ```
-smtp.example.com imap.example.com autrestart-containers=smtp
+smtp.example.com imap.example.com autorestart-containers=smtp
 auth.example.com
 ```
 
@@ -194,6 +195,7 @@ Then execute following commands
 ```bash
 docker run \
 	--name letsencrypt-dns \
+    --volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
