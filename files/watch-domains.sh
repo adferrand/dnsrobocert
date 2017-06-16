@@ -32,10 +32,19 @@ while true; do
         done
 
         echo ">>> Creating a certificate for domain(s):$domains_cmd"
-        certbot certonly -n --manual --preferred-challenges=dns --manual-auth-hook /var/lib/letsencrypt/hooks/authenticator.sh --manual-cleanup-hook /var/lib/letsencrypt/hooks/cleanup.sh --manual-public-ip-logging-ok --expand $staging_cmd $domains_cmd
+        certbot certonly \
+            -n \
+            --manual \
+            --preferred-challenges=dns \
+            --manual-auth-hook /var/lib/letsencrypt/hooks/authenticator.sh \
+            --manual-cleanup-hook /var/lib/letsencrypt/hooks/cleanup.sh \
+            --manual-public-ip-logging-ok \
+            --expand \
+            $staging_cmd \
+            $domains_cmd
         
         if [ "$containers" != "" ]; then
-            echo ">>> Watching certificate for main domain $domain: containers $containers autorestarted when certificate is changed."
+            echo ">>> Watching certificate for main domain $main_domain: containers $containers autorestarted when certificate is changed."
             echo "[program:${main_domain}_autorestart-containers]" >> /etc/supervisord.d/${main_domain}_autorestart_containers
             echo "command = /scripts/autorestart-containers.sh $main_domain $containers" >> /etc/supervisord.d/${main_domain}_autorestart_containers
             echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autorestart_containers
