@@ -9,7 +9,7 @@ ENV LETSENCRYPT_USER_MAIL noreply@example.com
 ENV LEXICON_PROVIDER cloudflare
 
 # Install dependencies
-RUN apk --no-cache --update add rsyslog git openssl libffi inotify-tools supervisor \
+RUN apk --no-cache --update add rsyslog git openssl libffi inotify-tools supervisor docker \
 && apk --no-cache --update --virtual build-dependencies add libffi-dev openssl-dev python-dev build-base \
 # Install certbot
 && pip install certbot \
@@ -18,11 +18,13 @@ RUN apk --no-cache --update add rsyslog git openssl libffi inotify-tools supervi
 && tldextract --update \
 # Prepare for first start, and clean
 && mkdir -p /var/lib/letsencrypt/hooks \
+&& mkdir -p /etc/supervisord.d \
 && apk del build-dependencies
 
 # Copy configuration files
-COPY files/run.sh /run.sh
-COPY files/watch_domains.sh /watch_domains.sh
+COPY files/run.sh /scripts/run.sh
+COPY files/watch-domains.sh /scripts/watch-domains.sh
+COPY files/autorestart-containers.sh /scripts/autorestart-containers.sh
 COPY files/crontab /etc/crontab
 COPY files/supervisord.conf /etc/supervisord.conf
 COPY files/authenticator.sh /var/lib/letsencrypt/hooks/authenticator.sh
@@ -30,4 +32,4 @@ COPY files/cleanup.sh /var/lib/letsencrypt/hooks/cleanup.sh
 
 VOLUME ["/etc/letsencrypt"]
 
-CMD ["/run.sh"]
+CMD ["/scripts/run.sh"]
