@@ -13,7 +13,7 @@
 	* [Share certificates with other containers](#share-certificates-with-other-containers)
 * [Reconfiguration on a running container](#reconfiguration-on-a-running-container)
 * [Restarting containers when a certificate is renewed](#restarting-containers-when-a-certificate-is-renewed)
-* [Miscellaneous and testing](#miscellanous-and-testing)
+* [Miscellaneous and testing](#miscellaneous-and-testing)
 	* [Activating staging ACME servers](#activating-staging-acme-servers)
     * [Sleep time](#sleep-time)
     * [Shell access](#shell-access)
@@ -113,11 +113,12 @@ For Cloudflare, with example described during preparation, run :
 ```bash
 docker run \
 	--name letsencrypt-dns \
-	--volume /etc/letsencrypt/domains.cfg:/etc/letsencrypt/domains.cfg
-    --env 'LETSENCRYPT_USER_MAIL=admin@example.com'
-	--env 'LEXICON_PROVIDER=cloudflare'
-	--env 'LEXICON_CLOUDFLARE_USER=my_user'
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token'
+	--volume /etc/letsencrypt/domains.cfg:/etc/letsencrypt/domains.cfg \
+    --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LEXICON_PROVIDER=cloudflare' \
+	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	adferrand/letsencrypt-dns
 ```
 
 At start, the container will look to `domains.cfg` and generate the certificates if needed. Then a cron task is launched twice a day to regenerated certificates if needed. The certificates are located in the container at `/etc/letsencrypt/live/`.
@@ -133,12 +134,12 @@ If you want to share the generated certificates to the host (eg. in `/var/docker
 ```bash
 docker run \
 	--name letsencrypt-dns \
-	--volume /etc/letsencrypt/domains.cfg:/etc/letsencrypt/domains.cfg
-	--volume /var/docker-data/letsencrypt:/etc/letsencrypt
-    --env 'LETSENCRYPT_USER_MAIL=admin@example.com'
-	--env 'LEXICON_PROVIDER=cloudflare'
-	--env 'LEXICON_CLOUDFLARE_USER=my_user'
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token'
+	--volume /etc/letsencrypt/domains.cfg:/etc/letsencrypt/domains.cfg \
+	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
+    --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LEXICON_PROVIDER=cloudflare' \
+	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
 	adferrand/letsencrypt-dns
 ```
 
@@ -149,17 +150,17 @@ If you want to shared the generated certificates with other containers, mount th
 ```bash
 docker run \
 	--name letsencrypt-dns \
-	--volume /var/docker-data/letsencrypt:/etc/letsencrypt
-    --env 'LETSENCRYPT_USER_MAIL=admin@example.com'
-	--env 'LEXICON_PROVIDER=cloudflare'
-	--env 'LEXICON_CLOUDFLARE_USER=my_user'
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token'
+	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
+    --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LEXICON_PROVIDER=cloudflare' \
+	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
 	adferrand/letsencrypt-dns
 
 docker run \
-	--volumes-from letsencrypt-dns
-	--env 'KEY_PATH=/etc/letsencrypt/live/smtp.example.com/privkey.pem'
-	--env 'CERTIFICATE_PATH=/etc/letsencrypt/live/smtp.example.com/cert.pem'
+	--volumes-from letsencrypt-dns \
+	--env 'KEY_PATH=/etc/letsencrypt/live/smtp.example.com/privkey.pem' \
+	--env 'CERTIFICATE_PATH=/etc/letsencrypt/live/smtp.example.com/cert.pem' \
 	namshi/smtp
 ```
 
@@ -193,18 +194,18 @@ Then execute following commands
 ```bash
 docker run \
 	--name letsencrypt-dns \
-	--volume /var/docker-data/letsencrypt:/etc/letsencrypt
-    --env 'LETSENCRYPT_USER_MAIL=admin@example.com'
-	--env 'LEXICON_PROVIDER=cloudflare'
-	--env 'LEXICON_CLOUDFLARE_USER=my_user'
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token'
+	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
+    --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LEXICON_PROVIDER=cloudflare' \
+	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
 	adferrand/letsencrypt-dns
 
 docker run \
-	--name smtp
-	--volumes-from letsencrypt-dns
-	--env 'KEY_PATH=/etc/letsencrypt/live/smtp.example.com/privkey.pem'
-	--env 'CERTIFICATE_PATH=/etc/letsencrypt/live/smtp.example.com/cert.pem'
+	--name smtp \
+	--volumes-from letsencrypt-dns \
+	--env 'KEY_PATH=/etc/letsencrypt/live/smtp.example.com/privkey.pem' \
+	--env 'CERTIFICATE_PATH=/etc/letsencrypt/live/smtp.example.com/cert.pem' \
 	namshi/smtp
 ```
 
