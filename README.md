@@ -1,6 +1,23 @@
 # adferrand/letsencrypt-dns
 ![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:latest.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:latest.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:latest)  
 
+* [Container functionalities](#container-functionalities)
+* [Why use this Docker](#why-use-this-docker-)
+* [Preparation of the container](#preparation-of-the-container)
+	* [Configuring the SSL certificates](#configuring-the-ssl-certificates)
+	* [Configuring DNS provider and authentication to DNS API](#configuring-dns-provider-and-authentication-to-dns-api)
+* [Run the container](#run-the-container)
+	* [Advanced UI authentication/authorization](#advanced-ui-authenticationauthorization)
+* [Data persistency](#data-persistency)
+	* [Share certificates with the host](#share-certificates-with-the-host)
+	* [Share certificates with other containers](#share-certificates-with-other-containers)
+* [Reconfiguration on a running container](#reconfiguration-on-a-running-container)
+* [Restarting containers when a certificate is renewed](#restarting-containers-when-a-certificate-is-renewed)
+* [Miscellaneous and testing](#miscellanous-and-testing)
+	* [Activating staging ACME servers](#activating-staging-acme-servers)
+    * [Sleep time](#sleep-time)
+    * [Shell access](#shell-access)
+
 ## Container functionalities
 
 This Docker is designed to manage Let's Encrypt SSL certificates based on DNS challenges.
@@ -34,7 +51,7 @@ The solution is a dedicated and specialized Docker service which handles the cre
 
 First of all, before using this container, two steps of configuration need to be done: describing the certificates to acquire and maintain, then configuring the access to your DNS zone to publish DNS challenges.
 
-### Configuring the SSL certificates through `domains.conf`
+### Configuring the SSL certificates
 
 This container uses a file which must be placed at `/etc/letsencrypt/domains.conf` in the container. It is a simple text file, following theses rules:
 - each line represents a certificate,
@@ -55,17 +72,19 @@ imap.example.com pop.example.com
 ldap.example.com
 ```
 
-### Configuration the access to DNS API
+You need also to provide the mail which will be used to register your account on Let's Encrypt. Set the environment variable `LETSENCRYPT_USER_MAIL (default: noreply@example.com)` in the container for this purpose.
+
+### Configuring DNS provider and authentication to DNS API
 
 When using a DNS challenge, a TXT entry must be inserted in the DNS zone carying the domain of the certificate. This TXT entry must contain a unique hash calculated by Certbot, and the ACME servers will check it to deliver the certificate.
 
 This container will do the hard work for you, thanks to the association between Certbox and Lexicon, and DNS provider API will be called automatically to  insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the access key to the API.
 
-Following DNS provider are supported:
+Following DNS provider are supported: AWS Route53, Cloudflare, CloudXNS, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Glesys, LuaDNS, Memset, Namesilo, NS1, OVH, PointHQ, PowerDNS, Rage4, Transip, Yandex, Vultr.
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
-Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these. Once done, set the environment variables `LEXICON_[PROVIDER]_USER` and `LEXICON_[PROVIDER]_TOKEN` to this user/token. `[PROVIDER]` must be replaced by the value in capital case passed to the environment variable `LEXICON_PROVIDER`.
+Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [https://github.com/AnalogJ/lexicon#providers](Lexicon documentation). Once done, set the environment variables `LEXICON_[PROVIDER]_USER` and `LEXICON_[PROVIDER]_TOKEN` to this user/token. `[PROVIDER]` must be replaced by the value in capital case passed to the environment variable `LEXICON_PROVIDER`.
 
 For instance, if the provider is DigitalOcean, the user is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
 
@@ -95,6 +114,7 @@ For Cloudflare, with example described during preparation, run :
 docker run \
 	--name letsencrypt-dns \
 	--volume /etc/letsencrypt/domains.cfg:/etc/letsencrypt/domains.cfg
+    --env 'LETSENCRYPT_USER_MAIL=admin@example.com'
 	--env 'LEXICON_PROVIDER=cloudflare'
 	--env 'LEXICON_CLOUDFLARE_USER=my_user'
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token'
@@ -115,6 +135,7 @@ docker run \
 	--name letsencrypt-dns \
 	--volume /etc/letsencrypt/domains.cfg:/etc/letsencrypt/domains.cfg
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt
+    --env 'LETSENCRYPT_USER_MAIL=admin@example.com'
 	--env 'LEXICON_PROVIDER=cloudflare'
 	--env 'LEXICON_CLOUDFLARE_USER=my_user'
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token'
@@ -129,6 +150,7 @@ If you want to shared the generated certificates with other containers, mount th
 docker run \
 	--name letsencrypt-dns \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt
+    --env 'LETSENCRYPT_USER_MAIL=admin@example.com'
 	--env 'LEXICON_PROVIDER=cloudflare'
 	--env 'LEXICON_CLOUDFLARE_USER=my_user'
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token'
@@ -172,6 +194,7 @@ Then execute following commands
 docker run \
 	--name letsencrypt-dns \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt
+    --env 'LETSENCRYPT_USER_MAIL=admin@example.com'
 	--env 'LEXICON_PROVIDER=cloudflare'
 	--env 'LEXICON_CLOUDFLARE_USER=my_user'
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token'
@@ -195,7 +218,11 @@ During development it is not advised to generate certificates againt production 
 
 You will need to wipe content of `/etc/letsencrypt` volume before container re-creation when enabling or disabling staging.
 
-## Shell access
+### Sleep time
+
+During a DNS challenge, a sleep must be done after the insertion of the TXT entry in order to let the entry to be propagated correctly and ensure that ACME servers will see it. The default value is 30 seconds: if this value does not suit you, you can modify it by setting the environment variable `LEXICON_SLEEP_TIME (default: 30)` in the container.
+
+### Shell access
 
 For debugging and maintenance purpose, you may need to start a shell in your running container. With a Docker of version 1.3.0 or higher, you can do:
 
