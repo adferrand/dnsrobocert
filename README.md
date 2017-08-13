@@ -116,7 +116,7 @@ docker run \
 	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
 	adferrand/letsencrypt-dns
 ```
@@ -138,7 +138,7 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
 	adferrand/letsencrypt-dns
 ```
@@ -154,7 +154,7 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
 	adferrand/letsencrypt-dns
 
@@ -199,7 +199,7 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USER=my_user' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
 	adferrand/letsencrypt-dns
 
