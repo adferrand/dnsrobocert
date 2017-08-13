@@ -86,11 +86,11 @@ The DNS provider is choosen by setting an environment variable passed to the con
 
 Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, set the environment variables `LEXICON_[PROVIDER]_USER` and `LEXICON_[PROVIDER]_TOKEN` to this user/token. `[PROVIDER]` must be replaced by the value in capital case passed to the environment variable `LEXICON_PROVIDER`.
 
-For instance, if the provider is DigitalOcean, the user is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
+For instance, if the provider is CloudFlare, the username is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
 
 ```bash
-LEXICON_PROVIDER=digitalocean
-LEXICON_DIGITALOCEAN_USER=my_user
+LEXICON_PROVIDER=cloudflare
+LEXICON_DIGITALOCEAN_USERNAME=my_user
 LEXICON_DIGITALOCEAN_TOKEN=my_secret_token
 ```
 
