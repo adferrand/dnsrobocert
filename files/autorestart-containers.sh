@@ -14,12 +14,21 @@ if [ ! -d /etc/letsencrypt/archive/$domain ]; then
     exit 1
 fi
 
+# Load hash of the certificate
+current_hash=`md5sum /etc/letsencrypt/live/$domain/cert.pem | awk '{ print $1 }'`
 while true; do
-    inotifywait -e modify -e create /etc/letsencrypt/archive/$domain
+    new_hash=`md5sum /etc/letsencrypt/live/$domain/cert.pem | awk '{ print $1 }'`
 
+    if [ "$current_hash" != "$new_hash" ]; then
+        echo ">>> Restarting dockers $containers because certificate for $domain has been modified."
+        for container in $containers; do
+            docker restart $container
+        done
+
+        # Keep new hash version
+        current_hash="$new_hash"
+    fi
+
+    # Wait 1s for next iteration
     sleep 1
-    echo ">>> Restarting dockers $containers because certificate for $domain has been modified."
-    for container in $containers; do
-        docker restart $container
-    done
 done

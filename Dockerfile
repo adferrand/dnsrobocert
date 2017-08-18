@@ -2,14 +2,14 @@ FROM python:alpine3.6
 MAINTAINER Adrien Ferrand <ferrand.ad@gmail.com>
 
 ENV LEXICON_VERSION 2.1.10
-ENV CERTBOT_VERSION 0.16.0
+ENV CERTBOT_VERSION 0.17.0
 
 ENV LETSENCRYPT_STAGING false
 ENV LETSENCRYPT_USER_MAIL noreply@example.com
 ENV LEXICON_PROVIDER cloudflare
 
 # Install dependencies
-RUN apk --no-cache --update add rsyslog git openssl libffi inotify-tools supervisor docker \
+RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
 && apk --no-cache --update --virtual build-dependencies add libffi-dev openssl-dev python-dev build-base \
 # Install certbot
 && pip install "certbot==$CERTBOT_VERSION" \
