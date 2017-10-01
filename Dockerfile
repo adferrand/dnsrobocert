@@ -1,8 +1,8 @@
 FROM python:alpine3.6
-MAINTAINER Adrien Ferrand <ferrand.ad@gmail.com>
+LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 ENV LEXICON_VERSION 2.1.10
-ENV CERTBOT_VERSION 0.17.0
+ENV CERTBOT_VERSION 0.18.2
 
 ENV LETSENCRYPT_STAGING false
 ENV LETSENCRYPT_USER_MAIL noreply@example.com

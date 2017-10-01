@@ -80,7 +80,7 @@ When using a DNS challenge, a TXT entry must be inserted in the DNS zone carying
 
 This container will do the hard work for you, thanks to the association between Certbox and Lexicon, and DNS provider API will be called automatically to  insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the access key to the API.
 
-Following DNS provider are supported: AWS Route53, Cloudflare, CloudXNS, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Glesys, LuaDNS, Memset, Namesilo, NS1, OVH, PointHQ, PowerDNS, Rage4, Transip, Yandex, Vultr.
+Following DNS provider are supported: AWS Route53, Cloudflare, CloudXNS, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Glesys, GoDaddy, LuaDNS, Memset, Namesilo, NS1, OVH, PointHQ, PowerDNS, Rage4, SoftLayer, Transip, Yandex, Vultr.
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
