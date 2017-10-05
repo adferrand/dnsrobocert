@@ -12,9 +12,10 @@
 	* [Share certificates with the host](#share-certificates-with-the-host)
 	* [Share certificates with other containers](#share-certificates-with-other-containers)
 * [Reconfiguration on a running container](#reconfiguration-on-a-running-container)
-* [Restarting containers when a certificate is renewed](#restarting-containers-when-a-certificate-is-renewed)
+* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
-	* [Activating staging ACME servers](#activating-staging-acme-servers)
+	* [Activate staging ACME servers](#activating-staging-acme-servers)
+	* [Auto-export certificates in PFX format](#auto-export-certificates-in-pfx-format)
     * [Sleep time](#sleep-time)
     * [Shell access](#shell-access)
 
@@ -24,38 +25,38 @@ This Docker is designed to manage [Let's Encrypt](https://letsencrypt.org) SSL c
 
 * Let's Encrypt certificates generation by [Certbot](https://github.com/certbot/certbot) using DNS challenges,
 * Automated renewal of almost expired certificates using Cron Certbot task,
-* Standardized API throuh [Lexicon](https://github.com/AnalogJ/lexicon) library to insert the DNS challenge with various DNS providers
-* Centralized configuration file to maintain several certificates
-* Modification of container configuration without restart
-* Automated restart of specific containers when a certificate is renewed
-* Container built on top of [Alpine Linux](https://alpinelinux.org) distribution to reduce the footprint. Image size is below 100MB.
+* Standardized API throuh [Lexicon](https://github.com/AnalogJ/lexicon) library to insert the DNS challenge with various DNS providers,
+* Centralized configuration file to maintain several certificates,
+* Modification of container configuration without restart,
+* Automated restart of specific containers when a certificate is renewed,
+* Container built on top of [Alpine Linux](https://alpinelinux.org) distribution to reduce the footprint (image size is below 100MB).
 
 ## Why use this Docker ?
 
 If you are reading theses lines, you certainly want to secure all your dockerized services using Let's Encrypt SSL certificates, which are free and accepted everywhere.
 
-If you want to secure Web services through HTTPS, there is already plenty of great tools. In the Docker world, one can check traefik, or nginx-proxy + letsencrypt-nginx-proxy-companion. Basically, theses tools will allow automated and dynamic generation/renewal of SSL certificates, based on TLS or HTTP challenges, on top of a reverse proxy to encrypt everything through HTTPS.
+If you want to secure Web services through HTTPS, there is already plenty of great tools. In the Docker world, one can check [traefik](https://hub.docker.com/_/traefik/), or [nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) + [letsencrypt-nginx-proxy-companion](https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/). Basically, theses tools will allow automated and dynamic generation/renewal of SSL certificates, based on TLS or HTTP challenges, on top of a reverse proxy to encrypt everything through HTTPS.
 
-Excellent, but you could fall in one of the following categories:
+So far so good, but you may fall in one of the following categories:
 
  1. You are in a firewalled network, and your HTTP/80 and HTTPS/443 ports are not opened to the outside world.
  2. You want to secure non-Web services (like LDAP, IMAP, POP, *etc.*) were the HTTPS protocol is of no use.
 
-For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall, theses two challenges, which are widely use in HTTP proxy approaches are not usable, you need to use a DNS challenge. Please note that traefik embed DNS challenges, but only for few DNS providers.
+For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall theses two challenges - which are widely use in HTTP proxy approaches - will not be usable: you need to ask a DNS challenge. Please note that traefik embed DNS challenges, but only for few DNS providers.
 
-For the second case, there is no website to use TLS or HTTP challenges, and you should use a DNS challenge. So you can of course create a "fake" website to validate the domain, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
+For the second case, there is no website to use TLS or HTTP challenges, and you should ask a DNS challenge. Of course you can create a "fake" website to validate the domain, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
 
 The solution is a dedicated and specialized Docker service which handles the creation/renewal of Let's Encrypt certificates, and ensure their propagation in the relevant Docker services. It is the purpose of this container.
 
 ## Preparation of the container
 
-First of all, before using this container, two steps of configuration need to be done: describing the certificates to acquire and maintain, then configuring the access to your DNS zone to publish DNS challenges.
+First of all, before using this container, two steps of configuration need to be done: describing all certificates to acquire and maintain, then configuring an access to your DNS zone to publish DNS challenges.
 
 ### Configuring the SSL certificates
 
-This container uses a file which must be placed at `/etc/letsencrypt/domains.conf` in the container. It is a simple text file, following theses rules:
+This container uses a file which must be put at `/etc/letsencrypt/domains.conf` in the container. It is a simple text file which follows theses rules:
 - each line represents a certificate,
-- one line may contain several domains, seperated by a space,
+- one line may contain several domains separated by a space,
 - the first domain is the certificate main domain,
 - each following domain on a line is included in the SAN of the certificate, allowing it to be used for several domains.
 
@@ -76,22 +77,22 @@ You need also to provide the mail which will be used to register your account on
 
 ### Configuring DNS provider and authentication to DNS API
 
-When using a DNS challenge, a TXT entry must be inserted in the DNS zone carying the domain of the certificate. This TXT entry must contain a unique hash calculated by Certbot, and the ACME servers will check it to deliver the certificate.
+When using a DNS challenge, a TXT entry must be inserted in the DNS zone which manage the certificate domain. This TXT entry must contain a unique hash calculated by Certbot, and the ACME servers will check it before delivering the certificate.
 
-This container will do the hard work for you, thanks to the association between Certbox and Lexicon, and DNS provider API will be called automatically to  insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the access key to the API.
+This container will do the hard work for you, thanks to the association between [Certbot](https://certbot.eff.org/) and [Lexicon](https://github.com/AnalogJ/lexicon): DNS provider API will be called automatically to insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the API access key.
 
 Following DNS provider are supported: AWS Route53, Cloudflare, CloudXNS, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Glesys, GoDaddy, LuaDNS, Memset, Namesilo, NS1, OVH, PointHQ, PowerDNS, Rage4, SoftLayer, Transip, Yandex, Vultr.
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
-Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, set the environment variables `LEXICON_[PROVIDER]_USER` and `LEXICON_[PROVIDER]_TOKEN` to this user/token. `[PROVIDER]` must be replaced by the value in capital case passed to the environment variable `LEXICON_PROVIDER`.
+Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, set the environment variables `LEXICON_[PROVIDER]_USER` and `LEXICON_[PROVIDER]_TOKEN` to this user/token. `[PROVIDER]` must be replaced by the value in capital letters passed to the environment variable `LEXICON_PROVIDER`.
 
 For instance, if the provider is CloudFlare, the username is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
 
 ```bash
 LEXICON_PROVIDER=cloudflare
-LEXICON_DIGITALOCEAN_USERNAME=my_user
-LEXICON_DIGITALOCEAN_TOKEN=my_secret_token
+LEXICON_CLOUDFLARE_USERNAME=my_user
+LEXICON_CLOUDFLARE_TOKEN=my_secret_token
 ```
 
 Some providers (like OVH) need more specific environment variables. First, run following command to get the Lexicon help for this DNS provider:
@@ -121,11 +122,11 @@ docker run \
 	adferrand/letsencrypt-dns
 ```
 
-At start, the container will look to `domains.conf` and generate the certificates if needed. Then a cron task is launched twice a day to regenerated certificates if needed. The certificates are located in the container at `/etc/letsencrypt/live/`.
+At start, the container will look to `domains.conf` and generate the certificates if needed. Then a cron task is launched twice a day to regenerate certificates if needed. The certificates are located in the container at `/etc/letsencrypt/live/`.
 
 ## Data persistency
 
-This container declares `/etc/letsencrypt` as a volume. Then generated certificates will not be destroyed if the container is destroyed. At new creation, certificates will be available again.
+This container declares `/etc/letsencrypt` as a volume. Consequently generated certificates will not be destroyed if the container is destroyed. Upon re-creation, certificates will be available again.
 
 ### Share certificates with the host
 
@@ -145,7 +146,7 @@ docker run \
 
 ### Share certificates with other containers
 
-If you want to shared the generated certificates with other containers, mount the volume `/etc/letsencrypt` of this container into the target containers. For example:
+If you want to share the generated certificates with other containers, mount the container volume `/etc/letsencrypt` into the target containers. For example:
 
 ```bash
 docker run \
@@ -165,15 +166,15 @@ docker run \
 	namshi/smtp
 ```
 
-The volume `/etc/letsencrypt` is then available for the SMTP container, which can use a generated certificate for its own concern (here, securing the SMTP protocol).
+The volume `/etc/letsencrypt` will be available for the SMTP container, which can use a generated certificate for its own concern (here, securing the SMTP protocol).
 
 ## Reconfiguration on a running container
 
-If you want to add a new certificate, remove one, or extend existing one to other domains, you just need to modify the `domains.conf` file from the host. Once saved, the container will automatically mirror the modifications in the `/etc/letsencrypt` volume. If new certificates need to be generated, please note that approximately 30 seconds are required for each generation before modifications are visible.
+If you want to add a new certificate, remove one, or extend existing one to other domains, you just need to modify the `domains.conf` file from the host. Once saved, the container will automatically mirror the modifications in `/etc/letsencrypt` volume. If new certificates need to be generated, please note that approximately 30 seconds are required for each generation before modifications are visible.
 
 Please check the container logs to follow the operations.
 
-## Restarting containers when a certificate is renewed
+## Restart containers when a certificate is renewed
 
 As said in introduction, most of the non-Web services require a restart when the certificate is changed. And this will occur at least once each two months. To ensure correct propagation of the new certificates in your Docker services, one special entry can be added at the end of a line for the concerned certificate in `domains.conf`.
 
@@ -221,9 +222,17 @@ During development it is not advised to generate certificates againt production 
 
 You will need to wipe content of `/etc/letsencrypt` volume before container re-creation when enabling or disabling staging.
 
+### Auto-export certificates in PFX format
+
+Some services need the SSL key and certificate stored in PFX format (also known as PKCS#12) whose extension is .pfx (or .p12). For this purpose one can set the container environment variable `EXPORT_PFX (default: false)` to `true`: in this case, the container will ensure that every certificate handled by Certbot is exported in PFX format during certificate creation, renewal or container start/restart.
+
+The PFX certificate for a given primary domain is located in the container on `/etc/letsencrypt/[DOMAIN]/cert.pks`: it contains the key, certificate and all intermediate certificates.
+
+By default, the PFX certificates are not protected by a passphrase. You can define one using the environment variable `EXPORT_PFX_PASSPHRASE`.
+
 ### Sleep time
 
-During a DNS challenge, a sleep must be done after the insertion of the TXT entry in order to let the entry to be propagated correctly and ensure that ACME servers will see it. The default value is 30 seconds: if this value does not suit you, you can modify it by setting the environment variable `LEXICON_SLEEP_TIME (default: 30)` in the container.
+During a DNS challenge, a sleep must be done after TXT entry insertions in order to let DNS zone updates be propagated correctly and ensure that ACME servers will see them. Default value is 30 seconds: if this value does not suit your needs, you can modify it by setting the environment variable `LEXICON_SLEEP_TIME (default: 30)`.
 
 ### Shell access
 

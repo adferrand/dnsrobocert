@@ -1,23 +1,26 @@
 FROM python:alpine3.6
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
-ENV LEXICON_VERSION 2.1.10
-ENV CERTBOT_VERSION 0.18.2
+# Scripts in /scripts are required to be in the PATH to run properly as certbot's hooks
+ENV PATH /scripts:$PATH
 
+# Versioning
+ENV LEXICON_VERSION 2.1.10
+ENV CERTBOT_VERSION 0.19.0
+
+# Let's Encrypt configuration
 ENV LETSENCRYPT_STAGING false
 ENV LETSENCRYPT_USER_MAIL noreply@example.com
 ENV LEXICON_PROVIDER cloudflare
 
-ENV EXPORT_TO_PFX false
+ENV PFX_EXPORT false
+ENV PFX_EXPORT_PASSPHRASE ""
 
-# Install dependencies
+# Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
 && apk --no-cache --update --virtual build-dependencies add libffi-dev openssl-dev python-dev build-base \
-# Install certbot
 && pip install "certbot==$CERTBOT_VERSION" \
-# Install lexicon
 && pip install requests[security] "dns-lexicon==$LEXICON_VERSION" \
-# Prepare for first start, and clean
 && mkdir -p /var/lib/letsencrypt/hooks \
 && mkdir -p /etc/supervisord.d \
 && apk del build-dependencies
@@ -30,8 +33,8 @@ COPY files/crontab /etc/crontab
 COPY files/supervisord.conf /etc/supervisord.conf
 COPY files/authenticator.sh /var/lib/letsencrypt/hooks/authenticator.sh
 COPY files/cleanup.sh /var/lib/letsencrypt/hooks/cleanup.sh
-COPY files/pfx-export-hook.sh /scripts/fx-export-hook.sh
-COPY files/pfx-export-hook.sh /scripts/renew.sh
+COPY files/pfx-export-hook.sh /scripts/pfx-export-hook.sh
+COPY files/renew.sh /scripts/renew.sh
 
 RUN chmod +x /scripts/*
 

@@ -1,9 +1,10 @@
 #!/bin/sh
 
-hooks=""
+echo "Launch renew test"
 
-if [ "$EXPORT_TO_PFX" = "true"]; then
-    hooks="$hooks --deploy-hook /scripts/pfx-export-hook.sh"
+hooks=""
+if [ "$PFX_EXPORT" = "true" ]; then
+    hooks="$hooks --deploy-hook pfx-export-hook.sh"
 fi
 
 certbot renew -n $hooks
