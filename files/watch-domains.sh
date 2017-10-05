@@ -7,6 +7,11 @@ if [ "$LETSENCRYPT_STAGING" = true ]; then
     staging_cmd="--staging"
 fi
 
+deploy_hooks=""
+if [ "$PFX_EXPORT" = "true" ]; then
+    deploy_hooks="$deploy_hooks --deploy-hook pfx-export-hook.sh"
+fi
+
 current_hash=
 while true; do
     # Calculate the new domains.conf file hash
@@ -45,6 +50,7 @@ while true; do
                 --manual-public-ip-logging-ok \
                 --expand \
                 $staging_cmd \
+                $deploy_hooks \
                 $domains_cmd
             
             if [ "$containers" != "" ]; then
@@ -73,6 +79,7 @@ while true; do
                 echo ">>> Removing the certificate $domain"
                 certbot revoke $staging_cmd --cert-path /etc/letsencrypt/live/$domain/cert.pem
                 certbot delete $staging_cmd --cert-name $domain
+                rm -rf /etc/letsencrypt/live/$domain
             fi
         done
 
