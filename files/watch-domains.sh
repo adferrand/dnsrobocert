@@ -79,6 +79,9 @@ while true; do
         echo "### Reloading supervisord configuration ###"
         supervisorctl update
 
+        echo "### Launch certificates renew request"
+        /scripts/renew.sh
+
         # Keep new hash version
         current_hash="$new_hash"
     fi

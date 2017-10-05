@@ -8,6 +8,8 @@ ENV LETSENCRYPT_STAGING false
 ENV LETSENCRYPT_USER_MAIL noreply@example.com
 ENV LEXICON_PROVIDER cloudflare
 
+ENV EXPORT_TO_PFX false
+
 # Install dependencies
 RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
 && apk --no-cache --update --virtual build-dependencies add libffi-dev openssl-dev python-dev build-base \
@@ -28,6 +30,10 @@ COPY files/crontab /etc/crontab
 COPY files/supervisord.conf /etc/supervisord.conf
 COPY files/authenticator.sh /var/lib/letsencrypt/hooks/authenticator.sh
 COPY files/cleanup.sh /var/lib/letsencrypt/hooks/cleanup.sh
+COPY files/pfx-export-hook.sh /scripts/fx-export-hook.sh
+COPY files/pfx-export-hook.sh /scripts/renew.sh
+
+RUN chmod +x /scripts/*
 
 VOLUME ["/etc/letsencrypt"]
 
