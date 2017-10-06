@@ -224,7 +224,7 @@ You will need to wipe content of `/etc/letsencrypt` volume before container re-c
 
 ### Auto-export certificates in PFX format
 
-Some services need the SSL key and certificate stored in PFX format (also known as PKCS#12) whose extension is .pfx (or .p12). For this purpose one can set the container environment variable `EXPORT_PFX (default: false)` to `true`: in this case, the container will ensure that every certificate handled by Certbot is exported in PFX format during certificate creation, renewal or container start/restart.
+Some services need the SSL key and certificate stored together in PFX format (also known as PKCS#12) whose extension is .pfx (or .p12). For this purpose one can set the container environment variable `EXPORT_PFX (default: false)` to `true`: in this case, the container will ensure that every certificate handled by Certbot is exported in PFX format during certificate creation, renewal or container start/restart.
 
 The PFX certificate for a given primary domain is located in the container on `/etc/letsencrypt/[DOMAIN]/cert.pks`: it contains the key, certificate and all intermediate certificates.
 
