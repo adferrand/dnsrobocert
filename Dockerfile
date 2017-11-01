@@ -11,10 +11,16 @@ ENV CERTBOT_VERSION 0.19.0
 # Let's Encrypt configuration
 ENV LETSENCRYPT_STAGING false
 ENV LETSENCRYPT_USER_MAIL noreply@example.com
+
+# Lexicon configuration
 ENV LEXICON_PROVIDER cloudflare
 
+# Container other configuration
 ENV PFX_EXPORT false
 ENV PFX_EXPORT_PASSPHRASE ""
+ENV CERTS_DIR_GROUP_READABLE false
+ENV CERTS_DIR_WORLD_READABLE false
+ENV CERTS_FILES_MODE 0644
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
@@ -33,7 +39,7 @@ COPY files/crontab /etc/crontab
 COPY files/supervisord.conf /etc/supervisord.conf
 COPY files/authenticator.sh /var/lib/letsencrypt/hooks/authenticator.sh
 COPY files/cleanup.sh /var/lib/letsencrypt/hooks/cleanup.sh
-COPY files/pfx-export-hook.sh /scripts/pfx-export-hook.sh
+COPY files/deploy-hook.sh /scripts/deploy-hook.sh
 COPY files/renew.sh /scripts/renew.sh
 
 RUN chmod +x /scripts/*

@@ -11,6 +11,7 @@
 * [Data persistency](#data-persistency)
 	* [Share certificates with the host](#share-certificates-with-the-host)
 	* [Share certificates with other containers](#share-certificates-with-other-containers)
+	* [Certificates files permissions](#certificates-files-permissions)
 * [Reconfiguration on a running container](#reconfiguration-on-a-running-container)
 * [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
@@ -167,6 +168,14 @@ docker run \
 ```
 
 The volume `/etc/letsencrypt` will be available for the SMTP container, which can use a generated certificate for its own concern (here, securing the SMTP protocol).
+
+### Certificates files permissions
+
+By default certificates files (`cert.pem`, `privkey.pem` ...) are accessible only to the user owning `/etc/letsencrypt`, which is root. It means that generated certificates cannot be used by non-root processes (in other containers or on the host).
+
+You can give appropriate permissions to `/etc/letsencrypt/archive` and `/etc/letsencrypt/live` folders to allow non-root processes to access the certificates. Set environment variable `CERTS_DIRS_GROUP_READABLE (default: false)` to give access to members of root group, or `CERTS_DIRS_WORLD_READABLE (default: false)` to give access to everyone.
+
+Furthermore default file mode given to generated certificates files is `0644`. This mode may make some processes comply about too high level of permissions: for instance PostgreSQL will refuse to start with a certificate of file mode higher than `0640`. File mode used for certificates files can be specified with the environment variable `CERTS_FILES_MODE (default: 0644)`.
 
 ## Reconfiguration on a running container
 

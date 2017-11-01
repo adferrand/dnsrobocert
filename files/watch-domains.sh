@@ -7,11 +7,6 @@ if [ "$LETSENCRYPT_STAGING" = true ]; then
     staging_cmd="--staging"
 fi
 
-deploy_hooks=""
-if [ "$PFX_EXPORT" = "true" ]; then
-    deploy_hooks="$deploy_hooks --deploy-hook pfx-export-hook.sh"
-fi
-
 current_hash=
 while true; do
     # Calculate the new domains.conf file hash
@@ -49,8 +44,8 @@ while true; do
                 --manual-cleanup-hook /var/lib/letsencrypt/hooks/cleanup.sh \
                 --manual-public-ip-logging-ok \
                 --expand \
+                --deploy-hook deploy-hook.sh \
                 $staging_cmd \
-                $deploy_hooks \
                 $domains_cmd
             
             if [ "$containers" != "" ]; then
