@@ -171,11 +171,13 @@ The volume `/etc/letsencrypt` will be available for the SMTP container, which ca
 
 ### Certificates files permissions
 
-By default certificates files (`cert.pem`, `privkey.pem` ...) are accessible only to the user owning `/etc/letsencrypt`, which is root. It means that generated certificates cannot be used by non-root processes (in other containers or on the host).
+By default certificates files (`cert.pem`, `privkey.pem` ...) are accessible only to the user/group owning `/etc/letsencrypt`, which is root by default. It means that generated certificates cannot be used by non-root processes (in other containers or on the host).
 
-You can give appropriate permissions to `/etc/letsencrypt/archive` and `/etc/letsencrypt/live` folders to allow non-root processes to access the certificates. Set environment variable `CERTS_DIRS_GROUP_READABLE (default: false)` to give access to members of root group, or `CERTS_DIRS_WORLD_READABLE (default: false)` to give access to everyone.
+You can modify file mode of `/etc/letsencrypt/archive` and `/etc/letsencrypt/live` folders and their content to allow non-root processes to access the certificates. Set environment variables `CERTS_DIRS_MODE (default: 0750)` and `CERTS_FILES_MODE (default: 0640)` to modify directories and files mode respectivly. For example, a file mode of `0644` and directory mode of `0755` will open access to everyone.
 
-Furthermore default file mode given to generated certificates files is `0644`. This mode may make some processes comply about too high level of permissions: for instance PostgreSQL will refuse to start with a certificate of file mode higher than `0640`. File mode used for certificates files can be specified with the environment variable `CERTS_FILES_MODE (default: 0644)`.
+Alternatively or cumulatively you may need to change the owner user/group of `/etc/letsencrypt/archive` and `/etc/letsencrypt/live` folders and their content. To do so, specify user/group name or uid/gid in the relevant environment variables: `CERTS_USER_OWNER (default: root)` and `CERTS_GROUP_OWNER (default: root)`.
+
+_Warning: certificates files permissions, introduced in container version `1.4`, will modify default permissions for certificates. Previously, `/etc/letsencrypt/live` and `/etc/letsencrypt/archive` were `0750`, their sub-folders where `0755` and contained files were `0644`. Now theses folders and their sub-folders are `0750` while contained files are `0640`: this should not lead to any regression, as the parent folders were of a more restrictive permission than their content, leading certs files to be unaccessible to non-root processes. However for pathological cases you will need to set environment variable `CERTS_DIRS_MODE` and `CERTS_FILES_MODE` appropriately._
 
 ## Reconfiguration on a running container
 

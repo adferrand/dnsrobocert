@@ -15,12 +15,13 @@ ENV LETSENCRYPT_USER_MAIL noreply@example.com
 # Lexicon configuration
 ENV LEXICON_PROVIDER cloudflare
 
-# Container other configuration
+# Container specific configuration
 ENV PFX_EXPORT false
 ENV PFX_EXPORT_PASSPHRASE ""
-ENV CERTS_DIR_GROUP_READABLE false
-ENV CERTS_DIR_WORLD_READABLE false
-ENV CERTS_FILES_MODE 0644
+ENV CERTS_DIRS_MODE 0750
+ENV CERTS_FILES_MODE 0640
+ENV CERTS_USER_OWNER root
+ENV CERTS_GROUP_OWNER root
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
