@@ -36,6 +36,7 @@ RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
 COPY files/run.sh /scripts/run.sh
 COPY files/watch-domains.sh /scripts/watch-domains.sh
 COPY files/autorestart-containers.sh /scripts/autorestart-containers.sh
+COPY files/autocmd-containers.sh /scripts/autocmd-containers.sh
 COPY files/crontab /etc/crontab
 COPY files/supervisord.conf /etc/supervisord.conf
 COPY files/authenticator.sh /var/lib/letsencrypt/hooks/authenticator.sh
