@@ -24,15 +24,19 @@ while true; do
             container_name=""
 	    command=""
 	    IFS=':'; for entry in $container_and_cmd; do
-	        if [ -Z $container_name ]; then
+	        if [ -z $container_name ]; then
 		    container_name="$entry"
 		else
-		    command="$command:$entry"
+		    command="$entry"
 		fi
-	    done; unset IFS;
+	    done; unset IFS
+	    echo ">>> Executing command '$command' for container $container_name because certificate for $domain has been modified."
             # Execute it
             docker exec $container_name $command
         done; unset IFS
+
+	# Keep new hash version
+	current_hash="$new_hash"
     fi
 
     # Wait 1s for next iteration
