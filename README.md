@@ -173,7 +173,7 @@ The volume `/etc/letsencrypt` will be available for the SMTP container, which ca
 
 ### Certificates files permissions
 
-By default certificates files (`cert.pem`, `privkey.pem` ...) are accessible only to the user/group owning `/etc/letsencrypt`, which is root by default. It means that generated certificates cannot be used by non-root processes (in other containers or on the host).
+By default certificates files (`cert.pem`, `privkey.pem`, _etc._) are accessible only to the user/group owning `/etc/letsencrypt`, which is **root** by default. It means that generated certificates cannot be used by non-root processes (in other containers or on the host).
 
 You can modify file mode of `/etc/letsencrypt/archive` and `/etc/letsencrypt/live` folders and their content to allow non-root processes to access the certificates. Set environment variables `CERTS_DIRS_MODE (default: 0750)` and `CERTS_FILES_MODE (default: 0640)` to modify directories and files mode respectivly. For example, a file mode of `0644` and directory mode of `0755` will open access to everyone.
 
@@ -191,7 +191,7 @@ Please check the container logs to follow the operations.
 
 ### Restart containers when a certificate is renewed
 
-As said in introduction, most of the non-Web services require a restart when the certificate is changed. And this will occur at least once each two months. To ensure correct propagation of the new certificates in your Docker services, one special entry can be added at the *end* of a line for the concerned certificate in `domains.conf`.
+As said in introduction, most of the non-Web services require a restart when the certificate is changed. And this will occur at least once each two months. To ensure correct propagation of the new certificates in your Docker services, one special entry can be added at the **end** of a line for the concerned certificate in `domains.conf`.
 
 This entry takes the form of `autorestart-containers=container1,container2,container3` where `containerX` is the name of a container running on the same Docker instance than `letsencrypt-dns`.
 
@@ -236,7 +236,7 @@ Restarting a container when a certificate is renewed is sufficient for all cases
 
 If a target process allows it, the letsencrypt-dns container can call a reload configuration command on the target container when a certificate is renewed. In this case, service is not stopped and immediatly takes into account the new config, including the new certificate. Apache2 for example (example only, as an http challenge will be a better option here) can see its configuration to be hot-reloaded by invoking the command `apachectl graceful` in the target container.
 
-To specify which command to launch on which container when a certificate is renewed, one will put at the *end* of the relevant line of `domains.conf` a special entry which takes the form of `autocmd-containers=container1:command1,container2:command2 arg2a arg2b,container3:command3 arg3a`. Comma `,` separates each container/command configuration, colon `:` separates the container name from the command to launch. Commands must be executable files, located in the $PATH of the target container, or accessed by their full path.
+To specify which command to launch on which container when a certificate is renewed, one will put at the **end** of the relevant line of `domains.conf` a special entry which takes the form of `autocmd-containers=container1:command1,container2:command2 arg2a arg2b,container3:command3 arg3a`. Comma `,` separates each container/command configuration, colon `:` separates the container name from the command to launch. Commands must be executable files, located in the $PATH of the target container, or accessed by their full path.
 
 In the case of an Apache2 server embedded in a container named `my-apache` to be reloaded when certificate `web.example.com` is renewed, put following entry in `domains.conf`:
 
