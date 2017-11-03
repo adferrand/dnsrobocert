@@ -179,7 +179,7 @@ You can modify file mode of `/etc/letsencrypt/archive` and `/etc/letsencrypt/liv
 
 Alternatively or cumulatively you may need to change the owner user/group of `/etc/letsencrypt/archive` and `/etc/letsencrypt/live` folders and their content. To do so, specify user/group name or uid/gid in the relevant environment variables: `CERTS_USER_OWNER (default: root)` and `CERTS_GROUP_OWNER (default: root)`.
 
-_Warning: certificates files permissions, introduced in container version `1.4`, will modify default permissions for certificates. Previously, `/etc/letsencrypt/live` and `/etc/letsencrypt/archive` were `0750`, their sub-folders where `0755` and contained files were `0644`. Now theses folders and their sub-folders are `0750` while contained files are `0640`: this should not lead to any regression, as the parent folders were of a more restrictive permission than their content, leading certs files to be unaccessible to non-root processes. However for pathological cases you will need to set environment variable `CERTS_DIRS_MODE` and `CERTS_FILES_MODE` appropriately._
+_(Warning) Certificates files permissions, introduced in container version `1.4`, will modify default permissions for certificates. Previously, `/etc/letsencrypt/live` and `/etc/letsencrypt/archive` were `0750`, their sub-folders where `0755` and contained files were `0644`. Now theses folders and their sub-folders are `0750` while contained files are `0640`: this should not lead to any regression, as the parent folders were of a more restrictive permission than their content, leading certs files to be unaccessible to non-root processes. However for pathological cases you will need to set environment variable `CERTS_DIRS_MODE` and `CERTS_FILES_MODE` appropriately._
 
 ## Runtime operations
 
@@ -246,7 +246,7 @@ web.example.com autocmd-containers=my-apache:apachectl graceful
 
 If the certificate `web.example.com` is renewed, command `apachectl graceful` will be invoked on container `my-apache`, and the apache2 service will use the new certificate without killing any HTTP session.
 
-_Limitations on invokable commands: The option `autocmd-container` is intended to call a simple executable file with few potential arguments. It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command is not executed in a shell on the target, and variables will be resolved against the lets-encrypt container environment. If you want to operate advanced scripting, put an executable script in the target container, and use its path in `autocmd-container` option._
+_(Limitations on invokable commands) The option `autocmd-container` is intended to call a simple executable file with few potential arguments. It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command is not executed in a shell on the target, and variables will be resolved against the lets-encrypt container environment. If you want to operate advanced scripting, put an executable script in the target container, and use its path in `autocmd-container` option._
 
 ## Miscellaneous and testing
 
