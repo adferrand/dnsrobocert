@@ -1,15 +1,8 @@
 #!/bin/sh
 
-autorestart_pattern="autorestart-containers="
-
 staging_cmd=""
 if [ "$LETSENCRYPT_STAGING" = true ]; then
     staging_cmd="--staging"
-fi
-
-deploy_hooks=""
-if [ "$PFX_EXPORT" = "true" ]; then
-    deploy_hooks="$deploy_hooks --deploy-hook pfx-export-hook.sh"
 fi
 
 current_hash=
@@ -17,28 +10,27 @@ while true; do
     # Calculate the new domains.conf file hash
     new_hash=`md5sum /etc/letsencrypt/domains.conf | awk '{ print $1 }'`
     if [ "$current_hash" != "$new_hash" ]; then
-        # Clean all autorestart containers instances
+        # Clean all autorestart/autocmd containers instances
         rm -f /etc/supervisord.d/*_autorestart-containers
+	rm -f /etc/supervisord.d/*_autocmd-containers
 
         echo "#### Registering Let's Encrypt account if needed ####"
         certbot register -n --agree-tos -m $LETSENCRYPT_USER_MAIL $staging_cmd
 
         echo "#### Creating missing certificates if needed (~1min for each) ####"
-        while read entry; do
+        while read -r entry; do
+	    autorestart_config=`echo $entry | grep -E -o 'autorestart-containers=.*' | sed 's/autocmd-containers=.*//' | sed 's/autorestart-containers=//' | xargs`
+	    autocmd_config=`echo $entry | grep -E -o 'autocmd-containers=.*' | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=//' | xargs`
+	    clean_domains=`echo $entry | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=.*//' | xargs`
             domains_cmd=""
             main_domain=""
-            containers=""
 
-            for domain in $entry; do
-                if [ "${domain#*$autorestart_pattern}" != "$domain" ]; then
-                    containers=${domain/autorestart-containers=/}
-                elif [ -z $main_domain ]; then
-                    main_domain=$domain
-                    domains_cmd="$domains_cmd -d $domain"
-                else
-                    domains_cmd="$domains_cmd -d $domain"
-                fi
-            done
+	    for domain in $clean_domains; do
+		if [ -z $main_domain ]; then
+		    main_domain=$domain
+		fi
+		domains_cmd="$domains_cmd -d $domain"
+	    done
 
             echo ">>> Creating a certificate for domain(s):$domains_cmd"
             certbot certonly \
@@ -49,18 +41,27 @@ while true; do
                 --manual-cleanup-hook /var/lib/letsencrypt/hooks/cleanup.sh \
                 --manual-public-ip-logging-ok \
                 --expand \
+                --deploy-hook deploy-hook.sh \
                 $staging_cmd \
-                $deploy_hooks \
                 $domains_cmd
-            
-            if [ "$containers" != "" ]; then
-                echo ">>> Watching certificate for main domain $main_domain: containers $containers autorestarted when certificate is changed."
-                echo "[program:${main_domain}_autorestart-containers]" >> /etc/supervisord.d/${main_domain}_autorestart_containers
-                echo "command = /scripts/autorestart-containers.sh $main_domain $containers" >> /etc/supervisord.d/${main_domain}_autorestart_containers
-                echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autorestart_containers
-                echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autorestart_containers
-                echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autorestart_containers
+
+            if [ "$autorestart_config" != "" ]; then
+                echo ">>> Watching certificate for main domain $main_domain: containers $autorestart_config autorestarted when certificate is changed."
+                echo "[program:${main_domain}_autorestart-containers]" >> /etc/supervisord.d/${main_domain}_autorestart-containers
+                echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config" >> /etc/supervisord.d/${main_domain}_autorestart-containers
+                echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autorestart-containers
+                echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autorestart-containers
+                echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autorestart-containers
             fi
+
+	    if [ "$autocmd_config" != "" ]; then
+		echo ">>> Watching certificate for main domain $main_domain: autocmd config $autocmd_config executed when certificate is changed."
+		echo "[program:${main_domain}_autocmd-containers]" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+		echo "command = /scripts/autocmd-containers.sh $main_domain '$autocmd_config'" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+		echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+		echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+		echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+	    fi
         done < /etc/letsencrypt/domains.conf
 
         echo "### Revoke and delete certificates if needed ####"
@@ -77,9 +78,7 @@ while true; do
 
             if [ "$remove_domain" = true ]; then
                 echo ">>> Removing the certificate $domain"
-                certbot revoke $staging_cmd --cert-path /etc/letsencrypt/live/$domain/cert.pem
-                certbot delete $staging_cmd --cert-name $domain
-                rm -rf /etc/letsencrypt/live/$domain
+                certbot revoke -n $staging_cmd --cert-path /etc/letsencrypt/live/$domain/cert.pem
             fi
         done
 

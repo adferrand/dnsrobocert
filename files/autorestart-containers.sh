@@ -2,7 +2,6 @@
 
 domain=$1
 containers=$2
-IFS=' ,'
 
 if [ ! -S /var/run/docker.sock ]; then
     echo "ERROR: /var/run/docker.sock socket is missing."
@@ -21,9 +20,9 @@ while true; do
 
     if [ "$current_hash" != "$new_hash" ]; then
         echo ">>> Restarting dockers $containers because certificate for $domain has been modified."
-        for container in $containers; do
+        IFS=','; for container in $containers; do
             docker restart $container
-        done
+        done; unset IFS
 
         # Keep new hash version
         current_hash="$new_hash"
