@@ -12,8 +12,10 @@
 	* [Share certificates with the host](#share-certificates-with-the-host)
 	* [Share certificates with other containers](#share-certificates-with-other-containers)
 	* [Certificates files permissions](#certificates-files-permissions)
-* [Reconfiguration on a running container](#reconfiguration-on-a-running-container)
-* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
+* [Runtime operations](#runtime-operations)
+	* [Certificates reconfiguration at runtime](#certificates-reconfiguration-at-runtime)
+	* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
+	* [Call a reload command on containers when a certificate is renewed](#call-a-reload-command-on-containers-when-a-certificate-is-renewed)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
 	* [Activate staging ACME servers](#activating-staging-acme-servers)
 	* [Auto-export certificates in PFX format](#auto-export-certificates-in-pfx-format)
@@ -179,15 +181,17 @@ Alternatively or cumulatively you may need to change the owner user/group of `/e
 
 _Warning: certificates files permissions, introduced in container version `1.4`, will modify default permissions for certificates. Previously, `/etc/letsencrypt/live` and `/etc/letsencrypt/archive` were `0750`, their sub-folders where `0755` and contained files were `0644`. Now theses folders and their sub-folders are `0750` while contained files are `0640`: this should not lead to any regression, as the parent folders were of a more restrictive permission than their content, leading certs files to be unaccessible to non-root processes. However for pathological cases you will need to set environment variable `CERTS_DIRS_MODE` and `CERTS_FILES_MODE` appropriately._
 
-## Reconfiguration on a running container
+## Runtime operations
+
+### Certificates reconfiguration at runtime
 
 If you want to add a new certificate, remove one, or extend existing one to other domains, you just need to modify the `domains.conf` file from the host. Once saved, the container will automatically mirror the modifications in `/etc/letsencrypt` volume. If new certificates need to be generated, please note that approximately 30 seconds are required for each generation before modifications are visible.
 
 Please check the container logs to follow the operations.
 
-## Restart containers when a certificate is renewed
+### Restart containers when a certificate is renewed
 
-As said in introduction, most of the non-Web services require a restart when the certificate is changed. And this will occur at least once each two months. To ensure correct propagation of the new certificates in your Docker services, one special entry can be added at the end of a line for the concerned certificate in `domains.conf`.
+As said in introduction, most of the non-Web services require a restart when the certificate is changed. And this will occur at least once each two months. To ensure correct propagation of the new certificates in your Docker services, one special entry can be added at the *end* of a line for the concerned certificate in `domains.conf`.
 
 This entry takes the form of `autorestart-containers=container1,container2,container3` where `containerX` is the name of a container running on the same Docker instance than `letsencrypt-dns`.
 
@@ -202,7 +206,7 @@ smtp.example.com imap.example.com autorestart-containers=smtp
 auth.example.com
 ```
 
-Then execute following commands
+Then execute following commands:
 
 ```bash
 docker run \
@@ -225,6 +229,24 @@ docker run \
 ```
 
 If the certificate `smtp.example.com` is renewed, the container named `smtp` will be restarted. Renewal of `auth.example.com` will not restart anything.
+
+### Call a reload command on containers when a certificate is renewed
+
+Restarting a container when a certificate is renewed is sufficient for all cases. However one drawback is that the target processes will stop during a little time, and consequently the services provided are not continuous. This may be ok for non critical services, but problematic for things like authentication services or database servers.
+
+If a target process allows it, the letsencrypt-dns container can call a reload configuration command on the target container when a certificate is renewed. In this case, service is not stopped and immediatly takes into account the new config, including the new certificate. Apache2 for example (example only, as an http challenge will be a better option here) can see its configuration to be hot-reloaded by invoking the command `apachectl graceful` in the target container.
+
+To specify which command to launch on which container when a certificate is renewed, one will put at the *end* of the relevant line of `domains.conf` a special entry which takes the form of `autocmd-containers=container1:command1,container2:command2 arg2a arg2b,container3:command3 arg3a`. Comma `,` separates each container/command configuration, colon `:` separates the container name from the command to launch. Commands must be executable files, located in the $PATH of the target container, or accessed by their full path.
+
+In the case of an Apache2 server embedded in a container named `my-apache` to be reloaded when certificate `web.example.com` is renewed, put following entry in `domains.conf`:
+
+```
+web.example.com autocmd-containers=my-apache:apachectl graceful
+```
+
+If the certificate `web.example.com` is renewed, command `apachectl graceful` will be invoked on container `my-apache`, and the apache2 service will use the new certificate without killing any HTTP session.
+
+_Limitations on invokable commands: The option `autocmd-container` is intended to call a simple executable file with few potential arguments. It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command is not executed in a shell on the target, and variables will be resolved against the lets-encrypt container environment. If you want to operate advanced scripting, put an executable script in the target container, and use its path in `autocmd-container` option._
 
 ## Miscellaneous and testing
 
