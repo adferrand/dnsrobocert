@@ -1,5 +1,5 @@
 # adferrand/letsencrypt-dns
-![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:1.4.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:1.4.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:1.4.0)  
+![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:1.4.1.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:1.4.1.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:1.4.1)  
 
 * [Container functionalities](#container-functionalities)
 * [Why use this Docker](#why-use-this-docker-)
@@ -84,7 +84,7 @@ When using a DNS challenge, a TXT entry must be inserted in the DNS zone which m
 
 This container will do the hard work for you, thanks to the association between [Certbot](https://certbot.eff.org/) and [Lexicon](https://github.com/AnalogJ/lexicon): DNS provider API will be called automatically to insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the API access key.
 
-Following DNS provider are supported: AWS Route53, Cloudflare, CloudXNS, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Glesys, GoDaddy, LuaDNS, Memset, Namesilo, NS1, OVH, PointHQ, PowerDNS, Rage4, SoftLayer, Transip, Yandex, Vultr.
+Following DNS provider are supported: AWS Route53, Cloudflare, ClouDNS, CloudXNS, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Glesys, GoDaddy, LuaDNS, Memset, Namesilo, NS1, OVH, PointHQ, PowerDNS, Rage4, SoftLayer, Transip, Yandex, Vultr.
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 

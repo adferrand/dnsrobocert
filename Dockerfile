@@ -5,7 +5,7 @@ LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 ENV PATH /scripts:$PATH
 
 # Versioning
-ENV LEXICON_VERSION 2.1.10
+ENV LEXICON_VERSION 2.1.11
 ENV CERTBOT_VERSION 0.19.0
 
 # Let's Encrypt configuration
