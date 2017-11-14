@@ -27,7 +27,11 @@ ENV CERTS_GROUP_OWNER root
 RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
 && apk --no-cache --update --virtual build-dependencies add libffi-dev openssl-dev python-dev build-base \
 && pip install "certbot==$CERTBOT_VERSION" \
-&& pip install requests[security] "dns-lexicon==$LEXICON_VERSION" \
+&& pip install "dns-lexicon==$LEXICON_VERSION" \
+&& pip install "dns-lexicon[route53]==$LEXICON_VERSION" \
+&& pip install "dns-lexicon[softlayer]==$LEXICON_VERSION" \
+&& pip install "dns-lexicon[transip]==$LEXICON_VERSION" \
+&& pip install "dns-lexicon[dnsmadeeasy]==$LEXICON_VERSION" \
 && mkdir -p /var/lib/letsencrypt/hooks \
 && mkdir -p /etc/supervisord.d \
 && apk del build-dependencies
