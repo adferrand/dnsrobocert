@@ -32,7 +32,7 @@ This Docker is designed to manage [Let's Encrypt](https://letsencrypt.org) SSL c
 * Centralized configuration file to maintain several certificates,
 * Modification of container configuration without restart,
 * Automated restart of specific containers when a certificate is renewed,
-* Container built on top of [Alpine Linux](https://alpinelinux.org) distribution to reduce the footprint (image size is below 100MB).
+* Container built on top of [Alpine Linux](https://alpinelinux.org) distribution to reduce the footprint (image size is below 125MB).
 
 ## Why use this Docker ?
 
