@@ -45,7 +45,7 @@ So far so good, but you may fall in one of the following categories:
  1. You are in a firewalled network, and your HTTP/80 and HTTPS/443 ports are not opened to the outside world.
  2. You want to secure non-Web services (like LDAP, IMAP, POP, *etc.*) were the HTTPS protocol is of no use.
 
-For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall theses two challenges - which are widely use in HTTP proxy approaches - will not be usable: you need to ask a DNS challenge. Please note that traefik embed DNS challenges, but only for few DNS providers.
+For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall these two challenges - which are widely used in HTTP proxy approaches - will not be usable: you need to ask a DNS challenge. Please note that traefik embed DNS challenges, but only for few DNS providers.
 
 For the second case, there is no website to use TLS or HTTP challenges, and you should ask a DNS challenge. Of course you can create a "fake" website to validate the domain, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
 
