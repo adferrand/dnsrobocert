@@ -1,12 +1,12 @@
-FROM python:alpine3.6
+FROM python:alpine3.7
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 # Scripts in /scripts are required to be in the PATH to run properly as certbot's hooks
 ENV PATH /scripts:$PATH
 
 # Versioning
-ENV LEXICON_VERSION 2.1.16
-ENV CERTBOT_VERSION 0.20.0
+ENV LEXICON_VERSION 2.1.19
+ENV CERTBOT_VERSION 0.21.1
 
 # Let's Encrypt configuration
 ENV LETSENCRYPT_STAGING false
@@ -28,10 +28,10 @@ RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
 && apk --no-cache --update --virtual build-dependencies add libffi-dev openssl-dev python-dev build-base \
 && pip install "certbot==$CERTBOT_VERSION" \
 && pip install "dns-lexicon==$LEXICON_VERSION" \
+&& pip install "dns-lexicon[namecheap]==$LEXICON_VERSION" \
 && pip install "dns-lexicon[route53]==$LEXICON_VERSION" \
 && pip install "dns-lexicon[softlayer]==$LEXICON_VERSION" \
 && pip install "dns-lexicon[transip]==$LEXICON_VERSION" \
-&& pip install "dns-lexicon[dnsmadeeasy]==$LEXICON_VERSION" \
 && mkdir -p /var/lib/letsencrypt/hooks \
 && mkdir -p /etc/supervisord.d \
 && apk del build-dependencies
