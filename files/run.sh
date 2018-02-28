@@ -14,8 +14,8 @@ else
 fi
 
 # Synchronize certs files mode and user/group permissions
-chmod $CERTS_DIRS_MODE $(find /etc/letsencrypt/live /etc/letsencrypt/archive -type d)
-chmod $CERTS_FILES_MODE $(find /etc/letsencrypt/live /etc/letsencrypt/archive -type f)
+find /etc/letsencrypt/live /etc/letsencrypt/archive -type d -exec chmod "$CERTS_DIRS_MODE" {} +
+find /etc/letsencrypt/live /etc/letsencrypt/archive -type f -exec chmod "$CERTS_FILES_MODE" {} +
 chown -R $CERTS_USER_OWNER:$CERTS_GROUP_OWNER /etc/letsencrypt/live /etc/letsencrypt/archive
 
 # Load crontab
