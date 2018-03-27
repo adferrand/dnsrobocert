@@ -7,7 +7,6 @@
 	* [Configuring the SSL certificates](#configuring-the-ssl-certificates)
 	* [Configuring DNS provider and authentication to DNS API](#configuring-dns-provider-and-authentication-to-dns-api)
 * [Run the container](#run-the-container)
-	* [Advanced UI authentication/authorization](#advanced-ui-authenticationauthorization)
 * [Data persistency](#data-persistency)
 	* [Share certificates with the host](#share-certificates-with-the-host)
 	* [Share certificates with other containers](#share-certificates-with-other-containers)
