@@ -258,7 +258,7 @@ _(Limitations on invokable commands) The option `autocmd-container` is intended 
 
 ## Miscellaneous and testing
 
-## Using ACME v1 servers
+### Using ACME v1 servers
 
 Starting to version 2.0.0, this container uses the ACME v2 servers (production & staging) to allow wildcard certificates generation. If for any reason you want to continue to use old ACME v1 servers, you can set the environment variable `LETSENCRYPT_ACME_V1 (default: false)` to `true`. In this case, ACME v1 servers will be used to any certificate generation, but wildcard certificates will not be supported.
 
