@@ -1,5 +1,5 @@
 # adferrand/letsencrypt-dns
-![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:1.5.1.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:1.5.1.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:1.5.1)  
+![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.0.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.0.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.0.0)  
 
 * [Container functionalities](#container-functionalities)
 * [Why use this Docker](#why-use-this-docker-)
@@ -17,6 +17,7 @@
 	* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
 	* [Call a reload command on containers when a certificate is renewed](#call-a-reload-command-on-containers-when-a-certificate-is-renewed)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
+	* [Using ACME v1 servers](#using-acme-v1-servers)
 	* [Activate staging ACME servers](#activating-staging-acme-servers)
 	* [Auto-export certificates in PFX format](#auto-export-certificates-in-pfx-format)
     * [Sleep time](#sleep-time)
@@ -26,7 +27,7 @@
 
 This Docker is designed to manage [Let's Encrypt](https://letsencrypt.org) SSL certificates based on [DNS challenges](https://tools.ietf.org/html/draft-ietf-acme-acme-01#page-44).
 
-* Let's Encrypt certificates generation by [Certbot](https://github.com/certbot/certbot) using DNS challenges,
+* Let's Encrypt wildcard and regular certificates generation by [Certbot](https://github.com/certbot/certbot) using DNS challenges,
 * Automated renewal of almost expired certificates using Cron Certbot task,
 * Standardized API throuh [Lexicon](https://github.com/AnalogJ/lexicon) library to insert the DNS challenge with various DNS providers,
 * Centralized configuration file to maintain several certificates,
@@ -44,10 +45,13 @@ So far so good, but you may fall in one of the following categories:
 
  1. You are in a firewalled network, and your HTTP/80 and HTTPS/443 ports are not opened to the outside world.
  2. You want to secure non-Web services (like LDAP, IMAP, POP, *etc.*) were the HTTPS protocol is of no use.
+ 3. You want to generate a wildcard certificate, valid for any sub-domain of a given domain.
 
 For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall these two challenges - which are widely used in HTTP proxy approaches - will not be usable: you need to ask a DNS challenge. Please note that traefik embed DNS challenges, but only for few DNS providers.
 
 For the second case, there is no website to use TLS or HTTP challenges, and you should ask a DNS challenge. Of course you can create a "fake" website to validate the domain, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
+
+For the last case, the use of a DNS challenge is mandatory. Then the problems concerning certificates propagation which have been discussed in the second case will also occur.
 
 The solution is a dedicated and specialized Docker service which handles the creation/renewal of Let's Encrypt certificates, and ensure their propagation in the relevant Docker services. It is the purpose of this container.
 
@@ -67,6 +71,7 @@ Let's take an example. Our domain is `example.com`, and we want:
 - a certificate for `smtp.example.com`
 - a certificate for `imap.example.com` + `pop.example.com`
 - a certificate for `ldap.example.com`
+- a wildcard certificate for any sub-domain of `example.com` and for `example.com` itself
 
 Then the `domains.conf` will look like this:
 
@@ -74,9 +79,12 @@ Then the `domains.conf` will look like this:
 smtp.example.com
 imap.example.com pop.example.com
 ldap.example.com
+*.example.com example.com
 ```
 
 You need also to provide the mail which will be used to register your account on Let's Encrypt. Set the environment variable `LETSENCRYPT_USER_MAIL (default: noreply@example.com)` in the container for this purpose.
+
+_NB: For a wildcard certificate, specifying a sub-domain already covered by the wildcard will raise an error during Certbot certificate generation (eg. `test.example.com` cannot be put on the same line than `*.example.com`)._
 
 ### Configuring DNS provider and authentication to DNS API
 
@@ -84,7 +92,7 @@ When using a DNS challenge, a TXT entry must be inserted in the DNS zone which m
 
 This container will do the hard work for you, thanks to the association between [Certbot](https://certbot.eff.org/) and [Lexicon](https://github.com/AnalogJ/lexicon): DNS provider API will be called automatically to insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the API access key.
 
-Following DNS provider are supported: AWS Route53, Cloudflare, ClouDNS, CloudXNS, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Glesys, GoDaddy, Linode, LuaDNS, Memset, Namecheap, Namesilo, NS1, OVH, PointHQ, PowerDNS, Rackspace, Rage4, SoftLayer, Transip, Yandex, Vultr, Zonomi.
+Following DNS provider are supported: AuroraDNS, AWS Route53, Cloudflare, ClouDNS, CloudXNS, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Gehirn Infrastructure Service, Glesys, GoDaddy, Linode, LuaDNS, Memset, Namecheap, Namesilo, NS1, OnApp, OVH, PointHQ, PowerDNS, Rackspace, Rage4, Sakura Cloud, SoftLayer, Transip, Yandex, Vultr, Zonomi.
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
@@ -249,6 +257,12 @@ If the certificate `web.example.com` is renewed, command `apachectl graceful` wi
 _(Limitations on invokable commands) The option `autocmd-container` is intended to call a simple executable file with few potential arguments. It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command is not executed in a shell on the target, and variables will be resolved against the lets-encrypt container environment. If you want to operate advanced scripting, put an executable script in the target container, and use its path in `autocmd-container` option._
 
 ## Miscellaneous and testing
+
+## Using ACME v1 servers
+
+Starting to version 2.0.0, this container uses the ACME v2 servers (production & staging) to allow wildcard certificates generation. If for any reason you want to continue to use old ACME v1 servers, you can set the environment variable `LETSENCRYPT_ACME_V1 (default: false)` to `true`. In this case, ACME v1 servers will be used to any certificate generation, but wildcard certificates will not be supported.
+
+_NB: During a certificate renewal, the server (and authentication) used for the certificate generation will be reused, independently of the `LETSENCRYPT_ACME_V1` environment variable value. If you want to change the server used for a particular certificate, you will need first to revoke it by removing the relevant entry from `domains.txt` file before recreating it._
 
 ### Activating staging ACME servers
 
