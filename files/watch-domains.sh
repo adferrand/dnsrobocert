@@ -1,8 +1,8 @@
 #!/bin/sh
 
-staging_cmd=""
+server_cmd="--server https://acme-v02.api.letsencrypt.org/directory"
 if [ "$LETSENCRYPT_STAGING" = true ]; then
-    staging_cmd="--staging"
+    server_cmd="--server https://acme-staging-v02.api.letsencrypt.org/directory"
 fi
 
 current_hash=
@@ -12,10 +12,10 @@ while true; do
     if [ "$current_hash" != "$new_hash" ]; then
         # Clean all autorestart/autocmd containers instances
         rm -f /etc/supervisord.d/*_autorestart-containers
-	rm -f /etc/supervisord.d/*_autocmd-containers
+	    rm -f /etc/supervisord.d/*_autocmd-containers
 
         echo "#### Registering Let's Encrypt account if needed ####"
-        certbot register -n --agree-tos -m $LETSENCRYPT_USER_MAIL $staging_cmd
+        certbot register -n --agree-tos -m $LETSENCRYPT_USER_MAIL $server_cmd
 
         echo "#### Creating missing certificates if needed (~1min for each) ####"
         while read -r entry; do
@@ -42,7 +42,7 @@ while true; do
                 --manual-public-ip-logging-ok \
                 --expand \
                 --deploy-hook deploy-hook.sh \
-                $staging_cmd \
+                $server_cmd \
                 $domains_cmd
 
             if [ "$autorestart_config" != "" ]; then
@@ -78,7 +78,7 @@ while true; do
 
             if [ "$remove_domain" = true ]; then
                 echo ">>> Removing the certificate $domain"
-                certbot revoke -n $staging_cmd --cert-path /etc/letsencrypt/live/$domain/cert.pem
+                certbot revoke -n $server_cmd --cert-path /etc/letsencrypt/live/$domain/cert.pem
             fi
         done
 
