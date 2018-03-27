@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Ensure domain.conf exists
-touch /etc/letsencrypt/domains.conf
-
 # Ensure certs folders exist, and with correct permissions
 mkdir -p /etc/letsencrypt/live /etc/letsencrypt/archive
 if [ "$CERTS_DIR_WORLD_READABLE" = "true" ]; then
@@ -15,7 +12,7 @@ fi
 
 # Synchronize certs files mode and user/group permissions
 find /etc/letsencrypt/live /etc/letsencrypt/archive -type d -exec chmod "$CERTS_DIRS_MODE" {} +
-find /etc/letsencrypt/live /etc/letsencrypt/archive -type f -exec chmod "$CERTS_FILES_MODE" {} +
+find /etc/letsencrypt/live /etc/letsencrypt/archive -type f -exec chmod "$CERTS_FILES_MODE" {} +
 chown -R $CERTS_USER_OWNER:$CERTS_GROUP_OWNER /etc/letsencrypt/live /etc/letsencrypt/archive
 
 # Load crontab

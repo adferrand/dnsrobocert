@@ -5,12 +5,13 @@ LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 ENV PATH /scripts:$PATH
 
 # Versioning
-ENV LEXICON_VERSION 2.1.19
-ENV CERTBOT_VERSION 0.21.1
+ENV LEXICON_VERSION 2.2.1
+ENV CERTBOT_VERSION 0.22.2
 
 # Let's Encrypt configuration
 ENV LETSENCRYPT_STAGING false
 ENV LETSENCRYPT_USER_MAIL noreply@example.com
+ENV LETSENCRYPT_ACME_V1 false
 
 # Lexicon configuration
 ENV LEXICON_PROVIDER cloudflare
