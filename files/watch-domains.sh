@@ -1,8 +1,15 @@
 #!/bin/sh
 
-server_cmd="--server https://acme-v02.api.letsencrypt.org/directory"
-if [ "$LETSENCRYPT_STAGING" = true ]; then
-    server_cmd="--server https://acme-staging-v02.api.letsencrypt.org/directory"
+if [ "$LETSENCRYPT_ACME_V1" = true ]; then
+    server_cmd="--server https://acme-v01.api.letsencrypt.org/directory"
+    if [ "$LETSENCRYPT_STAGING" = true ]; then
+        server_cmd="--server https://acme-staging.api.letsencrypt.org/directory"
+    fi
+else
+    server_cmd="--server https://acme-v02.api.letsencrypt.org/directory"
+    if [ "$LETSENCRYPT_STAGING" = true ]; then
+        server_cmd="--server https://acme-staging-v02.api.letsencrypt.org/directory"
+    fi
 fi
 
 current_hash=
