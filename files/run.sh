@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Ensure domain.conf exists
-touch /etc/letsencrypt/domains.conf
-
 # Ensure certs folders exist, and with correct permissions
 mkdir -p /etc/letsencrypt/live /etc/letsencrypt/archive
 if [ "$CERTS_DIR_WORLD_READABLE" = "true" ]; then

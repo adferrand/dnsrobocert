@@ -14,6 +14,9 @@ fi
 
 current_hash=
 while true; do
+    # Ensure domain.conf exists
+    touch /etc/letsencrypt/domains.conf
+    
     # Calculate the new domains.conf file hash
     new_hash=`md5sum /etc/letsencrypt/domains.conf | awk '{ print $1 }'`
     if [ "$current_hash" != "$new_hash" ]; then
