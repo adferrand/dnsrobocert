@@ -1,4 +1,5 @@
 #!/bin/sh
+set -x
 
 # Construct PFX file for new cert if needed
 if [ "$PFX_EXPORT" = "true" ]; then
