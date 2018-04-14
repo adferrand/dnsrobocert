@@ -1,5 +1,5 @@
 # adferrand/letsencrypt-dns
-![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.0.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.0.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.0.0)  
+![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.0.1.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.0.1.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.0.1)  
 
 * [Container functionalities](#container-functionalities)
 * [Why use this Docker](#why-use-this-docker-)
@@ -218,10 +218,10 @@ Then execute following commands:
 ```bash
 docker run \
 	--name letsencrypt-dns \
-    	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
+	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
 	--volume /var/run/docker.sock:/var/run/docker.sock \
-    --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
 	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
