@@ -29,18 +29,18 @@ while true; do
 
         echo "#### Creating missing certificates if needed (~1min for each) ####"
         while read -r entry; do
-	    autorestart_config=`echo $entry | grep -E -o 'autorestart-containers=.*' | sed 's/autocmd-containers=.*//' | sed 's/autorestart-containers=//' | xargs`
-	    autocmd_config=`echo $entry | grep -E -o 'autocmd-containers=.*' | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=//' | xargs`
-	    clean_domains=`echo $entry | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=.*//' | xargs`
+            autorestart_config=`echo $entry | grep -E -o 'autorestart-containers=.*' | sed 's/autocmd-containers=.*//' | sed 's/autorestart-containers=//' | xargs`
+            autocmd_config=`echo $entry | grep -E -o 'autocmd-containers=.*' | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=//' | xargs`
+            clean_domains=`echo $entry | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=.*//' | xargs`
             domains_cmd=""
             main_domain=""
 
-	    for domain in $clean_domains; do
-		if [ -z $main_domain ]; then
-		    main_domain=$domain
-		fi
-		domains_cmd="$domains_cmd -d $domain"
-	    done
+            for domain in $clean_domains; do
+                if [ -z $main_domain ]; then
+                    main_domain=${domain/\*\./}
+                fi
+                domains_cmd="$domains_cmd -d $domain"
+            done
 
             echo ">>> Creating a certificate for domain(s):$domains_cmd"
             certbot certonly \
@@ -64,14 +64,14 @@ while true; do
                 echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autorestart-containers
             fi
 
-	    if [ "$autocmd_config" != "" ]; then
-		echo ">>> Watching certificate for main domain $main_domain: autocmd config $autocmd_config executed when certificate is changed."
-		echo "[program:${main_domain}_autocmd-containers]" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-		echo "command = /scripts/autocmd-containers.sh $main_domain '$autocmd_config'" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-		echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-		echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-		echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-	    fi
+            if [ "$autocmd_config" != "" ]; then
+                echo ">>> Watching certificate for main domain $main_domain: autocmd config $autocmd_config executed when certificate is changed."
+                echo "[program:${main_domain}_autocmd-containers]" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+                echo "command = /scripts/autocmd-containers.sh $main_domain '$autocmd_config'" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+                echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+                echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+                echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+            fi
         done < /etc/letsencrypt/domains.conf
 
         echo "### Revoke and delete certificates if needed ####"
@@ -79,7 +79,7 @@ while true; do
             remove_domain=true
             while read entry; do
                 for comp_domain in $entry; do
-                    if [ "$domain" = "$comp_domain" ]; then
+                    if [ "$domain" = "${comp_domain/\*\./}" ]; then
                         remove_domain=false
                         break;
                     fi
