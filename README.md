@@ -1,5 +1,5 @@
 # adferrand/letsencrypt-dns
-![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.0.1.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.0.1.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.0.1)  
+![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.1.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.1.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.1.0)  
 
 * [Container functionalities](#container-functionalities)
 * [Why use this Docker](#why-use-this-docker-)
@@ -95,7 +95,9 @@ Following DNS provider are supported: AuroraDNS, AWS Route53, Cloudflare, ClouDN
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
-Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, set the environment variables `LEXICON_[PROVIDER]_USER` and `LEXICON_[PROVIDER]_TOKEN` to this user/token. `[PROVIDER]` must be replaced by the value in capital letters passed to the environment variable `LEXICON_PROVIDER`.
+Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, authentication stuff can be set using one of the two following approach:
+* using environment variables in the form of `LEXICON_[PROVIDER]_[OPTION]` for parameters in the form of --auth-[option] (for instance, `LEXICON_CLOUDFLARE_USERNAME` with the CloudFlare provider for --auth-username option)
+* using environment variable `LEXICON_PROVIDER_OPTIONS (default empty)` which will be append directly to the lexicon binary (for instance, `LEXICON_PROVIDER_OPTIONS` could be set to `--auth-token=my-token ...`)
 
 For instance, if the provider is CloudFlare, the username is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
 
@@ -103,6 +105,12 @@ For instance, if the provider is CloudFlare, the username is `my_user` and the a
 LEXICON_PROVIDER=cloudflare
 LEXICON_CLOUDFLARE_USERNAME=my_user
 LEXICON_CLOUDFLARE_TOKEN=my_secret_token
+```
+
+Or alternatively:
+```bash
+LEXICON_PROVIDER=cloudflare
+LEXICON_PROVIDER_OPTIONS=--auth-username=my-user --auth-token=my_secret_token
 ```
 
 Some providers (like OVH) need more specific environment variables. First, run following command to get the Lexicon help for this DNS provider:
@@ -113,7 +121,7 @@ docker run -it --rm adferrand/letsencrypt-dns lexicon ovh --help
 
 Once done, you will see authentication parameters of the form `--auth-somevar`. Theses parameters must be setted using environment variables of the form `LEXICON_[PROVIDER]_SOMEVAR`.
 
-For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_ENTRYPOINT`, `LEXICON_OVH_APPLICATION_KEY`, `LEXICON_OVH_APPLICATION_SECRET` and `LEXICON_OVH_CONSUMER_KEY`.
+For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_ENTRYPOINT`, `LEXICON_OVH_APPLICATION_KEY`, `LEXICON_OVH_APPLICATION_SECRET` and `LEXICON_OVH_CONSUMER_KEY`. Or alternatively, set the `LEXICON_PROVIDER_OPTIONS` to `--auth-entrypoint=my_entrypoint --auth-application-key=my_application_key --auth-application-secret=my_application_secret --auth-consumer-key=my_consumer_key` .
 
 ## Run the container
 
