@@ -96,7 +96,7 @@ Following DNS provider are supported: AuroraDNS, AWS Route53, Cloudflare, ClouDN
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
 Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, authentication stuff can be set using one of the two following approach:
-* using environment variables in the form of `LEXICON_[PROVIDER]_[OPTION]` for parameters in the form of --auth-[option] (for instance, `LEXICON_CLOUDFLARE_USERNAME` with the CloudFlare provider for --auth-username option)
+* using environment variables in the form of `LEXICON_[PROVIDER]_[OPTION]` for parameters in the form of `--auth-[option]` (for instance, `LEXICON_CLOUDFLARE_USERNAME` with the CloudFlare provider for `--auth-username` option)
 * using environment variable `LEXICON_PROVIDER_OPTIONS (default empty)` which will be append directly to the lexicon binary (for instance, `LEXICON_PROVIDER_OPTIONS` could be set to `--auth-token=my-token ...`)
 
 For instance, if the provider is CloudFlare, the username is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
