@@ -121,7 +121,9 @@ docker run -it --rm adferrand/letsencrypt-dns lexicon ovh --help
 
 Once done, you will see authentication parameters of the form `--auth-somevar`. Theses parameters must be setted using environment variables of the form `LEXICON_[PROVIDER]_SOMEVAR`.
 
-For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_ENTRYPOINT`, `LEXICON_OVH_APPLICATION_KEY`, `LEXICON_OVH_APPLICATION_SECRET` and `LEXICON_OVH_CONSUMER_KEY`. Or alternatively, set the `LEXICON_PROVIDER_OPTIONS` to `--auth-entrypoint=my_entrypoint --auth-application-key=my_application_key --auth-application-secret=my_application_secret --auth-consumer-key=my_consumer_key` .
+For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_ENTRYPOINT`, `LEXICON_OVH_APPLICATION_KEY`, `LEXICON_OVH_APPLICATION_SECRET` and `LEXICON_OVH_CONSUMER_KEY`. Or alternatively, set the `LEXICON_PROVIDER_OPTIONS` to `--auth-entrypoint=my_entrypoint --auth-application-key=my_application_key --auth-application-secret=my_application_secret --auth-consumer-key=my_consumer_key`.
+
+_NB: Lexicon authentication variables which are not in the form of `--auth-[option]` must be passed using the `LEXICON_PROVIDER_OPTIONS` environment variable._
 
 ## Run the container
 
