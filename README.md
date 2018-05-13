@@ -135,7 +135,7 @@ For Cloudflare, with example described during preparation, run :
 docker run \
 	--name letsencrypt-dns \
 	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
-    --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
 	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
@@ -171,9 +171,9 @@ If you want to share the generated certificates with other containers, mount the
 ```bash
 docker run \
 	--name letsencrypt-dns \
-    --volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
+	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
-    --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
 	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
 	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
