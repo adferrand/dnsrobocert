@@ -21,7 +21,11 @@ while true; do
     if [ "$current_hash" != "$new_hash" ]; then
         echo ">>> Restarting dockers $containers because certificate for $domain has been modified."
         IFS=','; for container in $containers; do
+          if [ "$DOCKER_SWARM" = true ]; then
+            docker service update --detach=false --force $container
+          else
             docker restart $container
+          fi
         done; unset IFS
 
         # Keep new hash version
