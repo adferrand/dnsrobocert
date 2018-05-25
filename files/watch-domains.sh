@@ -56,6 +56,11 @@ while true; do
                 $domains_cmd
 
             if [ "$autorestart_config" != "" ]; then
+		if [ "$AUTO_RESTART_NEW" == true ]; then
+		  echo ">>> New certificate for main domain $main_domain: containers $autorestart_config will be restarted."
+		  /scripts/autorestart-containers.sh $main_domain $autorestart_config
+		fi
+		
                 echo ">>> Watching certificate for main domain $main_domain: containers $autorestart_config autorestarted when certificate is changed."
                 echo "[program:${main_domain}_autorestart-containers]" >> /etc/supervisord.d/${main_domain}_autorestart-containers
                 echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config" >> /etc/supervisord.d/${main_domain}_autorestart-containers
