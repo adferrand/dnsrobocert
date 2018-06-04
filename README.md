@@ -125,7 +125,7 @@ For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth
 
 _NB: Lexicon authentication variables which are not in the form of `--auth-[option]` must be passed using the `LEXICON_PROVIDER_OPTIONS` environment variable._
 
-Also you can set specific Lexicon otpions (i.e. `domain` for Cloudns) via `LEXICON_OPTIONS` variable.
+Finally there is some options specific to Lexicon itself, not related to the authentication of a particular provider. You can this kind of options (eg. `domain` for Cloudns) via the `LEXICON_OPTIONS (default empty)` environment variable.
 
 ## Run the container
 
