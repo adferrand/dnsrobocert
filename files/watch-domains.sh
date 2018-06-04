@@ -28,7 +28,7 @@ while true; do
         certbot register -n --agree-tos -m $LETSENCRYPT_USER_MAIL $server_cmd
 
         echo "#### Creating missing certificates if needed (~1min for each) ####"
-        while read -r entry; do
+        while entry=; IFS=$'\n\r' read -r entry || [[ $entry ]]; do
             autorestart_config=`echo $entry | grep -E -o 'autorestart-containers=.*' | sed 's/autocmd-containers=.*//' | sed 's/autorestart-containers=//' | xargs`
             autocmd_config=`echo $entry | grep -E -o 'autocmd-containers=.*' | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=//' | xargs`
             clean_domains=`echo $entry | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=.*//' | xargs`
