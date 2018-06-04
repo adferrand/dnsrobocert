@@ -2,13 +2,6 @@
 
 # Ensure certs folders exist, and with correct permissions
 mkdir -p /etc/letsencrypt/live /etc/letsencrypt/archive
-if [ "$CERTS_DIR_WORLD_READABLE" = "true" ]; then
-    chmod 0755 /etc/letsencrypt/live /etc/letsencrypt/archive
-elif [ "$CERTS_DIR_GROUP_READABLE" = "true" ]; then
-    chmod 0750 /etc/letsencrypt/live /etc/letsencrypt/archive
-else
-    chmod 0700 /etc/letsencrypt/live /etc/letsencrypt/archive
-fi
 
 # Synchronize certs files mode and user/group permissions
 find /etc/letsencrypt/live /etc/letsencrypt/archive -type d -exec chmod "$CERTS_DIRS_MODE" {} +
