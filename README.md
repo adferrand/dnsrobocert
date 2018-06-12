@@ -36,7 +36,7 @@ This Docker is designed to manage [Let's Encrypt](https://letsencrypt.org) SSL c
 
 ## Why use this Docker ?
 
-If you are reading theses lines, you certainly want to secure all your dockerized services using Let's Encrypt SSL certificates, which are free and accepted everywhere.
+If you are reading these lines, you certainly want to secure all your dockerized services using Let's Encrypt SSL certificates, which are free and accepted everywhere.
 
 If you want to secure Web services through HTTPS, there is already plenty of great tools. In the Docker world, one can check [traefik](https://hub.docker.com/_/traefik/), or [nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) + [letsencrypt-nginx-proxy-companion](https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/). Basically, theses tools will allow automated and dynamic generation/renewal of SSL certificates, based on TLS or HTTP challenges, on top of a reverse proxy to encrypt everything through HTTPS.
 
