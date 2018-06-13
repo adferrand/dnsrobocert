@@ -65,6 +65,7 @@ This container uses a file which must be put at `/etc/letsencrypt/domains.conf` 
 - one line may contain several domains separated by a space,
 - the first domain is the certificate main domain,
 - each following domain on a line is included in the SAN of the certificate, allowing it to be used for several domains.
+- the file **must end with a empty line** otherwise the last (or first entry if only using one) will not be found.
 
 Let's take an example. Our domain is `example.com`, and we want:
 - a certificate for `smtp.example.com`
