@@ -58,7 +58,11 @@ while true; do
             if [ "$autorestart_config" != "" ]; then
                 echo ">>> Watching certificate for main domain $main_domain: containers $autorestart_config autorestarted when certificate is changed."
                 echo "[program:${main_domain}_autorestart-containers]" >> /etc/supervisord.d/${main_domain}_autorestart-containers
-                echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config" >> /etc/supervisord.d/${main_domain}_autorestart-containers
+		if [ "$AUTO_RESTART_NEW" == true ]; then
+                  echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config true" >> /etc/supervisord.d/${main_domain}_autorestart-containers
+		else
+		  echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config false" >> /etc/supervisord.d/${main_domain}_autorestart-containers
+		fi
                 echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autorestart-containers
                 echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autorestart-containers
                 echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autorestart-containers

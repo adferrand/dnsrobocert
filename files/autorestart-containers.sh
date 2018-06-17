@@ -2,6 +2,7 @@
 
 domain=$1
 containers=$2
+new_certificate=$3
 
 if [ ! -S /var/run/docker.sock ]; then
     echo "ERROR: /var/run/docker.sock socket is missing."
@@ -13,17 +14,30 @@ if [ ! -d /etc/letsencrypt/archive/$domain ]; then
     exit 1
 fi
 
+restart() {
+    IFS=','; for container in $containers; do
+        if [ "$DOCKER_SWARM" == true ]; then
+            docker service update --detach=false --force $container
+        else
+            docker restart $container
+        fi
+    done; unset IFS
+}
+
 # Load hash of the certificate
 current_hash=`md5sum /etc/letsencrypt/live/$domain/cert.pem | awk '{ print $1 }'`
 while true; do
     new_hash=`md5sum /etc/letsencrypt/live/$domain/cert.pem | awk '{ print $1 }'`
 
+    if [ "$new_certificate" == true ]; then
+        echo ">>> Restarting dockers $containers because certificate for $domain has been created."
+        restart
+        new_certificate=false
+    fi
+
     if [ "$current_hash" != "$new_hash" ]; then
         echo ">>> Restarting dockers $containers because certificate for $domain has been modified."
-        IFS=','; for container in $containers; do
-            docker restart $container
-        done; unset IFS
-
+        restart
         # Keep new hash version
         current_hash="$new_hash"
     fi

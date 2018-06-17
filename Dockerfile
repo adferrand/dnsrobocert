@@ -26,6 +26,9 @@ ENV CERTS_FILES_MODE 0640
 ENV CERTS_USER_OWNER root
 ENV CERTS_GROUP_OWNER root
 
+# Container restart configuration
+ENV DOCKER_SWARM false
+
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
 && apk --no-cache --update --virtual build-dependencies add libffi-dev openssl-dev python-dev build-base \

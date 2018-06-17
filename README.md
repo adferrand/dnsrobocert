@@ -249,6 +249,9 @@ docker run \
 
 If the certificate `smtp.example.com` is renewed, the container named `smtp` will be restarted. Renewal of `auth.example.com` will not restart anything.
 
+### Docker Swarm Services
+Specifying `DOCKER_SWARM=true` as an environment value will restart containers by their service name instead.
+
 ### Call a reload command on containers when a certificate is renewed
 
 Restarting a container when a certificate is renewed is sufficient for all cases. However one drawback is that the target processes will stop during a little time, and consequently the services provided are not continuous. This may be ok for non critical services, but problematic for things like authentication services or database servers.
