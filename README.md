@@ -249,9 +249,6 @@ docker run \
 
 If the certificate `smtp.example.com` is renewed, the container named `smtp` will be restarted. Renewal of `auth.example.com` will not restart anything.
 
-### Docker Swarm Services
-Specifying `DOCKER_SWARM=true` as an environment value will restart containers by their service name instead.
-
 ### Call a reload command on containers when a certificate is renewed
 
 Restarting a container when a certificate is renewed is sufficient for all cases. However one drawback is that the target processes will stop during a little time, and consequently the services provided are not continuous. This may be ok for non critical services, but problematic for things like authentication services or database servers.
@@ -269,6 +266,14 @@ web.example.com autocmd-containers=my-apache:apachectl graceful
 If the certificate `web.example.com` is renewed, command `apachectl graceful` will be invoked on container `my-apache`, and the apache2 service will use the new certificate without killing any HTTP session.
 
 _(Limitations on invokable commands) The option `autocmd-container` is intended to call a simple executable file with few potential arguments. It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command is not executed in a shell on the target, and variables will be resolved against the lets-encrypt container environment. If you want to operate advanced scripting, put an executable script in the target container, and use its path in `autocmd-container` option._
+
+### Running container in a cluster environment
+
+When this container runs in a cluster environment (eg. Swarm, Kubernetes), autoreload and autocmd functionalities are likely to not be adressed to a single container, but to a service handled by several containers working together as a cluster.
+
+Environment variable `DOCKER_CLUSTER_PROVIDER (default: none)` can be set for this purpose. Current possible values are `none` when there is no cluser (default) or `swarm`. If this variable is set to a cluster provider, names given in autorestart and autocmd will be considered to be clustered services name, and appropriate commands will be used to restart the service or execute an arbitrary command on it.
+
+_NB: For now, only Docker Swarm is supported, and only autorestart takes the cluster into account. More complete cluster support will be added in the future._
 
 ## Miscellaneous and testing
 

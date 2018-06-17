@@ -26,8 +26,8 @@ ENV CERTS_FILES_MODE 0640
 ENV CERTS_USER_OWNER root
 ENV CERTS_GROUP_OWNER root
 
-# Container restart configuration
-ENV DOCKER_SWARM false
+# Container in cluster configuration (Swarm, Kubernetes ...)
+ENV DOCKER_CLUSTER_PROVIDER none
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \

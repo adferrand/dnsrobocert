@@ -16,7 +16,7 @@ fi
 
 restart() {
     IFS=','; for container in $containers; do
-        if [ "$DOCKER_SWARM" == true ]; then
+        if [ "$DOCKER_CLUSTER_PROVIDER" == "swarm" ]; then
             docker service update --detach=false --force $container
         else
             docker restart $container
@@ -29,13 +29,11 @@ current_hash=`md5sum /etc/letsencrypt/live/$domain/cert.pem | awk '{ print $1 }'
 while true; do
     new_hash=`md5sum /etc/letsencrypt/live/$domain/cert.pem | awk '{ print $1 }'`
 
-    if [ "$new_certificate" == true ]; then
+    if [ "$new_certificate" = true ]; then
         echo ">>> Restarting dockers $containers because certificate for $domain has been created."
         restart
         new_certificate=false
-    fi
-
-    if [ "$current_hash" != "$new_hash" ]; then
+    elif [ "$current_hash" != "$new_hash" ]; then
         echo ">>> Restarting dockers $containers because certificate for $domain has been modified."
         restart
         # Keep new hash version

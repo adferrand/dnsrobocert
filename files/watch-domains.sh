@@ -42,6 +42,8 @@ while true; do
                 domains_cmd="$domains_cmd -d $domain"
             done
 
+            hash_before_certbot=`md5sum /etc/letsencrypt/live/$main_domain/cert.pem | awk '{ print $1 }'`
+
             echo ">>> Creating a certificate for domain(s):$domains_cmd"
             certbot certonly \
                 -n \
@@ -55,14 +57,16 @@ while true; do
                 $server_cmd \
                 $domains_cmd
 
+            hash_after_certbot=`md5sum /etc/letsencrypt/live/$main_domain/cert.pem | awk '{ print $1 }'`
+            new_certificate=true
+            if [ "$hash_before_certbot" = "$hash_after_certbot" ]; then
+                new_certificate=false
+            fi
+
             if [ "$autorestart_config" != "" ]; then
                 echo ">>> Watching certificate for main domain $main_domain: containers $autorestart_config autorestarted when certificate is changed."
                 echo "[program:${main_domain}_autorestart-containers]" >> /etc/supervisord.d/${main_domain}_autorestart-containers
-		if [ "$AUTO_RESTART_NEW" == true ]; then
-                  echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config true" >> /etc/supervisord.d/${main_domain}_autorestart-containers
-		else
-		  echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config false" >> /etc/supervisord.d/${main_domain}_autorestart-containers
-		fi
+                echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config $new_certificate" >> /etc/supervisord.d/${main_domain}_autorestart-containers
                 echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autorestart-containers
                 echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autorestart-containers
                 echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autorestart-containers
