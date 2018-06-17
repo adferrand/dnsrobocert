@@ -5,8 +5,8 @@ LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 ENV PATH /scripts:$PATH
 
 # Versioning
-ENV LEXICON_VERSION 2.3.0
-ENV CERTBOT_VERSION 0.24.0
+ENV LEXICON_VERSION 2.4.3
+ENV CERTBOT_VERSION 0.25.1
 
 # Let's Encrypt configuration
 ENV LETSENCRYPT_STAGING false
@@ -34,6 +34,7 @@ RUN apk --no-cache --update add rsyslog git openssl libffi supervisor docker \
 && pip install "dns-lexicon[namecheap]==$LEXICON_VERSION" \
 && pip install "dns-lexicon[route53]==$LEXICON_VERSION" \
 && pip install "dns-lexicon[softlayer]==$LEXICON_VERSION" \
+&& pip install "dns-lexicon[subreg]==$LEXICON_VERSION" \
 && pip install "dns-lexicon[transip]==$LEXICON_VERSION" \
 && mkdir -p /var/lib/letsencrypt/hooks \
 && mkdir -p /etc/supervisord.d \
