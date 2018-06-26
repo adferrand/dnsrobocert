@@ -1,5 +1,5 @@
-# adferrand/letsencrypt-dns
-![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.3.1.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.3.1.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.3.1)  
+# &nbsp;![](https://github.com/adferrand/docker-letsencrypt-dns/blob/master/images/logo_from_realies_150px.png) adferrand/letsencrypt-dns  
+![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.3.1.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.3.1.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.3.1)
 
 * [Container functionalities](#container-functionalities)
 * [Why use this Docker](#why-use-this-docker-)
