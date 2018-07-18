@@ -257,6 +257,8 @@ If a target process allows it, the letsencrypt-dns container can call a reload c
 
 To specify which command to launch on which container when a certificate is renewed, one will put at the **end** of the relevant line of `domains.conf` a special entry which takes the form of `autocmd-containers=container1:command1,container2:command2 arg2a arg2b,container3:command3 arg3a`. Comma `,` separates each container/command configuration, colon `:` separates the container name from the command to launch. Commands must be executable files, located in the $PATH of the target container, or accessed by their full path.
 
+Similarly to the automatic containers restart functionality, you need to mount the Docker socket of the host /var/run/docker.sock in the letsencrypt-dns container (with the docker executable, using the command-line parameter `--volume /var/run/docker.sock:/var/run/docker.sock`).
+
 In the case of an Apache2 server embedded in a container named `my-apache` to be reloaded when certificate `web.example.com` is renewed, put following entry in `domains.conf`:
 
 ```
