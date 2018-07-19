@@ -77,7 +77,7 @@ while true; do
         echo "### Revoke and delete certificates if needed ####"
         for domain in `ls /etc/letsencrypt/live`; do
             remove_domain=true
-            while read entry; do
+            while entry=; IFS=$'\n\r' read -r entry || [[ $entry ]]; do
                 for comp_domain in $entry; do
                     if [ "$domain" = "${comp_domain/\*\./}" ]; then
                         remove_domain=false
