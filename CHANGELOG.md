@@ -61,3 +61,13 @@ Add `LEXICON_OPTIONS` environment variable for specific lexicon options
 ### Changed
 * Correct autocmd/autorestart behavior with wildcard certificates
 * Correct wrongly revokation of wilcard certificates after their creation
+
+## [2.0.0] - 27/03/2018
+### Added
+* Connect to the ACME v2 servers, which allow wildcard certificates generation (eg. *.example.com)
+* Allow use of old ACME v1 servers through `LEXICON_ACME_V1` environment variable
+
+### Modified
+* Update Certbot to 0.22.2 to supports the ACME v2 servers
+* Update Lexicon to 0.22.1 adding support for following DNS providers: AuroraDNS, Gehirn Infrastructure Service, OnApp and Sakura Cloud
+* Correct deploy hook about files/directory permission fixation
