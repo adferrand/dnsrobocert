@@ -93,7 +93,7 @@ while true; do
         done
 
         echo "### Reloading circusd configuration ###"
-        circusctl reloadconfig --waiting false
+        circusctl reloadconfig
 
         # Keep new hash version
         current_hash="$new_hash"
