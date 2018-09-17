@@ -28,7 +28,7 @@ ENV CERTS_GROUP_OWNER root
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt openssl docker \
- && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev python-dev build-base \
+ && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev python-dev build-base linux-headers \
  && pip install "certbot==$CERTBOT_VERSION" \
  && pip install "dns-lexicon==$LEXICON_VERSION" \
  && pip install "dns-lexicon[namecheap]==$LEXICON_VERSION" \
