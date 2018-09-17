@@ -1,0 +1,67 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: 
+          command: |
+            docker pull adferrand/letsencrypt-dns || true
+            docker build --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
+      - run:
+          command: |
+            mkdir -p workspace
+            docker save adferrand/letsencrypt-dns > workspace/docker-letsencrypt-dns.tar
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - docker-letsencrypt-dns.tar
+  test:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          command:
+            docker load < /tmp/workspace/docker-letsencrypt-dns.tar
+      - run:
+          command:
+            docker run --rm adferrand/letsencrypt-dns echo 'Hello World!'
+  deploy:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          command:
+            docker load < /tmp/workspace/docker-letsencrypt-dns.tar
+      - run:
+          command:
+            echo "${DOCKER_PASS}" | docker login -u ${DOCKER_USER} --password-stdin
+      - deploy: 
+          command: |
+            if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
+            docker tag adferrand/letsencrypt-dns adferrand/letsencrypt-dns:${DOCKER_TAG}
+            docker push adferrand/letsencrypt-dns:${DOCKER_TAG}
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^[0-9.]+/
+      - test:
+          requires: 
+            - build
+          filters:
+            tags:
+              only: /^[0-9.]+/
+      - deploy:
+          requires: 
+            - test
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /^[0-9.]+/
