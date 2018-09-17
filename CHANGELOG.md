@@ -1,11 +1,20 @@
 # Changelog
 
 # Unreleased
+
+## [2.6.0] - 17/09/2018
 ### Added
 * Continuous integration/deployment is now handled by CircleCI to allow more advanced strategies and faster builds
+* Add and configure Circus, an alternative to Supervisor, compatible with Python 3, with better control over environment variables propagation, and network sockets supervision (not used yet here)
+
+### Modified
+* Update base image to Alpine 3.8
+* Update Lexicon to 2.7.3
+* Update Lexicon to 0.27.1
 
 ### Removed
 * Docker Hub "Automated build" is disabled in favor of CircleCI
+* Remove Supervisor and its configuration (in favor of Circus)
 
 ## [2.5.3] - 01/09/2018
 ### Added
@@ -71,6 +80,7 @@ Add `LEXICON_OPTIONS` environment variable for specific lexicon options
 ### Added
 * Connect to the ACME v2 servers, which allow wildcard certificates generation (eg. *.example.com)
 * Allow use of old ACME v1 servers through `LEXICON_ACME_V1` environment variable
+* Clean autocmd/autorestart jobs on the live container when needed
 
 ### Modified
 * Update Certbot to 0.22.2 to supports the ACME v2 servers
