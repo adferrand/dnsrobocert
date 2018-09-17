@@ -26,11 +26,11 @@ jobs:
             docker load < /tmp/workspace/docker-letsencrypt-dns.tar
       - run:
           command: |
-            mkdir -p ~/bin
-            curl -fsSL https://goss.rocks/install | GOSS_DST=~/bin sh
+            mkdir -p ./bin
+            curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
       - run:
           command:
-            GOSS_PATH=~/bin/goss GOSS_SLEEP=20 GOSS_FILES_PATH=tests ~/bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/letsencrypt-dns
+            GOSS_PATH=./bin/goss GOSS_SLEEP=20 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/letsencrypt-dns
   deploy:
     machine: true
     steps:
