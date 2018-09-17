@@ -3,9 +3,16 @@
 # Unreleased
 ### Added
 * Continuous integration/deployment is now handled by CircleCI to allow more advanced strategies and faster builds
+* Add and configure Circus, an alternative to Supervisor, compatible with Python 3, with better control over environment variables propagation, and network sockets supervision (not used yet here)
+
+### Modified
+* Update base image to Alpine 3.8
+* Update Lexicon to 2.7.3
+* Update Lexicon to 0.27.1
 
 ### Removed
 * Docker Hub "Automated build" is disabled in favor of CircleCI
+* Remove Supervisor and its configuration (in favor of Circus)
 
 ## [2.5.3] - 01/09/2018
 ### Added
