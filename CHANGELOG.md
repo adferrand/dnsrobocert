@@ -78,6 +78,7 @@ Add `LEXICON_OPTIONS` environment variable for specific lexicon options
 ### Added
 * Connect to the ACME v2 servers, which allow wildcard certificates generation (eg. *.example.com)
 * Allow use of old ACME v1 servers through `LEXICON_ACME_V1` environment variable
+* Clean autocmd/autorestart jobs on the live container when needed
 
 ### Modified
 * Update Certbot to 0.22.2 to supports the ACME v2 servers

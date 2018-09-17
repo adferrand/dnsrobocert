@@ -29,6 +29,9 @@ while true; do
         echo "#### Registering Let's Encrypt account if needed ####"
         certbot register -n --agree-tos -m $LETSENCRYPT_USER_MAIL $server_cmd
 
+        echo "#### Clean autorestart/autocmd jobs"
+        rm -f /etc/circus.d/*_autorestart-containers.ini /etc/circus.d/*_autocmd-containers.ini
+
         echo "#### Creating missing certificates if needed (~1min for each) ####"
         while read -r entry || [ -n "$entry" ]; do
             autorestart_config=`echo $entry | grep -E -o 'autorestart-containers=.*' | sed 's/autocmd-containers=.*//' | sed 's/autorestart-containers=//' | xargs`
