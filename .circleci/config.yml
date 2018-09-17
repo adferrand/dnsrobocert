@@ -30,7 +30,7 @@ jobs:
             curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
       - run:
           command:
-            GOSS_SLEEP=20 GOSS_FILES_PATH=tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/letsencrypt-dns
+            GOSS_PATH=./bin GOSS_SLEEP=20 GOSS_FILES_PATH=tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/letsencrypt-dns
   deploy:
     machine: true
     steps:
