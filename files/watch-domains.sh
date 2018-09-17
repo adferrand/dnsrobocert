@@ -65,7 +65,9 @@ while true; do
                 echo "[watcher:${main_domain}_autorestart-containers]" > /etc/circus.d/${main_domain}_autorestart-containers.ini
                 echo "cmd = /scripts/autorestart-containers.sh $main_domain $autorestart_config" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
                 echo "stdout_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
+                echo "stdout_stream.color = white" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
                 echo "stderr_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
+                echo "stderr_stream.color = red" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
             fi
 
             if [ "$autocmd_config" != "" ]; then
@@ -73,7 +75,9 @@ while true; do
                 echo "[watcher:${main_domain}_autocmd-containers]" > /etc/circus.d/${main_domain}_autocmd-containers.ini
                 echo "cmd = /scripts/autocmd-containers.sh $main_domain '$autocmd_config'" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
                 echo "stdout_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
+                echo "stdout_stream.color = white" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
                 echo "stderr_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
+                echo "stderr_stream.color = red" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
             fi
         done < /etc/letsencrypt/domains.conf
 
