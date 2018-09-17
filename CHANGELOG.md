@@ -1,6 +1,11 @@
 # Changelog
 
 # Unreleased
+### Added
+* Continuous integration/deployment is now handled by CircleCI to allow more advanced strategies and faster builds
+
+### Removed
+* Docker Hub "Automated build" is disabled in favor of CircleCI
 
 ## [2.5.3] - 01/09/2018
 ### Added
