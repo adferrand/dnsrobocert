@@ -1,0 +1,16 @@
+file:
+  /etc/letsencrypt/domains.conf:
+    exists: true
+    mode: "0644"
+    size: 0
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+process:
+  circusd:
+    running: true
+  crond:
+    running: true
+  watch-domains.s:
+    running: true

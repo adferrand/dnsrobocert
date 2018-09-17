@@ -1,5 +1,7 @@
 .git
+.circleci
 images
+tests
 LICENSE
 VERSION
 README.md
