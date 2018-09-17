@@ -1,6 +1,8 @@
 # Changelog
 
 # Unreleased
+
+## [2.6.0] - 17/09/2018
 ### Added
 * Continuous integration/deployment is now handled by CircleCI to allow more advanced strategies and faster builds
 * Add and configure Circus, an alternative to Supervisor, compatible with Python 3, with better control over environment variables propagation, and network sockets supervision (not used yet here)
