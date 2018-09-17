@@ -27,5 +27,9 @@ if [ "$PFX_EXPORT" = "true" ]; then
     done
 fi
 
-# Start supervisord
-/usr/bin/supervisord -c /etc/supervisord.conf
+# Prepare circus config
+mkdir -p /var/circus
+touch /var/circus/endpoint /var/circus/pubsub /var/circus/stats
+
+# Start circusd
+/usr/local/bin/circusd /etc/circus.ini

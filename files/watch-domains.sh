@@ -18,7 +18,7 @@ while true; do
     if [ ! -f /etc/letsencrypt/domains.conf ]; then
         touch /etc/letsencrypt/domains.conf
     fi
-    
+
     # Calculate the new domains.conf file hash
     new_hash=`md5sum /etc/letsencrypt/domains.conf | awk '{ print $1 }'`
     if [ "$current_hash" != "$new_hash" ]; then
@@ -59,20 +59,18 @@ while true; do
 
             if [ "$autorestart_config" != "" ]; then
                 echo ">>> Watching certificate for main domain $main_domain: containers $autorestart_config autorestarted when certificate is changed."
-                echo "[program:${main_domain}_autorestart-containers]" >> /etc/supervisord.d/${main_domain}_autorestart-containers
-                echo "command = /scripts/autorestart-containers.sh $main_domain $autorestart_config" >> /etc/supervisord.d/${main_domain}_autorestart-containers
-                echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autorestart-containers
-                echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autorestart-containers
-                echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autorestart-containers
+                echo "[watcher:${main_domain}_autorestart-containers]" > /etc/circus.d/${main_domain}_autorestart-containers.ini
+                echo "cmd = /scripts/autorestart-containers.sh $main_domain $autorestart_config" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
+                echo "stdout_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
+                echo "stderr_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
             fi
 
             if [ "$autocmd_config" != "" ]; then
                 echo ">>> Watching certificate for main domain $main_domain: autocmd config $autocmd_config executed when certificate is changed."
-                echo "[program:${main_domain}_autocmd-containers]" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-                echo "command = /scripts/autocmd-containers.sh $main_domain '$autocmd_config'" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-                echo "redirect_stderr = true" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-                echo "stdout_logfile = /dev/stdout" >> /etc/supervisord.d/${main_domain}_autocmd-containers
-                echo "stdout_logfile_maxbytes = 0" >> /etc/supervisord.d/${main_domain}_autocmd-containers
+                echo "[watcher:${main_domain}_autocmd-containers]" > /etc/circus.d/${main_domain}_autocmd-containers.ini
+                echo "cmd = /scripts/autocmd-containers.sh $main_domain '$autocmd_config'" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
+                echo "stdout_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
+                echo "stderr_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
             fi
         done < /etc/letsencrypt/domains.conf
 
@@ -94,8 +92,8 @@ while true; do
             fi
         done
 
-        echo "### Reloading supervisord configuration ###"
-        supervisorctl update
+        echo "### Reloading circusd configuration ###"
+        circusctl reloadconfig --timeout 30
 
         # Keep new hash version
         current_hash="$new_hash"

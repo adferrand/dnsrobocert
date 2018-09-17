@@ -5,8 +5,8 @@ LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 ENV PATH /scripts:$PATH
 
 # Versioning
-ENV LEXICON_VERSION 2.7.0
-ENV CERTBOT_VERSION 0.26.1
+ENV LEXICON_VERSION 2.7.2
+ENV CERTBOT_VERSION 0.27.1
 
 # Let's Encrypt configuration
 ENV LETSENCRYPT_STAGING false
@@ -27,8 +27,8 @@ ENV CERTS_USER_OWNER root
 ENV CERTS_GROUP_OWNER root
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
-RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt openssl docker \
- && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev python-dev build-base linux-headers \
+RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool \
+ && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev build-base linux-headers \
  && pip install "certbot==$CERTBOT_VERSION" \
  && pip install "dns-lexicon==$LEXICON_VERSION" \
  && pip install "dns-lexicon[namecheap]==$LEXICON_VERSION" \
@@ -36,9 +36,9 @@ RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt openssl docke
  && pip install "dns-lexicon[softlayer]==$LEXICON_VERSION" \
  && pip install "dns-lexicon[subreg]==$LEXICON_VERSION" \
  && pip install "dns-lexicon[transip]==$LEXICON_VERSION" \
- && pip install "circus" \
+ && pip install circus \
  && mkdir -p /var/lib/letsencrypt/hooks \
- && mkdir -p /etc/circusd.d \
+ && mkdir -p /etc/circus.d \
  && apk del build-dependencies
 
 # Copy configuration files
