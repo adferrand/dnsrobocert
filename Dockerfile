@@ -48,6 +48,7 @@ COPY files/autorestart-containers.sh /scripts/autorestart-containers.sh
 COPY files/autocmd-containers.sh /scripts/autocmd-containers.sh
 COPY files/crontab /etc/crontab
 COPY files/circus.ini /etc/circus.ini
+COPY files/letsencrypt-dns.ini /etc/circus.d/letsencrypt-dns.ini
 COPY files/authenticator.sh /var/lib/letsencrypt/hooks/authenticator.sh
 COPY files/cleanup.sh /var/lib/letsencrypt/hooks/cleanup.sh
 COPY files/deploy-hook.sh /scripts/deploy-hook.sh
