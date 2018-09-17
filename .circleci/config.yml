@@ -1,14 +1,22 @@
 version: 2
 jobs:
-  build:
+  build-n-test:
     machine: true
     steps:
       - checkout
-      - run: 
+      - run:
+          name: Build container
           command: |
             docker pull adferrand/letsencrypt-dns || true
             docker build --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
       - run:
+          name: Test container
+          command: |
+            mkdir -p ./bin
+            curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+            GOSS_PATH=./bin/goss GOSS_SLEEP=20 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/letsencrypt-dns
+      - run:
+          name: Save container
           command: |
             mkdir -p workspace
             docker save adferrand/letsencrypt-dns > workspace/docker-letsencrypt-dns.tar
@@ -16,33 +24,21 @@ jobs:
           root: workspace
           paths:
             - docker-letsencrypt-dns.tar
-  test:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          command:
-            docker load < /tmp/workspace/docker-letsencrypt-dns.tar
-      - run:
-          command: |
-            mkdir -p ./bin
-            curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-      - run:
-          command:
-            GOSS_PATH=./bin/goss GOSS_SLEEP=20 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/letsencrypt-dns
   deploy:
     machine: true
     steps:
       - attach_workspace:
           at: /tmp/workspace
       - run:
+          name: Load container
           command:
             docker load < /tmp/workspace/docker-letsencrypt-dns.tar
       - run:
+          name: Login to DockerHub
           command:
             echo "${DOCKER_PASS}" | docker login -u ${DOCKER_USER} --password-stdin
-      - deploy: 
+      - deploy:
+          name: Deploy to DockerHub
           command: |
             if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
             docker tag adferrand/letsencrypt-dns adferrand/letsencrypt-dns:${DOCKER_TAG}
@@ -51,19 +47,13 @@ workflows:
   version: 2
   main-pipeline:
     jobs:
-      - build:
-          filters:
-            tags:
-              only: /^[0-9.]+/
-      - test:
-          requires: 
-            - build
+      - build-n-test:
           filters:
             tags:
               only: /^[0-9.]+/
       - deploy:
           requires: 
-            - test
+            - build-n-test
           filters:
             branches:
               only: master
