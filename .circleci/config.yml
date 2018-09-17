@@ -7,7 +7,7 @@ jobs:
       - run: 
           command: |
             docker pull adferrand/letsencrypt-dns || true
-            docker build --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
+            docker build --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
       - run:
           command: |
             mkdir -p workspace
