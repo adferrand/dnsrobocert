@@ -43,7 +43,7 @@ jobs:
           name: Save container
           command: |
             mkdir -p workspace
-            docker save adferrand/letsencrypt-dns | gzip -c > workspace/docker-letsencrypt-dns.tar.gz
+            docker save adferrand/letsencrypt-dns | gzip -c -1 > workspace/docker-letsencrypt-dns.tar.gz
       - persist_to_workspace:
           root: workspace
           paths:
