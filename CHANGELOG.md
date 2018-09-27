@@ -2,6 +2,13 @@
 
 # Unreleased
 
+## [2.6.1] - 27/09/2018
+### Added
+* Support new providers thanks to Lexicon update: Plesk, Inwx, Hurricane Electric
+
+### Modified
+* Update Lexicon to 2.7.9
+
 ## [2.6.0] - 17/09/2018
 ### Added
 * Continuous integration/deployment is now handled by CircleCI to allow more advanced strategies and faster builds
@@ -10,7 +17,7 @@
 ### Modified
 * Update base image to Alpine 3.8
 * Update Lexicon to 2.7.3
-* Update Lexicon to 0.27.1
+* Update Certbot to 0.27.1
 
 ### Removed
 * Docker Hub "Automated build" is disabled in favor of CircleCI
