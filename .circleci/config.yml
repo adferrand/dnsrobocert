@@ -43,6 +43,14 @@ jobs:
             if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
             docker tag adferrand/letsencrypt-dns adferrand/letsencrypt-dns:${DOCKER_TAG}
             docker push adferrand/letsencrypt-dns:${DOCKER_TAG}
+  trigger-dockerhub:
+    machine: true
+    steps:
+      - deploy:
+          name: Trigger DockerHub build if master
+          command: |
+            'if [ ${CIRCLE_BRANCH} = master ]; then curl -H \"Content-Type: application/json\" --data \'{\"docker_tag\": \"master\"}\' -X POST https://registry.hub.docker.com/u/adferrand/letsencrypt-dns/trigger/6c5088a3-df29-4bb3-9843-69dbe32b2e1f/; fi'
+
 workflows:
   version: 2
   main-pipeline:
@@ -59,3 +67,10 @@ workflows:
               only: master
             tags:
               only: /^[0-9.]+/
+      - trigger-dockerhub:
+          requires: 
+            - build-n-test
+          filters:
+            branches:
+              only: master
+
