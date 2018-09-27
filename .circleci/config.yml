@@ -1,55 +1,4 @@
 version: 2
-jobs:
-  build-n-test:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: Build container
-          command: |
-            docker pull adferrand/letsencrypt-dns || true
-            docker build --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
-      - run:
-          name: Test container
-          command: |
-            mkdir -p ./bin
-            curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-            GOSS_PATH=./bin/goss GOSS_SLEEP=20 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/letsencrypt-dns
-      - run:
-          name: Save container
-          command: |
-            mkdir -p workspace
-            docker save adferrand/letsencrypt-dns > workspace/docker-letsencrypt-dns.tar
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - docker-letsencrypt-dns.tar
-  deploy:
-    machine: true
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: Load container
-          command:
-            docker load < /tmp/workspace/docker-letsencrypt-dns.tar
-      - run:
-          name: Login to DockerHub
-          command:
-            echo "${DOCKER_PASS}" | docker login -u ${DOCKER_USER} --password-stdin
-      - deploy:
-          name: Deploy to DockerHub
-          command: |
-            if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
-            docker tag adferrand/letsencrypt-dns adferrand/letsencrypt-dns:${DOCKER_TAG}
-            docker push adferrand/letsencrypt-dns:${DOCKER_TAG}
-  trigger-dockerhub:
-    machine: true
-    steps:
-      - deploy:
-          name: Trigger DockerHub build if master
-          command: |
-            curl -H "Content-Type: application/json" --data '{"docker_tag": "master"} -X POST https://registry.hub.docker.com/u/adferrand/letsencrypt-dns/trigger/6c5088a3-df29-4bb3-9843-69dbe32b2e1f/
 
 workflows:
   version: 2
@@ -74,3 +23,54 @@ workflows:
             branches:
               only: master
 
+jobs:
+  build-n-test:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build container
+          command: |
+            docker pull adferrand/letsencrypt-dns || true
+            docker build --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
+      - run:
+          name: Test container
+          command: |
+            mkdir -p ./bin
+            curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+            GOSS_PATH=./bin/goss GOSS_SLEEP=20 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_STAGING=true adferrand/letsencrypt-dns
+      - run:
+          name: Save container
+          command: |
+            mkdir -p workspace
+            docker save adferrand/letsencrypt-dns | gzip -c > workspace/docker-letsencrypt-dns.tar.gz
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - docker-letsencrypt-dns.tar.gz
+  deploy:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Load container
+          command:
+            docker load < /tmp/workspace/docker-letsencrypt-dns.tar.gz
+      - run:
+          name: Login to DockerHub
+          command:
+            echo "${DOCKER_PASS}" | docker login -u ${DOCKER_USER} --password-stdin
+      - deploy:
+          name: Deploy to DockerHub
+          command: |
+            if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
+            docker tag adferrand/letsencrypt-dns adferrand/letsencrypt-dns:${DOCKER_TAG}
+            docker push adferrand/letsencrypt-dns:${DOCKER_TAG}
+  trigger-dockerhub:
+    machine: true
+    steps:
+      - deploy:
+          name: Trigger DockerHub build
+          command: |
+            curl -H "Content-Type: application/json" --data '{"docker_tag": "master"}' -X POST https://registry.hub.docker.com/u/adferrand/letsencrypt-dns/trigger/6c5088a3-df29-4bb3-9843-69dbe32b2e1f/
