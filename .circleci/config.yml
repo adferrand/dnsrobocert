@@ -49,7 +49,7 @@ jobs:
       - deploy:
           name: Trigger DockerHub build if master
           command: |
-            'if [ ${CIRCLE_BRANCH} = master ]; then curl -H \"Content-Type: application/json\" --data \'{\"docker_tag\": \"master\"}\' -X POST https://registry.hub.docker.com/u/adferrand/letsencrypt-dns/trigger/6c5088a3-df29-4bb3-9843-69dbe32b2e1f/; fi'
+            curl -H "Content-Type: application/json" --data '{"docker_tag": "master"} -X POST https://registry.hub.docker.com/u/adferrand/letsencrypt-dns/trigger/6c5088a3-df29-4bb3-9843-69dbe32b2e1f/
 
 workflows:
   version: 2
