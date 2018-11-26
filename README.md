@@ -6,6 +6,8 @@
 * [Preparation of the container](#preparation-of-the-container)
 	* [Configuring the SSL certificates](#configuring-the-ssl-certificates)
 	* [Configuring DNS provider and authentication to DNS API](#configuring-dns-provider-and-authentication-to-dns-api)
+		* [With environment variables](#with-environment-variables)
+		* [With YAML configuration files](#with-yaml-configuration-files)
 * [Run the container](#run-the-container)
 * [Data persistency](#data-persistency)
 	* [Share certificates with the host](#share-certificates-with-the-host)
@@ -127,9 +129,9 @@ For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth
 
 Finally there is some options specific to Lexicon itself, not related to the authentication on a particular provider (like `--delegate`). You can specify this kind of options (eg. `domain` for Cloudns) via the `LEXICON_OPTIONS (default empty)` environment variable.
 
-#### With a YAML configuration file
+#### With YAML configuration files
 
-Starting with version 2.7.0, that uses Lexicon 3.x, providers and lexicon can be configured using configuration files. It means that a unique `lexicon.yml`, located on the persisted storage `/etc/letsencrypt`, can contain all parameters for Lexicon and several DNS providers. Each entry corresponds to a Lexicon option, or a provider name. Under a provider name, the relevant parameters for this provider can be set. As a convention name for the parameters, a given CLI argument `--auth-username` will be written in the YAML configuration file as `auth_username`.
+Starting with version 2.7.0 that uses Lexicon 3.x, DNS providers and Lexicon can be configured using YAML configuration files. It means that a unique `lexicon.yml`, located on the persisted storage `/etc/letsencrypt`, can contain all parameters for Lexicon and several DNS providers. Each entry corresponds to a Lexicon option, or a provider name. Under a provider name, the relevant parameters for this provider can be set. As a convention name for the parameters, a given CLI argument `--auth-username` will be written in the YAML configuration file as `auth_username`.
 
 To select the provider to use, the environment variable `LEXICON_PROVIDER` still need to be set.
 
