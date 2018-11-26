@@ -1,6 +1,6 @@
 # Changelog
 
-# Unreleased
+## Unreleased
 
 ## [2.7.0] - 26/11/2018
 ### Added
