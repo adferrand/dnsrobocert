@@ -87,6 +87,8 @@ _NB: For a wildcard certificate, specifying a sub-domain already covered by the 
 
 ### Configuring DNS provider and authentication to DNS API
 
+#### With environment variables
+
 When using a DNS challenge, a TXT entry must be inserted in the DNS zone which manage the certificate domain. This TXT entry must contain a unique hash calculated by Certbot, and the ACME servers will check it before delivering the certificate.
 
 This container will do the hard work for you, thanks to the association between [Certbot](https://certbot.eff.org/) and [Lexicon](https://github.com/AnalogJ/lexicon): DNS provider API will be called automatically to insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the API access key.
@@ -95,16 +97,16 @@ Following DNS provider are supported: AuroraDNS, AWS Route53, Cloudflare, ClouDN
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
-Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, authentication stuff can be set using one of the two following approach:
-* using environment variables in the form of `LEXICON_[PROVIDER]_[OPTION]` for parameters in the form of `--auth-[option]` (for instance, `LEXICON_CLOUDFLARE_USERNAME` with the CloudFlare provider for `--auth-username` option)
+Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, authentication stuff can be set using one of the three following approach:
+* using environment variables in the form of `LEXICON_[PROVIDER]_[OPTION]` for provider parameters in the form of `--[option]` (for instance, `LEXICON_CLOUDFLARE_AUTH_USERNAME` with the CloudFlare provider for `--auth-username` option)
 * using environment variable `LEXICON_PROVIDER_OPTIONS (default empty)` which will be append directly to the lexicon binary (for instance, `LEXICON_PROVIDER_OPTIONS` could be set to `--auth-token=my-token ...`)
 
 For instance, if the provider is CloudFlare, the username is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
 
 ```bash
 LEXICON_PROVIDER=cloudflare
-LEXICON_CLOUDFLARE_USERNAME=my_user
-LEXICON_CLOUDFLARE_TOKEN=my_secret_token
+LEXICON_CLOUDFLARE_AUTH_USERNAME=my_user
+LEXICON_CLOUDFLARE_AUTH_TOKEN=my_secret_token
 ```
 
 Or alternatively:
@@ -119,13 +121,37 @@ Some providers (like OVH) need more specific environment variables. First, run f
 docker run -it --rm adferrand/letsencrypt-dns lexicon ovh --help
 ```
 
-Once done, you will see authentication parameters of the form `--auth-somevar`. Theses parameters must be setted using environment variables of the form `LEXICON_[PROVIDER]_SOMEVAR`.
+Once done, you will see authentication parameters of the form `--auth-somevar`. Theses parameters must be setted using environment variables of the form `LEXICON_[PROVIDER]_AUTH_SOMEVAR`.
 
-For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_ENTRYPOINT`, `LEXICON_OVH_APPLICATION_KEY`, `LEXICON_OVH_APPLICATION_SECRET` and `LEXICON_OVH_CONSUMER_KEY`. Or alternatively, set the `LEXICON_PROVIDER_OPTIONS` to `--auth-entrypoint=my_entrypoint --auth-application-key=my_application_key --auth-application-secret=my_application_secret --auth-consumer-key=my_consumer_key`.
+For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_AUTH_ENTRYPOINT`, `LEXICON_OVH_AUTH_APPLICATION_KEY`, `LEXICON_OVH_AUTH_APPLICATION_SECRET` and `LEXICON_OVH_AUTH_CONSUMER_KEY`. Or alternatively, set the `LEXICON_PROVIDER_OPTIONS` to `--auth-entrypoint=my_entrypoint --auth-application-key=my_application_key --auth-application-secret=my_application_secret --auth-consumer-key=my_consumer_key`.
 
-_NB: Lexicon authentication variables which are not in the form of `--auth-[option]` must be passed using the `LEXICON_PROVIDER_OPTIONS` environment variable._
+Finally there is some options specific to Lexicon itself, not related to the authentication on a particular provider (like `--delegate`). You can specify this kind of options (eg. `domain` for Cloudns) via the `LEXICON_OPTIONS (default empty)` environment variable.
 
-Finally there is some options specific to Lexicon itself, not related to the authentication on a particular provider. You can specify this kind of options (eg. `domain` for Cloudns) via the `LEXICON_OPTIONS (default empty)` environment variable.
+#### With a YAML configuration file
+
+Starting with version 2.7.0, that uses Lexicon 3.x, providers and lexicon can be configured using configuration files. It means that a unique `lexicon.yml`, located on the persisted storage `/etc/letsencrypt`, can contain all parameters for Lexicon and several DNS providers. Each entry corresponds to a Lexicon option, or a provider name. Under a provider name, the relevant parameters for this provider can be set. As a convention name for the parameters, a given CLI argument `--auth-username` will be written in the YAML configuration file as `auth_username`.
+
+To select the provider to use, the environment variable `LEXICON_PROVIDER` still need to be set.
+
+Taking the OVH example in the previous version, with a specific configuration to provide for Lexicon itself (`--delegate`), the `lexicon.yml` will take the following form:
+```yml
+# Content of /etc/letsencrypt/lexicon.yml
+delegate: subdomain
+ovh:
+  auth_entrypoint: ovh-eu
+  auth_application_key: MY_APPLICATION_KEY
+  auth_application_secret: MY_APPLICATION_SECRET
+  auth_consumer_key: MY_CONSUMER_KEY
+```
+
+The YAML configuration file approach is particularly well suited for the `auto` DNS provider, that is able to resolve the actual DNS provider for a given domain. Indeed, `lexicon.yml` will be a convenient place to put the configuration of several providers.
+
+_NB: A configuration file can be set for one particular provider. In this case, the filename must be `lexicon_[provider_name].yml` (eg. `lexicon_ovh.yml` for OVH). Theses files must be located in `/etc/letsencrypt`. There root content is directly the parameters of the relevant provider, like so:_
+```yml
+# Content of /etc/letsencrypt/lexicon_cloudflare.yml
+auth_username: MY_USERNAME
+auth_token: MY_TOKEN
+```
 
 ## Run the container
 

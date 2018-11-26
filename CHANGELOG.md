@@ -2,6 +2,16 @@
 
 # Unreleased
 
+## [2.7.0] - 26/11/2018
+### Added
+* Support new providers thanks to Lexicon update: Auto (dns provider auto-resolution), ConoHa, NFSN, Easyname, LocalZone (bind9)
+* Allow to configure the DNS API connection using YAML files, thanks to the new configuration system of Lexicon 3
+
+### Modified
+* Update Lexicon to 3.0.2
+* Update Certbot to 0.28.0
+* README.md updated to refer to YAML files, update environment variable parsing
+
 ## [2.6.1] - 27/09/2018
 ### Added
 * Support new providers thanks to Lexicon update: Plesk, Inwx, Hurricane Electric
