@@ -106,15 +106,14 @@ Most of the DNS APIs requires a user and a unique access token delivered by the 
 For instance, if the provider is CloudFlare, the username is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
 
 ```bash
-LEXICON_PROVIDER=cloudflare
-LEXICON_CLOUDFLARE_AUTH_USERNAME=my_user
-LEXICON_CLOUDFLARE_AUTH_TOKEN=my_secret_token
+LEXICON_CLOUDFLARE_AUTH_USERNAME=my_cloudflare_email
+LEXICON_CLOUDFLARE_AUTH_TOKEN=my_cloudflare_global_api_key
 ```
 
 Or alternatively:
 ```bash
 LEXICON_PROVIDER=cloudflare
-LEXICON_PROVIDER_OPTIONS=--auth-username=my-user --auth-token=my_secret_token
+LEXICON_PROVIDER_OPTIONS=--auth-username=my_cloudflare_email --auth-token=my_cloudflare_global_api_key
 ```
 
 Some providers (like OVH) need more specific environment variables. First, run following command to get the Lexicon help for this DNS provider:
@@ -141,9 +140,9 @@ Taking the OVH example in the previous version, with a specific configuration to
 delegate: subdomain
 ovh:
   auth_entrypoint: ovh-eu
-  auth_application_key: MY_APPLICATION_KEY
-  auth_application_secret: MY_APPLICATION_SECRET
-  auth_consumer_key: MY_CONSUMER_KEY
+  auth_application_key: my_application_key
+  auth_application_secret: my_application_secret
+  auth_consumer_key: my_consumer_key
 ```
 
 The YAML configuration file approach is particularly well suited for the `auto` DNS provider, that is able to resolve the actual DNS provider for a given domain. Indeed, `lexicon.yml` will be a convenient place to put the configuration of several providers.
@@ -151,8 +150,8 @@ The YAML configuration file approach is particularly well suited for the `auto` 
 _NB: A configuration file can be set for one particular provider. In this case, the filename must be `lexicon_[provider_name].yml` (eg. `lexicon_ovh.yml` for OVH). Theses files must be located in `/etc/letsencrypt`. There root content is directly the parameters of the relevant provider, like so:_
 ```yml
 # Content of /etc/letsencrypt/lexicon_cloudflare.yml
-auth_username: MY_USERNAME
-auth_token: MY_TOKEN
+auth_username: my_cloudflare_email
+auth_token: my_cloudflare_global_api_key
 ```
 
 ## Run the container
@@ -167,8 +166,8 @@ docker run \
 	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 ```
 
@@ -189,8 +188,8 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 ```
 
@@ -205,8 +204,8 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 
 docker run \
@@ -263,8 +262,8 @@ docker run \
 	--volume /var/run/docker.sock:/var/run/docker.sock \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 
 docker run \
