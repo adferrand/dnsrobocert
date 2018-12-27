@@ -50,9 +50,9 @@ So far so good, but you may fall in one of the following categories:
 
 For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall these two challenges - which are widely used in HTTP proxy approaches - will not be usable: you need to ask a DNS challenge. Please note that traefik embed DNS challenges, but only for few DNS providers.
 
-For the second case, there is no website to use TLS or HTTP challenges, and you should ask a DNS challenge. Of course you can create a "fake" website to validate the domain, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
+For the second case, there is no website to use TLS or HTTP challenges, and you should ask a DNS challenge. Of course you could create a "fake" website to validate the domain using a HTTP challenge, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
 
-For the last case, the use of a DNS challenge is mandatory. Then the problems concerning certificates propagation which have been discussed in the second case will also occur.
+For the last case, the use of a DNS challenge is mandatory. Then the problems concerning certificates propagation that have been discussed in the second case will also occur.
 
 The solution is a dedicated and specialized Docker service which handles the creation/renewal of Let's Encrypt certificates, and ensure their propagation in the relevant Docker services. It is the purpose of this container.
 
