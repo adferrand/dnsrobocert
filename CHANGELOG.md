@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## [2.8.0] - 27/12/2018
+### Added
+* Support new providers thanks to Lexicon update: Internet.bs, Hetzner
+
+### Modified
+* Update Lexicon to 3.0.7
+* Update Certbot to 0.29.1
+
 ## [2.7.0] - 26/11/2018
 ### Added
 * Support new providers thanks to Lexicon update: Auto (dns provider auto-resolution), ConoHa, NFSN, Easyname, LocalZone (bind9)
