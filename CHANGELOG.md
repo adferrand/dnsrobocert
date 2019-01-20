@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased
+## [2.9.0] - 20/01/2019
+### Added
+* Ignore README file in /etc/letsencrypt/live
+
+### Modified
+* Update Lexicon to 3.0.8
+* Update Certbot to 0.30.0
 
 ## [2.8.0] - 27/12/2018
 ### Added
