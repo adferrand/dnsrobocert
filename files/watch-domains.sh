@@ -83,19 +83,21 @@ while true; do
 
         echo "### Revoke and delete certificates if needed ####"
         for domain in `ls /etc/letsencrypt/live`; do
-            remove_domain=true
-            while read -r entry || [ -n "$entry" ]; do
-                for comp_domain in $entry; do
-                    if [ "$domain" = "${comp_domain/\*\./}" ]; then
-                        remove_domain=false
-                        break;
-                    fi
-                done
-            done < /etc/letsencrypt/domains.conf
+            if [ "$domain" != "README" ]; then
+                remove_domain=true
+                while read -r entry || [ -n "$entry" ]; do
+                    for comp_domain in $entry; do
+                        if [ "$domain" = "${comp_domain/\*\./}" ]; then
+                            remove_domain=false
+                            break;
+                        fi
+                    done
+                done < /etc/letsencrypt/domains.conf
 
-            if [ "$remove_domain" = true ]; then
-                echo ">>> Removing the certificate $domain"
-                certbot revoke -n $server_cmd --cert-path /etc/letsencrypt/live/$domain/cert.pem
+                if [ "$remove_domain" = true ]; then
+                    echo ">>> Removing the certificate $domain"
+                    certbot revoke -n $server_cmd --cert-path /etc/letsencrypt/live/$domain/cert.pem
+                fi
             fi
         done
 
