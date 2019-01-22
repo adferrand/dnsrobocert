@@ -331,3 +331,9 @@ docker exec -it letsencrypt-dns /bin/sh
 ```
 
 You will obtain a shell with the standard tools of an Alpine distribution.
+
+## Docker-Compose configuration
+
+Within the directory compose you can find a basic docker-compose configuration.
+All used volumes and environment variables are described in detail in [Preparation of the container|#preparation-of-the-container].
+The docker compose used the provider and provider options approach to be able to support different providers.
