@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.10.0] - 09/03/2019
+### Modified
+* Update base image to Alpine 3.9
+* Update Lexicon to 3.1.6 (new providers: Hover, Zilore)
+* Update Certbot to 0.30.0
+
 ## [2.9.0] - 20/01/2019
 ### Added
 * Ignore README file in /etc/letsencrypt/live
