@@ -1,12 +1,12 @@
-FROM python:alpine3.8
+FROM python:alpine3.9
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 # Scripts in /scripts are required to be in the PATH to run properly as certbot's hooks
 ENV PATH /scripts:$PATH
 
 # Versioning
-ENV LEXICON_VERSION 3.0.8
-ENV CERTBOT_VERSION 0.30.0
+ENV LEXICON_VERSION 3.1.6
+ENV CERTBOT_VERSION 0.32.0
 
 # Let's Encrypt configuration
 ENV LETSENCRYPT_STAGING false
