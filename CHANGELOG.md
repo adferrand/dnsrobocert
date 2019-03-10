@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.10.1] - 10/03/2019
+### Modified
+* Use `full` extra of Lexicon PyPI package to ensure all providers have their optional dependencies fulfilled.
+
 ## [2.10.0] - 09/03/2019
 ### Modified
 * Update base image to Alpine 3.9
