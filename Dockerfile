@@ -30,12 +30,7 @@ ENV CERTS_GROUP_OWNER root
 RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool \
  && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev build-base linux-headers \
  && pip install "certbot==$CERTBOT_VERSION" \
- && pip install "dns-lexicon==$LEXICON_VERSION" \
- && pip install "dns-lexicon[namecheap]==$LEXICON_VERSION" \
- && pip install "dns-lexicon[route53]==$LEXICON_VERSION" \
- && pip install "dns-lexicon[softlayer]==$LEXICON_VERSION" \
- && pip install "dns-lexicon[subreg]==$LEXICON_VERSION" \
- && pip install "dns-lexicon[transip]==$LEXICON_VERSION" \
+ && pip install "dns-lexicon[full]==$LEXICON_VERSION" \
  && pip install circus \
  && mkdir -p /var/lib/letsencrypt/hooks \
  && mkdir -p /etc/circus.d \
