@@ -26,8 +26,10 @@ while true; do
         rm -f /etc/supervisord.d/*_autorestart-containers
 	    rm -f /etc/supervisord.d/*_autocmd-containers
 
-        echo "#### Registering Let's Encrypt account if needed ####"
-        certbot register -n --agree-tos -m $LETSENCRYPT_USER_MAIL $server_cmd
+        if [ "$LETSENCRYPT_SKIP_REGISTER" != true ]; then
+            echo "#### Registering Let's Encrypt account if needed ####"
+            certbot register -n --agree-tos $LETSENCRYPT_REGISTER_OPTS -m $LETSENCRYPT_USER_MAIL $server_cmd
+        fi
 
         echo "#### Clean autorestart/autocmd jobs"
         rm -f /etc/circus.d/*_autorestart-containers.ini /etc/circus.d/*_autocmd-containers.ini

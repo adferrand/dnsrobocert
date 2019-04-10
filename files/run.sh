@@ -28,4 +28,4 @@ if [ "$PFX_EXPORT" = "true" ]; then
 fi
 
 # Start circusd
-/usr/local/bin/circusd /etc/circus.ini
+exec /usr/local/bin/circusd /etc/circus.ini
