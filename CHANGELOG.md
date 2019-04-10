@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.11.0] - 10/04/2019
+### Modified
+* Update Lexicon to 3.2.1 (various fixes)
+* Update Certbot to 0.33.1 (various fixes)
+
 ## [2.10.1] - 10/03/2019
 ### Modified
 * Use `full` extra of Lexicon PyPI package to ensure all providers have their optional dependencies fulfilled.
