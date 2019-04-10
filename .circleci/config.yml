@@ -38,7 +38,7 @@ jobs:
           command: |
             mkdir -p ./bin
             curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-            GOSS_PATH=./bin/goss GOSS_SLEEP=1 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns
+            GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns
       - run:
           name: Save container
           command: |
