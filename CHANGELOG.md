@@ -7,6 +7,7 @@
   attached to a letsencrypt configuration folder with an existing account.
 * By modifying the `run.sh` script, the container now responds to interruption signals and proceed to shutdown by
   itself, without the need from the Docker daemon to kill it.
+
 ### Modified
 * Update Lexicon to 3.2.1 (various fixes)
 * Update Certbot to 0.33.1 (various fixes)
