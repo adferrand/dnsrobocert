@@ -9,7 +9,7 @@ ENV LEXICON_VERSION 3.2.7
 ENV CERTBOT_VERSION 0.35.1
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
-RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata bash \
+RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata bash bind-tools \
  && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev build-base linux-headers \
  && pip install --no-cache-dir "certbot==$CERTBOT_VERSION" \
  && pip install --no-cache-dir "dns-lexicon[full]==$LEXICON_VERSION" \
