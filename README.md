@@ -316,9 +316,9 @@ cd "/etc/nginx/certs"
 for domain in ${RENEWED_DOMAINS}; do
     cp "${RENEWED_LINEAGE}/fullchain.pem" "${domain}.crt"
     cp "${RENEWED_LINEAGE}/privkey.pem" "${domain}.key"
+    chown $CERTS_USER_OWNER:$CERTS_GROUP_OWNER "${domain}.*"
+    chmod $CERTS_FILES_MODE "${domain}.*"
 done
-chown $CERTS_USER_OWNER:$CERTS_GROUP_OWNER "${domain}.*"
-chmod $CERTS_FILES_MODE "${domain}.*"
 ```   
 
 Execute:
