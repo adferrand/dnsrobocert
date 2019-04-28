@@ -14,3 +14,7 @@ fi
 find $RENEWED_LINEAGE ${RENEWED_LINEAGE/live/archive} -type d -exec chmod "$CERTS_DIRS_MODE" {} +
 find $RENEWED_LINEAGE ${RENEWED_LINEAGE/live/archive} -type f -exec chmod "$CERTS_FILES_MODE" {} +
 chown -R $CERTS_USER_OWNER:$CERTS_GROUP_OWNER $RENEWED_LINEAGE ${RENEWED_LINEAGE/live/archive}
+
+if [ ! -z "$DEPLOY_HOOK" ]; then
+    sh -c ${DEPLOY_HOOK}
+fi
