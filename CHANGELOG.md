@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.12.0] - 28/04/2019
+### Added
+* Environment variable `DEPLOY_HOOK` (default: _empty_) can be set to execute a shell command when a certificate
+  is created or renewed. This deploy command can be used for instance to do some post-process formatting on the
+  certificates before their deployment on a service requiring a specific certificate format.
+
+## Modified
+* Update Lexicon to 3.2.4 (new providers: Netcup)
+
 ## [2.11.0] - 10/04/2019
 ### Added
 * Environment variable `LETSENCRYPT_SKIP_REGISTER` (default: `false`) can be set to `true` and avoid the container
