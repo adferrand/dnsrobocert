@@ -16,5 +16,5 @@ find $RENEWED_LINEAGE ${RENEWED_LINEAGE/live/archive} -type f -exec chmod "$CERT
 chown -R $CERTS_USER_OWNER:$CERTS_GROUP_OWNER $RENEWED_LINEAGE ${RENEWED_LINEAGE/live/archive}
 
 if [ ! -z "$DEPLOY_HOOK" ]; then
-    sh -c ${DEPLOY_HOOK}
+    sh -c "${DEPLOY_HOOK}"
 fi
