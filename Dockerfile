@@ -31,7 +31,7 @@ ENV CERTS_GROUP_OWNER root
 ENV DEPLOY_HOOK ""
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
-RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata \
+RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata bash \
  && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev build-base linux-headers \
  && pip install "certbot==$CERTBOT_VERSION" \
  && pip install "dns-lexicon[full]==$LEXICON_VERSION" \
