@@ -20,6 +20,8 @@ ENV LEXICON_PROVIDER cloudflare
 ENV LEXICON_PROVIDER_OPTIONS ""
 
 # Container specific configuration
+ENV TZ UTC
+ENV CRON_TIME_STRING "12 01,13 * * *"
 ENV PFX_EXPORT false
 ENV PFX_EXPORT_PASSPHRASE ""
 ENV CERTS_DIRS_MODE 0750
@@ -29,7 +31,7 @@ ENV CERTS_GROUP_OWNER root
 ENV DEPLOY_HOOK ""
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
-RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool \
+RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata \
  && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev build-base linux-headers \
  && pip install "certbot==$CERTBOT_VERSION" \
  && pip install "dns-lexicon[full]==$LEXICON_VERSION" \
@@ -43,7 +45,6 @@ COPY files/run.sh /scripts/run.sh
 COPY files/watch-domains.sh /scripts/watch-domains.sh
 COPY files/autorestart-containers.sh /scripts/autorestart-containers.sh
 COPY files/autocmd-containers.sh /scripts/autocmd-containers.sh
-COPY files/crontab /etc/crontab
 COPY files/circus.ini /etc/circus.ini
 COPY files/letsencrypt-dns.ini /etc/circus.d/letsencrypt-dns.ini
 COPY files/authenticator.sh /var/lib/letsencrypt/hooks/authenticator.sh

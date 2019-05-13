@@ -9,6 +9,7 @@ find /etc/letsencrypt/live /etc/letsencrypt/archive -type f -exec chmod "$CERTS_
 chown -R $CERTS_USER_OWNER:$CERTS_GROUP_OWNER /etc/letsencrypt/live /etc/letsencrypt/archive
 
 # Load crontab
+echo "$CRON_TIME_STRING /scripts/renew.sh" > /etc/crontab
 crontab /etc/crontab
 
 # Update TLDs
