@@ -20,6 +20,7 @@
 	* [Run a custom deploy hook script](#run-a-custom-deploy-hook-script)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
 	* [Using ACME v1 servers](#using-acme-v1-servers)
+	* [Specifying the renewal schedule](#specifying-the-renewal-schedule)
 	* [Activate staging ACME servers](#activating-staging-acme-servers)
 	* [Auto-export certificates in PFX format](#auto-export-certificates-in-pfx-format)
     * [Sleep time](#sleep-time)
