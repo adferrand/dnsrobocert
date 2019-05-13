@@ -345,6 +345,10 @@ Starting to version 2.0.0, this container uses the ACME v2 servers (production &
 
 _NB: During a certificate renewal, the server (and authentication) used for the certificate generation will be reused, independently of the `LETSENCRYPT_ACME_V1` environment variable value. If you want to change the server used for a particular certificate, you will need first to revoke it by removing the relevant entry from `domains.txt` file before recreating it._
 
+### Specifying the renewal schedule
+
+By default the certificate regeneration process is run twice a day. This can be customized by setting the environment variable `CRON_TIME_STRING (default: "12 01,13 * * *")` to a cron time string. Be sure to also set the correct timezone using the environment variable `TZ (default: UTC)`.
+
 ### Activating staging ACME servers
 
 During development it is not advised to generate certificates against production ACME servers, as one could reach easily the weekly limit of Let's Encrypt and could not generate certificates for a certain period of time. Staging ACME servers do not have this limit. To use them, set the environment variable `LETSENCRYPT_STAGING (default: false)` to `true`.
