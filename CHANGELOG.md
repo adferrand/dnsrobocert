@@ -2,9 +2,9 @@
 
 ## [2.13.0] - 14/05/2019
 ### Added
-* Environment variables `CRON_TIME_STRING (default: "12 01,13 * * *")` and `TZ (default: UTC)` allows to control
+* Environment variables `CRON_TIME_STRING (default: "12 01,13 * * *")` and `TZ (default: UTC)` allow to control
   at which frequency, and on which timezone the renewal cron job will be executed. By default it is twice a day,
-  at miday and midnight UTC.
+  at midday and midnight UTC.
 
 ### Modified
 * Update Lexicon to 3.2.5
