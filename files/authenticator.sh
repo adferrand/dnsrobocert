@@ -16,8 +16,8 @@ while : ; do
 	set -e
 
     if [ $hasEntry -ne 0 ]; then
-      echo "NS $ns did not have expected value, trying again in ${LEXICON_SLEEP_TIME:-30} seconds"
-      sleep ${LEXICON_SLEEP_TIME:-30}
+      echo "NS $ns did not have expected value, trying again in $LEXICON_SLEEP_TIME seconds"
+      sleep $LEXICON_SLEEP_TIME
       continue 2
     fi
   done

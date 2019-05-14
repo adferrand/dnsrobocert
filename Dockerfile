@@ -27,7 +27,9 @@ ENV LETSENCRYPT_STAGING=false \
 # Lexicon configuration
 ENV LEXICON_OPTIONS="" \
     LEXICON_PROVIDER=cloudflare \
-    LEXICON_PROVIDER_OPTIONS=""
+    LEXICON_PROVIDER_OPTIONS="" \
+    LEXICON_SLEEP_TIME=30 \
+    LEXICON_SLEEP_MAX_RETRY=3
 
 # Container specific configuration
 ENV TZ=UTC \
