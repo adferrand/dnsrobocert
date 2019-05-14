@@ -49,18 +49,24 @@ while true; do
                 domains_cmd="$domains_cmd -d $domain"
             done
 
-            echo ">>> Creating a certificate for domain(s):$domains_cmd"
-            certbot certonly \
-                -n \
-                --manual \
-                --preferred-challenges=dns \
-                --manual-auth-hook /var/lib/letsencrypt/hooks/authenticator.sh \
-                --manual-cleanup-hook /var/lib/letsencrypt/hooks/cleanup.sh \
-                --manual-public-ip-logging-ok \
-                --expand \
-                --deploy-hook deploy-hook.sh \
-                $server_cmd \
-                $domains_cmd
+            echo ">>> Checking expiry date for domain(s):$domains_cmd"
+            if [[ $(python /scripts/check-expiry.py $main_domain) = 0 ]]; then
+
+                echo ">>> Creating a certificate for domain(s):$domains_cmd"
+                certbot certonly \
+                    -n \
+                    --manual \
+                    --preferred-challenges=dns \
+                    --manual-auth-hook /var/lib/letsencrypt/hooks/authenticator.sh \
+                    --manual-cleanup-hook /var/lib/letsencrypt/hooks/cleanup.sh \
+                    --manual-public-ip-logging-ok \
+                    --expand \
+                    --deploy-hook deploy-hook.sh \
+                    $server_cmd \
+                    $domains_cmd
+            else
+                echo ">>> Within grace period. No action required."
+            fi
 
             if [ "$autorestart_config" != "" ]; then
                 echo ">>> Watching certificate for main domain $main_domain: containers $autorestart_config autorestarted when certificate is changed."
