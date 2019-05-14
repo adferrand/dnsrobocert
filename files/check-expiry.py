@@ -10,17 +10,17 @@ from datetime import datetime, timedelta
 import pytz
 
 
-def check_cert(domain, cert_file='fullchain.pem', grace=14):
+def check_cert(domain, grace=14):
 
-    cert_path = f'/etc/letsencrypt/live/{domain}/{cert_file}'
+    cert_path = f'/etc/letsencrypt/live/{domain}/fullchain.pem'
     if not os.path.exists(cert_path):
         # No certificate found
         return 0
 
-    output = subprocess.check_output(f"openssl x509 -enddate -noout -in {cert_path} | sed -e 's#notAfter=##'", shell=True)
-    output = output.decode().replace('\n', '').strip()  # Decode to str, trim and remove \n
+    output = subprocess.check_output(f'openssl x509 -enddate -noout -in {cert_path}', shell=True)
+    output = output.decode().strip().rsplit(' ', 1)[0].split('notAfter=', 1)[1]  # Decode to str, remove the '\n', 'GMT' and 'notAfter='
     
-    expiry = datetime.strptime(output, '%b %d %H:%M:%S %Y %Z').astimezone(pytz.timezone('GMT'))  # Assume output is GMT
+    expiry = datetime.strptime(output, '%b %d %H:%M:%S %Y').astimezone(pytz.timezone('GMT'))  # Assume output is GMT
 
     if expiry <= datetime.now(pytz.utc)+timedelta(days=grace):
         return 0
@@ -29,7 +29,8 @@ def check_cert(domain, cert_file='fullchain.pem', grace=14):
 
 
 if __name__ == "__main__":
+
     if len(sys.argv) == 2:
-        print(check_cert(sys.argv[1]))
+        print(check_cert(domain=sys.argv[1]))
     else:
         print('Usage: python check-expiry.py [DOMAIN]')
