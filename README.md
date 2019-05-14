@@ -20,6 +20,7 @@
 	* [Run a custom deploy hook script](#run-a-custom-deploy-hook-script)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
 	* [Using ACME v1 servers](#using-acme-v1-servers)
+	* [Specifying the renewal schedule](#specifying-the-renewal-schedule)
 	* [Activate staging ACME servers](#activating-staging-acme-servers)
 	* [Auto-export certificates in PFX format](#auto-export-certificates-in-pfx-format)
     * [Sleep time](#sleep-time)
@@ -344,6 +345,10 @@ docker run \
 Starting to version 2.0.0, this container uses the ACME v2 servers (production & staging) to allow wildcard certificates generation. If for any reason you want to continue to use old ACME v1 servers, you can set the environment variable `LETSENCRYPT_ACME_V1 (default: false)` to `true`. In this case, ACME v1 servers will be used to any certificate generation, but wildcard certificates will not be supported.
 
 _NB: During a certificate renewal, the server (and authentication) used for the certificate generation will be reused, independently of the `LETSENCRYPT_ACME_V1` environment variable value. If you want to change the server used for a particular certificate, you will need first to revoke it by removing the relevant entry from `domains.txt` file before recreating it._
+
+### Specifying the renewal schedule
+
+By default the certificate regeneration process is run twice a day. This can be customized by setting the environment variable `CRON_TIME_STRING (default: "12 01,13 * * *")` to a cron time string. Be sure to also set the correct timezone using the environment variable `TZ (default: UTC)`.
 
 ### Activating staging ACME servers
 
