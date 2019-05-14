@@ -31,7 +31,7 @@ def check_cert(domain, cutoff):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Check X509 encoded SSL certificates for expiry date, returns 1 for good, 0 for needs renewal.')
-    parser.add_argument('domain', type=str, help='Main domain name (assumes certificate is at /etc/letsencrypt/live/[domain]/fullchain.pem)')
+    parser.add_argument('domain', type=str, help='Main domain name (assumes certificate is at /etc/letsencrypt/live/[domain]/fullchain.pem)', required=True)
     parser.add_argument('-c', '--cutoff', type=int, default=14, help='Grace period cutoff (in days)')
     args = parser.parse_args()
 

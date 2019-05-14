@@ -50,7 +50,7 @@ while true; do
             done
 
             echo ">>> Checking expiry date for domain(s):$domains_cmd"
-            if [[ $(python /scripts/check-expiry.py $main_domain) = 0 ]]; then
+            if [[ $(python /scripts/check-expiry.py -c $RENEW_BEFORE_EXPIRE $main_domain) = 0 ]]; then
 
                 echo ">>> Creating a certificate for domain(s):$domains_cmd"
                 certbot certonly \
