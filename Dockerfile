@@ -51,6 +51,7 @@ COPY files/authenticator.sh /var/lib/letsencrypt/hooks/authenticator.sh
 COPY files/cleanup.sh /var/lib/letsencrypt/hooks/cleanup.sh
 COPY files/deploy-hook.sh /scripts/deploy-hook.sh
 COPY files/renew.sh /scripts/renew.sh
+COPY files/check-expiry.py /scripts/check-expiry.py
 
 RUN chmod +x /scripts/*
 
