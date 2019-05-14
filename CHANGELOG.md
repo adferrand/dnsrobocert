@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.13.0] - 14/05/2019
+### Added
+* Environment variables `CRON_TIME_STRING (default: "12 01,13 * * *")` and `TZ (default: UTC)` allows to control
+  at which frequency, and on which timezone the renewal cron job will be executed. By default it is twice a day,
+  at miday and midnight UTC.
+
+### Modified
+* Update Lexicon to 3.2.5
+* Update Certbot to 0.34.2
+
 ## [2.12.0] - 28/04/2019
 ### Added
 * Environment variable `DEPLOY_HOOK` (default: _empty_) can be set to execute a shell command when a certificate
