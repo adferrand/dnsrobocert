@@ -65,15 +65,17 @@ while true; do
                 $domains_cmd
 
             hash_after_certbot=`md5sum /etc/letsencrypt/live/$main_domain/cert.pem | awk '{ print $1 }'`
-            new_certificate=true
+
+            # Detect if we just created a new certificate with certbot
+            is_new_certificate=true
             if [ "$hash_before_certbot" = "$hash_after_certbot" ]; then
-                new_certificate=false
+                is_new_certificate=false
             fi
 
             if [ "$autorestart_config" != "" ]; then
                 echo ">>> Watching certificate for main domain $main_domain: containers $autorestart_config autorestarted when certificate is changed."
                 echo "[watcher:${main_domain}_autorestart-containers]" > /etc/circus.d/${main_domain}_autorestart-containers.ini
-                echo "cmd = /scripts/autorestart-containers.sh $main_domain $autorestart_config $new_certificate" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
+                echo "cmd = /scripts/autorestart-containers.sh $main_domain $autorestart_config $is_new_certificate" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
                 echo "stdout_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
                 echo "stdout_stream.color = white" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
                 echo "stderr_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autorestart-containers.ini
@@ -83,7 +85,7 @@ while true; do
             if [ "$autocmd_config" != "" ]; then
                 echo ">>> Watching certificate for main domain $main_domain: autocmd config $autocmd_config executed when certificate is changed."
                 echo "[watcher:${main_domain}_autocmd-containers]" > /etc/circus.d/${main_domain}_autocmd-containers.ini
-                echo "cmd = /scripts/autocmd-containers.sh $main_domain '$autocmd_config'" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
+                echo "cmd = /scripts/autocmd-containers.sh $main_domain '$autocmd_config' $is_new_certificate" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
                 echo "stdout_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
                 echo "stdout_stream.color = white" >> /etc/circus.d/${main_domain}_autocmd-containers.ini
                 echo "stderr_stream.class = FancyStdoutStream" >> /etc/circus.d/${main_domain}_autocmd-containers.ini

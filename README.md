@@ -18,7 +18,7 @@
 	* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
 	* [Call a reload command on containers when a certificate is renewed](#call-a-reload-command-on-containers-when-a-certificate-is-renewed)
 	* [Run a custom deploy hook script](#run-a-custom-deploy-hook-script)
-	* [Running container in a cluster environment](#running-container-in-a-cluster-environment)
+	* [Run a service in a cluster environment](#run-a-service-in-a-cluster-environment)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
 	* [Using ACME v1 servers](#using-acme-v1-servers)
 	* [Specifying the renewal schedule](#specifying-the-renewal-schedule)
@@ -339,14 +339,15 @@ docker run \
 	adferrand/letsencrypt-dns
 ```
 
-### Running container in a cluster environment
+### Run the container in a cluster environment
 
-When this container runs in a cluster environment (eg. Swarm, Kubernetes), autoreload and autocmd functionalities are likely to not be adressed to a single container, but to a service handled by several containers working together as a cluster.
+When this container runs in a cluster environment (eg. Swarm, Kubernetes), autoreload functionalities is likely to not be adressed to a single container, but to a service handled by several containers working together as a cluster.
 
-Environment variable `DOCKER_CLUSTER_PROVIDER (default: none)` can be set for this purpose. Current possible values are `none` when there is no cluser (default) or `swarm`. If this variable is set to a cluster provider, names given in autorestart and autocmd will be considered to be clustered services name, and appropriate commands will be used to restart the service or execute an arbitrary command on it.
+Environment variable `DOCKER_CLUSTER_PROVIDER (default: none)` can be set for this purpose. Current possible values are `none` when there is no cluster (default) or `swarm`. If this variable is set to a cluster provider, names given in autorestart will be considered to be clustered services names, and appropriate commands will be used to restart the service.
 
-_NB: For now, only Docker Swarm is supported, and only autorestart takes the cluster into account. More complete cluster support will be added in the future._
-=======
+_NB1: For now, only Docker Swarm is supported, and only autorestart takes the cluster into account. More complete cluster support will be added in the future._
+_NB2: Since running an arbitrary command on all nodes of a service breaks the service abstraction, autocmd is not supported in Docker Swarm mode._
+
 ### Run a custom deploy hook script
 
 You can specify a script or a command to execute after a certificate is created or renewed, by specifying `DEPLOY_HOOK` environment variable. This is useful if you want to copy certificates someplace else or need to reorganize file structure.
