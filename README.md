@@ -1,11 +1,13 @@
-# adferrand/letsencrypt-dns
-![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.3.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.3.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.3.0)  
+# &nbsp;![](https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/logo_from_realies_200px.png) adferrand/letsencrypt-dns
+![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.12.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.12.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.12.0) [![CircleCI](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master.svg?style=shield)](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master)
 
 * [Container functionalities](#container-functionalities)
 * [Why use this Docker](#why-use-this-docker-)
 * [Preparation of the container](#preparation-of-the-container)
 	* [Configuring the SSL certificates](#configuring-the-ssl-certificates)
 	* [Configuring DNS provider and authentication to DNS API](#configuring-dns-provider-and-authentication-to-dns-api)
+		* [With environment variables](#with-environment-variables)
+		* [With YAML configuration files](#with-yaml-configuration-files)
 * [Run the container](#run-the-container)
 * [Data persistency](#data-persistency)
 	* [Share certificates with the host](#share-certificates-with-the-host)
@@ -15,8 +17,11 @@
 	* [Certificates reconfiguration at runtime](#certificates-reconfiguration-at-runtime)
 	* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
 	* [Call a reload command on containers when a certificate is renewed](#call-a-reload-command-on-containers-when-a-certificate-is-renewed)
+	* [Run a custom deploy hook script](#run-a-custom-deploy-hook-script)
+	* [Running container in a cluster environment](#running-container-in-a-cluster-environment)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
 	* [Using ACME v1 servers](#using-acme-v1-servers)
+	* [Specifying the renewal schedule](#specifying-the-renewal-schedule)
 	* [Activate staging ACME servers](#activating-staging-acme-servers)
 	* [Auto-export certificates in PFX format](#auto-export-certificates-in-pfx-format)
     * [Sleep time](#sleep-time)
@@ -48,9 +53,9 @@ So far so good, but you may fall in one of the following categories:
 
 For the first case, ACME servers need to be able to access your website through HTTP (for HTTP challenges) or HTTPS (for TLS challenges) in order to validate the certificate. With a firewall these two challenges - which are widely used in HTTP proxy approaches - will not be usable: you need to ask a DNS challenge. Please note that traefik embed DNS challenges, but only for few DNS providers.
 
-For the second case, there is no website to use TLS or HTTP challenges, and you should ask a DNS challenge. Of course you can create a "fake" website to validate the domain, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
+For the second case, there is no website to use TLS or HTTP challenges, and you should ask a DNS challenge. Of course you could create a "fake" website to validate the domain using a HTTP challenge, and reuse the certificate on the "real" service. But it is a workaround, and you have to implement a logic to propagate the certificate, including during its renewal. Indeed, most of the non-Web services will need to be restarted each time the certificate is renewed.
 
-For the last case, the use of a DNS challenge is mandatory. Then the problems concerning certificates propagation which have been discussed in the second case will also occur.
+For the last case, the use of a DNS challenge is mandatory. Then the problems concerning certificates propagation that have been discussed in the second case will also occur.
 
 The solution is a dedicated and specialized Docker service which handles the creation/renewal of Let's Encrypt certificates, and ensure their propagation in the relevant Docker services. It is the purpose of this container.
 
@@ -87,30 +92,31 @@ _NB: For a wildcard certificate, specifying a sub-domain already covered by the 
 
 ### Configuring DNS provider and authentication to DNS API
 
+#### With environment variables
+
 When using a DNS challenge, a TXT entry must be inserted in the DNS zone which manage the certificate domain. This TXT entry must contain a unique hash calculated by Certbot, and the ACME servers will check it before delivering the certificate.
 
 This container will do the hard work for you, thanks to the association between [Certbot](https://certbot.eff.org/) and [Lexicon](https://github.com/AnalogJ/lexicon): DNS provider API will be called automatically to insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the API access key.
 
-Following DNS provider are supported: AuroraDNS, AWS Route53, Cloudflare, ClouDNS, CloudXNS, Constellix, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, Gandi, Gehirn Infrastructure Service, Glesys, GoDaddy, Linode, Linode V4, LuaDNS, Memset, Namecheap, Namesilo, NS1, OnApp, OVH, PointHQ, PowerDNS, Rackspace, Rage4, Sakura Cloud, SoftLayer, Subreg, Transip, Yandex, Vultr, Zonomi.
+Following DNS provider are supported: AuroraDNS, AWS Route53, Cloudflare, ClouDNS, CloudXNS, Constellix, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, ExoScale, Gandi, Gehirn, Glesys, GoDaddy, Google Cloud DNS, Linode, Linode V4, LuaDNS, Memset, Namecheap, Namesilo, NS1, OnApp, Online, OVH, PointHQ, PowerDNS, Rackspace, Rage4, Sakura Cloud, SoftLayer, Subreg, Transip, Vultr, Yandex, Zeit, Zonomi.
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
-Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, authentication stuff can be set using one of the two following approach:
-* using environment variables in the form of `LEXICON_[PROVIDER]_[OPTION]` for parameters in the form of `--auth-[option]` (for instance, `LEXICON_CLOUDFLARE_USERNAME` with the CloudFlare provider for `--auth-username` option)
+Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, authentication stuff can be set using one of the three following approach:
+* using environment variables in the form of `LEXICON_[PROVIDER]_[OPTION]` for provider parameters in the form of `--[option]` (for instance, `LEXICON_CLOUDFLARE_AUTH_USERNAME` with the CloudFlare provider for `--auth-username` option)
 * using environment variable `LEXICON_PROVIDER_OPTIONS (default empty)` which will be append directly to the lexicon binary (for instance, `LEXICON_PROVIDER_OPTIONS` could be set to `--auth-token=my-token ...`)
 
 For instance, if the provider is CloudFlare, the username is `my_user` and the access token is `my_secret_token`, following environment variables must be passed to the container:
 
 ```bash
-LEXICON_PROVIDER=cloudflare
-LEXICON_CLOUDFLARE_USERNAME=my_user
-LEXICON_CLOUDFLARE_TOKEN=my_secret_token
+LEXICON_CLOUDFLARE_AUTH_USERNAME=my_cloudflare_email
+LEXICON_CLOUDFLARE_AUTH_TOKEN=my_cloudflare_global_api_key
 ```
 
 Or alternatively:
 ```bash
 LEXICON_PROVIDER=cloudflare
-LEXICON_PROVIDER_OPTIONS=--auth-username=my-user --auth-token=my_secret_token
+LEXICON_PROVIDER_OPTIONS=--auth-username=my_cloudflare_email --auth-token=my_cloudflare_global_api_key
 ```
 
 Some providers (like OVH) need more specific environment variables. First, run following command to get the Lexicon help for this DNS provider:
@@ -119,13 +125,37 @@ Some providers (like OVH) need more specific environment variables. First, run f
 docker run -it --rm adferrand/letsencrypt-dns lexicon ovh --help
 ```
 
-Once done, you will see authentication parameters of the form `--auth-somevar`. Theses parameters must be setted using environment variables of the form `LEXICON_[PROVIDER]_SOMEVAR`.
+Once done, you will see authentication parameters of the form `--auth-somevar`. Theses parameters must be setted using environment variables of the form `LEXICON_[PROVIDER]_AUTH_SOMEVAR`.
 
-For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_ENTRYPOINT`, `LEXICON_OVH_APPLICATION_KEY`, `LEXICON_OVH_APPLICATION_SECRET` and `LEXICON_OVH_CONSUMER_KEY`. Or alternatively, set the `LEXICON_PROVIDER_OPTIONS` to `--auth-entrypoint=my_entrypoint --auth-application-key=my_application_key --auth-application-secret=my_application_secret --auth-consumer-key=my_consumer_key`.
+For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_AUTH_ENTRYPOINT`, `LEXICON_OVH_AUTH_APPLICATION_KEY`, `LEXICON_OVH_AUTH_APPLICATION_SECRET` and `LEXICON_OVH_AUTH_CONSUMER_KEY`. Or alternatively, set the `LEXICON_PROVIDER_OPTIONS` to `--auth-entrypoint=my_entrypoint --auth-application-key=my_application_key --auth-application-secret=my_application_secret --auth-consumer-key=my_consumer_key`.
 
-_NB: Lexicon authentication variables which are not in the form of `--auth-[option]` must be passed using the `LEXICON_PROVIDER_OPTIONS` environment variable._
+Finally there is some options specific to Lexicon itself, not related to the authentication on a particular provider (like `--delegate`). You can specify this kind of options (eg. `domain` for Cloudns) via the `LEXICON_OPTIONS (default empty)` environment variable.
 
-Finally there is some options specific to Lexicon itself, not related to the authentication on a particular provider. You can specify this kind of options (eg. `domain` for Cloudns) via the `LEXICON_OPTIONS (default empty)` environment variable.
+#### With YAML configuration files
+
+Starting with version 2.7.0 that uses Lexicon 3.x, DNS providers and Lexicon can be configured using YAML configuration files. It means that a unique `lexicon.yml`, located on the persisted storage `/etc/letsencrypt`, can contain all parameters for Lexicon and several DNS providers. Each entry corresponds to a Lexicon option, or a provider name. Under a provider name, the relevant parameters for this provider can be set. As a convention name for the parameters, a given CLI argument `--auth-username` will be written in the YAML configuration file as `auth_username`.
+
+To select the provider to use, the environment variable `LEXICON_PROVIDER` still need to be set.
+
+Taking the OVH example in the previous version, with a specific configuration to provide for Lexicon itself (`--delegate`), the `lexicon.yml` will take the following form:
+```yml
+# Content of /etc/letsencrypt/lexicon.yml
+delegate: subdomain
+ovh:
+  auth_entrypoint: ovh-eu
+  auth_application_key: my_application_key
+  auth_application_secret: my_application_secret
+  auth_consumer_key: my_consumer_key
+```
+
+The YAML configuration file approach is particularly well suited for the `auto` DNS provider, that is able to resolve the actual DNS provider for a given domain. Indeed, `lexicon.yml` will be a convenient place to put the configuration of several providers.
+
+_NB: A configuration file can be set for one particular provider. In this case, the filename must be `lexicon_[provider_name].yml` (eg. `lexicon_ovh.yml` for OVH). Theses files must be located in `/etc/letsencrypt`. There root content is directly the parameters of the relevant provider, like so:_
+```yml
+# Content of /etc/letsencrypt/lexicon_cloudflare.yml
+auth_username: my_cloudflare_email
+auth_token: my_cloudflare_global_api_key
+```
 
 ## Run the container
 
@@ -139,8 +169,8 @@ docker run \
 	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 ```
 
@@ -161,8 +191,8 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 ```
 
@@ -177,8 +207,8 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 
 docker run \
@@ -235,8 +265,8 @@ docker run \
 	--volume /var/run/docker.sock:/var/run/docker.sock \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_user' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_secret_token' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 
 docker run \
@@ -257,6 +287,8 @@ If a target process allows it, the letsencrypt-dns container can call a reload c
 
 To specify which command to launch on which container when a certificate is renewed, one will put at the **end** of the relevant line of `domains.conf` a special entry which takes the form of `autocmd-containers=container1:command1,container2:command2 arg2a arg2b,container3:command3 arg3a`. Comma `,` separates each container/command configuration, colon `:` separates the container name from the command to launch. Commands must be executable files, located in the $PATH of the target container, or accessed by their full path.
 
+Similarly to the automatic containers restart functionality, you need to mount the Docker socket of the host /var/run/docker.sock in the letsencrypt-dns container (with the docker executable, using the command-line parameter `--volume /var/run/docker.sock:/var/run/docker.sock`).
+
 In the case of an Apache2 server embedded in a container named `my-apache` to be reloaded when certificate `web.example.com` is renewed, put following entry in `domains.conf`:
 
 ```
@@ -267,6 +299,46 @@ If the certificate `web.example.com` is renewed, command `apachectl graceful` wi
 
 _(Limitations on invokable commands) The option `autocmd-container` is intended to call a simple executable file with few potential arguments. It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command is not executed in a shell on the target, and variables will be resolved against the lets-encrypt container environment. If you want to operate advanced scripting, put an executable script in the target container, and use its path in `autocmd-container` option._
 
+### Run a custom deploy hook script
+
+You can specify a script or a command to execute after a certificate is created or renewed, by specifying `DEPLOY_HOOK` environment variable. This is useful if you want to copy certificates someplace else or need to reorganize file structure.
+
+All standard environment variables will be available in your script, as well as two new variables set by certbot:
+* `RENEWED_LINEAGE` - directory with certificate files (e.g. `/etc/letsencrypt/live/domain`)
+* `RENEWED_DOMAINS` - list of domains for the certificate, separated by space 
+
+Example: copying all new or renewed certificates to a single directory with `domain.crt` and `domain.key` filenames, making it easily usable with nginx:
+
+Create deploy-hook.sh file and make it executable. 
+
+```bash
+#!/bin/sh
+mkdir -p "/etc/nginx/certs"
+cd "/etc/nginx/certs"
+for domain in ${RENEWED_DOMAINS}; do
+    cp "${RENEWED_LINEAGE}/fullchain.pem" "${domain}.crt"
+    cp "${RENEWED_LINEAGE}/privkey.pem" "${domain}.key"
+    chown $CERTS_USER_OWNER:$CERTS_GROUP_OWNER "${domain}.*"
+    chmod $CERTS_FILES_MODE "${domain}.*"
+done
+```   
+
+Execute:
+```bash
+docker run \
+	--name letsencrypt-dns \
+	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
+	--volume /etc/letsencrypt/deploy-hook.sh:/usr/local/bin/create-nginx-certs \
+	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
+	--volume /var/docker-data/nginx:/etc/nginx/certs \
+	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LEXICON_PROVIDER=cloudflare' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
+	--env 'DEPLOY_HOOK=create-nginx-certs' \
+	adferrand/letsencrypt-dns
+```
+
 ### Running container in a cluster environment
 
 When this container runs in a cluster environment (eg. Swarm, Kubernetes), autoreload and autocmd functionalities are likely to not be adressed to a single container, but to a service handled by several containers working together as a cluster.
@@ -274,6 +346,46 @@ When this container runs in a cluster environment (eg. Swarm, Kubernetes), autor
 Environment variable `DOCKER_CLUSTER_PROVIDER (default: none)` can be set for this purpose. Current possible values are `none` when there is no cluser (default) or `swarm`. If this variable is set to a cluster provider, names given in autorestart and autocmd will be considered to be clustered services name, and appropriate commands will be used to restart the service or execute an arbitrary command on it.
 
 _NB: For now, only Docker Swarm is supported, and only autorestart takes the cluster into account. More complete cluster support will be added in the future._
+=======
+### Run a custom deploy hook script
+
+You can specify a script or a command to execute after a certificate is created or renewed, by specifying `DEPLOY_HOOK` environment variable. This is useful if you want to copy certificates someplace else or need to reorganize file structure.
+
+All standard environment variables will be available in your script, as well as two new variables set by certbot:
+* `RENEWED_LINEAGE` - directory with certificate files (e.g. `/etc/letsencrypt/live/domain`)
+* `RENEWED_DOMAINS` - list of domains for the certificate, separated by space 
+
+Example: copying all new or renewed certificates to a single directory with `domain.crt` and `domain.key` filenames, making it easily usable with nginx:
+
+Create deploy-hook.sh file and make it executable. 
+
+```bash
+#!/bin/sh
+mkdir -p "/etc/nginx/certs"
+cd "/etc/nginx/certs"
+for domain in ${RENEWED_DOMAINS}; do
+    cp "${RENEWED_LINEAGE}/fullchain.pem" "${domain}.crt"
+    cp "${RENEWED_LINEAGE}/privkey.pem" "${domain}.key"
+    chown $CERTS_USER_OWNER:$CERTS_GROUP_OWNER "${domain}.*"
+    chmod $CERTS_FILES_MODE "${domain}.*"
+done
+```   
+
+Execute:
+```bash
+docker run \
+	--name letsencrypt-dns \
+	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
+	--volume /etc/letsencrypt/deploy-hook.sh:/usr/local/bin/create-nginx-certs \
+	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
+	--volume /var/docker-data/nginx:/etc/nginx/certs \
+	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LEXICON_PROVIDER=cloudflare' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
+	--env 'DEPLOY_HOOK=create-nginx-certs' \
+	adferrand/letsencrypt-dns
+```
 
 ## Miscellaneous and testing
 
@@ -282,6 +394,10 @@ _NB: For now, only Docker Swarm is supported, and only autorestart takes the clu
 Starting to version 2.0.0, this container uses the ACME v2 servers (production & staging) to allow wildcard certificates generation. If for any reason you want to continue to use old ACME v1 servers, you can set the environment variable `LETSENCRYPT_ACME_V1 (default: false)` to `true`. In this case, ACME v1 servers will be used to any certificate generation, but wildcard certificates will not be supported.
 
 _NB: During a certificate renewal, the server (and authentication) used for the certificate generation will be reused, independently of the `LETSENCRYPT_ACME_V1` environment variable value. If you want to change the server used for a particular certificate, you will need first to revoke it by removing the relevant entry from `domains.txt` file before recreating it._
+
+### Specifying the renewal schedule
+
+By default the certificate regeneration process is run twice a day. This can be customized by setting the environment variable `CRON_TIME_STRING (default: "12 01,13 * * *")` to a cron time string. Be sure to also set the correct timezone using the environment variable `TZ (default: UTC)`.
 
 ### Activating staging ACME servers
 
