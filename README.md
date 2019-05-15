@@ -348,6 +348,8 @@ _NB: During a certificate renewal, the server (and authentication) used for the 
 
 ### Specifying the renewal schedule
 
+To avoid hitting the certificate renewal rate limit (currently set at 5 per week), the certificate regeneration process checks the expiry date of the existing certificate(s) at `/etc/letsencrypt/live/[domain]/fullchain.pem`. Certbot is only run if the expiry for that certificate is less than the number of days defined in the environment variable `RENEW_BEFORE_EXPIRY (default: 30)`. For testing purposes, you can raise the value to the same as the certificate's validity of 90 days, which will result in the certificate always being renewed everytime the regeneration process is run.
+
 By default the certificate regeneration process is run twice a day. This can be customized by setting the environment variable `CRON_TIME_STRING (default: "12 01,13 * * *")` to a cron time string. Be sure to also set the correct timezone using the environment variable `TZ (default: UTC)`.
 
 ### Activating staging ACME servers
