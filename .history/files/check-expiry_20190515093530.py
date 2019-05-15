@@ -23,7 +23,7 @@ def check_cert(domain, cutoff):
     
     expiry = datetime.strptime(output, '%b %d %H:%M:%S %Y').astimezone(pytz.timezone('GMT'))  # Assume output is GMT
 
-    if expiry < datetime.now(pytz.utc)+timedelta(days=cutoff):
+    if expiry <= datetime.now(pytz.utc)+timedelta(days=cutoff):
         return 0
     else:
         return 1

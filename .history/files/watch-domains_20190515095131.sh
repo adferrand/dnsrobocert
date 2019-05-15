@@ -49,7 +49,7 @@ while true; do
                 domains_cmd="$domains_cmd -d $domain"
             done
 
-            echo ">>> Checking certificate expiry date for domain(s):$domains_cmd"
+            echo ">>> Checking expiry date for domain(s):$domains_cmd"
             if [[ $(python /scripts/check-expiry.py --cutoff $RENEW_BEFORE_EXPIRY $main_domain) = 0 ]]; then
 
                 echo ">>> Creating a certificate for domain(s):$domains_cmd"
