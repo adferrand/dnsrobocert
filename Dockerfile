@@ -30,6 +30,9 @@ ENV CERTS_USER_OWNER root
 ENV CERTS_GROUP_OWNER root
 ENV DEPLOY_HOOK ""
 
+# Container in cluster configuration (Swarm, Kubernetes ...)
+ENV DOCKER_CLUSTER_PROVIDER none
+
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata bash \
  && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev build-base linux-headers \

@@ -18,6 +18,7 @@
 	* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
 	* [Call a reload command on containers when a certificate is renewed](#call-a-reload-command-on-containers-when-a-certificate-is-renewed)
 	* [Run a custom deploy hook script](#run-a-custom-deploy-hook-script)
+	* [Run a service in a cluster environment](#run-a-service-in-a-cluster-environment)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
 	* [Using ACME v1 servers](#using-acme-v1-servers)
 	* [Specifying the renewal schedule](#specifying-the-renewal-schedule)
@@ -297,6 +298,55 @@ web.example.com autocmd-containers=my-apache:apachectl graceful
 If the certificate `web.example.com` is renewed, command `apachectl graceful` will be invoked on container `my-apache`, and the apache2 service will use the new certificate without killing any HTTP session.
 
 _(Limitations on invokable commands) The option `autocmd-container` is intended to call a simple executable file with few potential arguments. It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command is not executed in a shell on the target, and variables will be resolved against the lets-encrypt container environment. If you want to operate advanced scripting, put an executable script in the target container, and use its path in `autocmd-container` option._
+
+### Run a custom deploy hook script
+
+You can specify a script or a command to execute after a certificate is created or renewed, by specifying `DEPLOY_HOOK` environment variable. This is useful if you want to copy certificates someplace else or need to reorganize file structure.
+
+All standard environment variables will be available in your script, as well as two new variables set by certbot:
+* `RENEWED_LINEAGE` - directory with certificate files (e.g. `/etc/letsencrypt/live/domain`)
+* `RENEWED_DOMAINS` - list of domains for the certificate, separated by space 
+
+Example: copying all new or renewed certificates to a single directory with `domain.crt` and `domain.key` filenames, making it easily usable with nginx:
+
+Create deploy-hook.sh file and make it executable. 
+
+```bash
+#!/bin/sh
+mkdir -p "/etc/nginx/certs"
+cd "/etc/nginx/certs"
+for domain in ${RENEWED_DOMAINS}; do
+    cp "${RENEWED_LINEAGE}/fullchain.pem" "${domain}.crt"
+    cp "${RENEWED_LINEAGE}/privkey.pem" "${domain}.key"
+    chown $CERTS_USER_OWNER:$CERTS_GROUP_OWNER "${domain}.*"
+    chmod $CERTS_FILES_MODE "${domain}.*"
+done
+```   
+
+Execute:
+```bash
+docker run \
+	--name letsencrypt-dns \
+	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
+	--volume /etc/letsencrypt/deploy-hook.sh:/usr/local/bin/create-nginx-certs \
+	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
+	--volume /var/docker-data/nginx:/etc/nginx/certs \
+	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
+	--env 'LEXICON_PROVIDER=cloudflare' \
+	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
+	--env 'DEPLOY_HOOK=create-nginx-certs' \
+	adferrand/letsencrypt-dns
+```
+
+### Run the container in a cluster environment
+
+When this container runs in a cluster environment (eg. Swarm, Kubernetes), autoreload functionalities is likely to not be adressed to a single container, but to a service handled by several containers working together as a cluster.
+
+Environment variable `DOCKER_CLUSTER_PROVIDER (default: none)` can be set for this purpose. Current possible values are `none` when there is no cluster (default) or `swarm`. If this variable is set to a cluster provider, names given in autorestart will be considered to be clustered services names, and appropriate commands will be used to restart the service.
+
+_NB1: For now, only Docker Swarm is supported, and only autorestart takes the cluster into account. More complete cluster support will be added in the future._
+_NB2: Since running an arbitrary command on all nodes of a service breaks the service abstraction, autocmd is not supported in Docker Swarm mode._
 
 ### Run a custom deploy hook script
 
