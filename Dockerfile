@@ -36,9 +36,9 @@ ENV DOCKER_CLUSTER_PROVIDER none
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata bash \
  && apk --no-cache --update --virtual build-dependencies add libffi-dev libxml2-dev libxslt-dev openssl-dev build-base linux-headers \
- && pip install "certbot==$CERTBOT_VERSION" \
- && pip install "dns-lexicon[full]==$LEXICON_VERSION" \
- && pip install circus \
+ && pip install --no-cache-dir "certbot==$CERTBOT_VERSION" \
+ && pip install --no-cache-dir "dns-lexicon[full]==$LEXICON_VERSION" \
+ && pip install --no-cache-dir circus \
  && mkdir -p /var/lib/letsencrypt/hooks \
  && mkdir -p /etc/circus.d \
  && apk del build-dependencies
