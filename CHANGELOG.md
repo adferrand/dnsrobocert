@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.14.0] - 14/05/2019
+### Added
+* First implementation of autorestart feature in a Docker cluster:
+  using environment variable `DOCKER_CLUSTER_PROVIDER (default: none)`, the container will use appropriate
+  service restart command to restart the service name specified in `autorestart-containers=...` directive.
+  For now, only Swarm is supported: support is triggered using `DOCKER_CLUSTER_PROVIDER=swarm`.
+
+## Modified
+* Python libraries uses now the pip option --no-cache-dir to reduce container footprints.
+* The autorestart and autocmd directives are now triggered upon certificate renewal as before, but also
+  upon first certificate issuance now.
+
 ## [2.13.0] - 14/05/2019
 ### Added
 * Environment variables `CRON_TIME_STRING (default: "12 01,13 * * *")` and `TZ (default: UTC)` allow to control
