@@ -3,6 +3,7 @@
 domain=$1
 containers_and_cmd=$2
 is_new_certificate=$3
+cluster_provider=$4
 
 if [ ! -S /var/run/docker.sock ]; then
     echo "ERROR: /var/run/docker.sock socket is missing."
@@ -27,7 +28,7 @@ execute() {
         done; unset IFS
         echo ">>> Executing command '$command' for container $container_name because certificate for $domain has been modified."
         # Execute it
-        if [ "$DOCKER_CLUSTER_PROVIDER" == "swarm" ]; then
+        if [ "$cluster_provider" == "swarm" ]; then
             echo "WARNING: autocmd feature is not supported in Swarm mode and has been ignored."
         else
             docker exec $container_name $command

@@ -3,6 +3,7 @@
 domain=$1
 containers=$2
 is_new_certificate=$3
+cluster_provider=$4
 
 if [ ! -S /var/run/docker.sock ]; then
     echo "ERROR: /var/run/docker.sock socket is missing."
@@ -16,7 +17,7 @@ fi
 
 restart() {
     IFS=','; for container in $containers; do
-        if [ "$DOCKER_CLUSTER_PROVIDER" == "swarm" ]; then
+        if [ "$cluster_provider" == "swarm" ]; then
             docker service update --detach=false --force $container
         else
             docker restart $container
