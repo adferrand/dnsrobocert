@@ -2,8 +2,8 @@
 
 ## [2.14.1] - 27/05/2019
 ## Modified
-* Certbot's work dir and logs dir are now set to be in the config dir `/etc/letsencrypt` (respectively under)
-  `work` and `logs`. This allows to persist both certbot backups and logs.
+* Certbot's work dir and logs dir are now set to be in the config dir `/etc/letsencrypt` (respectively under
+  `work` and `logs`). This allows to persist both certbot backups and logs.
 
 ## [2.14.0] - 14/05/2019
 ### Added
