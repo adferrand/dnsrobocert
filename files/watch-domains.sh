@@ -28,7 +28,11 @@ while true; do
 
         if [ "$LETSENCRYPT_SKIP_REGISTER" != true ]; then
             echo "#### Registering Let's Encrypt account if needed ####"
-            certbot register -n --agree-tos $LETSENCRYPT_REGISTER_OPTS -m $LETSENCRYPT_USER_MAIL $server_cmd
+            certbot register \
+                -n \
+                --config-dir /etc/letsencrypt --logs-dir /etc/letsencrypt/logs --work-dir /etc/letsencrypt/work \
+                --agree-tos $LETSENCRYPT_REGISTER_OPTS \
+                -m $LETSENCRYPT_USER_MAIL $server_cmd
         fi
 
         echo "#### Clean autorestart/autocmd jobs"
@@ -54,6 +58,7 @@ while true; do
             echo ">>> Creating a certificate for domain(s):$domains_cmd"
             certbot certonly \
                 -n \
+                --config-dir /etc/letsencrypt --logs-dir /etc/letsencrypt/logs --work-dir /etc/letsencrypt/work \
                 --manual \
                 --preferred-challenges=dns \
                 --manual-auth-hook /var/lib/letsencrypt/hooks/authenticator.sh \
