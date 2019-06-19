@@ -1,5 +1,5 @@
 # &nbsp;![](https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/logo_from_realies_200px.png) adferrand/letsencrypt-dns
-![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.14.1.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.14.1.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.14.1) [![CircleCI](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master.svg?style=shield)](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master)
+![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.15.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.15.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.15.0) [![CircleCI](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master.svg?style=shield)](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master)
 
 * [Container functionalities](#container-functionalities)
 * [Why use this Docker](#why-use-this-docker-)
@@ -98,11 +98,11 @@ When using a DNS challenge, a TXT entry must be inserted in the DNS zone which m
 
 This container will do the hard work for you, thanks to the association between [Certbot](https://certbot.eff.org/) and [Lexicon](https://github.com/AnalogJ/lexicon): DNS provider API will be called automatically to insert the TXT record when needed. All you have to do is to define for Lexicon the DNS provider to use, and the API access key.
 
-Following DNS provider are supported: AuroraDNS, AWS Route53, Cloudflare, ClouDNS, CloudXNS, Constellix, DigitalOcean, DNSimple, DnsMadeEasy, DNSPark, DNSPod, EasyDNS, ExoScale, Gandi, Gehirn, Glesys, GoDaddy, Google Cloud DNS, Linode, Linode V4, LuaDNS, Memset, Namecheap, Namesilo, NS1, OnApp, Online, OVH, PointHQ, PowerDNS, Rackspace, Rage4, Sakura Cloud, SoftLayer, Subreg, Transip, Vultr, Yandex, Zeit, Zonomi.
+See the list of providers supported on this link: https://github.com/AnalogJ/lexicon/blob/v3.2.7/README.md#providers
 
 The DNS provider is choosen by setting an environment variable passed to the container: `LEXICON_PROVIDER (default: cloudflare)`.
 
-Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon#providers). Once done, authentication stuff can be set using one of the three following approach:
+Most of the DNS APIs requires a user and a unique access token delivered by the DNS provider. See the documentation of your provider to check how to get these (see the DNS providers list on [Lexicon documentation](https://github.com/AnalogJ/lexicon). Once done, authentication stuff can be set using one of the three following approach:
 * using environment variables in the form of `LEXICON_[PROVIDER]_[OPTION]` for provider parameters in the form of `--[option]` (for instance, `LEXICON_CLOUDFLARE_AUTH_USERNAME` with the CloudFlare provider for `--auth-username` option)
 * using environment variable `LEXICON_PROVIDER_OPTIONS (default empty)` which will be append directly to the lexicon binary (for instance, `LEXICON_PROVIDER_OPTIONS` could be set to `--auth-token=my-token ...`)
 
