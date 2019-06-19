@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.15.0] - 19/06/2019
+## Modified
+* Update Lexicon to 3.2.7 (add Aliyun, Azure DNS and GratisDNS providers)
+* Update Certbot to 0.35.1 (various fixes)
+
 ## [2.14.1] - 27/05/2019
 ## Modified
 * Certbot's work dir and logs dir are now set to be in the config dir `/etc/letsencrypt` (respectively under
