@@ -10,7 +10,13 @@ else
 	NS=$(dig +short NS $CERTBOT_DOMAIN @$LEXICON_NAMESERVER)
 fi
 
+tries=0
 while : ; do
+  tries=$((tries + 1))
+  if [ $tries -ge $LEXICON_SLEEP_MAX_RETRY ]; then
+    echo "The challenge was not propagated after the maximum tries of $LEXICON_SLEEP_MAX_RETRY"
+    exit 1
+  fi
   for ns in $NS
   do
     result=$(dig +short TXT $CERTBOT_DOMAIN @$ns)
