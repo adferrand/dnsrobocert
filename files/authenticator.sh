@@ -4,7 +4,11 @@ set -e
 cd /etc/letsencrypt
 lexicon $LEXICON_OPTIONS $LEXICON_PROVIDER $LEXICON_PROVIDER_OPTIONS create $CERTBOT_DOMAIN TXT --name="_acme-challenge.$CERTBOT_DOMAIN." --content="$CERTBOT_VALIDATION"
 
-NS=$(dig +short NS $CERTBOT_DOMAIN)
+if [ -z "$LEXICON_NAMESERVER" ]; then
+	NS=$(dig +short NS $CERTBOT_DOMAIN)
+else
+	NS=$(dig +short NS $CERTBOT_DOMAIN @$LEXICON_NAMESERVER)
+fi
 
 while : ; do
   for ns in $NS
