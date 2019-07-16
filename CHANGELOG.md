@@ -1,6 +1,6 @@
 # Changelog
 
-## Master
+## [2.16.0] - 17/07/2019
 ### Modified
 * Update Lexicon to 3.3.1 (add SafeDNS, Dreamhost, Dinahosting)
 * Update Certbot to 0.36.0 (various fixes
