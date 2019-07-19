@@ -1,4 +1,4 @@
-FROM arm32v7/python:3.7-alpine3.10
+FROM python:3.7-alpine3.10
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 # Scripts in /scripts are required to be in the PATH to run properly as certbot's hooks
