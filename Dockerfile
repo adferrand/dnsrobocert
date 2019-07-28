@@ -1,5 +1,10 @@
-FROM python:3.7-alpine3.10
+ARG BUILD_ARCH=amd64
+FROM $BUILD_ARCH/python:3.7-alpine3.10
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
+
+# Copy qemu binary for multiarch builds
+# ARG QEMU_ARCH
+# COPY qemu-$QEMU_ARCH-static /usr/bin
 
 # Scripts in /scripts are required to be in the PATH to run properly as certbot's hooks
 ENV PATH /scripts:$PATH
