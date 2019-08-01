@@ -24,6 +24,7 @@
 	* [Specifying the renewal schedule](#specifying-the-renewal-schedule)
 	* [Activate staging ACME servers](#activating-staging-acme-servers)
 	* [Auto-export certificates in PFX format](#auto-export-certificates-in-pfx-format)
+	* [Delegated authentication](#delegated-authentication)
     * [Sleep time](#sleep-time)
     * [Shell access](#shell-access)
 
@@ -413,6 +414,18 @@ Some services need the SSL key and certificate stored together in PFX format (al
 The PFX certificate for a given primary domain is located in the container on `/etc/letsencrypt/[DOMAIN]/cert.pks`: it contains the key, certificate and all intermediate certificates.
 
 By default, the PFX certificates are not protected by a passphrase. You can define one using the environment variable `PFX_EXPORT_PASSPHRASE`.
+
+### Delegated authentication
+
+For domains which cannot be altered via DNS delegated authentication implemented.
+
+Use the environment variables `DELEGATED_DOMAIN` and `DELEGATED_SUBDOMAIN` (may be the same) and create CNAME record `_acme-challenge.DOMAIN.` which points to _acme-challenge.`DELEGATED_SUBDOMAIN.`.
+
+Example:
+
+* Domain for SSL is `domain.com`
+* Delegated domain is `delegated.com` and the special subdomain is `acme.delegated.com`
+* CNAME record `_acme-challenge.domain.com.` points to `_acme-challenge.acme.delegated.com.`
 
 ### Sleep time
 
