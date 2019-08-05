@@ -29,7 +29,7 @@ ENV LEXICON_OPTIONS="" \
     LEXICON_PROVIDER=cloudflare \
     LEXICON_PROVIDER_OPTIONS="" \
     LEXICON_SLEEP_TIME=30 \
-    LEXICON_SLEEP_MAX_RETRY=3
+    LEXICON_MAX_CHECKS=3
 
 # Container specific configuration
 ENV TZ=UTC \
