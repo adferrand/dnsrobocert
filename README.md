@@ -1,5 +1,5 @@
 # &nbsp;![](https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/logo_from_realies_200px.png) adferrand/letsencrypt-dns
-![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.15.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.15.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.15.0) [![CircleCI](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master.svg?style=shield)](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master)
+![](https://img.shields.io/badge/tags-latest-lightgrey.svg) [![](https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.16.0.svg) ![](https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.16.0.svg)](https://microbadger.com/images/adferrand/letsencrypt-dns:2.16.0) [![CircleCI](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master.svg?style=shield)](https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master)
 
 * [Container functionalities](#container-functionalities)
 * [Why use this Docker](#why-use-this-docker-)
@@ -432,3 +432,9 @@ docker exec -it letsencrypt-dns /bin/sh
 ```
 
 You will obtain a shell with the standard tools of an Alpine distribution.
+
+## Docker-Compose configuration
+
+Within the directory compose you can find a basic docker-compose configuration.
+All used volumes and environment variables are described in detail in [Preparation of the container|#preparation-of-the-container].
+The docker compose used the provider and provider options approach to be able to support different providers.

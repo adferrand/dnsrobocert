@@ -1,12 +1,18 @@
 # Changelog
 
+## [2.16.0] - 17/07/2019
+### Modified
+* Update Lexicon to 3.3.1 (add SafeDNS, Dreamhost, Dinahosting)
+* Update Certbot to 0.36.0 (various fixes
+* Update base image to Alpine 3.10
+
 ## [2.15.0] - 19/06/2019
-## Modified
+### Modified
 * Update Lexicon to 3.2.7 (add Aliyun, Azure DNS and GratisDNS providers)
 * Update Certbot to 0.35.1 (various fixes)
 
 ## [2.14.1] - 27/05/2019
-## Modified
+### Modified
 * Certbot's work dir and logs dir are now set to be in the config dir `/etc/letsencrypt` (respectively under
   `work` and `logs`). This allows to persist both certbot backups and logs.
 
@@ -17,7 +23,7 @@
   service restart command to restart the service name specified in `autorestart-containers=...` directive.
   For now, only Swarm is supported: support is triggered using `DOCKER_CLUSTER_PROVIDER=swarm`.
 
-## Modified
+### Modified
 * Python libraries uses now the pip option --no-cache-dir to reduce container footprints.
 * The autorestart and autocmd directives are now triggered upon certificate renewal as before, but also
   upon first certificate issuance now.
