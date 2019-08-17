@@ -14,6 +14,8 @@ RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ ope
  && pip install --no-cache-dir "certbot==$CERTBOT_VERSION" \
  && pip install --no-cache-dir "dns-lexicon[full]==$LEXICON_VERSION" \
  && pip install --no-cache-dir circus \
+ && mkdir -p /var/letsencrypt \
+ && touch /var/letsencrypt/domains.conf \
  && mkdir -p /var/lib/letsencrypt/hooks \
  && mkdir -p /etc/circus.d \
  && apk del build-dependencies

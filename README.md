@@ -18,7 +18,7 @@
 	* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
 	* [Call a reload command on containers when a certificate is renewed](#call-a-reload-command-on-containers-when-a-certificate-is-renewed)
 	* [Run a custom deploy hook script](#run-a-custom-deploy-hook-script)
-	* [Run a service in a cluster environment](#run-a-service-in-a-cluster-environment)
+	* [Run the container in a cluster environment](#run-the-container-in-a-cluster-environment)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
 	* [Using ACME v1 servers](#using-acme-v1-servers)
 	* [Specifying the renewal schedule](#specifying-the-renewal-schedule)
@@ -348,46 +348,6 @@ Environment variable `DOCKER_CLUSTER_PROVIDER (default: none)` can be set for th
 _NB1: For now, only Docker Swarm is supported, and only autorestart takes the cluster into account. More complete cluster support will be added in the future._
 _NB2: Since running an arbitrary command on all nodes of a service breaks the service abstraction, autocmd is not supported in Docker Swarm mode._
 
-### Run a custom deploy hook script
-
-You can specify a script or a command to execute after a certificate is created or renewed, by specifying `DEPLOY_HOOK` environment variable. This is useful if you want to copy certificates someplace else or need to reorganize file structure.
-
-All standard environment variables will be available in your script, as well as two new variables set by certbot:
-* `RENEWED_LINEAGE` - directory with certificate files (e.g. `/etc/letsencrypt/live/domain`)
-* `RENEWED_DOMAINS` - list of domains for the certificate, separated by space 
-
-Example: copying all new or renewed certificates to a single directory with `domain.crt` and `domain.key` filenames, making it easily usable with nginx:
-
-Create deploy-hook.sh file and make it executable. 
-
-```bash
-#!/bin/sh
-mkdir -p "/etc/nginx/certs"
-cd "/etc/nginx/certs"
-for domain in ${RENEWED_DOMAINS}; do
-    cp "${RENEWED_LINEAGE}/fullchain.pem" "${domain}.crt"
-    cp "${RENEWED_LINEAGE}/privkey.pem" "${domain}.key"
-    chown $CERTS_USER_OWNER:$CERTS_GROUP_OWNER "${domain}.*"
-    chmod $CERTS_FILES_MODE "${domain}.*"
-done
-```   
-
-Execute:
-```bash
-docker run \
-	--name letsencrypt-dns \
-	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
-	--volume /etc/letsencrypt/deploy-hook.sh:/usr/local/bin/create-nginx-certs \
-	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
-	--volume /var/docker-data/nginx:/etc/nginx/certs \
-	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
-	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
-	--env 'DEPLOY_HOOK=create-nginx-certs' \
-	adferrand/letsencrypt-dns
-```
-
 ## Miscellaneous and testing
 
 ### Using ACME v1 servers
@@ -416,7 +376,7 @@ By default, the PFX certificates are not protected by a passphrase. You can defi
 
 ### Sleep time
 
-During a DNS challenge, a sleep must be done after TXT entry insertions in order to let DNS zone updates be propagated correctly and ensure that ACME servers will see them. Default value is 30 seconds: if this value does not suit your needs, you can modify it by setting the environment variable `LEXICON_SLEEP_TIME (default: 30)`.
+During a DNS challenge, a sleep must be done after TXT entry insertions in order to let DNS zone updates be propagated correctly and ensure that ACME servers will see them. Default value is 30 seconds: if this value does not suit your needs, you can modify it by setting the environment variable `LEXICON_SLEEP_TIME (default: 30)`. If you have a big value here, a good idea is to run a container in detached mode.
 
 ### Shell access
 
@@ -430,6 +390,6 @@ You will obtain a shell with the standard tools of an Alpine distribution.
 
 ## Docker-Compose configuration
 
-Within the directory compose you can find a basic docker-compose configuration.
-All used volumes and environment variables are described in detail in [Preparation of the container|#preparation-of-the-container].
-The docker compose used the provider and provider options approach to be able to support different providers.
+Within the directory `compose` you can find a basic docker-compose configuration.
+All used volumes and environment variables are described in detail in [Preparation of the container](#preparation-of-the-container).
+The docker compose uses the `PROVIDER` and `PROVIDER_OPTIONS` approach to be able to support different providers.
