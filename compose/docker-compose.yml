@@ -7,12 +7,13 @@ services:
     env_file: .env
     volumes:
       - "$ROOT/domains.conf:/etc/letsencrypt/domains.conf"
-      - "$ROOT/certs/:/etc/letsencrypt"
+      - "$ROOT/:/etc/letsencrypt"
     environment:
       - VERSION=latest
       - "LETSENCRYPT_USER_MAIL=$EMAIL"
       - "LEXICON_PROVIDER=$PROVIDER"
       - "LEXICON_PROVIDER_OPTIONS=$PROVIDER_OPTIONS"
+      - "LEXICON_SLEEP_TIME=$SLEEP_TIME"
       - "CERTS_DIRS_MODE=$DIRS_MODE"
       - "CERTS_FILES_MODE=$FILES_MODE"
     restart: always
