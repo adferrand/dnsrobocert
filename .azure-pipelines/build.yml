@@ -12,7 +12,6 @@ stages:
     # - bash: docker build --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
     - bash: docker save adferrand/letsencrypt-dns | gzip -c -1 > docker-letsencrypt-dns.tar.gz
     - publish: docker-letsencrypt-dns.tar.gz
-      artifact: docker_cache
 - stage: test
   displayName: Test stage
   jobs:
@@ -20,7 +19,7 @@ stages:
     displayName: GOSS unit tests
     steps:
     - download: current
-      artifact: docker_cache
-    - bash: docker load < docker_cache/docker-letsencrypt-dns.tar.gz
+      artifact: docker-letsencrypt-dns.tar.gz
+    - bash: docker load < docker-letsencrypt-dns.tar.gz
     - bash: mkdir -p ./bin && curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
     - bash: GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns
