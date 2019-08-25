@@ -1,9 +1,20 @@
 # Changelog
 
+## Master
+### Added
+* Create a docker-compose.yml template, that can be configured by environment variables (@mgh87 #41)
+* Pre-generation of a `domain.conf` to avoid the creation of a directory when `domain.conf` is
+  host mounted from a non existent path (@Akkarine #60)
+
+### Modified
+* Update Lexicon to 3.3.2 that fixes Yandex provider
+* Update Certbot to 0.37.2 (various fixes)
+* Various corrections in `README.md` (@Akkarine #60)
+
 ## [2.16.0] - 17/07/2019
 ### Modified
 * Update Lexicon to 3.3.1 (add SafeDNS, Dreamhost, Dinahosting)
-* Update Certbot to 0.36.0 (various fixes
+* Update Certbot to 0.36.0 (various fixes)
 * Update base image to Alpine 3.10
 
 ## [2.15.0] - 19/06/2019
