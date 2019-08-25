@@ -7,10 +7,16 @@ stages:
   - job: build_container
     steps:
     - bash: docker pull adferrand/letsencrypt-dns || true
-    - bash: docker build --pull --cache-from adferrand/letsencrypt-dns
+    - bash: docker build --pull --cache-from adferrand/letsencrypt-dns adferrand/letsencrypt-dns
+    - bash: docker save adferrand/letsencrypt-dns | gzip -c -1 > docker-letsencrypt-dns.tar.gz
+    - publish: docker-letsencrypt-dns.tar.gz
+      artifact: docker
 - stage: test
   jobs:
   - job: test_container
     steps:
+    - download: current
+      artifact: docker
+    - bash: docker load < docker-letsencrypt-dns.tar.gz
     - bash: mkdir -p ./bin && curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
     - bash: GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns
