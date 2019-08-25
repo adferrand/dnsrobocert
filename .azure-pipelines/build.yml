@@ -4,7 +4,7 @@ trigger:
 stages:
 - stage: build
   jobs:
-  - job: build_container
+  - job: container
     steps:
     - bash: docker pull adferrand/letsencrypt-dns || true
     - bash: docker build --pull --cache-from adferrand/letsencrypt-dns adferrand/letsencrypt-dns
@@ -13,7 +13,7 @@ stages:
       artifact: docker
 - stage: test
   jobs:
-  - job: test_container
+  - job: container
     steps:
     - download: current
       artifact: docker
