@@ -12,6 +12,7 @@ stages:
     # - bash: docker build --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
     - bash: docker save adferrand/letsencrypt-dns | gzip -c -1 > docker-letsencrypt-dns.tar.gz
     - publish: docker-letsencrypt-dns.tar.gz
+      artifact: docker-letsencrypt-dns.tar.gz
 - stage: test
   displayName: Test stage
   jobs:
