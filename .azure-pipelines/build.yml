@@ -21,6 +21,7 @@ stages:
     steps:
     - download: current
       artifact: docker-letsencrypt-dns.tar.gz
+    - bash: ls -ali
     - bash: docker load < docker-letsencrypt-dns.tar.gz
     - bash: mkdir -p ./bin && curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
     - bash: GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns
