@@ -1,6 +1,6 @@
 # Changelog
 
-## Master
+## [2.17.0] - 25/08/2019
 ### Added
 * Create a docker-compose.yml template, that can be configured by environment variables (@mgh87 #41)
 * Pre-generation of a `domain.conf` to avoid the creation of a directory when `domain.conf` is
