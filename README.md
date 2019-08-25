@@ -24,7 +24,7 @@
 	* [Specifying the renewal schedule](#specifying-the-renewal-schedule)
 	* [Activate staging ACME servers](#activating-staging-acme-servers)
 	* [Auto-export certificates in PFX format](#auto-export-certificates-in-pfx-format)
-    * [Sleep time](#sleep-time)
+    * [Check TXT propagation and sleep time](#check-txt-propagation-and-sleep-time)
     * [Shell access](#shell-access)
 
 ## Container functionalities
@@ -374,9 +374,15 @@ The PFX certificate for a given primary domain is located in the container on `/
 
 By default, the PFX certificates are not protected by a passphrase. You can define one using the environment variable `PFX_EXPORT_PASSPHRASE`.
 
-### Sleep time
+### Check TXT propagation and sleep time
 
-During a DNS challenge, a sleep must be done after TXT entry insertions in order to let DNS zone updates be propagated correctly and ensure that ACME servers will see them. Default value is 30 seconds: if this value does not suit your needs, you can modify it by setting the environment variable `LEXICON_SLEEP_TIME (default: 30)`. If you have a big value here, a good idea is to run a container in detached mode.
+Once insertion of a new TXT entry to satisfy the DNS challenge is done, it can take a significant amount of time before this TXT entry is available worldwide, and so can be seen by the ACME server. To avoid failing
+challenges because of this delay, this container will check several time if each TXT entry is available worldwide, and wait several seconds between each attempt. The maximum number of checks is defined by the
+environment variable `LEXICON_MAX_CHECKS (default: 3)`, and the number of seconds to wait between two attempts is controled by `LEXICON_SLEEP_TIME (default: 30)`. If you have a big value for the latter, a good idea
+is to run a container in detached mode.
+
+These two variables can be modified to fit the specific situation of a given DNS provider. The check attempt can be totally disabled by setting `LEXICON_MAX_CHECKS` to `0`. In this case, the container will wait
+unconditionally once the specified number of seconds defined by `LEXICON_SLEEP_TIME` before giving hand to the DNS challenge validation process. To disable also the wait behavior, set `LEXICON_SLEEP_TIME` to `0`.
 
 ### Shell access
 
