@@ -1,2 +1,16 @@
 trigger:
 - master
+
+stages:
+- stage: build
+  jobs:
+  - job: build_container
+    steps:
+    - bash: docker pull adferrand/letsencrypt-dns || true
+    - bash: docker build --pull --cache-from adferrand/letsencrypt-dns
+- stage: test
+  jobs:
+  - job: test_container
+    steps:
+    - bash: mkdir -p ./bin && curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+    - bash: GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns
