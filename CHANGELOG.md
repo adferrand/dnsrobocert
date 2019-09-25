@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.18.0 - 25/09/2019]
+### Modified
+* Update Lexicon to 3.3.3 (add DirectAdmin provider)
+* Update Certbot to 0.38.0 (forward support to Python 3.8)
+
 ## [2.17.0] - 25/08/2019
 ### Added
 * Create a docker-compose.yml template, that can be configured by environment variables (@mgh87 #41)
