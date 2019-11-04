@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.19.0 - 04/11/2019]
+### Modified
+* Update Lexicon to 3.3.8 (add HostingDE, RcodeZero)
+* Update Certbot to 0.39.0
+
 ## [2.18.0 - 25/09/2019]
 ### Modified
 * Update Lexicon to 3.3.3 (add DirectAdmin provider)
