@@ -5,8 +5,8 @@ LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 ENV PATH /scripts:$PATH
 
 # Versioning
-ENV LEXICON_VERSION 3.3.8
-ENV CERTBOT_VERSION 0.39.0
+ENV LEXICON_VERSION 3.3.11
+ENV CERTBOT_VERSION 1.0.0
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata bash bind-tools \

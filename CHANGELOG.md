@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.20.0 - 07/12/2019]
+### Modified
+* Update Lexicon to 3.3.11 (add HostingDE, RcodeZero)
+* Update Certbot to 1.0.0
+
 ## [2.19.0 - 04/11/2019]
 ### Modified
 * Update Lexicon to 3.3.8 (add HostingDE, RcodeZero)
