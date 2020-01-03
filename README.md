@@ -169,8 +169,8 @@ docker run \
 	--volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 ```
 
@@ -191,8 +191,8 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
     --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 ```
 
@@ -207,8 +207,8 @@ docker run \
 	--volume /var/docker-data/letsencrypt:/etc/letsencrypt \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 
 docker run \
@@ -265,8 +265,8 @@ docker run \
 	--volume /var/run/docker.sock:/var/run/docker.sock \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_TOKEN=my_cloudflare_global_api_key' \
 	adferrand/letsencrypt-dns
 
 docker run \
@@ -333,8 +333,8 @@ docker run \
 	--volume /var/docker-data/nginx:/etc/nginx/certs \
 	--env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
 	--env 'LEXICON_PROVIDER=cloudflare' \
-	--env 'LEXICON_CLOUDFLARE_USERNAME=my_cloudflare_email' \
-	--env 'LEXICON_CLOUDFLARE_TOKEN=my_cloudflare_global_api_key' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_USERNAME=my_cloudflare_email' \
+	--env 'LEXICON_CLOUDFLARE_AUTH_TOKEN=my_cloudflare_global_api_key' \
 	--env 'DEPLOY_HOOK=create-nginx-certs' \
 	adferrand/letsencrypt-dns
 ```
