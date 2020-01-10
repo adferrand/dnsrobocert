@@ -1,11 +1,11 @@
-FROM python:3.7-alpine3.10
+FROM python:3.8-alpine3.11
 LABEL maintainer="Adrien Ferrand <ferrand.ad@gmail.com>"
 
 # Scripts in /scripts are required to be in the PATH to run properly as certbot's hooks
 ENV PATH /scripts:$PATH
 
 # Versioning
-ENV LEXICON_VERSION 3.3.11
+ENV LEXICON_VERSION 3.3.14
 ENV CERTBOT_VERSION 1.0.0
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
