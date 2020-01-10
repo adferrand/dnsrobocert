@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.21.0 - 10/01/2020]
+### Modified
+* Update Lexicon to 3.3.14 (add EUServ)
+* Update base image to Alpine 3.11 and Python 3.8
+
 ## [2.20.0 - 07/12/2019]
 ### Modified
 * Update Lexicon to 3.3.11 (add HostingDE, RcodeZero)
