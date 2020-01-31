@@ -4,13 +4,18 @@ workflows:
   version: 2
   main-pipeline:
     jobs:
-      - build-n-test:
+      - build-n-test-amd64:
+          filters:
+            tags:
+              only: /^[0-9.]+/
+      - build-n-test-arm64:
           filters:
             tags:
               only: /^[0-9.]+/
       - deploy:
           requires: 
-            - build-n-test
+            - build-n-test-amd64
+            - build-n-test-arm64
           filters:
             branches:
               only: master
@@ -18,36 +23,75 @@ workflows:
               only: /^[0-9.]+/
       - trigger-dockerhub:
           requires: 
-            - build-n-test
+            - build-n-test-amd64
+            - build-n-test-arm64
           filters:
             branches:
               only: master
 
 jobs:
-  build-n-test:
+  build-n-test-amd64:
     machine: true
     steps:
       - checkout
       - run:
+          name: Install latest docker
+          command: |
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sh get-docker.sh
+            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
+            sudo service docker restart
+      - run:
           name: Build container
           command: |
-            docker pull adferrand/letsencrypt-dns || true
-            docker build --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns .
+            docker pull --platform amd64 adferrand/letsencrypt-dns || true
+            docker build --platform amd64 --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns:amd64 .
       - run:
           name: Test container
           command: |
             mkdir -p ./bin
             curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-            GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns
+            GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns:amd64
       - run:
           name: Save container
           command: |
             mkdir -p workspace
-            docker save adferrand/letsencrypt-dns | gzip -c -1 > workspace/docker-letsencrypt-dns.tar.gz
+            docker save adferrand/letsencrypt-dns:amd64 | gzip -c -1 > workspace/docker-letsencrypt-dns.amd64.tar.gz
       - persist_to_workspace:
           root: workspace
           paths:
-            - docker-letsencrypt-dns.tar.gz
+            - docker-letsencrypt-dns.amd64.tar.gz
+  build-n-test-arm64:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Install latest docker
+          command: |
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sh get-docker.sh
+            sudo sh -c 'echo '\''DOCKER_OPTS="--experimental=true"'\'' >> /etc/default/docker'
+            sudo service docker restart
+      - run:
+          name: Build container
+          command: |
+            docker pull --platform arm64 adferrand/letsencrypt-dns || true
+            docker build --platform arm64 --pull --cache-from adferrand/letsencrypt-dns -t adferrand/letsencrypt-dns:arm64 .
+      - run:
+          name: Test container
+          command: |
+            mkdir -p ./bin
+            curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+            GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run -e LETSENCRYPT_SKIP_REGISTER=true adferrand/letsencrypt-dns:arm64
+      - run:
+          name: Save container
+          command: |
+            mkdir -p workspace
+            docker save adferrand/letsencrypt-dns:arm64 | gzip -c -1 > workspace/docker-letsencrypt-dns.arm64.tar.gz
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - docker-letsencrypt-dns.arm64.tar.gz
   deploy:
     machine: true
     steps:
@@ -64,7 +108,11 @@ jobs:
       - deploy:
           name: Deploy to DockerHub
           command: |
-            if [ ${CIRCLE_BRANCH} = master ]; then DOCKER_TAG=latest; else DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}; fi
+            if [ ${CIRCLE_BRANCH} = master ]; then
+              DOCKER_TAG=latest
+            else
+              DOCKER_TAG=${CIRCLE_TAG:-${CIRCLE_BRANCH}}
+            fi
             docker tag adferrand/letsencrypt-dns adferrand/letsencrypt-dns:${DOCKER_TAG}
             docker push adferrand/letsencrypt-dns:${DOCKER_TAG}
   trigger-dockerhub:
