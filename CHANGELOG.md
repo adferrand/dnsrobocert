@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.22.0 - 07/02/2020]
+### Modified
+* Update Lexicon to 3.3.17: support private domains and add Gransy provider, that generalize and replace Subreg.
+* Update Certbot to 1.2.0: remove POST-as-GET fallback
+
 ## [2.21.0 - 10/01/2020]
 ### Modified
 * Update Lexicon to 3.3.14 (add EUServ)
