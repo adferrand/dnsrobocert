@@ -6,7 +6,7 @@ ENV PATH /scripts:$PATH
 
 # Versioning
 ENV LEXICON_VERSION 3.3.17
-ENV CERTBOT_VERSION 1.2.0
+ENV CERTBOT_VERSION 1.3.0
 
 # Install dependencies, certbot, lexicon, prepare for first start and clean
 RUN apk --no-cache --update add rsyslog git libffi libxml2 libxslt libstdc++ openssl docker ethtool tzdata bash bind-tools \
