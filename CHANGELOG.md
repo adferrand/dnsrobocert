@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.23.0 - 04/03/2020]
+### Modified
+* Update Certbot to 1.3.0: automated handling for https://community.letsencrypt.org/t/revoking-certain-certificates-on-march-4/114864
+
 ## [2.22.0 - 07/02/2020]
 ### Modified
 * Update Lexicon to 3.3.17: support private domains and add Gransy provider, that generalize and replace Subreg.
