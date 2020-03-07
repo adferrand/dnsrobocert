@@ -1,0 +1,20 @@
+os: linux
+dist: bionic
+language: c
+
+env:
+    - DOCKER_CLI_EXPERIMENTAL=enabled IMAGE_NAME=patrickpissurno/rpi-docker-letsencrypt-dns REGISTRY_USER=patrickpissurno # REGISTRY_PASS=...
+    
+before_script:
+    - sudo apt update
+    - sudo apt upgrade -y
+    - curl -fsSL test.docker.com -o get-docker.sh && sh get-docker.sh
+    - sudo usermod -aG docker $USER
+    - sudo docker --version
+    - sudo docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+    - sudo docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    - sudo docker buildx create --use
+    
+script:
+    - git clone https://github.com/adferrand/docker-letsencrypt-dns.git .
+    - sudo travis_wait 60 sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag "${IMAGE_NAME}:latest" --push .
