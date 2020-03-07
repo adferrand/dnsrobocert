@@ -16,5 +16,5 @@ before_script:
     - sudo docker buildx create --use
     
 script:
-    - git clone https://github.com/adferrand/docker-letsencrypt-dns.git .
+    - git clone https://github.com/adferrand/docker-letsencrypt-dns.git build && cd build
     - sudo travis_wait 60 sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag "${IMAGE_NAME}:latest" --push .
