@@ -1,6 +1,7 @@
 os: linux
 dist: bionic
-language: c
+language: python
+python: "3.6"
 
 env:
     - DOCKER_CLI_EXPERIMENTAL=enabled IMAGE_NAME=patrickpissurno/rpi-docker-letsencrypt-dns REGISTRY_USER=patrickpissurno # REGISTRY_PASS=...
@@ -8,7 +9,6 @@ env:
 before_script:
     - sudo apt update
     - sudo apt upgrade -y
-    - sudo apt install python3 python3-pip python3-setuptools
     - pip3 install travis-wait-improved
     - curl -fsSL test.docker.com -o get-docker.sh && sh get-docker.sh
     - sudo usermod -aG docker $USER
