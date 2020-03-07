@@ -20,4 +20,4 @@ before_script:
     
 script:
     - git clone https://github.com/adferrand/docker-letsencrypt-dns.git build && cd build
-    - sudo travis-wait-improved --timeout 60m sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag "${IMAGE_NAME}:latest" --push .
+    - travis-wait-improved --timeout 60m sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag "${IMAGE_NAME}:latest" --push .
