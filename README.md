@@ -8,7 +8,7 @@ Automated daily multiarch builds for [docker-letsencrypt-dns](https://github.com
 - arm64
 - armhf (armv7)
 
-An up-to-date version of the [upstream source code](https://github.com/adferrand/docker-letsencrypt-dns) is fetched, built and released in my [Docker Hub](https://hub.docker.com/r/patrickpissurno/rpi-docker-letsencrypt-dns) daily (automated via [Travis CI](https://travis-ci.org/patrickpissurno/rpi-docker-letsencrypt-dns/)).
+An up-to-date version of the [upstream source code](https://github.com/adferrand/docker-letsencrypt-dns) is fetched, built and released to my [Docker Hub](https://hub.docker.com/r/patrickpissurno/rpi-docker-letsencrypt-dns) daily (automated via [Travis CI](https://travis-ci.org/patrickpissurno/rpi-docker-letsencrypt-dns/)).
 
 ### Does it work with the Raspberry Pi?
 **Yes!** In fact the 'rpi' in this repo's name stands for 'Raspberry Pi'. This image is multiarch and **should support** both Pi 2, Pi 3 and Pi 4 (both armv7 and arm64). However, I have only tested it on my Pi 4 running Ubuntu (arm64). Give it a try!
