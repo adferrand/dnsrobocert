@@ -13,8 +13,8 @@ coloredlogs.install(logger=LOGGER)
 
 def load(config_path: str) -> Dict:
     if not os.path.exists(config_path):
-        LOGGER.warning("Configuration file {0} does not exist.".format(config_path))
-        return {}
+        LOGGER.error("Configuration file {0} does not exist.".format(config_path))
+        return None
 
     with open(config_path) as file_h:
         config = yaml.load(file_h.read(), yaml.FullLoader)

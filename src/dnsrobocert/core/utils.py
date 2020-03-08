@@ -101,10 +101,6 @@ def configure_certbot_workspace(config: Dict[str, Any], directory_path: str):
 
 def digest(path):
     if not os.path.exists(path):
-        LOGGER.error(
-            "Configuration file %s does not exist.", os.path.abspath(path),
-        )
-
         return None
 
     with open(path, "rb") as file_h:
