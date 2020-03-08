@@ -5,9 +5,10 @@ import os
 import sys
 from typing import Dict, List
 
-from certbot import main
-from dnsrobocert.core import config, utils
 import coloredlogs
+from certbot import main
+
+from dnsrobocert.core import config, utils
 
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)

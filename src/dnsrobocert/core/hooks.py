@@ -8,12 +8,12 @@ import sys
 import time
 from typing import Any, Dict, List
 
+import coloredlogs
 import OpenSSL
 import pem
 from dns import resolver
 from lexicon.client import Client
 from lexicon.config import ConfigResolver
-import coloredlogs
 
 from dnsrobocert.core import config as dnsrobocert_config
 from dnsrobocert.core import utils

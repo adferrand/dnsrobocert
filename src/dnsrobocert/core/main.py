@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 import argparse
+import logging
 import multiprocessing
 import os
 import re
 import sys
+import tempfile
 import time
 import traceback
-import logging
 from random import random
-import tempfile
 
-import schedule
 import coloredlogs
+import schedule
 import yaml
-
 from certbot.compat import misc
+
 from dnsrobocert.core import certbot, config, legacy, utils
 
 LOGGER = logging.getLogger(__name__)
@@ -32,7 +32,7 @@ def process_config(config_path: str, directory_path: str, runtime_config_path: s
         LOGGER.info("Configuration file is in draft mode: no action will be done.")
         return
 
-    with open(runtime_config_path, 'w') as f:
+    with open(runtime_config_path, "w") as f:
         f.write(yaml.dump(dnsrobocert_config))
 
     utils.configure_certbot_workspace(dnsrobocert_config, directory_path)
@@ -60,7 +60,9 @@ def process_config(config_path: str, directory_path: str, runtime_config_path: s
             )
         except BaseException as error:
             LOGGER.error(
-                "An error occurred while processing certificate config `{0}`:\n{1}".format(domain, error)
+                "An error occurred while processing certificate config `{0}`:\n{1}".format(
+                    domain, error
+                )
             )
 
     LOGGER.info("Revoke and delete certificates if needed")
@@ -88,12 +90,16 @@ def watch_config(config_path: str, directory_path: str):
             while True:
                 try:
                     generated_config_path = legacy.migrate(config_path)
-                    effective_config_path = generated_config_path if generated_config_path else config_path
+                    effective_config_path = (
+                        generated_config_path if generated_config_path else config_path
+                    )
                     digest = utils.digest(effective_config_path)
 
                     if digest != previous_digest:
                         previous_digest = digest
-                        process_config(effective_config_path, directory_path, runtime_config_path)
+                        process_config(
+                            effective_config_path, directory_path, runtime_config_path
+                        )
                 except BaseException as error:
                     LOGGER.error("An error occurred during DNSroboCert watch:")
                     LOGGER.error(error)
@@ -109,9 +115,7 @@ def renew_job(config_path: str, directory_path: str):
     random_delay_seconds = 21600  # Random delay up to 12 hours
     wait_time = int(random() * random_delay_seconds)
     LOGGER.info("Automated execution: renew certificates if needed.")
-    LOGGER.info(
-        "Random wait for this execution: {0} seconds".format(wait_time)
-    )
+    LOGGER.info("Random wait for this execution: {0} seconds".format(wait_time))
     time.sleep(wait_time)
     certbot.renew(config_path, directory_path)
 

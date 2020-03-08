@@ -1,17 +1,17 @@
 import logging
 import os
-from typing import Dict
+from typing import Any, Dict, Optional
 
+import coloredlogs
 import jsonschema
 import pkg_resources
 import yaml
-import coloredlogs
 
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def load(config_path: str) -> Dict:
+def load(config_path: str) -> Optional[Dict[str, Any]]:
     if not os.path.exists(config_path):
         LOGGER.error("Configuration file {0} does not exist.".format(config_path))
         return None

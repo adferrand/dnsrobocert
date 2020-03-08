@@ -1,10 +1,10 @@
+import hashlib
 import logging
+import multiprocessing
 import os
 import subprocess
-from typing import Any, Dict, List
-import hashlib
-import multiprocessing
 import sys
+from typing import Any, Dict, List
 
 import coloredlogs
 
@@ -19,18 +19,18 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def _flush_subprocess_stream(process: subprocess.Popen, stdtype: str ='stdout'):
-    if stdtype == 'stdout':
+def _flush_subprocess_stream(process: subprocess.Popen, stdtype: str = "stdout"):
+    if stdtype == "stdout":
         std = process.stdout
     else:
         std = process.stderr
-    
+
     while True:
         output = std.readline()
-        if output == '' and process.poll() is not None:
+        if output == "" and process.poll() is not None:
             break
         if output:
-            sys.stdout.write(' | ' + output)
+            sys.stdout.write(" | " + output)
     process.poll()
 
 
@@ -38,12 +38,22 @@ def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
     if not env:
         env = os.environ.copy()
     env = env.copy()
-    env['PYTHONUNBUFFERED '] = '1'
+    env["PYTHONUNBUFFERED "] = "1"
 
     LOGGER.debug("Launching command: {0}".format(subprocess.list2cmdline(args)))
-    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, universal_newlines=True)
-    process_stdout = multiprocessing.Process(target=_flush_subprocess_stream, args=(process, 'stdout'))
-    process_stderr = multiprocessing.Process(target=_flush_subprocess_stream, args=(process, 'stderr'))
+    process = subprocess.Popen(
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=env,
+        universal_newlines=True,
+    )
+    process_stdout = multiprocessing.Process(
+        target=_flush_subprocess_stream, args=(process, "stdout")
+    )
+    process_stderr = multiprocessing.Process(
+        target=_flush_subprocess_stream, args=(process, "stderr")
+    )
 
     process_stdout.start()
     process_stderr.start()
@@ -53,7 +63,11 @@ def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
     errcode = process.poll()
 
     if errcode != 0 and check:
-        raise RuntimeError('Following command with non-zero errorcode ({0}):\n{1}'.format(errcode, subprocess.list2cmdline(args)))
+        raise RuntimeError(
+            "Following command with non-zero errorcode ({0}):\n{1}".format(
+                errcode, subprocess.list2cmdline(args)
+            )
+        )
 
 
 def fix_permissions(certs_perms_config: Dict[str, Any], target_path: str):

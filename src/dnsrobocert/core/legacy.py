@@ -1,10 +1,10 @@
+import logging
 import os
 import re
-import logging
 from typing import Any, Dict
 
-import yaml
 import coloredlogs
+import yaml
 from lexicon import config
 
 LEGACY_CONFIGURATION_PATH = "/etc/letsencrypt/domains.conf"
@@ -23,7 +23,7 @@ def migrate(config_path):
 
     provider = profile = envs.get("LEXICON_PROVIDER")
     if not provider:
-        LOGGER.error('Error, LEXICON_PROVIDER environment variable is not set!')
+        LOGGER.error("Error, LEXICON_PROVIDER environment variable is not set!")
 
     migrated_config = {
         "profiles": {provider: {"provider": provider}},
@@ -57,7 +57,9 @@ def migrate(config_path):
     new_config_data = yaml.dump(migrated_config)
 
     if current_config_data != new_config_data:
-        LOGGER.warning("Legacy configuration detected. Support for legacy configurations will be dropped soon.")
+        LOGGER.warning(
+            "Legacy configuration detected. Support for legacy configurations will be dropped soon."
+        )
         LOGGER.warning("Please visit https://example.com for more details. ")
         LOGGER.warning(
             "New configuration file is available at `{0}`".format(example_config_path)
