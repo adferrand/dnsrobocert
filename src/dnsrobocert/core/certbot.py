@@ -100,23 +100,26 @@ def certonly(
 
 
 def renew(config_path: str, directory_path: str):
-    utils.execute(
-        [
-            sys.executable,
-            "-m",
-            "dnsrobocert.core.certbot",
-            "renew",
-            "-n",
-            "--config-dir",
-            directory_path,
-            "--deploy-hook",
-            _hook_cmd("deploy", config_path),
-            "--work-dir",
-            os.path.join(directory_path, "workdir"),
-            "--logs-dir",
-            os.path.join(directory_path, "logs"),
-        ]
-    )
+    dnsrobocert_config = config.load(config_path)
+
+    if dnsrobocert_config:
+        utils.execute(
+            [
+                sys.executable,
+                "-m",
+                "dnsrobocert.core.certbot",
+                "renew",
+                "-n",
+                "--config-dir",
+                directory_path,
+                "--deploy-hook",
+                _hook_cmd("deploy", config_path),
+                "--work-dir",
+                os.path.join(directory_path, "workdir"),
+                "--logs-dir",
+                os.path.join(directory_path, "logs"),
+            ]
+        )
 
 
 def revoke(config_path: str, directory_path: str, lineage: str):

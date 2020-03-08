@@ -82,7 +82,7 @@ def watch_config(config_path: str, directory_path: str):
         )
 
         process.start()
-        previous_digest = None
+        previous_digest = ""
 
         try:
             while True:
@@ -108,8 +108,9 @@ def watch_config(config_path: str, directory_path: str):
 def renew_job(config_path: str, directory_path: str):
     random_delay_seconds = 21600  # Random delay up to 12 hours
     wait_time = int(random() * random_delay_seconds)
+    LOGGER.info("Automated execution: renew certificates if needed.")
     LOGGER.info(
-        "Random wait for this renew_job execution: {0} seconds".format(wait_time)
+        "Random wait for this execution: {0} seconds".format(wait_time)
     )
     time.sleep(wait_time)
     certbot.renew(config_path, directory_path)

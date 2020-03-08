@@ -23,6 +23,10 @@ def load(config_path: str) -> Dict:
     with open(schema_path) as file_h:
         schema = yaml.load(file_h.read(), yaml.FullLoader)
 
+    if not config:
+        LOGGER.error("DNSroboCert configuration is empty.")
+        return None
+
     try:
         jsonschema.validate(instance=config, schema=schema)
         _business_check(config)
@@ -40,7 +44,8 @@ Error while validating dnsrobocert configuration for node path {0}:
             if isinstance(e.instance, (dict, list))
             else str(e.instance),
         )
-        raise ValueError(message) from None
+        LOGGER.error(message)
+        return None
 
 
 def _business_check(config: Dict):
