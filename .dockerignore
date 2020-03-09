@@ -6,3 +6,4 @@
 !/poetry.lock
 !/README.md
 !/docker
+!/constraints.txt

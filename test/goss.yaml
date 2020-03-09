@@ -1,31 +1,29 @@
 file:
-  /etc/letsencrypt/domains.conf:
+  /etc/dnsrobocert/config.yml:
     exists: true
     mode: "0644"
-    size: 0
+    size: 12
     owner: root
     group: root
     filetype: file
     contains: []
-port:
-  tcp:5555:
-    listening: true
-    ip:
-    - 127.0.0.1
-  tcp:5556:
-    listening: true
-    ip:
-    - 127.0.0.1
-  udp:12027:
-    listening: true
-    ip:
-    - 0.0.0.0
+  /root/.local/pipx/venvs/dnsrobocert/bin/python:
+    exists: true
+    mode: "0777"
+    size: 7
+    owner: root
+    group: root
+    linked-to: python3
+    filetype: symlink
+    contains: []
+  /root/.local/pipx/venvs/dnsrobocert/bin/dnsrobocert:
+    exists: true
+    mode: "0755"
+    size: 250
+    owner: root
+    group: root
+    filetype: file
+    contains: []
 process:
-  circusd:
-    running: true
-  crond:
-    running: true
-  sleep:
-    running: true
-  watch-domains.s:
+  dnsrobocert:
     running: true
