@@ -19,8 +19,8 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def _flush_subprocess_stream(process: subprocess.Popen, stdtype: str = "stdout"):
-    if stdtype == "stdout":
+def _flush_subprocess_stream(process: subprocess.Popen, std_type: str = "stdout"):
+    if std_type == "stdout":
         std = process.stdout
     else:
         std = process.stderr
@@ -70,16 +70,16 @@ def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
         )
 
 
-def fix_permissions(certs_perms_config: Dict[str, Any], target_path: str):
-    files_mode = certs_perms_config.get("files_mode", 0o640)
-    dirs_mode = certs_perms_config.get("dirs_mode", 0o750)
+def fix_permissions(certificate_permissions: Dict[str, Any], target_path: str):
+    files_mode = certificate_permissions.get("files_mode", 0o640)
+    dirs_mode = certificate_permissions.get("dirs_mode", 0o750)
 
     os.chmod(target_path, dirs_mode)
 
     uid = None
     gid = None
-    user = certs_perms_config.get("user")
-    group = certs_perms_config.get("group")
+    user = certificate_permissions.get("user")
+    group = certificate_permissions.get("group")
     if (user or group) and not POSIX_MODE:
         LOGGER.warning(
             "Setting user and group for certificates/keys is not supported on Windows."
@@ -99,7 +99,9 @@ def fix_permissions(certs_perms_config: Dict[str, Any], target_path: str):
                 os.chown(os.path.join(root, path), uid, gid)  # type: ignore
 
 
-def configure_certbot_workspace(config: Dict[str, Any], directory_path: str):
+def configure_certbot_workspace(
+    dnsrobocert_config: Dict[str, Any], directory_path: str
+):
     live_path = os.path.join(directory_path, "archive")
     archive_path = os.path.join(directory_path, "live")
 
@@ -108,9 +110,11 @@ def configure_certbot_workspace(config: Dict[str, Any], directory_path: str):
     if not os.path.exists(archive_path):
         os.makedirs(archive_path)
 
-    certs_permissions_config = config.get("acme", {}).get("certs_permissions", {})
-    fix_permissions(certs_permissions_config, live_path)
-    fix_permissions(certs_permissions_config, archive_path)
+    certificate_permissions = dnsrobocert_config.get("acme", {}).get(
+        "certs_permissions", {}
+    )
+    fix_permissions(certificate_permissions, live_path)
+    fix_permissions(certificate_permissions, archive_path)
 
 
 def digest(path):

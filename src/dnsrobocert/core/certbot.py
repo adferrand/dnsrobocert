@@ -25,7 +25,7 @@ def account(config_path: str, directory_path: str):
         )
         return
 
-    url = _acme_url(dnsrobocert_config)
+    url = config.get_acme_url(dnsrobocert_config)
 
     utils.execute(
         [
@@ -57,8 +57,7 @@ def certonly(
     secondaries: List[str] = None,
     force_renew: bool = False,
 ):
-    dnsrobocert_config = config.load(config_path)
-    url = _acme_url(dnsrobocert_config)
+    url = config.get_acme_url(config.load(config_path))
 
     additional_params = []
     if force_renew:
@@ -124,8 +123,7 @@ def renew(config_path: str, directory_path: str):
 
 
 def revoke(config_path: str, directory_path: str, lineage: str):
-    dnsrobocert_config = config.load(config_path)
-    url = _acme_url(dnsrobocert_config)
+    url = config.get_acme_url(config.load(config_path))
 
     utils.execute(
         [
@@ -155,24 +153,6 @@ def _hook_cmd(hook_type: str, config_path: str, lineage: str = None) -> str:
     if lineage:
         command = '{0} -l "{1}"'.format(command, lineage)
     return command
-
-
-def _acme_url(dnsrobocore_config: Dict) -> str:
-    acme = dnsrobocore_config.get("acme", {})
-
-    directory_url = dnsrobocore_config.get("directory_url")
-    if directory_url:
-        return directory_url
-
-    api_version = acme.get("api_version", 2)
-    staging = acme.get("staging", False)
-
-    if api_version < 2:
-        domain = "acme-staging" if staging else "acme-v01"
-    else:
-        domain = "acme-staging-v02" if staging else "acme-v02"
-
-    return "https://{0}.api.letsencrypt.org/directory".format(domain)
 
 
 if __name__ == "__main__":

@@ -15,8 +15,7 @@ from dns import resolver
 from lexicon.client import Client
 from lexicon.config import ConfigResolver
 
-from dnsrobocert.core import config as dnsrobocert_config
-from dnsrobocert.core import utils
+from dnsrobocert.core import config, utils
 
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
@@ -34,20 +33,20 @@ def main(args: List[str] = None):
     parser.add_argument("-l", "--lineage", default="None", required=False)
 
     parsed_args = parser.parse_args(args)
-    config = dnsrobocert_config.load(parsed_args.config)
+    dnsrobocert_config = config.load(parsed_args.config)
 
-    globals()[parsed_args.type](config, parsed_args.lineage)
+    globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
 
 
-def auth(config: Dict[str, str], lineage: str):
-    profile_name, profile_content = _load_profile(config, lineage)
+def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
+    profile = config.get_profile(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
-    _txt_challenge(profile_name, profile_content, token, domain, action="create")
+    _txt_challenge(profile, token, domain, action="create")
 
-    sleep_time = profile_content.get("sleep_time", 30)
-    max_checks = profile_content.get("max_checks", 0)
+    sleep_time = profile.get("sleep_time", 30)
+    max_checks = profile.get("max_checks", 0)
     if max_checks:
         checks = 0
         while True:
@@ -96,64 +95,35 @@ def auth(config: Dict[str, str], lineage: str):
         time.sleep(sleep_time)
 
 
-def cleanup(config: Dict[str, str], lineage: str):
-    profile_name, profile_content = _load_profile(config, lineage)
+def cleanup(dnsrobocert_config: Dict[str, str], lineage: str):
+    profile = config.get_profile(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
-    _txt_challenge(profile_name, profile_content, token, domain, action="delete")
+    _txt_challenge(profile, token, domain, action="delete")
 
 
-def deploy(config: Dict[str, Any], _no_lineage: Any):
+def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
     lineage_path = os.environ["RENEWED_LINEAGE"]
     lineage = os.path.basename(lineage_path)
-    cert_config = config["certificates"][lineage]
-    _, profile_content = _load_profile(config, lineage)
+    certificate = config.get_certificate(dnsrobocert_config, lineage)
+    profile = config.get_profile(dnsrobocert_config, lineage)
 
-    _pfx_export(cert_config, lineage_path)
-    _fix_permissions(config.get("acme", {}).get("certs_permissions", {}), lineage_path)
-    _autorestart(cert_config)
-    _autocmd(cert_config)
-    _deploy_hook(profile_content)
-
-
-def _load_profile(config: Dict[str, Any], domain: str):
-    certificates = [
-        value
-        for key, value in config.get("certificates", {}).items()
-        if key == domain or domain in value.get("san", [])
-    ]
-
-    if not certificates:
-        LOGGER.error(
-            "Error, no certificate configuration for domain {0} is defined.".format(
-                domain
-            )
-        )
-        raise RuntimeError("Hook execution failed.")
-
-    # Following lines are written with the assumption that
-    # the configuration file sanity has been checked before.
-    certificate = certificates[0]
-    profile_name = certificate["profile"]
-    profiles = [
-        value
-        for key, value in config.get("profiles", {}).items()
-        if key == profile_name
-    ]
-
-    return profile_name, profiles[0]
+    _pfx_export(certificate, lineage_path)
+    _fix_permissions(
+        dnsrobocert_config.get("acme", {}).get("certs_permissions", {}), lineage_path
+    )
+    _autorestart(certificate)
+    _autocmd(certificate)
+    _deploy_hook(profile)
 
 
 def _txt_challenge(
-    profile_name: str,
-    profile_content: Dict[str, Any],
-    token: str,
-    domain: str,
-    action: str = "create",
+    profile: Dict[str, Any], token: str, domain: str, action: str = "create",
 ):
-    provider_name = profile_content["provider"]
-    provider_options = profile_content.get("provider_options", {})
+    profile_name = profile["name"]
+    provider_name = profile["provider"]
+    provider_options = profile.get("provider_options", {})
 
     if not provider_options:
         print(
@@ -178,8 +148,8 @@ def _txt_challenge(
     Client(lexicon_config).execute()
 
 
-def _pfx_export(cert_config: Dict[str, Any], lineage_path: str):
-    pfx = cert_config.get("pfx", {})
+def _pfx_export(certificate: Dict[str, Any], lineage_path: str):
+    pfx = certificate.get("pfx", {})
     if pfx.get("export"):
         with open(os.path.join(lineage_path, "privkey.pem"), "rb") as f:
             key = OpenSSL.crypto.load_privatekey(OpenSSL.crypto.FILETYPE_PEM, f.read())
@@ -187,7 +157,7 @@ def _pfx_export(cert_config: Dict[str, Any], lineage_path: str):
             cert = OpenSSL.crypto.load_certificate(
                 OpenSSL.crypto.FILETYPE_PEM, f.read()
             )
-        cacerts = [
+        ca_certs = [
             OpenSSL.crypto.load_certificate(
                 OpenSSL.crypto.FILETYPE_PEM, cert.as_bytes()
             )
@@ -197,20 +167,20 @@ def _pfx_export(cert_config: Dict[str, Any], lineage_path: str):
         p12 = OpenSSL.crypto.PKCS12()
         p12.set_privatekey(key)
         p12.set_certificate(cert)
-        p12.set_ca_certificates(cacerts)
+        p12.set_ca_certificates(ca_certs)
 
         with open(os.path.join(lineage_path, "cert.pfx"), "wb") as f:
             f.write(p12.export(pfx.get("passphrase")))
 
 
-def _fix_permissions(certs_perms_config: Dict[str, str], lineage_path: str):
+def _fix_permissions(certificate_permissions: Dict[str, str], lineage_path: str):
     archive_path = lineage_path.replace(os.path.sep + "live", os.path.sep + "archive")
-    utils.fix_permissions(certs_perms_config, archive_path)
-    utils.fix_permissions(certs_perms_config, lineage_path)
+    utils.fix_permissions(certificate_permissions, archive_path)
+    utils.fix_permissions(certificate_permissions, lineage_path)
 
 
-def _autorestart(cert_config: Dict[str, Any]):
-    autorestart = cert_config.get("autorestart")
+def _autorestart(certificate: Dict[str, Any]):
+    autorestart = certificate.get("autorestart")
     if autorestart:
         if not os.path.exists("/var/run/docker.sock"):
             raise RuntimeError("Error, /var/run/docker.sock socket is missing.")
@@ -226,8 +196,8 @@ def _autorestart(cert_config: Dict[str, Any]):
             )
 
 
-def _autocmd(cert_config: Dict[str, Any]):
-    autocmd = cert_config.get("autocmd")
+def _autocmd(certificate: Dict[str, Any]):
+    autocmd = certificate.get("autocmd")
     if autocmd:
         if not os.path.exists("/var/run/docker.sock"):
             raise RuntimeError("Error, /var/run/docker.sock socket is missing.")
@@ -245,8 +215,8 @@ def _autocmd(cert_config: Dict[str, Any]):
                 )
 
 
-def _deploy_hook(profile_config: Dict[str, str]):
-    deploy_hook = profile_config.get("deploy_hook")
+def _deploy_hook(profile: Dict[str, str]):
+    deploy_hook = profile.get("deploy_hook")
     if deploy_hook:
         if os.name == "nt":
             subprocess.check_call(["powershell.exe", "-Command", deploy_hook])

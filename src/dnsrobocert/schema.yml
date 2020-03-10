@@ -38,49 +38,63 @@ properties:
   api:
     type: object
   profiles:
-    type: object
-    patternProperties:
-      ".*":
-        type: object
-        properties:
-          provider:
-            type: string
-          provider_options:
-            type: object
-          sleep_time:
-            type: number
-          max_checks:
-            type: number
-          delegated_subdomain:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        provider:
+          type: string
+        provider_options:
+          type: object
+        sleep_time:
+          type: number
+        max_checks:
+          type: number
+        delegated_subdomain:
+          type: string
+          pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
+      required: [name, provider]
+      additionalProperties: false
+  certificates:
+    type: array
+    items:
+      type: object
+      properties:
+        profile:
+          type: string
+        domains:
+          type: array
+          items:
             type: string
             pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
-        required: [provider]
-        additionalProperties: false
-  certificates:
-    type: object
-    propertyNames:
-      pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
-    patternProperties:
-      ".*":
-        type: object
-        properties:
-          profile:
-            type: string
-          san:
-            type: array
-            items:
+        name:
+          type: string
+        pfx:
+          type: object
+          properties:
+            export:
+              type: boolean
+            passphrase:
               type: string
-              pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
-          pfx:
-            type: object
-            properties:
-              export:
-                type: boolean
-              passphrase:
+          required: [export]
+          additionalProperties: false
+        autorestart:
+          type: object
+          properties:
+            containers:
+              type: array
+              items:
                 type: string
-            required: [export]
-            additionalProperties: false
-          autorestart:
+            swarm_services:
+              type: array
+              items:
+                type: string
+          additionalProperties: false
+        autocmd:
+          type: array
+          items:
             type: object
             properties:
               containers:
@@ -91,26 +105,12 @@ properties:
                 type: array
                 items:
                   type: string
+              cmd:
+                type: string
+            required: [cmd]
             additionalProperties: false
-          autocmd:
-            type: array
-            items:
-              type: object
-              properties:
-                containers:
-                  type: array
-                  items:
-                    type: string
-                swarm_services:
-                  type: array
-                  items:
-                    type: string
-                cmd:
-                  type: string
-              required: [cmd]
-              additionalProperties: false
-          force_renew:
-            type: boolean
-        required: [profile]
-        additionalProperties: false
+        force_renew:
+          type: boolean
+      required: [domains, profile]
+      additionalProperties: false
 additionalProperties: false

@@ -76,7 +76,7 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
                 certbot.revoke(runtime_config_path, directory_path, domain)
 
 
-class _Daemon():
+class _Daemon:
     do_shutdown = False
 
     def __init__(self):
@@ -97,11 +97,11 @@ def _renew_job(config_path: str, directory_path: str):
 
 
 def _watch_config(config_path: str, directory_path: str):
-    LOGGER.info('Starting DNSroboCert.')
+    LOGGER.info("Starting DNSroboCert.")
 
     with tempfile.NamedTemporaryFile() as runtime_config_file:
         runtime_config_path = runtime_config_file.name
-        
+
         schedule.every().day.at("12:00").do(
             _renew_job, config_path=runtime_config_path, directory_path=directory_path
         )
@@ -113,7 +113,7 @@ def _watch_config(config_path: str, directory_path: str):
         previous_digest = ""
         while not daemon.do_shutdown:
             schedule.run_pending()
-            
+
             try:
                 generated_config_path = legacy.migrate(config_path)
                 effective_config_path = (
@@ -133,7 +133,7 @@ def _watch_config(config_path: str, directory_path: str):
 
             time.sleep(1)
 
-    LOGGER.info('Exiting DNSroboCert.')
+    LOGGER.info("Exiting DNSroboCert.")
 
 
 def main():

@@ -1,8 +1,8 @@
 import logging
 import os
 import re
-from typing import Any, Dict
 import shlex
+from typing import Any, Dict, List
 
 import coloredlogs
 import yaml
@@ -25,12 +25,13 @@ def migrate(config_path):
     provider = os.environ.get("LEXICON_PROVIDER")
     if not provider:
         LOGGER.error("Error, LEXICON_PROVIDER environment variable is not set!")
+        return
 
     envs, configs, args = _gather_parameters(provider)
 
-    provider_config = {"provider": provider}
+    provider_config = {"name": provider, "provider": provider}
     migrated_config = {
-        "profiles": {provider: provider_config},
+        "profiles": [provider_config],
         "certificates": _extract_certificates(envs, provider),
     }
 
@@ -42,8 +43,8 @@ def migrate(config_path):
     env_key_prefix = "LEXICON_{0}_".format(provider.upper())
     for key, value in envs.items():
         if key.startswith(env_key_prefix):
-            provider_config.setdefault(  # type: ignore
-                "provider_options", {}
+            provider_config.setdefault(
+                "provider_options", {}  # type: ignore
             )[
                 key.replace(env_key_prefix, "").lower()
             ] = value
@@ -54,8 +55,8 @@ def migrate(config_path):
         provider_config.setdefault("provider_options", {})[  # type: ignore
             key
         ] = value
-    if args.get('delegated'):
-        provider_config['delegated_subdomain'] = args.get('delegated')
+    if args.get("delegated"):
+        provider_config["delegated_subdomain"] = args.get("delegated")
 
     example_config_path = os.path.join(
         os.path.dirname(config_path), "config-generated.yml"
@@ -158,9 +159,14 @@ def _gather_parameters(provider):
     }
 
     command_line_params = {}
-    command = [provider, 'create', 'example.net', 'TXT',
-               *shlex.split(os.environ.get('LEXICON_PROVIDER_OPTIONS', '')),
-               *shlex.split(os.environ.get('LEXICON_OPTIONS', ''))]
+    command = [
+        *shlex.split(os.environ.get("LEXICON_OPTIONS", "")),
+        provider,
+        "create",
+        "example.net",
+        "TXT",
+        *shlex.split(os.environ.get("LEXICON_PROVIDER_OPTIONS", "")),
+    ]
     try:
         args, _ = LEXICON_ARGPARSER.parse_known_args(command)
     except SystemExit:
@@ -188,38 +194,47 @@ def _gather_parameters(provider):
         elif isinstance(source, config.ArgsConfigSource):
             command_line_params = {
                 provider: {
-                    key: value for key, value in source._parameters.items()
-                    if key not in ('delegated', 'config_dir', 'provider_name', 'action', 'domain',
-                                   'type', 'name', 'content', 'ttl', 'priority', 'identifier',
-                                   'log_level', 'output') and value is not None
+                    key: value
+                    for key, value in source._parameters.items()
+                    if key
+                    not in (
+                        "delegated",
+                        "config_dir",
+                        "provider_name",
+                        "action",
+                        "domain",
+                        "type",
+                        "name",
+                        "content",
+                        "ttl",
+                        "priority",
+                        "identifier",
+                        "log_level",
+                        "output",
+                    )
+                    and value is not None
                 }
             }
-            if source._parameters['delegated']:
-                command_line_params['delegated'] = source._parameters['delegated']
-            print(command_line_params)
+            if source._parameters["delegated"]:
+                command_line_params["delegated"] = source._parameters["delegated"]
 
     return env_variables_of_interest, lexicon_files_config, command_line_params
 
 
-def _extract_certificates(envs: Dict[str, str], profile: str) -> Dict[str, Any]:
-    certificates: Dict[str, Any] = {}
+def _extract_certificates(envs: Dict[str, str], profile: str) -> List[Dict[str, Any]]:
+    certificates: List[Dict[str, Any]] = []
 
     with open(os.path.join(LEGACY_CONFIGURATION_PATH)) as f:
         lines = f.read().splitlines()
 
     for line in lines:
         if line.strip():
-            lineage = None
-            additional_certs = []
+            domains = []
             autorestart = []
             autocmd = []
 
             items = re.split("\\s+", line)
             for index, item in enumerate(items):
-                if index == 0:
-                    lineage = item
-                    continue
-
                 if item.startswith("autorestart-containers="):
                     containers = item.replace("autorestart-containers=", "").split(",")
                     containers = [container.strip() for container in containers]
@@ -240,16 +255,19 @@ def _extract_certificates(envs: Dict[str, str], profile: str) -> Dict[str, Any]:
                         autocmd.append({"containers": container, "cmd": command})
                     break
 
-                additional_certs.append(item)
+                domains.append(item)
 
-            if lineage:
-                certificates[lineage] = {}
-                certificates[lineage]["profile"] = profile
-                if additional_certs:
-                    certificates[lineage]["san"] = additional_certs
+            if domains:
+                certificate: Dict[str, Any] = {
+                    "name": domains[0],
+                    "domains": domains,
+                    "profile": profile,
+                }
                 if autorestart:
-                    certificates[lineage]["autorestart"] = autorestart
+                    certificate["autorestart"] = autorestart
                 if autocmd:
-                    certificates[lineage]["autocmd"] = autocmd
+                    certificate["autocmd"] = autocmd
+
+                certificates.append(certificate)
 
     return certificates
