@@ -7,18 +7,15 @@ env:
     - DOCKER_CLI_EXPERIMENTAL=enabled IMAGE_NAME=patrickpissurno/rpi-docker-letsencrypt-dns REGISTRY_USER=patrickpissurno # REGISTRY_PASS=...
     
 before_script:
-    - sudo apt update
-    - sudo apt upgrade -y
     - pip3 install travis-wait-improved
-    - curl -fsSL test.docker.com -o get-docker.sh && sh get-docker.sh
-    - sudo usermod -aG docker $USER
-    - sudo docker --version
-    - sudo docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
-    - sudo docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-    - sudo docker buildx create --use
+    - curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+    - docker --version
+    - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    - docker buildx create --use
     - df -h
     
 script:
     - git clone https://github.com/adferrand/docker-letsencrypt-dns.git build && cd build
     - if [ -f VERSION ]; then TAG="--tag $IMAGE_NAME:$(cat VERSION)"; fi
-    - travis-wait-improved --timeout 240m sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 $TAG --tag "${IMAGE_NAME}" --push .
+    - travis-wait-improved --timeout 240m docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 $TAG --tag "${IMAGE_NAME}" --push .
