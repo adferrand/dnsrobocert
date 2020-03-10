@@ -20,4 +20,5 @@ before_script:
     
 script:
     - git clone https://github.com/adferrand/docker-letsencrypt-dns.git build && cd build
-    - travis-wait-improved --timeout 240m sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag "${IMAGE_NAME}:latest" --push .
+    - if [ -f VERSION ]; then TAG="--tag $IMAGE_NAME:$(cat VERSION)"; fi
+    - travis-wait-improved --timeout 240m sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 $TAG --tag "${IMAGE_NAME}" --push .
