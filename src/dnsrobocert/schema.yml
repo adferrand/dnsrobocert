@@ -51,6 +51,9 @@ properties:
             type: number
           max_checks:
             type: number
+          delegated_subdomain:
+            type: string
+            pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
         required: [provider]
         additionalProperties: false
   certificates:

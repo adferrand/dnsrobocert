@@ -2,14 +2,17 @@ import logging
 import os
 import re
 from typing import Any, Dict
+import shlex
 
 import coloredlogs
 import yaml
-from lexicon import config
+from lexicon import config, parser
 
 LEGACY_CONFIGURATION_PATH = "/etc/letsencrypt/domains.conf"
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
+
+LEXICON_ARGPARSER = parser.generate_cli_main_parser()
 
 
 def migrate(config_path):
@@ -19,32 +22,40 @@ def migrate(config_path):
     if not os.path.exists(LEGACY_CONFIGURATION_PATH):
         return
 
-    envs, configs = _gather_parameters()
-
-    provider = profile = envs.get("LEXICON_PROVIDER")
+    provider = os.environ.get("LEXICON_PROVIDER")
     if not provider:
         LOGGER.error("Error, LEXICON_PROVIDER environment variable is not set!")
 
+    envs, configs, args = _gather_parameters(provider)
+
+    provider_config = {"provider": provider}
     migrated_config = {
-        "profiles": {provider: {"provider": provider}},
-        "certificates": _extract_certificates(envs, profile),
+        "profiles": {provider: provider_config},
+        "certificates": _extract_certificates(envs, provider),
     }
 
     for key, value in configs.get(provider, {}).items():
-        migrated_config.get("profiles", {}).get(profile, {}).setdefault("provider_options", {})[  # type: ignore
+        provider_config.setdefault("provider_options", {})[  # type: ignore
             key
         ] = value
 
     env_key_prefix = "LEXICON_{0}_".format(provider.upper())
     for key, value in envs.items():
         if key.startswith(env_key_prefix):
-            migrated_config.get("profiles", {}).get(provider, {}).setdefault(  # type: ignore
+            provider_config.setdefault(  # type: ignore
                 "provider_options", {}
             )[
                 key.replace(env_key_prefix, "").lower()
             ] = value
 
-    _handle_specific_envs_variables(envs, migrated_config, profile)
+    _handle_specific_envs_variables(envs, migrated_config, provider)
+
+    for key, value in args.get(provider, {}).items():
+        provider_config.setdefault("provider_options", {})[  # type: ignore
+            key
+        ] = value
+    if args.get('delegated'):
+        provider_config['delegated_subdomain'] = args.get('delegated')
 
     example_config_path = os.path.join(
         os.path.dirname(config_path), "config-generated.yml"
@@ -136,7 +147,7 @@ def _handle_specific_envs_variables(
                 value["pfx"]["passphrase"] = envs["PFX_EXPORT_PASSPHRASE"]
 
 
-def _gather_parameters():
+def _gather_parameters(provider):
     env_variables_of_interest = {
         name: value
         for name, value in os.environ.items()
@@ -146,25 +157,48 @@ def _gather_parameters():
         or name in ["CRON_TIME_STRING", "DOCKER_CLUSTER_PROVIDER", "DEPLOY_HOOK"]
     }
 
+    command_line_params = {}
+    command = [provider, 'create', 'example.net', 'TXT',
+               *shlex.split(os.environ.get('LEXICON_PROVIDER_OPTIONS', '')),
+               *shlex.split(os.environ.get('LEXICON_OPTIONS', ''))]
+    try:
+        args, _ = LEXICON_ARGPARSER.parse_known_args(command)
+    except SystemExit:
+        args = None
+
     resolver = config.ConfigResolver()
+    if args:
+        resolver.with_args(args)
     resolver.with_env()
     resolver.with_config_dir(os.path.dirname(LEGACY_CONFIGURATION_PATH))
 
     lexicon_files_config: Dict[str, Any] = {}
     for source in resolver._config_sources:
-        if isinstance(source, config.EnvironmentConfigSource):
-            env_variables_of_interest.update(source._parameters)
-        elif isinstance(source, config.FileConfigSource) and not isinstance(
-            source, config.ProviderFileConfigSource
-        ):
-            lexicon_files_config.update(source._parameters)
-        elif isinstance(source, config.ProviderFileConfigSource):
+        if isinstance(source, config.ProviderFileConfigSource):
             provider = list(source._parameters.keys())[0]
             lexicon_files_config.setdefault(provider, {}).update(
                 source._parameters[provider]
             )
+        elif isinstance(source, config.FileConfigSource) and not isinstance(
+            source, config.ProviderFileConfigSource
+        ):
+            lexicon_files_config.update(source._parameters)
+        elif isinstance(source, config.EnvironmentConfigSource):
+            env_variables_of_interest.update(source._parameters)
+        elif isinstance(source, config.ArgsConfigSource):
+            command_line_params = {
+                provider: {
+                    key: value for key, value in source._parameters.items()
+                    if key not in ('delegated', 'config_dir', 'provider_name', 'action', 'domain',
+                                   'type', 'name', 'content', 'ttl', 'priority', 'identifier',
+                                   'log_level', 'output') and value is not None
+                }
+            }
+            if source._parameters['delegated']:
+                command_line_params['delegated'] = source._parameters['delegated']
+            print(command_line_params)
 
-    return env_variables_of_interest, lexicon_files_config
+    return env_variables_of_interest, lexicon_files_config, command_line_params
 
 
 def _extract_certificates(envs: Dict[str, str], profile: str) -> Dict[str, Any]:

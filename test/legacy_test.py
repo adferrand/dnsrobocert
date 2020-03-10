@@ -15,12 +15,14 @@ def test_legacy_migration(tmp_path, monkeypatch):
     with open(str(legacy_config_domain_file), "w") as f:
         f.write(
             """\
-test.example.com test1.example.com
+test1.sub.example.com test2.sub.example.com
 """
         )
 
-    monkeypatch.setenv("LEXICON_PROVIDER", "dummy")
-    monkeypatch.setenv("LEXICON_DUMMY_AUTH_TOKEN", "TOKEN")
+    monkeypatch.setenv("LEXICON_PROVIDER", "ovh")
+    monkeypatch.setenv("LEXICON_OVH_AUTH_APPLICATION_KEY", "KEY")
+    monkeypatch.setenv("LEXICON_OPTIONS", "--delegated=sub.example.com")
+    monkeypatch.setenv("LEXICON_PROVIDER_OPTIONS", "--auth-entrypoint ovh-eu --auth-application-secret=SECRET")
     monkeypatch.setenv("LETSENCRYPT_USER_MAIL", "john.doe@example.com")
     monkeypatch.setenv("LETSENCRYPT_STAGING", "true")
 
@@ -28,7 +30,7 @@ test.example.com test1.example.com
         "dnsrobocert.core.legacy.LEGACY_CONFIGURATION_PATH",
         new=legacy_config_domain_file,
     ):
-        dnsrobocert_config = legacy.migrate(config_path)
+        legacy.migrate(config_path)
 
     assert os.path.exists(generated_config_path)
     with open(generated_config_path) as f:
@@ -40,14 +42,17 @@ acme:
   email_account: john.doe@example.com
   staging: true
 certificates:
-  test.example.com:
-    profile: dummy
+  test1.sub.example.com:
+    profile: ovh
     san:
-    - test1.example.com
+    - test2.sub.example.com
 profiles:
-  dummy:
-    provider: dummy
+  ovh:
+    provider: ovh
     provider_options:
-      auth_token: TOKEN
+      auth_application_key: KEY
+      auth_application_secret: SECRET
+      auth_entrypoint: ovh-eu
+    delegated_subdomain: sub.example.com
 """
     )
