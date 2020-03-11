@@ -17,6 +17,7 @@
 	* [Certificates reconfiguration at runtime](#certificates-reconfiguration-at-runtime)
 	* [Restart containers when a certificate is renewed](#restart-containers-when-a-certificate-is-renewed)
 	* [Call a reload command on containers when a certificate is renewed](#call-a-reload-command-on-containers-when-a-certificate-is-renewed)
+	* [Per domain delegates](#per-domain-delegates)
 	* [Run a custom deploy hook script](#run-a-custom-deploy-hook-script)
 	* [Run the container in a cluster environment](#run-the-container-in-a-cluster-environment)
 * [Miscellaneous and testing](#miscellaneous-and-testing)
@@ -129,7 +130,7 @@ Once done, you will see authentication parameters of the form `--auth-somevar`. 
 
 For example with OVH, authentication parameters are `--auth-entrypoint`, `--auth-application-key`, `--auth-application-secret` and `--auth-consumer-key`. Corresponding environment variables are `LEXICON_OVH_AUTH_ENTRYPOINT`, `LEXICON_OVH_AUTH_APPLICATION_KEY`, `LEXICON_OVH_AUTH_APPLICATION_SECRET` and `LEXICON_OVH_AUTH_CONSUMER_KEY`. Or alternatively, set the `LEXICON_PROVIDER_OPTIONS` to `--auth-entrypoint=my_entrypoint --auth-application-key=my_application_key --auth-application-secret=my_application_secret --auth-consumer-key=my_consumer_key`.
 
-Finally there is some options specific to Lexicon itself, not related to the authentication on a particular provider (like `--delegate`). You can specify this kind of options (eg. `domain` for Cloudns) via the `LEXICON_OPTIONS (default empty)` environment variable.
+Finally there is some options specific to Lexicon itself, not related to the authentication on a particular provider (like `--delegated`). You can specify this kind of options (eg. `domain` for Cloudns) via the `LEXICON_OPTIONS (default empty)` environment variable.
 
 #### With YAML configuration files
 
@@ -137,7 +138,7 @@ Starting with version 2.7.0 that uses Lexicon 3.x, DNS providers and Lexicon can
 
 To select the provider to use, the environment variable `LEXICON_PROVIDER` still need to be set.
 
-Taking the OVH example in the previous version, with a specific configuration to provide for Lexicon itself (`--delegate`), the `lexicon.yml` will take the following form:
+Taking the OVH example in the previous version, with a specific configuration to provide for Lexicon itself (`--delegated`), the `lexicon.yml` will take the following form:
 ```yml
 # Content of /etc/letsencrypt/lexicon.yml
 delegate: subdomain
@@ -298,6 +299,13 @@ web.example.com autocmd-containers=my-apache:apachectl graceful
 If the certificate `web.example.com` is renewed, command `apachectl graceful` will be invoked on container `my-apache`, and the apache2 service will use the new certificate without killing any HTTP session.
 
 _(Limitations on invokable commands) The option `autocmd-container` is intended to call a simple executable file with few potential arguments. It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command is not executed in a shell on the target, and variables will be resolved against the lets-encrypt container environment. If you want to operate advanced scripting, put an executable script in the target container, and use its path in `autocmd-container` option._
+
+### Per domain delegates
+
+If you need to specify a different delegate per domain, you can do so by following your domain with `delegated=delegate.domain.com`, before any autocmd from the prior sections. For example:
+```
+web.example.com delegated=web.example.com autocmd-containers=my-apache:apachectl graceful
+```
 
 ### Run a custom deploy hook script
 

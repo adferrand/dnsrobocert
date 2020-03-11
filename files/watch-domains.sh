@@ -42,7 +42,7 @@ while true; do
         while read -r entry || [ -n "$entry" ]; do
             autorestart_config=`echo $entry | grep -E -o 'autorestart-containers=.*' | sed 's/autocmd-containers=.*//' | sed 's/autorestart-containers=//' | xargs`
             autocmd_config=`echo $entry | grep -E -o 'autocmd-containers=.*' | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=//' | xargs`
-            clean_domains=`echo $entry | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=.*//' | xargs`
+            clean_domains=`echo $entry | sed 's/delegated=[^[:space:]]*//' | sed 's/autorestart-containers=.*//' | sed 's/autocmd-containers=.*//' | xargs`
             domains_cmd=""
             main_domain=""
 
