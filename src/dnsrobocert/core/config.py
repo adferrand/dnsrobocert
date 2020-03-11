@@ -49,7 +49,6 @@ Error while validating dnsrobocert configuration for node path {0}:
 
 
 def get_profile(config: Dict[str, Any], profile_name: str) -> Dict[str, Any]:
-    print(profile_name)
     profiles = [
         profile
         for profile in config.get("profiles", {})

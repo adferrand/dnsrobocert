@@ -1,6 +1,5 @@
 import hashlib
 import logging
-import multiprocessing
 import os
 import subprocess
 import sys
@@ -19,21 +18,6 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def _flush_subprocess_stream(process: subprocess.Popen, std_type: str = "stdout"):
-    if std_type == "stdout":
-        std = process.stdout
-    else:
-        std = process.stderr
-
-    while True:
-        output = std.readline()
-        if output == "" and process.poll() is not None:
-            break
-        if output:
-            sys.stdout.write(" | " + output)
-    process.poll()
-
-
 def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
     if not env:
         env = os.environ.copy()
@@ -44,22 +28,18 @@ def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
     process = subprocess.Popen(
         args,
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
         env=env,
         universal_newlines=True,
     )
-    process_stdout = multiprocessing.Process(
-        target=_flush_subprocess_stream, args=(process, "stdout")
-    )
-    process_stderr = multiprocessing.Process(
-        target=_flush_subprocess_stream, args=(process, "stderr")
-    )
 
-    process_stdout.start()
-    process_stderr.start()
+    while True:
+        output = process.stdout.readline()
+        if output == "" and process.poll() is not None:
+            break
+        if output:
+            sys.stdout.write(" | " + output)
 
-    process_stdout.join()
-    process_stderr.join()
     errcode = process.poll()
 
     if errcode != 0 and check:

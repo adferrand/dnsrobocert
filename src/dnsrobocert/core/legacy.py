@@ -3,6 +3,8 @@ import os
 import re
 import shlex
 from typing import Any, Dict, List
+from copy import deepcopy
+from functools import reduce
 
 import coloredlogs
 import yaml
@@ -111,38 +113,38 @@ def _handle_specific_envs_variables(
     if envs.get("CERTS_FILES_MODE"):
         migrated_config.setdefault("acme", {}).setdefault("certs_permissions", {})[
             "files_mode"
-        ] = int(envs["CERTS_FILES_MODE"])
+        ] = int(envs["CERTS_FILES_MODE"], 8)
 
     if envs.get("CERTS_DIRS_MODE"):
         migrated_config.setdefault("acme", {}).setdefault("certs_permissions", {})[
             "dirs_mode"
-        ] = int(envs["CERTS_DIRS_MODE"])
+        ] = int(envs["CERTS_DIRS_MODE"], 8)
 
     if envs.get("CERTS_USER_OWNER"):
         migrated_config.setdefault("acme", {}).setdefault("certs_permissions", {})[
-            "users"
-        ] = int(envs["CERTS_USER_OWNER"])
+            "user"
+        ] = str(envs["CERTS_USER_OWNER"])
 
     if envs.get("CERTS_GROUP_OWNER"):
         migrated_config.setdefault("acme", {}).setdefault("certs_permissions", {})[
             "group"
-        ] = int(envs["CERTS_GROUP_OWNER"])
+        ] = str(envs["CERTS_GROUP_OWNER"])
 
     if envs.get("LEXICON_SLEEP_TIME"):
-        migrated_config["profiles"][profile]["sleep_time"] = int(
+        migrated_config["profiles"][0]["sleep_time"] = int(
             envs["LEXICON_SLEEP_TIME"]
         )
 
     if envs.get("LEXICON_MAX_CHECKS"):
-        migrated_config["profiles"][profile]["max_checks"] = int(
+        migrated_config["profiles"][0]["max_checks"] = int(
             envs["LEXICON_MAX_CHECKS"]
         )
 
     if envs.get("DEPLOY_HOOK"):
-        migrated_config["profiles"][profile]["deploy_hook"] = int(envs["DEPLOY_HOOK"])
+        migrated_config["profiles"][0]["deploy_hook"] = int(envs["DEPLOY_HOOK"])
 
     if envs.get("PFX_EXPORT") == "true":
-        for value in migrated_config.get("certificates", {}).values():
+        for value in migrated_config.get("certificates", []):
             value.setdefault("pfx", {})["export"] = True
             if envs.get("PFX_EXPORT_PASSPHRASE"):
                 value["pfx"]["passphrase"] = envs["PFX_EXPORT_PASSPHRASE"]
@@ -180,15 +182,8 @@ def _gather_parameters(provider):
 
     lexicon_files_config: Dict[str, Any] = {}
     for source in resolver._config_sources:
-        if isinstance(source, config.ProviderFileConfigSource):
-            provider = list(source._parameters.keys())[0]
-            lexicon_files_config.setdefault(provider, {}).update(
-                source._parameters[provider]
-            )
-        elif isinstance(source, config.FileConfigSource) and not isinstance(
-            source, config.ProviderFileConfigSource
-        ):
-            lexicon_files_config.update(source._parameters)
+        if isinstance(source, config.FileConfigSource):
+            _deep_merge(lexicon_files_config, source._parameters)
         elif isinstance(source, config.EnvironmentConfigSource):
             env_variables_of_interest.update(source._parameters)
         elif isinstance(source, config.ArgsConfigSource):
@@ -252,7 +247,7 @@ def _extract_certificates(envs: Dict[str, str], profile: str) -> List[Dict[str, 
                     directives = item.replace("autocmd-containers=", "").split(",")
                     for directive in directives:
                         [container, command] = directive.split(":")
-                        autocmd.append({"containers": container, "cmd": command})
+                        autocmd.append({"containers": [container], "cmd": command})
                     break
 
                 domains.append(item)
@@ -271,3 +266,15 @@ def _extract_certificates(envs: Dict[str, str], profile: str) -> List[Dict[str, 
                 certificates.append(certificate)
 
     return certificates
+
+
+def _deep_merge(*dicts):
+    def merge_into(d1, d2):
+        for key in d2:
+            if key not in d1 or not isinstance(d1[key], dict):
+                d1[key] = deepcopy(d2[key])
+            else:
+                d1[key] = merge_into(d1[key], d2[key])
+        return d1
+
+    return reduce(merge_into, dicts[1:], dicts[0])

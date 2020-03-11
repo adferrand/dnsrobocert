@@ -81,16 +81,18 @@ properties:
           required: [export]
           additionalProperties: false
         autorestart:
-          type: object
-          properties:
-            containers:
-              type: array
-              items:
-                type: string
-            swarm_services:
-              type: array
-              items:
-                type: string
+          type: array
+          items:
+            type: object
+            properties:
+              containers:
+                type: array
+                items:
+                  type: string
+              swarm_services:
+                type: array
+                items:
+                  type: string
           additionalProperties: false
         autocmd:
           type: array

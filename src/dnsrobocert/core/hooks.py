@@ -199,15 +199,16 @@ def _autorestart(certificate: Dict[str, Any]):
         if not os.path.exists("/var/run/docker.sock"):
             raise RuntimeError("Error, /var/run/docker.sock socket is missing.")
 
-        containers = autorestart.get("containers", [])
-        for container in containers:
-            utils.execute(["docker", "restart", container])
+        for onerestart in autorestart:
+            containers = onerestart.get("containers", [])
+            for container in containers:
+                utils.execute(["docker", "restart", container])
 
-        swarm_services = autorestart.get("swarm_services", [])
-        for service in swarm_services:
-            utils.execute(
-                ["docker", "service", "update", "--detach=false", "--force", service]
-            )
+            swarm_services = onerestart.get("swarm_services", [])
+            for service in swarm_services:
+                utils.execute(
+                    ["docker", "service", "update", "--detach=false", "--force", service]
+                )
 
 
 def _autocmd(certificate: Dict[str, Any]):
