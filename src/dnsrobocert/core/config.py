@@ -1,7 +1,7 @@
 import logging
 import os
-from typing import Any, Dict, Optional
 import re
+from typing import Any, Dict, Optional, Set
 
 import coloredlogs
 import jsonschema
@@ -51,9 +51,7 @@ Error while validating dnsrobocert configuration for node path {0}:
 -----
 {2}\
 """.format(
-            "/" + "/".join([str(item) for item in e.path]),
-            e.message,
-            raw_config,
+            "/" + "/".join([str(item) for item in e.path]), e.message, raw_config,
         )
         LOGGER.error(message)
         return None
@@ -67,8 +65,7 @@ Error while validating dnsrobocert configuration:
 -----
 {1}\
 """.format(
-            str(e),
-            raw_config,
+            str(e), raw_config,
         )
         LOGGER.error(message)
         return None
@@ -94,12 +91,20 @@ def get_certificate(config: Dict[str, Any], lineage: str) -> Optional[Dict[str, 
     return certificates[0] if certificates else None
 
 
-def get_lineage(certificate_config: Dict[str, Any]) -> Optional[str]:
-    return (
+def get_lineage(certificate_config: Dict[str, Any]) -> str:
+    lineage = (
         certificate_config.get("name")
         if certificate_config.get("name")
         else re.sub(r"^\*\.", "", certificate_config.get("domains", [None])[0])
     )
+    if not lineage:
+        raise ValueError(
+            "Could not find the certificate name for certificate config: {0}".format(
+                certificate_config
+            )
+        )
+
+    return lineage
 
 
 def get_acme_url(config: Dict[str, Any]) -> str:
@@ -140,40 +145,31 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
 
 
 def _business_check(config: Dict[str, Any]):
-    print('business check')
+    print("business check")
     profiles = [profile["name"] for profile in config.get("profiles", [])]
-    lineages = set()
+    lineages: Set[str] = set()
     for certificate_config in config.get("certificates", []):
         # Check that every certificate is associated to an existing profile
         profile = certificate_config.get("profile")
         lineage = get_lineage(certificate_config)
-        if profile not in profiles:
-            raise ValueError(
-                "Profile `{0}` used by certificate `{1}` does not exist.".format(
-                    profile, lineage
+        if lineage:
+            if profile not in profiles:
+                raise ValueError(
+                    "Profile `{0}` used by certificate `{1}` does not exist.".format(
+                        profile, lineage
+                    )
                 )
-            )
 
-        if lineage in lineages:
-            raise ValueError(
-                "Certificate with name `{0}` is duplicated.".format(
-                    lineage
+            if lineage in lineages:
+                raise ValueError(
+                    "Certificate with name `{0}` is duplicated.".format(lineage)
                 )
-            )
-        lineages.add(lineage)
+            lineages.add(lineage)
 
     # Check that each files_mode and dirs_mode is a valid POSIX mode
     files_mode = config.get("acme", {}).get("certs_permissions", {}).get("files_mode")
     if files_mode and files_mode > 511:
-        raise ValueError(
-            "Invalid files_mode `{0}` provided.".format(
-                oct(files_mode)
-            )
-        )
+        raise ValueError("Invalid files_mode `{0}` provided.".format(oct(files_mode)))
     dirs_mode = config.get("acme", {}).get("certs_permissions", {}).get("dirs_mode")
     if dirs_mode and dirs_mode > 511:
-        raise ValueError(
-            "Invalid dirs_mode `{0}` provided.".format(
-                oct(files_mode)
-            )
-        )
+        raise ValueError("Invalid dirs_mode `{0}` provided.".format(oct(files_mode)))

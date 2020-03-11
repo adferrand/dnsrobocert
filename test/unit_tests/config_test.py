@@ -86,9 +86,6 @@ certificates:
 
 
 def test_wildcard_lineage():
-    certificate = {
-        'domains': ['*.example.com', 'example.com'],
-        'profile': 'dummy'
-    }
+    certificate = {"domains": ["*.example.com", "example.com"], "profile": "dummy"}
 
-    assert config.get_lineage(certificate) == 'example.com'
+    assert config.get_lineage(certificate) == "example.com"

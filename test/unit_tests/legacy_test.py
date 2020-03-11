@@ -49,7 +49,7 @@ test1.sub.example.com test2.sub.example.com autorestart-containers=container1,co
     monkeypatch.setenv("LEXICON_MAX_CHECKS", "3")
     monkeypatch.setenv("LETSENCRYPT_USER_MAIL", "john.doe@example.com")
     monkeypatch.setenv("LETSENCRYPT_STAGING", "true")
-    monkeypatch.setenv('LETSENCRYPT_ACME_V1', 'true')
+    monkeypatch.setenv("LETSENCRYPT_ACME_V1", "true")
     monkeypatch.setenv("CERTS_DIRS_MODE", "0755")
     monkeypatch.setenv("CERTS_FILES_MODE", "0644")
     monkeypatch.setenv("CERTS_USER_OWNER", "nobody")
