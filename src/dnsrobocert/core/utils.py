@@ -80,11 +80,12 @@ def fix_permissions(certificate_permissions: Dict[str, Any], target_path: str):
     gid = None
     user = certificate_permissions.get("user")
     group = certificate_permissions.get("group")
+
     if (user or group) and not POSIX_MODE:
         LOGGER.warning(
             "Setting user and group for certificates/keys is not supported on Windows."
         )
-    else:
+    elif POSIX_MODE:
         uid = pwd.getpwnam(user)[2] if user else -1
         gid = grp.getgrnam(group)[2] if group else -1
         os.chown(target_path, uid, gid)  # type: ignore

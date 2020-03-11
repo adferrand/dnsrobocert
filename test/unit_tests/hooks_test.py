@@ -51,22 +51,24 @@ def fake_config(tmp_path):
         user: nobody
         group: nogroup
     profiles:
-      dummy-profile:
-        provider: dummy
-        provider_options:
-          auth_token: TOKEN
-        sleep_time: 0.1
+    - name: dummy-profile
+      provider: dummy
+      provider_options:
+        auth_token: TOKEN
+      sleep_time: 0.1
     certificates:
-      {0}:
-        profile: dummy-profile
-        pfx:
-          export: true
-        autocmd:
-          - cmd: echo 'Hello World!'
-            containers: [foo, bar]
-        autorestart:
-          containers: [container1, container2]
-          swarm_services: [service1, service2]
+    - name: {0}
+      domains:
+      - {0}
+      profile: dummy-profile
+      pfx:
+        export: true
+      autocmd:
+      - cmd: echo 'Hello World!'
+        containers: [foo, bar]
+      autorestart:
+        containers: [container1, container2]
+        swarm_services: [service1, service2]
     """.format(
         LINEAGE
     )

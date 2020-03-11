@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 import time
+import traceback
 from typing import Any, Dict, List
 
 import coloredlogs
@@ -21,7 +22,7 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def main(args: List[str] = None):
+def main(args: List[str] = None) -> int:
     if not args:
         args = sys.argv[1:]
 
@@ -35,11 +36,24 @@ def main(args: List[str] = None):
     parsed_args = parser.parse_args(args)
     dnsrobocert_config = config.load(parsed_args.config)
 
-    globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
+    if not dnsrobocert_config:
+        LOGGER.error("Error occured while loading the configuration file, aborting the `{0}` hook."
+                     .format(parsed_args.type))
+        return 1
+
+    try:
+        globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
+    except BaseException as e:
+        LOGGER.error("Error while executing the `{0}` hook:".format(parsed_args.type))
+        LOGGER.error(e)
+        traceback.print_exc(file=sys.stderr)
+        return 1
+
+    return 0
 
 
 def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
-    profile = config.get_profile(dnsrobocert_config, lineage)
+    profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
@@ -96,7 +110,7 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
 
 
 def cleanup(dnsrobocert_config: Dict[str, str], lineage: str):
-    profile = config.get_profile(dnsrobocert_config, lineage)
+    profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
@@ -107,7 +121,7 @@ def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
     lineage_path = os.environ["RENEWED_LINEAGE"]
     lineage = os.path.basename(lineage_path)
     certificate = config.get_certificate(dnsrobocert_config, lineage)
-    profile = config.get_profile(dnsrobocert_config, lineage)
+    profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
 
     _pfx_export(certificate, lineage_path)
     _fix_permissions(
@@ -225,4 +239,4 @@ def _deploy_hook(profile: Dict[str, str]):
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

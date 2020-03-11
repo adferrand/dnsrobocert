@@ -2,7 +2,6 @@
 # -*- encoding: utf-8 -*-
 import argparse
 import logging
-import multiprocessing
 import os
 import re
 import signal
@@ -10,6 +9,7 @@ import sys
 import tempfile
 import time
 import traceback
+from typing import List, Optional
 from random import random
 
 import coloredlogs
@@ -43,31 +43,32 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
 
     LOGGER.info("Creating missing certificates if needed (~1min for each)")
     certificates = dnsrobocert_config.get("certificates", {})
-    for domain, cert_config in certificates.items():
+    for certificate in certificates:
         try:
-            san = cert_config.get("san", [])
-            force_renew = cert_config.get("force_renew", False)
+            lineage = config.get_lineage(certificate)
+            domains = certificate['domains']
+            force_renew = certificate.get("force_renew", False)
             LOGGER.info(
                 "Handling the certificate for domain(s): {0}".format(
-                    ", ".join([domain, *san])
+                    ", ".join(domains)
                 )
             )
             certbot.certonly(
                 runtime_config_path,
                 directory_path,
-                domain,
-                secondaries=san,
+                lineage,
+                domains,
                 force_renew=force_renew,
             )
         except BaseException as error:
             LOGGER.error(
                 "An error occurred while processing certificate config `{0}`:\n{1}".format(
-                    domain, error
+                    certificate, error
                 )
             )
 
     LOGGER.info("Revoke and delete certificates if needed")
-    lineages = set(certificates.keys())
+    lineages = {config.get_lineage(certificate) for certificate in certificates}
     for domain in os.listdir(os.path.join(directory_path, "live")):
         if domain != "README":
             domain = re.sub(r"^\*\.", "", domain)
@@ -77,14 +78,17 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
 
 
 class _Daemon:
-    do_shutdown = False
+    _do_shutdown = False
 
     def __init__(self):
         signal.signal(signal.SIGINT, self.shutdown)
         signal.signal(signal.SIGTERM, self.shutdown)
 
     def shutdown(self, _signum, _frame):
-        self.do_shutdown = True
+        self._do_shutdown = True
+
+    def do_shutdown(self):
+        return self._do_shutdown
 
 
 def _renew_job(config_path: str, directory_path: str):
@@ -99,8 +103,8 @@ def _renew_job(config_path: str, directory_path: str):
 def _watch_config(config_path: str, directory_path: str):
     LOGGER.info("Starting DNSroboCert.")
 
-    with tempfile.NamedTemporaryFile() as runtime_config_file:
-        runtime_config_path = runtime_config_file.name
+    with tempfile.TemporaryDirectory() as workspace:
+        runtime_config_path= os.path.join(workspace, 'dnsrobocert-runtime.yml')
 
         schedule.every().day.at("12:00").do(
             _renew_job, config_path=runtime_config_path, directory_path=directory_path
@@ -111,7 +115,7 @@ def _watch_config(config_path: str, directory_path: str):
 
         daemon = _Daemon()
         previous_digest = ""
-        while not daemon.do_shutdown:
+        while not daemon.do_shutdown():
             schedule.run_pending()
 
             try:
@@ -129,14 +133,17 @@ def _watch_config(config_path: str, directory_path: str):
             except BaseException as error:
                 LOGGER.error("An error occurred during DNSroboCert watch:")
                 LOGGER.error(error)
-                traceback.print_exc(file=sys.stdout)
+                traceback.print_exc(file=sys.stderr)
 
             time.sleep(1)
 
     LOGGER.info("Exiting DNSroboCert.")
 
 
-def main():
+def main(args: Optional[List[str]] = None):
+    if not args:
+        args = sys.argv[1:]
+
     parser = argparse.ArgumentParser(description="Start dnsrobocert.")
     parser.add_argument(
         "--config",
@@ -151,9 +158,9 @@ def main():
         help="Set the directory path where certificates are stored.",
     )
 
-    args = parser.parse_args()
+    parsed_args = parser.parse_args(args)
 
-    _watch_config(os.path.abspath(args.config), os.path.abspath(args.directory))
+    _watch_config(os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory))
 
 
 if __name__ == "__main__":

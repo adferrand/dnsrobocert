@@ -1,7 +1,0 @@
-draft: true
-acme:
-  email_account: john.doe@example.com
-  staging: true
-  api_version: 2
-certificates: []
-profiles: []

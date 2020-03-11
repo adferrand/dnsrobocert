@@ -3,7 +3,7 @@
 import logging
 import os
 import sys
-from typing import Dict, List
+from typing import List, Optional
 
 import coloredlogs
 from certbot import main
@@ -53,19 +53,22 @@ def account(config_path: str, directory_path: str):
 def certonly(
     config_path: str,
     directory_path: str,
-    primary: str,
-    secondaries: List[str] = None,
+    lineage: str,
+    domains: Optional[List[str]] = None,
     force_renew: bool = False,
 ):
+    if not domains:
+        return
+
     url = config.get_acme_url(config.load(config_path))
 
     additional_params = []
     if force_renew:
         additional_params.append("--force-renew")
-    if secondaries:
-        for secondary in secondaries:
-            additional_params.append("-d")
-            additional_params.append(secondary)
+
+    for domain in domains:
+        additional_params.append("-d")
+        additional_params.append(domain)
 
     utils.execute(
         [
@@ -83,17 +86,17 @@ def certonly(
             "--manual",
             "--preferred-challenges=dns",
             "--manual-auth-hook",
-            _hook_cmd("auth", config_path, primary),
+            _hook_cmd("auth", config_path, lineage),
             "--manual-cleanup-hook",
-            _hook_cmd("cleanup", config_path, primary),
+            _hook_cmd("cleanup", config_path, lineage),
             "--manual-public-ip-logging-ok",
             "--expand",
             "--deploy-hook",
-            _hook_cmd("deploy", config_path, primary),
+            _hook_cmd("deploy", config_path, lineage),
             "--server",
             url,
-            "-d",
-            primary,
+            "--cert-name",
+            lineage,
             *additional_params,
         ]
     )
