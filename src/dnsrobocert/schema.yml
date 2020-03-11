@@ -111,6 +111,8 @@ properties:
                 type: string
             required: [cmd]
             additionalProperties: false
+        deploy_hook:
+          type: string
         force_renew:
           type: boolean
       required: [domains, profile]

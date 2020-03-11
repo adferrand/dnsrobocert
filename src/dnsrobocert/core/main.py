@@ -9,8 +9,8 @@ import sys
 import tempfile
 import time
 import traceback
-from typing import List, Optional
 from random import random
+from typing import List, Optional
 
 import coloredlogs
 import schedule
@@ -46,12 +46,10 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
     for certificate in certificates:
         try:
             lineage = config.get_lineage(certificate)
-            domains = certificate['domains']
+            domains = certificate["domains"]
             force_renew = certificate.get("force_renew", False)
             LOGGER.info(
-                "Handling the certificate for domain(s): {0}".format(
-                    ", ".join(domains)
-                )
+                "Handling the certificate for domain(s): {0}".format(", ".join(domains))
             )
             certbot.certonly(
                 runtime_config_path,
@@ -104,7 +102,7 @@ def _watch_config(config_path: str, directory_path: str):
     LOGGER.info("Starting DNSroboCert.")
 
     with tempfile.TemporaryDirectory() as workspace:
-        runtime_config_path= os.path.join(workspace, 'dnsrobocert-runtime.yml')
+        runtime_config_path = os.path.join(workspace, "dnsrobocert-runtime.yml")
 
         schedule.every().day.at("12:00").do(
             _renew_job, config_path=runtime_config_path, directory_path=directory_path
@@ -160,7 +158,9 @@ def main(args: Optional[List[str]] = None):
 
     parsed_args = parser.parse_args(args)
 
-    _watch_config(os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory))
+    _watch_config(
+        os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)
+    )
 
 
 if __name__ == "__main__":

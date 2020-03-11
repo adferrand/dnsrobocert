@@ -2,8 +2,7 @@ import os
 
 import mock
 
-from dnsrobocert.core import legacy
-from dnsrobocert.core import config
+from dnsrobocert.core import config, legacy
 
 
 def test_legacy_migration(tmp_path, monkeypatch):
@@ -12,16 +11,25 @@ def test_legacy_migration(tmp_path, monkeypatch):
     generated_config_path = tmp_path / "dnsrobocert" / "config-generated.yml"
     os.mkdir(os.path.dirname(legacy_config_domain_file))
 
-    with open(os.path.join(os.path.dirname(legacy_config_domain_file), 'lexicon.yml'), 'w') as f:
-        f.write('''\
+    with open(
+        os.path.join(os.path.dirname(legacy_config_domain_file), "lexicon.yml"), "w"
+    ) as f:
+        f.write(
+            """\
 ovh:
-  non_existent_config: NON_EXISTENT
-''')
+  auth_application_secret: SECRET
+  additional_config: ADDITIONAL
+"""
+        )
 
-    with open(os.path.join(os.path.dirname(legacy_config_domain_file), 'lexicon_ovh.yml'), 'w') as f:
-        f.write('''\
+    with open(
+        os.path.join(os.path.dirname(legacy_config_domain_file), "lexicon_ovh.yml"), "w"
+    ) as f:
+        f.write(
+            """\
 auth_consumer_key: CONSUMER_KEY
-''')
+"""
+        )
 
     with open(str(legacy_config_domain_file), "w") as f:
         f.write(
@@ -35,7 +43,7 @@ test1.sub.example.com test2.sub.example.com autorestart-containers=container1,co
     monkeypatch.setenv("LEXICON_OPTIONS", "--delegated=sub.example.com")
     monkeypatch.setenv(
         "LEXICON_PROVIDER_OPTIONS",
-        "--auth-entrypoint ovh-eu --auth-application-secret=SECRET",
+        "--auth-entrypoint ovh-eu --auth-application-secret=SECRET-OVERRIDE",
     )
     monkeypatch.setenv("LEXICON_SLEEP_TIME", "60")
     monkeypatch.setenv("LEXICON_MAX_CHECKS", "3")
@@ -47,6 +55,7 @@ test1.sub.example.com test2.sub.example.com autorestart-containers=container1,co
     monkeypatch.setenv("CERTS_GROUP_OWNER", "nogroup")
     monkeypatch.setenv("PFX_EXPORT", "true")
     monkeypatch.setenv("PFX_EXPORT_PASSPHRASE", "PASSPHRASE")
+    monkeypatch.setenv("DEPLOY_HOOK", "./deploy.sh")
 
     with mock.patch(
         "dnsrobocert.core.legacy.LEGACY_CONFIGURATION_PATH",
@@ -54,7 +63,6 @@ test1.sub.example.com test2.sub.example.com autorestart-containers=container1,co
     ):
         legacy.migrate(config_path)
 
-    assert os.path.exists(generated_config_path)
     assert config.load(generated_config_path)
     with open(generated_config_path) as f:
         generated_data = f.read()
@@ -82,6 +90,7 @@ certificates:
   - containers:
     - container1
     - container2
+  deploy_hook: ./deploy.sh
   domains:
   - test1.sub.example.com
   - test2.sub.example.com
@@ -96,8 +105,9 @@ profiles:
   name: ovh
   provider: ovh
   provider_options:
+    additional_config: ADDITIONAL
     auth_application_key: KEY
-    auth_application_secret: SECRET
+    auth_application_secret: SECRET-OVERRIDE
     auth_consumer_key: CONSUMER_KEY
     auth_entrypoint: ovh-eu
   sleep_time: 60

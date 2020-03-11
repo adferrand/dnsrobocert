@@ -60,7 +60,7 @@ def get_profile(config: Dict[str, Any], profile_name: str) -> Dict[str, Any]:
 def get_certificate(config: Dict[str, Any], lineage: str) -> Optional[Dict[str, Any]]:
     certificates = [
         certificate
-        for certificate in config.get("certificates", {})
+        for certificate in config.get("certificates", [])
         if get_lineage(certificate) == lineage
     ]
     return certificates[0] if certificates else None

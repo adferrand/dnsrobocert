@@ -37,8 +37,11 @@ def main(args: List[str] = None) -> int:
     dnsrobocert_config = config.load(parsed_args.config)
 
     if not dnsrobocert_config:
-        LOGGER.error("Error occured while loading the configuration file, aborting the `{0}` hook."
-                     .format(parsed_args.type))
+        LOGGER.error(
+            "Error occured while loading the configuration file, aborting the `{0}` hook.".format(
+                parsed_args.type
+            )
+        )
         return 1
 
     try:
@@ -129,7 +132,7 @@ def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
     )
     _autorestart(certificate)
     _autocmd(certificate)
-    _deploy_hook(profile)
+    _deploy_hook(certificate)
 
 
 def _txt_challenge(
@@ -207,7 +210,14 @@ def _autorestart(certificate: Dict[str, Any]):
             swarm_services = onerestart.get("swarm_services", [])
             for service in swarm_services:
                 utils.execute(
-                    ["docker", "service", "update", "--detach=false", "--force", service]
+                    [
+                        "docker",
+                        "service",
+                        "update",
+                        "--detach=false",
+                        "--force",
+                        service,
+                    ]
                 )
 
 
@@ -230,8 +240,8 @@ def _autocmd(certificate: Dict[str, Any]):
                 )
 
 
-def _deploy_hook(profile: Dict[str, str]):
-    deploy_hook = profile.get("deploy_hook")
+def _deploy_hook(certificate: Dict[str, Any]):
+    deploy_hook = certificate.get("deploy_hook")
     if deploy_hook:
         if os.name == "nt":
             subprocess.check_call(["powershell.exe", "-Command", deploy_hook])

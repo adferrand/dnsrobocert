@@ -2,9 +2,9 @@ import logging
 import os
 import re
 import shlex
-from typing import Any, Dict, List
 from copy import deepcopy
 from functools import reduce
+from typing import Any, Dict, List
 
 import coloredlogs
 import yaml
@@ -18,14 +18,14 @@ LEXICON_ARGPARSER = parser.generate_cli_main_parser()
 
 
 def migrate(config_path):
-    if os.path.exists(config_path):
+    if os.path.exists(config_path):  # pragma: nocover
         return
 
-    if not os.path.exists(LEGACY_CONFIGURATION_PATH):
+    if not os.path.exists(LEGACY_CONFIGURATION_PATH):  # pragma: nocover
         return
 
     provider = os.environ.get("LEXICON_PROVIDER")
-    if not provider:
+    if not provider:  # pragma: nocover
         LOGGER.error("Error, LEXICON_PROVIDER environment variable is not set!")
         return
 
@@ -131,17 +131,14 @@ def _handle_specific_envs_variables(
         ] = str(envs["CERTS_GROUP_OWNER"])
 
     if envs.get("LEXICON_SLEEP_TIME"):
-        migrated_config["profiles"][0]["sleep_time"] = int(
-            envs["LEXICON_SLEEP_TIME"]
-        )
+        migrated_config["profiles"][0]["sleep_time"] = int(envs["LEXICON_SLEEP_TIME"])
 
     if envs.get("LEXICON_MAX_CHECKS"):
-        migrated_config["profiles"][0]["max_checks"] = int(
-            envs["LEXICON_MAX_CHECKS"]
-        )
+        migrated_config["profiles"][0]["max_checks"] = int(envs["LEXICON_MAX_CHECKS"])
 
     if envs.get("DEPLOY_HOOK"):
-        migrated_config["profiles"][0]["deploy_hook"] = int(envs["DEPLOY_HOOK"])
+        for value in migrated_config.get("certificates", []):
+            value["deploy_hook"] = envs["DEPLOY_HOOK"]
 
     if envs.get("PFX_EXPORT") == "true":
         for value in migrated_config.get("certificates", []):
@@ -171,7 +168,7 @@ def _gather_parameters(provider):
     ]
     try:
         args, _ = LEXICON_ARGPARSER.parse_known_args(command)
-    except SystemExit:
+    except SystemExit:  # pragma: nocover
         args = None
 
     resolver = config.ConfigResolver()

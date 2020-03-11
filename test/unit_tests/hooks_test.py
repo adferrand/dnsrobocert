@@ -67,8 +67,8 @@ def fake_config(tmp_path):
       - cmd: echo 'Hello World!'
         containers: [foo, bar]
       autorestart:
-        containers: [container1, container2]
-        swarm_services: [service1, service2]
+      - containers: [container1, container2]
+      - swarm_services: [service1, service2]
     """.format(
         LINEAGE
     )
