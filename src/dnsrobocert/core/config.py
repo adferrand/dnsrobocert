@@ -1,6 +1,7 @@
 import logging
 import os
 from typing import Any, Dict, Optional
+import re
 
 import coloredlogs
 import jsonschema
@@ -70,7 +71,7 @@ def get_lineage(certificate_config: Dict[str, Any]) -> Optional[str]:
     return (
         certificate_config.get("name")
         if certificate_config.get("name")
-        else certificate_config.get("domains", [None])[0]
+        else re.sub(r"^\*\.", "", certificate_config.get("domains", [None])[0])
     )
 
 

@@ -51,7 +51,7 @@ def migrate(config_path):
                 key.replace(env_key_prefix, "").lower()
             ] = value
 
-    _handle_specific_envs_variables(envs, migrated_config, provider)
+    _handle_specific_envs_variables(envs, migrated_config)
 
     for key, value in args.get(provider, {}).items():
         provider_config.setdefault("provider_options", {})[  # type: ignore
@@ -92,7 +92,7 @@ def migrate(config_path):
 
 
 def _handle_specific_envs_variables(
-    envs: Dict[str, str], migrated_config: Dict[str, Any], profile: str
+    envs: Dict[str, str], migrated_config: Dict[str, Any]
 ):
     if envs.get("LETSENCRYPT_USER_MAIL"):
         migrated_config.setdefault("acme", {})["email_account"] = envs.get(
@@ -102,7 +102,7 @@ def _handle_specific_envs_variables(
     if envs.get("LETSENCRYPT_STAGING") == "true":
         migrated_config.setdefault("acme", {})["staging"] = True
 
-    if envs.get("LETSENCRYPT_ACME_V1 ") == "true":
+    if envs.get("LETSENCRYPT_ACME_V1") == "true":
         migrated_config.setdefault("acme", {})["api_version"] = 1
 
     if envs.get("CRON_TIME_STRING"):
