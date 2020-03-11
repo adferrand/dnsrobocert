@@ -18,35 +18,62 @@ def load(config_path: str) -> Optional[Dict[str, Any]]:
         return None
 
     with open(config_path) as file_h:
-        config = yaml.load(file_h.read(), yaml.FullLoader)
+        raw_config = file_h.read()
+
+    try:
+        config = yaml.load(raw_config, yaml.FullLoader)
+    except BaseException:
+        message = """
+Error while validating dnsrobocert configuration:
+Configuration file is not a valid YAML file.\
+"""
+        LOGGER.error(message)
+        return None
 
     schema_path = pkg_resources.resource_filename("dnsrobocert", "schema.yml")
     with open(schema_path) as file_h:
         schema = yaml.load(file_h.read(), yaml.FullLoader)
 
     if not config:
-        LOGGER.error("DNSroboCert configuration is empty.")
+        message = """
+Error while validating dnsrobocert configuration:
+Configuration file is empty.\
+"""
+        LOGGER.error(message)
         return None
 
     try:
         jsonschema.validate(instance=config, schema=schema)
-        _business_check(config)
-        return config
     except jsonschema.ValidationError as e:
         message = """\
 Error while validating dnsrobocert configuration for node path {0}:
-{1}
+{1}.
 -----
 {2}\
 """.format(
             "/" + "/".join([str(item) for item in e.path]),
             e.message,
-            yaml.dump(e.instance)
-            if isinstance(e.instance, (dict, list))
-            else str(e.instance),
+            raw_config,
         )
         LOGGER.error(message)
         return None
+
+    try:
+        _business_check(config)
+    except ValueError as e:
+        message = """\
+Error while validating dnsrobocert configuration:
+{0}
+-----
+{1}\
+""".format(
+            str(e),
+            raw_config,
+        )
+        LOGGER.error(message)
+        return None
+
+    return config
 
 
 def get_profile(config: Dict[str, Any], profile_name: str) -> Dict[str, Any]:
@@ -113,7 +140,9 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
 
 
 def _business_check(config: Dict[str, Any]):
+    print('business check')
     profiles = [profile["name"] for profile in config.get("profiles", [])]
+    lineages = set()
     for certificate_config in config.get("certificates", []):
         # Check that every certificate is associated to an existing profile
         profile = certificate_config.get("profile")
@@ -125,11 +154,26 @@ def _business_check(config: Dict[str, Any]):
                 )
             )
 
-        # Check that each files_mode and dirs_mode is a valid POSIX mode
-        files_mode = certificate_config.get("files_mode")
-        if files_mode and files_mode > 511:
+        if lineage in lineages:
             raise ValueError(
-                "Invalid files_mode `{0}` provided for certificate {1}".format(
-                    oct(files_mode), lineage
+                "Certificate with name `{0}` is duplicated.".format(
+                    lineage
                 )
             )
+        lineages.add(lineage)
+
+    # Check that each files_mode and dirs_mode is a valid POSIX mode
+    files_mode = config.get("acme", {}).get("certs_permissions", {}).get("files_mode")
+    if files_mode and files_mode > 511:
+        raise ValueError(
+            "Invalid files_mode `{0}` provided.".format(
+                oct(files_mode)
+            )
+        )
+    dirs_mode = config.get("acme", {}).get("certs_permissions", {}).get("dirs_mode")
+    if dirs_mode and dirs_mode > 511:
+        raise ValueError(
+            "Invalid dirs_mode `{0}` provided.".format(
+                oct(files_mode)
+            )
+        )
