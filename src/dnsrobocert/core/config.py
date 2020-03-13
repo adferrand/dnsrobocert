@@ -110,7 +110,7 @@ def get_lineage(certificate_config: Dict[str, Any]) -> str:
 def get_acme_url(config: Dict[str, Any]) -> str:
     acme = config.get("acme", {})
 
-    directory_url = config.get("directory_url")
+    directory_url = acme.get("directory_url")
     if directory_url:
         return directory_url
 

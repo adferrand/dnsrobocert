@@ -963,7 +963,7 @@ docs = ["sphinx", "repoze.sphinx.autointerface"]
 test = ["zope.security", "zope.testrunner"]
 
 [metadata]
-content-hash = "9266529732b81677714314c03e71ab9b9d00a34b94d82f15cd996740c15452dd"
+content-hash = "27838959fc3110a90b272b33074d9a2935e543cd915e36d0d84ea7bde5b60107"
 python-versions = "^3.6"
 
 [metadata.files]

@@ -13,6 +13,8 @@ from dnsrobocert.core import config, utils
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
+_DEFAULT_FLAGS = ["-n"]
+
 
 def account(config_path: str, directory_path: str):
     dnsrobocert_config = config.load(config_path)
@@ -33,7 +35,7 @@ def account(config_path: str, directory_path: str):
             "-m",
             "dnsrobocert.core.certbot",
             "register",
-            "-n",
+            *_DEFAULT_FLAGS,
             "--config-dir",
             directory_path,
             "--work-dir",
@@ -76,7 +78,7 @@ def certonly(
             "-m",
             "dnsrobocert.core.certbot",
             "certonly",
-            "-n",
+            *_DEFAULT_FLAGS,
             "--config-dir",
             directory_path,
             "--work-dir",
@@ -112,7 +114,7 @@ def renew(config_path: str, directory_path: str):
                 "-m",
                 "dnsrobocert.core.certbot",
                 "renew",
-                "-n",
+                *_DEFAULT_FLAGS,
                 "--config-dir",
                 directory_path,
                 "--deploy-hook",

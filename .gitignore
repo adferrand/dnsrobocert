@@ -8,3 +8,4 @@ __pycache__
 .eggs
 .coverage
 /bin
+*.exe
