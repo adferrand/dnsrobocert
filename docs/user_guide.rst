@@ -51,26 +51,26 @@ You need Python 3.6+ installed on your machine.
 
 Install `pipx` using `pip`:
 
-.. code-block::
+.. code-block:: bash
 
     $ python3 -m pip install pipx
     $ python3 -m pipx ensurepath
 
 Then install DNSroboCert on the desired version (eg. `3.0.0`):
 
-.. code-block::
+.. code-block:: bash
 
     $ python3 -m pipx dnsrobocert==3.0.0
 
 At this point DNSroboCert is installed and available in the `PATH`. You can display the inline help using:
 
-.. code-block::
+.. code-block:: bash
 
     $ dnsrobocert --help
 
 And run DNSroboCert with:
 
-.. code-block::
+.. code-block:: bash
 
     $ dnsrobocert -c /etc/dnsrobocert.yml -d /etc/letsencrypt
 
@@ -91,7 +91,7 @@ from the host into the container.
 
 Finally you can run this typical command for the desired version (eg. 3.0.0):
 
-.. code-block::
+.. code-block:: bash
 
     docker run --rm --name dnsrobocert
         --volume /etc/dnsrobocert/config.yml:/etc/dnsrobocert/config.yml
