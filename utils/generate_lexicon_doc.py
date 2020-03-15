@@ -43,7 +43,7 @@ Options for each provider
 
             output = output + '''\
   * ``{0}``: {1}
-'''.format(action.dest, action.help.capitalize())
+'''.format(action.dest, action.help.capitalize().replace('`', "'"))
 
         output = output + '\n'
 
