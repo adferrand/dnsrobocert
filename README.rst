@@ -4,7 +4,7 @@
 |tags| |version| |docker| |ci|
 
 .. |logo| image:: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/logo_from_realies_200px.png
-.. |tags| image:: https://img.shields.io/badge/tags-latest-lightgrey.svg?style=flat-square
+.. |tags| image:: https://img.shields.io/badge/tags-latest-lightgrey.svg
 .. |version| image:: https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.23.0.svg
     :target: https://microbadger.com/images/adferrand/letsencrypt-dns:2.23.0
 .. |docker| image:: https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.23.0.svg
