@@ -2,3 +2,131 @@
 Developer guide
 ===============
 
+Thanks a lot for your involvement. You will find here some tips to quickly setup a suitable development environment,
+and useful tools to ensure code quality in the project.
+
+General design principles
+=========================
+
+DNSroboCert is coded entirely in Python, and uses features available starting with Python 3.6+.
+
+It sits on top of Certbot_ and Lexicon_. Here are the repartition of the roles:
+
+* Certbot_ takes care of the actual certificate issuances and renewals against the ACME CA server, in a compliant
+  and secured processing that respects the RFC-8555,
+* Lexicon_ provides the central interface to communicate with the DNS API providers, and insert the required TXT
+  entries for the DNS-01 challenges,
+* DNSroboCert holds and validates the central configuration for users, couples Certbot_ and Lexicon_ through an
+  auth/cleanup hook system of `Certbot's manual plugin`_ to issue/renew DNS-01 challenged based certificates,
+  and orchestrates the post-deploy processing (``autocmd``, ``autorestart``, files rights...), and executes a
+  a cron job to trigger regularly the `Certbot renewal process`_.
+
+.. _Certbot: https://github.com/certbot
+.. _Lexicon: https://github.com/AnalogJ/lexicon
+.. _Certbot's manual plugin: https://certbot.eff.org/docs/using.html#manual
+.. _Certbot renewal process: https://certbot.eff.org/docs/using.html?highlight=renew#renewing-certificates
+
+Setting up a development environment
+====================================
+
+DNSroboCert uses Poetry_ to configure an environment development, build the project, and push wheel/sdist to PyPI.
+
+1. First, install Poetry_, following this guide: `Poetry installation`_
+
+2. Now Poetry should be available in your command line. Check that the following command is displaying Poetry version.
+
+.. code-block:: bash
+
+    $ poetry --version
+
+3. Fork the upstream `GitHub project`_ and clone your fork locally
+
+.. code-block:: bash
+
+    $ git clone https://github.com/myfork/dnsrobocert.git
+
+.. note::
+
+    | A widely used development pattern in Python is to setup a virtual environment.
+    | Python virtual environments allows to have a dedicated and isolated Python runtime for a specific project.
+    | It allows in particular to have a separated set of dependencies for the project that will not interfere with
+      the OS Python packages installed globally.
+
+4. Setup the virtual environment for DNSroboCert using Poetry
+
+.. code-block:: bash
+
+    $ cd dnsrobocert
+    $ poetry use env python3
+
+5. Activate the virtual environment
+
+* For Linux/Mac OS X
+
+.. code-block:: bash
+
+    $ source .venv/bin/activate
+
+* For Windows (using Powershell)
+
+.. code-block:: powershell
+
+    $ .\.venv\Scripts\activate
+
+6. Install development dependencies
+
+.. code-block:: bash
+
+    $ poetry update
+
+At this point, you are ready to develop on the project. You can run the CLI that will use the local source code:
+
+.. code-block:: bash
+
+    dnsrobocert --help
+
+.. _Poetry: https://python-poetry.org/
+.. _Poetry installation: https://python-poetry.org/docs/#installation
+.. _GitHub project: https://github.com/adferrand/docker-letsencrypt-dns
+
+Code quality
+============
+
+The project DNSroboCert tries to follows the up-to-date recommended guideline in Python development:
+
+* DNSroboCert logic is tested with a pyramidal approach (unit tests + integration tests) using Pytest_.
+* The code is formatted using Black_ and Isort_ to keep as possible unified and standardized writing conventions.
+* The code is linted with Flake8_ and statically checked using MyPy_.
+
+Please ensure that your code is compliant with this guideline before submitting a PR:
+
+1. Reformat your code:
+
+.. code-block:: bash
+
+    $ isort -rc src test
+    $ black src test
+
+2. Ensure that tests are passing:
+
+.. code-block:: bash
+
+    $ pytest test
+
+3. Ensure that linting and static type checking are passing:
+
+.. code-block:: bash
+
+    $ flake8
+    $ mypy src test
+
+Submitting a PR
+===============
+
+Well, you know what to do ;)
+
+.. _Pytest: https://docs.pytest.org/en/latest/
+.. _Black: https://github.com/psf/black
+.. _Isort: https://pypi.org/project/isort/
+.. _Flake8: https://flake8.pycqa.org/en/latest/
+.. _MyPy: http://mypy-lang.org/
