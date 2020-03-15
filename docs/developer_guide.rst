@@ -51,7 +51,7 @@ DNSroboCert uses Poetry_ to configure an environment development, build the proj
 .. note::
 
     | A widely used development pattern in Python is to setup a virtual environment.
-    | Python virtual environments allows to have a dedicated and isolated Python runtime for a specific project.
+    | Python virtual environments allow to manage a dedicated and isolated Python runtime for a specific project.
     | It allows in particular to have a separated set of dependencies for the project that will not interfere with
       the OS Python packages installed globally.
 
