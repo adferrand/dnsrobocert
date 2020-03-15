@@ -9,3 +9,4 @@ Welcome to the DNSroboCert documentation
    use_cases
    user_guide
    configuration_reference
+   lexicon_providers_config
