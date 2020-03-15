@@ -100,7 +100,7 @@ generates the certificates) and how these certificates are stored locally.
 
 .. code-block:: yaml
 
-    acme
+    acme:
       email_account: my.email@example.net
       staging: false
       api_version: 2
