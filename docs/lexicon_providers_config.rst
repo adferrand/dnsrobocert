@@ -39,7 +39,7 @@ Supported providers
 +----------------+----------------+----------------+----------------+
 |softlayer_      |subreg_         |transip_        |vultr_          |
 +----------------+----------------+----------------+----------------+
-|yandex_         |zeit_           |zilore_         |                |
+|yandex_         |zeit_           |zilore_         |zonomi_         |
 +----------------+----------------+----------------+----------------+
 
 Options for each provider
@@ -443,4 +443,10 @@ zeit
 
 zilore
   * ``auth_key``: Specify the zilore api key to use
+
+.. _zonomi:
+
+zonomi
+  * ``auth_token``: Specify token for authentication
+  * ``auth_entrypoint``: Use zonomi or rimuhosting api
 

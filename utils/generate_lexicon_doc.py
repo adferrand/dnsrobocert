@@ -6,7 +6,7 @@ from lexicon import discovery
 
 
 def main():
-    providers = [provider for provider in discovery.find_providers().keys() if provider != 'auto' and provider != 'zonomi']
+    providers = [provider for provider in discovery.find_providers().keys() if provider != 'auto']
 
     output = '''\
 =========================================
