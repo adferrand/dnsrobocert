@@ -103,10 +103,6 @@ properties:
                 type: array
                 items:
                   type: string
-              swarm_services:
-                type: array
-                items:
-                  type: string
               cmd:
                 type: string
             required: [cmd]

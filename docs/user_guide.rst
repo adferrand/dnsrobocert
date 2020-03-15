@@ -39,10 +39,12 @@ DNSroboCert can be installed in two ways:
 Installation on the host
 ------------------------
 
-    - DNSroboCert requires Python 3.6+.
-    - It can be installed on Linux, Mac OS or Windows.
-    - For Linux and Mac OS, running as a privileged user (eg. root) is recommended.
-    - For Windows, running as a privileged user (eg. Administrator) is required.
+.. note::
+
+    * DNSroboCert requires Python 3.6+.
+    * It can be installed on Linux, Mac OS or Windows.
+    * For Linux and Mac OS, running as a privileged user (eg. root) is recommended.
+    * For Windows, running as a privileged user (eg. Administrator) is required.
 
 The recommended way is to use Pipx_, a tool that extends Pip_ and is specifically designed to
 install a Python program in a isolated and dedicated environment.

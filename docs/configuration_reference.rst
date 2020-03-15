@@ -33,7 +33,7 @@ reconfigure itself with it and will not proceed to any further action. This is u
 in the file without DNSroboCert taking them into account immediately, then apply all modifications altogether
 by disabling the draft mode.
 
-*Section example:*
+**Section example:**
 
 .. code-block:: yaml
 
@@ -96,7 +96,7 @@ generates the certificates) and how these certificates are stored locally.
     * *type*: ``string`` representing a valid cron pattern
     * *default*: ``12 01,13 * * *`` (twice a day)
 
-*Section example:*
+**Section example:**
 
 .. code-block:: yaml
 
@@ -116,7 +116,7 @@ generates the certificates) and how these certificates are stored locally.
 ``profiles`` Section
 ====================
 
-This section holds *an array of profiles*. Each profile is an `object` that describes the
+This section holds *a list of profiles*. Each profile is an `object` that describes the
 credentials and specific configuration to apply to a DNS provider supported by Lexicon in order
 to fulfill a DNS-01 challenge.
 
@@ -170,18 +170,188 @@ must be unique.
     * If the zone that should contain the TXT entries for the DNS-01 challenges is not a SLD (Second-Level Domain), for
       instance because a SLD delegated your subdomain to a specific zone, this options tells to DNSroboCert that your
       subdomain is actually the zone to modify, and not the SLD.
-
-      For instance: the zone is ``sub.example.net``, certificate is for ``www.sub.example.net``, then
+    * For instance: the zone is ``sub.example.net``, certificate is for ``www.sub.example.net``, then
       ``delegated_subdomain`` should be equal to ``sub.example.net``.
     * *type*: ``string``
     * *default*: ``null`` (there is no subdomain delegation)
 
+**Section example**
+
+.. code-block:: yaml
+
+    profiles:
+      - name: my_profile1
+        provider: digitalocean
+        provider_options:
+          auth_token: TOKEN
+        sleep_time: 45
+        max_checks: 5
+      - name: my_profile2_delegated
+        provider: henet
+        provider_options:
+          auth_username: USER
+          auth_password: PASSWORD
+        delegated_subdomain: sub.example.net
+
 ``certificates`` Section
 ========================
 
+This sections handles the actual certificates that DNSroboCert needs to generate and renew regularly.
+It takes the form of **a list of certificates**. Each certificate is an object that describe the domains
+that needs to be included in the certificate, and the profile to use to handle the DNS-01 challenges: the
+profile is referred by its name, and **must** exist in the ``profiles`` Section.
 
+In parallel several actions can be defined when a certificate is created or renewed. These actions have to
+be defined in each relevant certificate configuration.
 
+``profile``
+    * The profile name to use to validated DNS-01 challenges. This profile must exist in the ``profiles``
+      section.
+    * *type*: ``string``
+    * **mandatory property**
 
+``domains``
+    * List of the domains to include in the certificate.
+    * *type*: ``list[string]``
+    * **mandatory property**
+
+``name``
+    * Name of the certificate, used in particular to define where the certificate assets (key, cert, chain...)
+      will be stored on the filesystem. For a certificate named ``my-cert``, files will be available in the
+      directory whose path is ``[CERTS_PATH]/live/my-cert``. If the name is not specified, the effective
+      certificate name will be the first domain listed in the ``domains`` property.
+    * *type*: ``string``
+    * *default*: ``null`` (in this case name is extracted from the first domain listed in ``domains``, for
+      instance ``example.net`` for ``example.net`` or ``*.example.net``)
+
+``pfx``
+    * Configure an export of the certificate into the PFX (also known as PKCS#12) format upon creation/renewal.
+    * *type*: ``object``
+    * *default*: ``null`` (certificate is not exported in PFX format)
+
+    ``export``
+        * If `true`, the certificate is exported in PFX format.
+        * *type*: ``boolean``
+        * *default*: ``false`` (the certificate is not exported in PFX format)
+
+    ``passphrase``:
+        * If set, the PFX file will be protected with the given passphrase.
+        * *type*: ``string``
+        * *default*: ``null`` (the PFX file is not protected by a passphrase)
+
+``autorestart``
+    * Configure an automated restart of target containers when the certificate is created/renewed. This
+      property takes a list of autorestart configurations. Each autorestart is triggered in the order
+      they have been inserted here.
+    * *type*: ``list[object]``
+    * *default*: ``null`` (no automated restart is triggered)
+
+    ``containers``
+        * A list of Docker containers to restart.
+        * *type*: ``list[string]``
+        * *default*: ``null`` (no containers to restart)
+
+    ``swarm_services``:
+        * A list of swarm services to force restart
+        * *type*: ``list[string]``
+        * *default*: ``null`` (no swarm services to restart)
+
+    **Property configuration example**
+
+    .. code-block:: yaml
+
+        autorestart:
+        - container:
+          - container1
+          - container2
+          swarm_services:
+          - service1
+
+``autocmd``
+    * Configure an automated execution of an arbitrary command on target containers when the certificate is
+      is created/renewed. This property takes a list of autocmd configurations. Each autocmd is triggered
+      in the order they have been inserted here.
+    * *type*: ``list[object]``
+    * *default*: ``null`` (no automated command is triggered)
+
+    ``cmd``
+        * The command to execute in each target container.
+        * *type*: ``string``
+        * **Mandatory property**
+
+    ``containers``
+        * A list of Docker containers on which the command will be executed.
+        * *type*: ``list[string]``
+        * *default*: ``null`` (no containers to restart)
+
+    **Property configuration example**
+
+    .. code-block:: yaml
+
+        autocmd:
+        - containers:
+          - container1
+          - container2
+          cmd: echo "Hello World!"
+        - containers:
+          - container3
+          cmd: env
+
+.. warning::
+
+    To allow ``autorestart`` and ``autocmd`` to work properly, DNSroboCert must have access to the Docker client
+    socket file (usually at path `/var/run/docker.sock`).
+
+    If DNSroboCert is run directly on the host, this usually require to use a user with administrative privileges,
+    or member of the `docker` group.
+
+    If DNSroboCert is run as a Docker, you will need to mount the Docker client socket file into the container.
+    As an example the following command does that:
+
+    .. code-block:: bash
+
+        $ docker run --rm --name dnsrobocert
+            --mount /var/run/docker.sock:/var/run/docker.sock
+            adferrand/dnsrobocert
+
+``deploy_hook``
+    * A command hook to execute locally when the certificate is created/renewed.
+    * *type*: ``string``
+    * *default*: ``null`` (no deploy hook is configured)
+
+``force_renew``
+    * If ``true``, the certificate will be force renewed when DNSroboCert configuration changes. Usefull
+      for debugging purposes.
+    * *type*: ``boolean``
+    * *default*: ``false`` (the certificate is not force renewed)
+
+**Section example**
+
+.. code-block:: yaml
+
+    certificates:
+    - name: my-wildcard-cert
+      domains:
+      - "*.example.net"
+      - example.net
+      profile: my_profile1
+      pfx:
+        export: true
+        passphrase: PASSPHRASE
+      autorestart:
+      - containers:
+        - container1
+      - swarm_services:
+        - service1
+      autocmd:
+      - cmd: /usr/bin/remote_deploy.sh
+        containers:
+        - container2
+    - domains:
+      - www.sub.example.net
+      profile: my_profile2_delegated
+      deploy_hook: python /home/user/local_deploy.py
+      force_renew: false
 
 
 .. _GitHub: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/dnsrobocert/src/dnsrobocert/schema.yml

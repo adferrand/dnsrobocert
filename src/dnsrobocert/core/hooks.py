@@ -157,8 +157,9 @@ def _txt_challenge(
             "type": "TXT",
             "name": "_acme-challenge.{0}.".format(domain),
             "content": token,
+            "delegated": profile.get('delegated_domain'),
             "provider_name": provider_name,
-            provider_name: {key: value for key, value in provider_options.items()},
+            provider_name: provider_options,
         }
     )
 
@@ -233,11 +234,6 @@ def _autocmd(certificate: Dict[str, Any]):
             containers = onecmd.get("containers", [])
             for container in containers:
                 utils.execute(["docker", "exec", container, command])
-
-            if onecmd.get("swarm_services"):
-                print(
-                    "Feature autocmd is not supported in Swarm mode and has been ignored."
-                )
 
 
 def _deploy_hook(certificate: Dict[str, Any]):
