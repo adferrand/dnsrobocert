@@ -5,11 +5,11 @@ Miscellaneous
 Migration from docker-letsencrypt-dns
 =====================================
 
-DNSroboCert started as a pure Docker implementation named ``adferrand/docker-letsencrypt-dns``. It was coded in bash,
+DNSroboCert started as a pure Docker implementation named ``adferrand/letsencrypt-dns``. It was coded in bash,
 and used both environment variables and a file named ``domains.conf`` for its configuration.
 
-If you followed the link displayed in logs from ``adferrand/docker-letsencrypt-dns``, then this section is for you:
-your instance of ``docker-letsencrypt-dns`` have been upgraded to DNSroboCert, and a migration path is proposed.
+If you followed the link displayed in logs from ``adferrand/letsencrypt-dns``, then this section is for you:
+your instance of ``letsencrypt-dns`` have been upgraded to DNSroboCert, and a migration path is proposed.
 
 Indeed to recall, ``domains.conf`` was holding the list of certificates to create and renew, and also the
 ``autorestart`` and ``autocmd`` features for each certificate. On the other hand, environment variables were
@@ -77,6 +77,27 @@ the documentation of the `User guide`_ and `Configuration reference`_.
 
 Once done, you can follow the previous section to restart your Docker container.
 
+What is new?
+------------
+
+At this point, you may ask yourself what you gain by migrating from ``adferrand/letsencrypt-dns`` to ``adferrand/dnsrobocert``.
+
+Well, thanks to this migration I plan a lot of new features, thanks to the complete refactoring of my tool into
+a real programming language. Basically it becames a real program that I name DNSroboCert, with proper code
+quality and proper extensibility to add all the features the community asks for.
+
+You can check in particular the `Project V3 specifications`_ that drove this migration and gives key points for
+the future features.
+
+But beyond promises you will get immediate advantages that I already implemented in DNSroboCert:
+
+* **the big one**: you can now define multiple DNS providers in one single instance of DNSroboCert
+* the custom deploy scripts and PFX exports are defined per certificate
+* force renew can be set for specific certificates
+
+Stay tuned for the new features!
+
 
 .. _User guide: https://dnsrobocert.readthedocs.io/en/dnsrobocert/user_guide.html
 .. _Configuration reference: https://dnsrobocert.readthedocs.io/en/dnsrobocert/configuration_reference.html
+.. _Project V3 specifications: https://github.com/adferrand/docker-letsencrypt-dns/wiki/Project-V3-specifications,-aka-DNSroboCert
