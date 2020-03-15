@@ -8,7 +8,7 @@ Preparation
 In order to work properly, DNSroboCert requires a configuration file, which is written in YAML. To avoid
 any problem, you should create it before starting DNSroboCert (the file can be empty at this point).
 
-The path of this file is configurable. We will assume in this user guide that it is `/etc/dnsrobocert/config.yml`.
+The path of this file is configurable. We will assume in this user guide that it is ``/etc/dnsrobocert/config.yml``.
 
 On Linux for instance, run:
 
@@ -20,7 +20,7 @@ On Linux for instance, run:
 DNSroboCert will store the certificates in a specific folder. Here also a good idea is to create it
 before starting DNSroboCert.
 
-The path of this folder is configurable. We will assume in this user guide that it is `/etc/letsencrypt`.
+The path of this folder is configurable. We will assume in this user guide that it is ``/etc/letsencrypt``.
 
 On Linux for instance, run:
 
@@ -56,13 +56,13 @@ Install `pipx` using `pip`:
     $ python3 -m pip install pipx
     $ python3 -m pipx ensurepath
 
-Then install DNSroboCert on the desired version (eg. `3.0.0`):
+Then install DNSroboCert on the desired version (eg. ``3.0.0``):
 
 .. code-block:: bash
 
     $ python3 -m pipx dnsrobocert==3.0.0
 
-At this point DNSroboCert is installed and available in the `PATH`. You can display the inline help using:
+At this point DNSroboCert is installed and available in the ``PATH``. You can display the inline help using:
 
 .. code-block:: bash
 
@@ -83,11 +83,11 @@ An up-to-date Docker image is available in DockerHub_. In order to persist DNSro
 the generated certificates, you should mount its configuration and the dedicated folder for certificates
 from the host into the container.
 
-* For the configuration file, expected path is `/etc/letsencrypt/dnsrobocert.yml`
-* For the certificates folder, expected path is `/etc/letsencrypt`
+* For the configuration file, expected path is ``/etc/letsencrypt/dnsrobocert.yml``
+* For the certificates folder, expected path is ``/etc/letsencrypt``
 
-    Both paths are configurable in the container through the environment variables `CONFIG_PATH` and
-    `CERTS_PATH` respectively.
+    Both paths are configurable in the container through the environment variables ``CONFIG_PATH`` and
+    ``CERTS_PATH`` respectively.
 
 Finally you can run this typical command for the desired version (eg. 3.0.0):
 

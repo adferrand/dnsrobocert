@@ -31,7 +31,7 @@ Lexicon providers configuration reference
                 continue
 
             output = output + '''\
-* `{0}`: {1}
+* ``{0}``: {1}
 '''.format(action.dest, action.help.capitalize())
 
         output = output + '\n'
