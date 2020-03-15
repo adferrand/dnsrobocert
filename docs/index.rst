@@ -9,7 +9,4 @@ Welcome to the DNSroboCert documentation
    use_cases
    user_guide
    configuration_reference
-
-   :maxdepth: 1
-
    lexicon_providers_config

@@ -1,6 +1,9 @@
 Lexicon providers configuration reference
 =========================================
 
+.. contents:: Table of Contents
+   :local:
+
 aliyun
 ------
 
