@@ -8,4 +8,4 @@ Welcome to the DNSroboCert documentation
    introduction
    use_cases
    user_guide
-   configuration_references
+   configuration_reference
