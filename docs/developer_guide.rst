@@ -18,11 +18,11 @@ It sits on top of Certbot_ and Lexicon_. Here are the repartition of the roles:
   entries for the DNS-01 challenges,
 * DNSroboCert
 
-    + holds and validates the central configuration for users,
-    + couples Certbot_ and Lexicon_ through the auth/cleanup hook system of `Certbot's manual plugin`_,
-      to issue/renew DNS-01 challenged based certificates,
-    + orchestrates the post-deploy processing (``autocmd``, ``autorestart``, files rights...),
-    + executes a a cron job to trigger regularly the `Certbot renewal process`_.
+  * holds and validates the central configuration for users,
+  * couples Certbot_ and Lexicon_ through the auth/cleanup hook system of `Certbot's manual plugin`_,
+    to issue/renew DNS-01 challenged based certificates,
+  * orchestrates the post-deploy processing (``autocmd``, ``autorestart``, files rights...),
+  * executes a a cron job to trigger regularly the `Certbot renewal process`_.
 
 .. _Certbot: https://github.com/certbot
 .. _Lexicon: https://github.com/AnalogJ/lexicon
