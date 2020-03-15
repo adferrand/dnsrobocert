@@ -12,7 +12,7 @@ The path of this file is configurable. We will assume in this user guide that it
 
 On Linux for instance, run:
 
-.. code-block::
+.. code-block:: bash
 
     $ mkdir /etc/dnsrobocert.yml
     $ touch /etc/dnsrobocert/config.yml
@@ -24,7 +24,7 @@ The path of this folder is configurable. We will assume in this user guide that 
 
 On Linux for instance, run:
 
-.. code-block::
+.. code-block:: bash
 
     $ mkdir -p /etc/letsencrypt
 
