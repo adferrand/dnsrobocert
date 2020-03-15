@@ -27,7 +27,7 @@ It sits on top of Certbot_ and Lexicon_. Here are the repartition of the roles:
 .. _Certbot: https://github.com/certbot
 .. _Lexicon: https://github.com/AnalogJ/lexicon
 .. _Certbot's manual plugin: https://certbot.eff.org/docs/using.html#manual
-.. _Certbot renewal process: https://certbot.eff.org/docs/using.html?highlight=renew#renewing-certificates
+.. _Certbot renewal process: https://certbot.eff.org/docs/using.html#renewing-certificates
 
 Setting up a development environment
 ====================================
