@@ -38,15 +38,15 @@ DNSroboCert uses Poetry_ to configure an environment development, build the proj
 
 2. Now Poetry should be available in your command line. Check that the following command is displaying Poetry version.
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ poetry --version
+    poetry --version
 
 3. Fork the upstream `GitHub project`_ and clone your fork locally
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ git clone https://github.com/myfork/dnsrobocert.git
+    git clone https://github.com/myfork/dnsrobocert.git
 
 .. note::
 
@@ -57,34 +57,34 @@ DNSroboCert uses Poetry_ to configure an environment development, build the proj
 
 4. Setup the virtual environment for DNSroboCert using Poetry
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ cd dnsrobocert
-    $ poetry use env python3
+    cd dnsrobocert
+    poetry use env python3
 
 5. Activate the virtual environment
 
 * For Linux/Mac OS X
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ source .venv/bin/activate
+    source .venv/bin/activate
 
 * For Windows (using Powershell)
 
-.. code-block:: powershell
+.. code-block:: console
 
-    $ .\.venv\Scripts\activate
+    .\.venv\Scripts\activate
 
 6. Install development dependencies
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ poetry update
+    poetry update
 
 At this point, you are ready to develop on the project. You can run the CLI that will use the local source code:
 
-.. code-block:: bash
+.. code-block:: console
 
     dnsrobocert --help
 
@@ -105,23 +105,23 @@ Please ensure that your code is compliant with this guideline before submitting 
 
 1. Reformat your code:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ isort -rc src test
-    $ black src test
+    isort -rc src test
+    black src test
 
 2. Ensure that tests are passing:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ pytest test
+    pytest test
 
 3. Ensure that linting and static type checking are passing:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ flake8
-    $ mypy src test
+    flake8
+    mypy src test
 
 Submitting a PR
 ===============

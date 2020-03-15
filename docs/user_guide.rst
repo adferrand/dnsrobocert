@@ -12,10 +12,10 @@ The path of this file is configurable. We will assume in this user guide that it
 
 On Linux for instance, run:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ mkdir /etc/dnsrobocert.yml
-    $ touch /etc/dnsrobocert/config.yml
+    mkdir /etc/dnsrobocert.yml
+    touch /etc/dnsrobocert/config.yml
 
 DNSroboCert will store the certificates in a specific folder. Here also a good idea is to create it
 before starting DNSroboCert.
@@ -24,9 +24,9 @@ The path of this folder is configurable. We will assume in this user guide that 
 
 On Linux for instance, run:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ mkdir -p /etc/letsencrypt
+    mkdir -p /etc/letsencrypt
 
 Installation
 ============
@@ -53,28 +53,28 @@ You need Python 3.6+ installed on your machine.
 
 Install `pipx` using `pip`:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ python3 -m pip install pipx
-    $ python3 -m pipx ensurepath
+    python3 -m pip install pipx
+    python3 -m pipx ensurepath
 
 Then install DNSroboCert on the desired version (eg. ``3.0.0``):
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ python3 -m pipx dnsrobocert==3.0.0
+    python3 -m pipx dnsrobocert==3.0.0
 
 At this point DNSroboCert is installed and available in the ``PATH``. You can display the inline help using:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ dnsrobocert --help
+    dnsrobocert --help
 
 And run DNSroboCert with:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ dnsrobocert -c /etc/dnsrobocert.yml -d /etc/letsencrypt
+    dnsrobocert -c /etc/dnsrobocert.yml -d /etc/letsencrypt
 
 DNSroboCert will continue to run in the foreground. To stop it, press CTRL+C.
 
@@ -95,7 +95,7 @@ from the host into the container.
 
 Finally you can run this typical command for the desired version (eg. 3.0.0):
 
-.. code-block:: bash
+.. code-block:: console
 
     docker run --rm --name dnsrobocert
         --volume /etc/dnsrobocert/config.yml:/etc/dnsrobocert/config.yml
@@ -315,9 +315,9 @@ Create the following ``docker-compose.yml`` file:
 
 Then run it:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ docker-compose up -d
+    docker-compose up -d
 
 At this point, your Docker container of DNSroboCert will be started and the Docker daemon will ensure it
 continues to run upon your machine restart.

@@ -36,17 +36,17 @@ behave **exactly** like your ``adferrand/docker-letsencrypt-dns`` before.
 Here are the remaining steps to finish the migration:
 1. Extract the file from the docker into your host machine (assuming your docker is named ``letsencrypt-dns``)
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ mkdir -p /etc/dnsrobocert
-    $ docker cp letsencrypt-dns:/etc/dnsrobocert/config-generated.yml /etc/dnsrobocert/config.yml
+    mkdir -p /etc/dnsrobocert
+    docker cp letsencrypt-dns:/etc/dnsrobocert/config-generated.yml /etc/dnsrobocert/config.yml
 
 2. Restart your Docker container with the new configuration file mounted at the right place
    (adapt the command to your actual DNS provider configuration):
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ docker run \
+    docker run \
         --name letsencrypt-dns \
         --volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
         --volume /var/docker-data/letsencrypt:/etc/letsencrypt \
@@ -61,9 +61,9 @@ DNSroboCert will automatically pick the new configuration file. Once you confirm
 before, you can restart the Docker without the environment variables and ``domains.conf``. Please take this occasion
 to change the image name from ``adferrand/letsencrypt-dns`` to ``adferrand/dnsrobocert``.
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ docker run \
+    docker run \
         --name dnsrobocert \
         --volume /var/docker-data/letsencrypt:/etc/letsencrypt \
         --volume /etc/dnsrobocert/config.yml:/etc/dnsrobocert/config.yml \

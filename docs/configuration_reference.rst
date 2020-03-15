@@ -261,7 +261,7 @@ be defined in each relevant certificate configuration.
     If DNSroboCert is run as a Docker, you will need to mount the Docker client socket file into the container.
     As an example the following command does that:
 
-    .. code-block:: bash
+    .. code-block:: console
 
         $ docker run --rm --name dnsrobocert
             --mount /var/run/docker.sock:/var/run/docker.sock
