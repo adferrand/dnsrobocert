@@ -239,6 +239,34 @@ be defined in each relevant certificate configuration.
         * *type*: ``string``
         * *default*: ``null`` (the PFX file is not protected by a passphrase)
 
+``deploy_hook``
+    * A command hook to execute locally when the certificate is created/renewed.
+    * *type*: ``string``
+    * *default*: ``null`` (no deploy hook is configured)
+
+``force_renew``
+    * If ``true``, the certificate will be force renewed when DNSroboCert configuration changes. Usefull
+      for debugging purposes.
+    * *type*: ``boolean``
+    * *default*: ``false`` (the certificate is not force renewed)
+
+.. warning::
+
+    The following paragraphs describe the ``autorestart`` and ``autocmd`` features. To allow them to work properly,
+    DNSroboCert must have access to the Docker client socket file (usually at path `/var/run/docker.sock`).
+
+    If DNSroboCert is run directly on the host, this usually require to use a user with administrative privileges,
+    or member of the `docker` group.
+
+    If DNSroboCert is run as a Docker, you will need to mount the Docker client socket file into the container.
+    As an example the following command does that:
+
+    .. code-block:: bash
+
+        $ docker run --rm --name dnsrobocert
+            --mount /var/run/docker.sock:/var/run/docker.sock
+            adferrand/dnsrobocert
+
 ``autorestart``
     * Configure an automated restart of target containers when the certificate is created/renewed. This
       property takes a list of autorestart configurations. Each autorestart is triggered in the order
@@ -284,6 +312,14 @@ be defined in each relevant certificate configuration.
         * *type*: ``list[string]``
         * *default*: ``null`` (no containers to restart)
 
+    .. warning::
+
+        The feature ``automcd`` is intended to call a simple executable file with few potential arguments.
+        It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command
+        is not executed in a shell on the target, and variables would be resolved against the DNSroboCert container
+        environment. If you want to operate advanced scripting, put an executable script in the target container,
+        and use its path in the relevant ``autocmd[].cmd`` property.
+
     **Property configuration example**
 
     .. code-block:: yaml
@@ -296,34 +332,6 @@ be defined in each relevant certificate configuration.
         - containers:
           - container3
           cmd: env
-
-.. warning::
-
-    To allow ``autorestart`` and ``autocmd`` to work properly, DNSroboCert must have access to the Docker client
-    socket file (usually at path `/var/run/docker.sock`).
-
-    If DNSroboCert is run directly on the host, this usually require to use a user with administrative privileges,
-    or member of the `docker` group.
-
-    If DNSroboCert is run as a Docker, you will need to mount the Docker client socket file into the container.
-    As an example the following command does that:
-
-    .. code-block:: bash
-
-        $ docker run --rm --name dnsrobocert
-            --mount /var/run/docker.sock:/var/run/docker.sock
-            adferrand/dnsrobocert
-
-``deploy_hook``
-    * A command hook to execute locally when the certificate is created/renewed.
-    * *type*: ``string``
-    * *default*: ``null`` (no deploy hook is configured)
-
-``force_renew``
-    * If ``true``, the certificate will be force renewed when DNSroboCert configuration changes. Usefull
-      for debugging purposes.
-    * *type*: ``boolean``
-    * *default*: ``false`` (the certificate is not force renewed)
 
 **Section example**
 

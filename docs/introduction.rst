@@ -17,12 +17,14 @@ DNSroboCert is designed to manage `Let's Encrypt`_ SSL certificates based on `DN
 * Modification of container configuration without restart,
 * Flexible hooks upon certificate creation/renewal including containers restart, commands in containers
   or custom hooks,
+* Linux, Mac OS X and Windows support, with a particular care for Docker services,
+* Delivered as a standalone application and a Docker image.
 
-Why use this Docker
+Why use DNSroboCert
 ===================
 
-If you are reading these lines, you certainly want to secure all your dockerized services using Let's
-Encrypt SSL certificates, which are free and accepted everywhere.
+If you are reading these lines, you certainly want to secure all your services using Let's Encrypt SSL
+certificates, which are free and accepted everywhere.
 
 If you want to secure Web services through HTTPS, there is already plenty of great tools. In the Docker
 world, one can check Traefik_, or nginx-proxy_ + letsencrypt-nginx-proxy-companion_. Basically, theses tools
@@ -49,9 +51,22 @@ restarted each time the certificate is renewed.
 For the last case, the use of a DNS challenge is mandatory. Then the problems concerning certificates
 propagation that have been discussed in the second case will also occur.
 
-The solution is a dedicated and specialized Docker service which handles the creation/renewal of
-Let's Encrypt certificates, and ensure their propagation in the relevant Docker services. It is the
-purpose of this container.
+The solution is a dedicated and specialized tool which handles the creation/renewal of Let's Encrypt
+certificates, and ensure their propagation in the relevant services. It is the purpose of
+this project.
+
+Documentation
+=============
+
+Online documentation (user guide, configuration reference) is available in the `DNSroboCert ReadTheDoc page`_.
+
+For a quick start, please have a look in particular at the `User guide`_ and the `Lexicon provider configuration`_.
+
+Contributing
+============
+
+If you want to help in the DNSroboCert development, you are welcome!
+Please have a look at the `Developer guide`_ page to know how to start.
 
 
 .. _Let's Encrypt: https://letsencrypt.org/
@@ -61,3 +76,7 @@ purpose of this container.
 .. _Traefik: https://hub.docker.com/_/traefik/
 .. _nginx-proxy: https://hub.docker.com/r/jwilder/nginx-proxy/
 .. _letsencrypt-nginx-proxy-companion: https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/
+.. _Developer guide:
+.. _DNSroboCert ReadTheDoc page: https://dnsrobocert.readthedocs.io
+.. _User guide: https://dnsrobocert.readthedocs.io/en/dnsrobocert/user_guide.html
+.. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/dnsrobocert/lexicon_providers_config.html

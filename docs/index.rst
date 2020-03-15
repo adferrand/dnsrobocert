@@ -11,3 +11,4 @@ Welcome to the DNSroboCert documentation
    configuration_reference
    lexicon_providers_config
    miscellaneous
+   developer_guide
