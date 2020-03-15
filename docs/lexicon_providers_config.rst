@@ -8,7 +8,39 @@ Lexicon providers configuration reference
 Supported providers
 ===================
 
-aliyun_, aurora_, azure_, cloudflare_, cloudns_, cloudxns_, conoha_, constellix_, digitalocean_, dinahosting_, directadmin_, dnsimple_, dnsmadeeasy_, dnspark_, dnspod_, dreamhost_, easydns_, easyname_, euserv_, exoscale_, gandi_, gehirn_, glesys_, godaddy_, googleclouddns_, gransy_, gratisdns_, henet_, hetzner_, hostingde_, hover_, infoblox_, internetbs_, inwx_, linode_, linode4_, localzone_, luadns_, memset_, namecheap_, namesilo_, netcup_, nfsn_, nsone_, onapp_, online_, ovh_, plesk_, pointhq_, powerdns_, rackspace_, rage4_, rcodezero_, route53_, safedns_, sakuracloud_, softlayer_, subreg_, transip_, vultr_, yandex_, zeit_, zilore_, zonomi_
++----------------+----------------+----------------+----------------+
+|aliyun_         |aurora_         |azure_          |cloudflare_     |
++----------------+----------------+----------------+----------------+
+|cloudns_        |cloudxns_       |conoha_         |constellix_     |
++----------------+----------------+----------------+----------------+
+|digitalocean_   |dinahosting_    |directadmin_    |dnsimple_       |
++----------------+----------------+----------------+----------------+
+|dnsmadeeasy_    |dnspark_        |dnspod_         |dreamhost_      |
++----------------+----------------+----------------+----------------+
+|easydns_        |easyname_       |euserv_         |exoscale_       |
++----------------+----------------+----------------+----------------+
+|gandi_          |gehirn_         |glesys_         |godaddy_        |
++----------------+----------------+----------------+----------------+
+|googleclouddns_ |gransy_         |gratisdns_      |henet_          |
++----------------+----------------+----------------+----------------+
+|hetzner_        |hostingde_      |hover_          |infoblox_       |
++----------------+----------------+----------------+----------------+
+|internetbs_     |inwx_           |linode_         |linode4_        |
++----------------+----------------+----------------+----------------+
+|localzone_      |luadns_         |memset_         |namecheap_      |
++----------------+----------------+----------------+----------------+
+|namesilo_       |netcup_         |nfsn_           |nsone_          |
++----------------+----------------+----------------+----------------+
+|onapp_          |online_         |ovh_            |plesk_          |
++----------------+----------------+----------------+----------------+
+|pointhq_        |powerdns_       |rackspace_      |rage4_          |
++----------------+----------------+----------------+----------------+
+|rcodezero_      |route53_        |safedns_        |sakuracloud_    |
++----------------+----------------+----------------+----------------+
+|softlayer_      |subreg_         |transip_        |vultr_          |
++----------------+----------------+----------------+----------------+
+|yandex_         |zeit_           |zilore_         |                |
++----------------+----------------+----------------+----------------+
 
 Options for each provider
 =========================
@@ -411,10 +443,4 @@ zeit
 
 zilore
   * ``auth_key``: Specify the zilore api key to use
-
-.. _zonomi:
-
-zonomi
-  * ``auth_token``: Specify token for authentication
-  * ``auth_entrypoint``: Use zonomi or rimuhosting api
 
