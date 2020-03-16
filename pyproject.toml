@@ -59,10 +59,10 @@ mypy = "^0.761"
 pytest = "^5.3"
 pytest-cov = "^2.8"
 isort = "^4.3"
-vcrpy = "^4.0"
 requests = "^2"
 pygments = "^2.6"
-twine = "^3.1"
+twine = "^3"
+tox = "^3"
 
 [tool.poetry.scripts]
 dnsrobocert = "dnsrobocert.core.main:main"
