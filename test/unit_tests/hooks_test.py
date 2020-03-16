@@ -1,5 +1,6 @@
 import datetime
 import os
+import contextlib
 
 import pytest
 from cryptography import x509
@@ -194,11 +195,10 @@ def test_autorestart(
     )
 
 
-@patch("dnsrobocert.core.hooks.os.chown")
 @patch("dnsrobocert.core.hooks._pfx_export")
 @patch("dnsrobocert.core.hooks._autocmd")
 @patch("dnsrobocert.core.hooks._autorestart")
-def test_fix_permissions(_autorestart, _autocmd, _pfx_export, chown, fake_config, fake_env):
+def test_fix_permissions(_autorestart, _autocmd, _pfx_export, fake_config, fake_env):
     archive_path = str(fake_env["archive"])
     live_path = str(fake_env["live"])
 
@@ -211,25 +211,35 @@ def test_fix_permissions(_autorestart, _autocmd, _pfx_export, chown, fake_config
     open(probe_file, "w").close()
     os.mkdir(probe_dir)
 
-    hooks.deploy(config.load(fake_config), LINEAGE)
+    with _mock_os_chown() as chown:
+        hooks.deploy(config.load(fake_config), LINEAGE)
 
-    assert os.stat(probe_file).st_mode & 0o777 == 0o666
-    assert os.stat(probe_dir).st_mode & 0o777 == 0o777
-    assert os.stat(archive_path).st_mode & 0o777 == 0o777
+        assert os.stat(probe_file).st_mode & 0o777 == 0o666
+        assert os.stat(probe_dir).st_mode & 0o777 == 0o777
+        assert os.stat(archive_path).st_mode & 0o777 == 0o777
 
+        if POSIX_MODE:
+            import pwd
+            import grp
+            uid = pwd.getpwnam("nobody")[2]
+            gid = grp.getgrnam("nogroup")[2]
+
+            calls = [
+                call(archive_path, uid, gid),
+                call(probe_file, uid, gid),
+                call(probe_dir, uid, gid),
+                call(live_path, uid, gid),
+                call(probe_live_file, uid, gid),
+                call(probe_live_dir, uid, gid),
+            ]
+
+            assert chown.call_args_list == calls
+
+
+@contextlib.contextmanager
+def _mock_os_chown():
     if POSIX_MODE:
-        import pwd
-        import grp
-        uid = pwd.getpwnam("nobody")[2]
-        gid = grp.getgrnam("nogroup")[2]
-
-        calls = [
-            call(archive_path, uid, gid),
-            call(probe_file, uid, gid),
-            call(probe_dir, uid, gid),
-            call(live_path, uid, gid),
-            call(probe_live_file, uid, gid),
-            call(probe_live_dir, uid, gid),
-        ]
-
-        assert chown.call_args_list == calls
+        with patch("dnsrobocert.core.utils.os.chown") as chown:
+            yield chown
+    else:
+        yield None

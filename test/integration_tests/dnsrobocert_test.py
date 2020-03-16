@@ -4,7 +4,9 @@ import stat
 import subprocess
 import time
 from typing import Optional
+from unittest import skipIf
 from unittest.mock import patch
+import platform
 
 import pytest
 import requests
@@ -20,7 +22,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def fetch(workspace):
-    suffix = "linux-amd64" if os.name != "nt" else "windows-amd64.exe"
+    if platform.system() == "Windows":
+        suffix = "windows-amd64.exe"
+    elif platform.system() == "Linux":
+        suffix = "linux-amd64"
+    else:
+        raise RuntimeError("Unsupported platform: {0}".format(platform.system()))
 
     pebble_path = _fetch_asset("pebble", suffix)
     challtestsrv_path = _fetch_asset("pebble-challtestsrv", suffix)
@@ -81,7 +88,7 @@ def _check_until_timeout(url, attempts=30):
     )
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def pebble(tmp_path):
     workspace = tmp_path / "workspace"
     os.mkdir(str(workspace))
@@ -137,7 +144,8 @@ def pebble(tmp_path):
             challtestsrv_process.terminate()
 
 
-def test_it(tmp_path):
+@skipIf(platform.system() == "Darwin", reason="Integration tests are not supported on Mac OS X.")
+def test_it(pebble, tmp_path):
     directory_path = tmp_path / "letsencrypt"
     os.mkdir(directory_path)
 
