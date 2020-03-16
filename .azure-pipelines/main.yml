@@ -8,21 +8,27 @@ jobs:
         macos-py36:
           IMAGE_NAME: macOS-10.14
           PYTHON_VERSION: 3.6
+          TOXENV: py36
         macos-py38:
           IMAGE_NAME: macOS-10.14
-          PYTHON_VERSION: 3.6
+          PYTHON_VERSION: 3.8
+          TOXENV: py38
         windows-py36:
           IMAGE_NAME: vs2017-win2016
           PYTHON_VERSION: 3.6
+          TOXENV: py36
         windows-py38:
           IMAGE_NAME: vs2017-win2016
           PYTHON_VERSION: 3.8
+          TOXENV: py38
         linux-py36:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.6
+          TOXENV: py36
         linux-py38:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.8
+          TOXENV: py38-cover
     pool:
       vmImage: $(IMAGE_NAME)
     steps:
@@ -37,5 +43,5 @@ jobs:
           poetry install
         displayName: Install software
       - script: |
-          poetry run python -m pytest test
+          python -m tox
         displayName: Test software
