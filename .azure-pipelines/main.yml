@@ -1,0 +1,41 @@
+pr:
+  - master
+
+jobs:
+  - job: test
+    strategy:
+      matrix:
+        macos-py36:
+          IMAGE_NAME: macOS-10.14
+          PYTHON_VERSION: 3.6
+        macos-py38:
+          IMAGE_NAME: macOS-10.14
+          PYTHON_VERSION: 3.6
+        windows-py36:
+          IMAGE_NAME: vs2017-win2016
+          PYTHON_VERSION: 3.6
+        windows-py38:
+          IMAGE_NAME: vs2017-win2016
+          PYTHON_VERSION: 3.8
+        linux-py36:
+          IMAGE_NAME: ubuntu-18.04
+          PYTHON_VERSION: 3.6
+        linux-py38:
+          IMAGE_NAME: ubuntu-18.04
+          PYTHON_VERSION: 3.8
+    pool:
+      vmImage: $(IMAGE_NAME)
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: $(PYTHON_VERSION)
+          addToPath: true
+        displayName: Install Python
+      - script: |
+          python -m pip install -U pip
+          pip install poetry
+          poetry install
+        displayName: Install software
+      - script: |
+          poetry run python -m pytest test
+        displayName: Test software
