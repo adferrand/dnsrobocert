@@ -14,11 +14,11 @@ jobs:
           PYTHON_VERSION: 3.8
           TOXENV: py38
         windows-py36:
-          IMAGE_NAME: vs2017-win2016
+          IMAGE_NAME: windows-2019
           PYTHON_VERSION: 3.6
           TOXENV: py36
         windows-py38:
-          IMAGE_NAME: vs2017-win2016
+          IMAGE_NAME: windows-2019
           PYTHON_VERSION: 3.8
           TOXENV: py38
         linux-py36:
@@ -29,6 +29,14 @@ jobs:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.8
           TOXENV: py38-cover
+        lint:
+          IMAGE_NAME: ubuntu-18.04
+          PYTHON_VERSION: 3.8
+          TOXENV: lint
+        mypy:
+          IMAGE_NAME: ubuntu-18.04
+          PYTHON_VERSION: 3.8
+          TOXENV: mypy
     pool:
       vmImage: $(IMAGE_NAME)
     steps:
