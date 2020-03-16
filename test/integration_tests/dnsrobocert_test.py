@@ -7,6 +7,7 @@ from typing import Optional
 from unittest import skipIf
 from unittest.mock import patch
 import platform
+import contextlib
 
 import pytest
 import requests
@@ -21,7 +22,7 @@ _CHALLTESTSRV_PORT = 8000
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-def fetch(workspace):
+def _fetch(workspace):
     if platform.system() == "Windows":
         suffix = "windows-amd64.exe"
     elif platform.system() == "Linux":
@@ -88,12 +89,12 @@ def _check_until_timeout(url, attempts=30):
     )
 
 
-@pytest.fixture
-def pebble(tmp_path):
+@contextlib.contextmanager
+def _start_pebble(tmp_path):
     workspace = tmp_path / "workspace"
     os.mkdir(str(workspace))
 
-    pebble_path, challtestsrv_path, pebble_config_path = fetch(str(workspace))
+    pebble_path, challtestsrv_path, pebble_config_path = _fetch(str(workspace))
 
     environ = os.environ.copy()
     environ["PEBBLE_VA_NOSLEEP"] = "1"
@@ -145,38 +146,39 @@ def pebble(tmp_path):
 
 
 @skipIf(platform.system() == "Darwin", reason="Integration tests are not supported on Mac OS X.")
-def test_it(pebble, tmp_path):
-    directory_path = tmp_path / "letsencrypt"
-    os.mkdir(directory_path)
+def test_it(tmp_path):
+    with _start_pebble(tmp_path):
+        directory_path = tmp_path / "letsencrypt"
+        os.mkdir(directory_path)
 
-    config_path = tmp_path / "config.yml"
-    with open(str(config_path), "w") as f:
-        f.write(
-            """\
-    draft: false
-    acme:
-      email_account: john.doe@example.net
-      directory_url: https://127.0.0.1:14000/dir
-    profiles:
-    - name: dummy
-      provider: dummy
-      provider_options:
-        auth_token: TOKEN
-    certificates:
-    - domains:
-      - test1.example.net
-      - test2.example.net
-      profile: dummy
-    """
+        config_path = tmp_path / "config.yml"
+        with open(str(config_path), "w") as f:
+            f.write(
+                """\
+        draft: false
+        acme:
+        email_account: john.doe@example.net
+        directory_url: https://127.0.0.1:14000/dir
+        profiles:
+        - name: dummy
+        provider: dummy
+        provider_options:
+            auth_token: TOKEN
+        certificates:
+        - domains:
+        - test1.example.net
+        - test2.example.net
+        profile: dummy
+        """
+            )
+
+        with patch.object(main._Daemon, "do_shutdown") as shutdown:
+            shutdown.side_effect = [False, True]
+            with patch(
+                "dnsrobocert.core.certbot._DEFAULT_FLAGS", ["-n", "--no-verify-ssl"]
+            ):
+                main.main(["-c", str(config_path), "-d", str(directory_path)])
+
+        assert os.path.exists(
+            os.path.join(directory_path, "live", "test1.example.net", "cert.pem")
         )
-
-    with patch.object(main._Daemon, "do_shutdown") as shutdown:
-        shutdown.side_effect = [False, True]
-        with patch(
-            "dnsrobocert.core.certbot._DEFAULT_FLAGS", ["-n", "--no-verify-ssl"]
-        ):
-            main.main(["-c", str(config_path), "-d", str(directory_path)])
-
-    assert os.path.exists(
-        os.path.join(directory_path, "live", "test1.example.net", "cert.pem")
-    )
