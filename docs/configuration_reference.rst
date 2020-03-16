@@ -237,7 +237,7 @@ be defined in each relevant certificate configuration.
         * *type*: ``boolean``
         * *default*: ``false`` (the certificate is not exported in PFX format)
 
-    ``passphrase``:
+    ``passphrase``
         * If set, the PFX file will be protected with the given passphrase.
         * *type*: ``string``
         * *default*: ``null`` (the PFX file is not protected by a passphrase)
