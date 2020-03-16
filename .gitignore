@@ -8,5 +8,6 @@ __pycache__
 .eggs
 .coverage
 /bin
-*.exe
 dist
+.tox
+test/assets/pebble*

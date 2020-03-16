@@ -194,13 +194,20 @@ def test_autorestart(
     )
 
 
+@patch("dnsrobocert.core.hooks.os.chown")
 @patch("dnsrobocert.core.hooks._pfx_export")
 @patch("dnsrobocert.core.hooks._autocmd")
 @patch("dnsrobocert.core.hooks._autorestart")
-def test_fix_permissions(_autorestart, _autocmd, _pfx_export, fake_config, fake_env):
-    archive_path = fake_env["archive"]
+def test_fix_permissions(_autorestart, _autocmd, _pfx_export, chown, fake_config, fake_env):
+    archive_path = str(fake_env["archive"])
+    live_path = str(fake_env["live"])
+
     probe_file = os.path.join(archive_path, "dummy.txt")
     probe_dir = os.path.join(archive_path, "dummy_dir")
+
+    probe_live_file = os.path.join(live_path, "dummy.txt")
+    probe_live_dir = os.path.join(live_path, "dummy_dir")
+
     open(probe_file, "w").close()
     os.mkdir(probe_dir)
 
@@ -211,9 +218,18 @@ def test_fix_permissions(_autorestart, _autocmd, _pfx_export, fake_config, fake_
     assert os.stat(archive_path).st_mode & 0o777 == 0o777
 
     if POSIX_MODE:
-        assert pwd.getpwuid(os.stat(probe_file).st_uid).pw_name == "nobody"
-        assert grp.getgrgid(os.stat(probe_file).st_gid).gr_name == "nogroup"
-        assert pwd.getpwuid(os.stat(probe_dir).st_uid).pw_name == "nobody"
-        assert grp.getgrgid(os.stat(probe_dir).st_gid).gr_name == "nogroup"
-        assert pwd.getpwuid(os.stat(archive_path).st_uid).pw_name == "nobody"
-        assert grp.getgrgid(os.stat(archive_path).st_gid).gr_name == "nogroup"
+        import pwd
+        import grp
+        uid = pwd.getpwnam("nobody")[2]
+        gid = grp.getgrnam("nogroup")[2]
+
+        calls = [
+            call(archive_path, uid, gid),
+            call(probe_file, uid, gid),
+            call(probe_dir, uid, gid),
+            call(live_path, uid, gid),
+            call(probe_live_file, uid, gid),
+            call(probe_live_dir, uid, gid),
+        ]
+
+        assert chown.call_args_list == calls
