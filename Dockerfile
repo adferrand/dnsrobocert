@@ -12,7 +12,7 @@ ENV CONFIG_PATH /etc/dnsrobocert/config.yml
 ENV CERTS_PATH /etc/letsencrypt
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/constraints.txt
-COPY src pyproject.toml poetry.toml README.md /tmp/dnsrobocert/
+COPY src pyproject.toml poetry.toml README.rst /tmp/dnsrobocert/
 
 RUN python3 -m pip install --user pipx \
  && python3 -m pipx install --verbose --pip-args "-c /tmp/dnsrobocert/constraints.txt" /tmp/dnsrobocert \

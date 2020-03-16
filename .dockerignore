@@ -4,6 +4,5 @@
 !/pyproject.toml
 !/poetry.toml
 !/poetry.lock
-!/README.md
+!/README.rst
 !/docker
-!/constraints.txt
