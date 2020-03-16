@@ -42,7 +42,7 @@ Options for each provider
                 continue
 
             output = output + '''\
-  * ``{0}`` {1}
+    | ``{0}`` {1}
 '''.format(action.dest, action.help.capitalize().replace('`', "'"))
 
         output = output + '\n'
