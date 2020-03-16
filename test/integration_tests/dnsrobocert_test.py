@@ -155,21 +155,21 @@ def test_it(tmp_path):
         with open(str(config_path), "w") as f:
             f.write(
                 """\
-        draft: false
-        acme:
-        email_account: john.doe@example.net
-        directory_url: https://127.0.0.1:14000/dir
-        profiles:
-        - name: dummy
-        provider: dummy
-        provider_options:
-            auth_token: TOKEN
-        certificates:
-        - domains:
-        - test1.example.net
-        - test2.example.net
-        profile: dummy
-        """
+draft: false
+acme:
+  email_account: john.doe@example.net
+  directory_url: https://127.0.0.1:14000/dir
+profiles:
+- name: dummy
+  provider: dummy
+  provider_options:
+    auth_token: TOKEN
+certificates:
+- domains:
+  - test1.example.net
+  - test2.example.net
+  profile: dummy
+"""
             )
 
         with patch.object(main._Daemon, "do_shutdown") as shutdown:
