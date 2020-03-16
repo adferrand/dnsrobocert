@@ -28,7 +28,7 @@ jobs:
         linux-py38:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.8
-          TOXENV: cover
+          TOXENV: py38-cover
         lint:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.8
@@ -51,5 +51,5 @@ jobs:
           poetry install
         displayName: Install software
       - script: |
-          python -m tox
+          poetry run tox
         displayName: Test software
