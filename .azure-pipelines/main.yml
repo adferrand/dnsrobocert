@@ -47,8 +47,9 @@ jobs:
         displayName: Install Python
       - script: |
           python -m pip install -U pip
-          pip install tox
-        displayName: Install tox
+          pip install poetry
+          poetry install
+        displayName: Install software
       - script: |
-          tox
-        displayName: Run tox
+          poetry run tox
+        displayName: Test software
