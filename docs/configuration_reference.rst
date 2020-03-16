@@ -204,6 +204,9 @@ profile is referred by its name, and **must** exist in the ``profiles`` Section.
 In parallel several actions can be defined when a certificate is created or renewed. These actions have to
 be defined in each relevant certificate configuration.
 
+``certificate`` properties
+--------------------------
+
 ``profile``
     * The profile name to use to validated DNS-01 challenges. This profile must exist in the ``profiles``
       section.
@@ -312,14 +315,6 @@ be defined in each relevant certificate configuration.
         * *type*: ``list[string]``
         * *default*: ``null`` (no containers to restart)
 
-    .. warning::
-
-        The feature ``automcd`` is intended to call a simple executable file with few potential arguments.
-        It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command
-        is not executed in a shell on the target, and variables would be resolved against the DNSroboCert container
-        environment. If you want to operate advanced scripting, put an executable script in the target container,
-        and use its path in the relevant ``autocmd[].cmd`` property.
-
     **Property configuration example**
 
     .. code-block:: yaml
@@ -332,6 +327,14 @@ be defined in each relevant certificate configuration.
         - containers:
           - container3
           cmd: env
+
+    .. warning::
+
+        The feature ``automcd`` is intended to call a simple executable file with few potential arguments.
+        It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command
+        is not executed in a shell on the target, and variables would be resolved against the DNSroboCert container
+        environment. If you want to operate advanced scripting, put an executable script in the target container,
+        and use its path in the relevant ``autocmd[].cmd`` property.
 
 **Section example**
 

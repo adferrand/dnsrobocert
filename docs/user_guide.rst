@@ -198,7 +198,7 @@ configuration file will look like this now:
         auth_username: USER
         auth_password: PASSWD
 
-Configuring `certificates` section
+Configuring ``certificates`` section
 ----------------------------------
 
 Everything is ready to get the certificates. What you want as certificates is defined in the ``certificates``
