@@ -28,7 +28,7 @@ jobs:
         linux-py38:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.8
-          TOXENV: py38-cover
+          TOXENV: cover
         lint:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.8
