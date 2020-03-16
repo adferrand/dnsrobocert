@@ -6,10 +6,10 @@ Migration from docker-letsencrypt-dns
 =====================================
 
 DNSroboCert started as a pure Docker implementation named ``adferrand/letsencrypt-dns``. It was coded in bash,
-and used both environment variables and a file named ``domains.conf`` for its configuration.
+and was using both environment variables and a file named ``domains.conf`` for its configuration.
 
 If you followed the link displayed in logs from ``adferrand/letsencrypt-dns``, then this section is for you:
-your instance of ``letsencrypt-dns`` have been upgraded to DNSroboCert, and a migration path is proposed.
+your instance of ``letsencrypt-dns`` has been upgraded to DNSroboCert, and a migration path is proposed.
 
 Indeed to recall, ``domains.conf`` was holding the list of certificates to create and renew, and also the
 ``autorestart`` and ``autocmd`` features for each certificate. On the other hand, environment variables were
