@@ -1,6 +1,6 @@
+import contextlib
 import datetime
 import os
-import contextlib
 
 import pytest
 from cryptography import x509
@@ -219,8 +219,6 @@ def test_fix_permissions(_autorestart, _autocmd, _pfx_export, fake_config, fake_
         assert os.stat(archive_path).st_mode & 0o777 == 0o777
 
         if POSIX_MODE:
-            import pwd
-            import grp
             uid = pwd.getpwnam("nobody")[2]
             gid = grp.getgrnam("nogroup")[2]
 

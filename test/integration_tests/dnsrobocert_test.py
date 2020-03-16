@@ -1,15 +1,14 @@
+import contextlib
 import json
 import os
+import platform
 import stat
 import subprocess
 import time
 from typing import Optional
 from unittest import skipIf
 from unittest.mock import patch
-import platform
-import contextlib
 
-import pytest
 import requests
 import urllib3
 
@@ -145,7 +144,10 @@ def _start_pebble(tmp_path):
             challtestsrv_process.terminate()
 
 
-@skipIf(platform.system() == "Darwin", reason="Integration tests are not supported on Mac OS X.")
+@skipIf(
+    platform.system() == "Darwin",
+    reason="Integration tests are not supported on Mac OS X.",
+)
 def test_it(tmp_path):
     with _start_pebble(tmp_path):
         directory_path = tmp_path / "letsencrypt"
