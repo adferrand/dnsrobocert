@@ -13,8 +13,8 @@ DNSroboCert is coded entirely in Python, and uses features available starting wi
 It sits on top of Certbot_ and Lexicon_. Here are the repartition of the roles:
 
 * Certbot_ takes care of the actual certificate issuances and renewals against the ACME CA server, in a compliant
-  and secured processing that respects the RFC-8555,
-* Lexicon_ provides the central interface to communicate with the DNS API providers, and insert the required TXT
+  and secured processing that respects the `RFC-8555`_ protocol,
+* Lexicon_ provides the central interface to communicate with the DNS API providers, and inserts the required TXT
   entries for the DNS-01 challenges,
 * DNSroboCert
 
@@ -25,6 +25,7 @@ It sits on top of Certbot_ and Lexicon_. Here are the repartition of the roles:
   * executes a a cron job to trigger regularly the `Certbot renewal process`_.
 
 .. _Certbot: https://github.com/certbot
+.. _RFC-8555: https://tools.ietf.org/html/rfc8555
 .. _Lexicon: https://github.com/AnalogJ/lexicon
 .. _Certbot's manual plugin: https://certbot.eff.org/docs/using.html#manual
 .. _Certbot renewal process: https://certbot.eff.org/docs/using.html#renewing-certificates
@@ -34,15 +35,15 @@ Setting up a development environment
 
 DNSroboCert uses Poetry_ to configure an environment development, build the project, and push wheel/sdist to PyPI.
 
-1. First, install Poetry_, following this guide: `Poetry installation`_
+1. First, install Poetry_, following this guide: `Poetry installation`_.
 
-2. Now Poetry should be available in your command line. Check that the following command is displaying Poetry version.
+2. Now Poetry should be available in your command line. Check that the following command is displaying Poetry version:
 
 .. code-block:: console
 
     poetry --version
 
-3. Fork the upstream `GitHub project`_ and clone your fork locally
+3. Fork the upstream `GitHub project`_ and clone your fork locally:
 
 .. code-block:: console
 
@@ -55,28 +56,28 @@ DNSroboCert uses Poetry_ to configure an environment development, build the proj
     | It allows in particular to have a separated set of dependencies for the project that will not interfere with
       the OS Python packages installed globally.
 
-4. Setup the virtual environment for DNSroboCert using Poetry
+4. Setup the virtual environment for DNSroboCert using Poetry:
 
 .. code-block:: console
 
     cd dnsrobocert
     poetry use env python3
 
-5. Activate the virtual environment
+5. Activate the virtual environment:
 
-* For Linux/Mac OS X
+* For Linux/Mac OS X:
 
 .. code-block:: console
 
     source .venv/bin/activate
 
-* For Windows (using Powershell)
+* For Windows (using Powershell):
 
 .. code-block:: console
 
     .\.venv\Scripts\activate
 
-6. Install development dependencies
+6. Install development dependencies.
 
 .. code-block:: console
 

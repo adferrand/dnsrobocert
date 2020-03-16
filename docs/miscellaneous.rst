@@ -11,29 +11,30 @@ and was using both environment variables and a file named ``domains.conf`` for i
 If you followed the link displayed in logs from ``adferrand/letsencrypt-dns``, then this section is for you:
 your instance of ``letsencrypt-dns`` has been upgraded to DNSroboCert, and a migration path is proposed.
 
-Indeed to recall, ``domains.conf`` was holding the list of certificates to create and renew, and also the
+To recall, ``domains.conf`` was holding the list of certificates to create and renew, and also the
 ``autorestart`` and ``autocmd`` features for each certificate. On the other hand, environment variables were
 configuring the DNS provider to use, the specific options for Let's Encrypt (account email address, staging servers)
 and some custom operations on the certificate assets (like specific users and permissions).
 
-DNSroboCert supports all these features, improves them, and stores its configuration in one central file, located
-by default at ``/etc/dnsrobocert/config.yml``. As said by DNSroboCert in the logs, usage of the old environment
-variables and the ``domains.conf`` file is deprecated, and **you should move as soon as possible to the ``config.yml``
-file**.
+DNSroboCert supports all these features, improves them, and stores its configuration in one structured central file,
+located by default at ``/etc/dnsrobocert/config.yml``. As said by DNSroboCert in the logs, usage of the old environment
+variables and the ``domains.conf`` file is deprecated, and **you should move as soon as possible to the** ``config.yml``
+**file**.
 
 Let's see how to do that.
 
 Assisted migration
 ------------------
 
-I hate writing configuration files. Do you? If so, you will be pleased to know that DNSroboCert handles this migration
+Writing configuration files. Do you agree? If so, you will be pleased to know that DNSroboCert handles this migration
 for you. As you may seen from the logs, DNSroboCert picked automatically the relevant environment variables you set
 and your ``domains.conf`` to generate the new configuration file dynamically.
 
-Its location is `/etc/dnsrobocert/config-generated.yml`. It contains all necessary configuration to make DNSroboCert
-behave **exactly** like your ``adferrand/docker-letsencrypt-dns`` before.
+Its location is `/etc/dnsrobocert/config-generated.yml`. It contains the necessary configuration to make DNSroboCert
+behave **exactly** like your ``adferrand/docker-letsencrypt-dns`` instance before.
 
 Here are the remaining steps to finish the migration:
+
 1. Extract the file from the docker into your host machine (assuming your docker is named ``letsencrypt-dns``)
 
 .. code-block:: console
@@ -69,10 +70,14 @@ to change the image name from ``adferrand/letsencrypt-dns`` to ``adferrand/dnsro
         --volume /etc/dnsrobocert/config.yml:/etc/dnsrobocert/config.yml \
         adferrand/dnsrobocert
 
+.. note:
+
+    Docker image ``adferrand/letsencrypt-dns`` is deprecated and is replaced by ``adferrand/dnsrobocert``.
+
 Manual migration
 ----------------
 
-If you want to go wild, you can migrate yourself by writing the new ``config.yml`` file to fit your needs, following
+If you want to go berserk, you can migrate yourself by writing the new ``config.yml`` file to fit your needs, following
 the documentation of the `User guide`_ and `Configuration reference`_.
 
 Once done, you can follow the previous section to restart your Docker container.
@@ -80,14 +85,15 @@ Once done, you can follow the previous section to restart your Docker container.
 What is new?
 ------------
 
-At this point, you may ask yourself what you gain by migrating from ``adferrand/letsencrypt-dns`` to ``adferrand/dnsrobocert``.
+At this point, you may ask yourself what you gain by migrating from ``adferrand/letsencrypt-dns``
+to ``adferrand/dnsrobocert``.
 
-Well, thanks to this migration I plan a lot of new features, thanks to the complete refactoring of my tool into
-a real programming language. Basically it becames a real program that I name DNSroboCert, with proper code
-quality and proper extensibility to add all the features the community asks for.
+Well, thanks to this migration a lot of new features are planned, since this is a complete refactoring of the tool into
+a proper programming language, Python. Basically it becames a real program that I name DNSroboCert, with code
+quality control and good extensibility to add all the features the community asks for.
 
 You can check in particular the `Project V3 specifications`_ that drove this migration and gives key points for
-the future features.
+the incoming features.
 
 But beyond promises you will get immediate advantages that I already implemented in DNSroboCert:
 
