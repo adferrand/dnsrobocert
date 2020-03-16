@@ -9,9 +9,9 @@ def main():
     providers = [provider for provider in discovery.find_providers().keys() if provider != 'auto']
 
     output = '''\
-=========================================
-Lexicon providers configuration reference
-=========================================
+=========================
+Lexicon providers options
+=========================
 
 .. contents:: Table of Contents
    :local:
@@ -19,10 +19,12 @@ Lexicon providers configuration reference
 Supported providers
 ===================
 
+The following Lexicon providers are supported by DNSroboCert.
+
 {0}
 
-Options for each provider
-=========================
+Providers options
+=================
 
 '''.format(_generate_table(["{0}_".format(provider) for provider in providers]))
 
@@ -47,7 +49,7 @@ Options for each provider
 
         output = output + '\n'
 
-    with open(os.path.join('docs', 'lexicon_providers_config.rst'), 'w') as f:
+    with open(os.path.join('docs', 'providers_options.rst'), 'w') as f:
         f.write(output)
 
 

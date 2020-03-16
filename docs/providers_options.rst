@@ -1,12 +1,14 @@
-=========================================
-Lexicon providers configuration reference
-=========================================
+=========================
+Lexicon providers options
+=========================
 
 .. contents:: Table of Contents
    :local:
 
 Supported providers
 ===================
+
+The following Lexicon providers are supported by DNSroboCert.
 
 +----------------+----------------+----------------+----------------+
 |aliyun_         |aurora_         |azure_          |cloudflare_     |
@@ -42,8 +44,8 @@ Supported providers
 |yandex_         |zeit_           |zilore_         |zonomi_         |
 +----------------+----------------+----------------+----------------+
 
-Options for each provider
-=========================
+Providers options
+=================
 
 .. _aliyun:
 
