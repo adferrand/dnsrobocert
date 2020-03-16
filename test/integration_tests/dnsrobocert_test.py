@@ -2,13 +2,13 @@ import json
 import os
 import stat
 import subprocess
-from typing import Optional
-import urllib3
 import time
+from typing import Optional
 from unittest.mock import patch
 
 import pytest
 import requests
+import urllib3
 
 from dnsrobocert.core import main
 
@@ -76,7 +76,9 @@ def _check_until_timeout(url, attempts=30):
         except requests.exceptions.ConnectionError:
             pass
 
-    raise ValueError('Error, url did not respond after {0} attempts: {1}'.format(attempts, url))
+    raise ValueError(
+        "Error, url did not respond after {0} attempts: {1}".format(attempts, url)
+    )
 
 
 @pytest.fixture(autouse=True)
@@ -125,7 +127,7 @@ def pebble(tmp_path):
             env=environ,
         )
 
-        _check_until_timeout('https://127.0.0.1:14000/dir')
+        _check_until_timeout("https://127.0.0.1:14000/dir")
 
         yield
     finally:
@@ -136,12 +138,13 @@ def pebble(tmp_path):
 
 
 def test_it(tmp_path):
-    directory_path = tmp_path / 'letsencrypt'
+    directory_path = tmp_path / "letsencrypt"
     os.mkdir(directory_path)
 
-    config_path = tmp_path / 'config.yml'
-    with open(str(config_path), 'w') as f:
-        f.write('''\
+    config_path = tmp_path / "config.yml"
+    with open(str(config_path), "w") as f:
+        f.write(
+            """\
     draft: false
     acme:
       email_account: john.doe@example.net
@@ -156,11 +159,16 @@ def test_it(tmp_path):
       - test1.example.net
       - test2.example.net
       profile: dummy
-    ''')
+    """
+        )
 
-    with patch.object(main._Daemon, 'do_shutdown') as shutdown:
+    with patch.object(main._Daemon, "do_shutdown") as shutdown:
         shutdown.side_effect = [False, True]
-        with patch("dnsrobocert.core.certbot._DEFAULT_FLAGS", ["-n", "--no-verify-ssl"]):
-            main.main(['-c', str(config_path), '-d', str(directory_path)])
+        with patch(
+            "dnsrobocert.core.certbot._DEFAULT_FLAGS", ["-n", "--no-verify-ssl"]
+        ):
+            main.main(["-c", str(config_path), "-d", str(directory_path)])
 
-    assert os.path.exists(os.path.join(directory_path, 'live', 'test1.example.net', 'cert.pem'))
+    assert os.path.exists(
+        os.path.join(directory_path, "live", "test1.example.net", "cert.pem")
+    )

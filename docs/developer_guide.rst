@@ -81,7 +81,7 @@ DNSroboCert uses Poetry_ to configure an environment development, build the proj
 
 .. code-block:: console
 
-    poetry update
+    poetry install
 
 At this point, you are ready to develop on the project. You can run the CLI that will use the local source code:
 
@@ -104,25 +104,29 @@ The project DNSroboCert tries to follows the up-to-date recommended guideline in
 
 Please ensure that your code is compliant with this guideline before submitting a PR:
 
-1. Reformat your code:
-
-.. code-block:: console
-
-    isort -rc src test
-    black src test
-
-2. Ensure that tests are passing:
+1. Ensure that tests are passing:
 
 .. code-block:: console
 
     pytest test
 
-3. Ensure that linting and static type checking are passing:
+.. warning::
+
+    On Windows you must run the tests from an account with administrative privileges to make them pass.
+
+2. Ensure that linting and static type checking are passing:
 
 .. code-block:: console
 
-    flake8
-    mypy src test
+    flake8 src test utils
+    mypy src
+
+3. Reformat your code:
+
+.. code-block:: console
+
+    isort -rc src test utils
+    black src test utils
 
 Submitting a PR
 ===============

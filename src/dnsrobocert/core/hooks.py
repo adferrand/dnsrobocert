@@ -124,7 +124,6 @@ def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
     lineage_path = os.environ["RENEWED_LINEAGE"]
     lineage = os.path.basename(lineage_path)
     certificate = config.get_certificate(dnsrobocert_config, lineage)
-    profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
 
     _pfx_export(certificate, lineage_path)
     _fix_permissions(
@@ -157,7 +156,7 @@ def _txt_challenge(
             "type": "TXT",
             "name": "_acme-challenge.{0}.".format(domain),
             "content": token,
-            "delegated": profile.get('delegated_domain'),
+            "delegated": profile.get("delegated_domain"),
             "provider_name": provider_name,
             provider_name: provider_options,
         }

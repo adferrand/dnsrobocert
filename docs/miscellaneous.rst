@@ -5,62 +5,76 @@ Miscellaneous
 Migration from docker-letsencrypt-dns
 =====================================
 
-DNSroboCert started as a pure Docker implementation named ``adferrand/letsencrypt-dns``. It was coded in bash,
-and was using both environment variables and a file named ``domains.conf`` for its configuration.
+In this section we will discuss about how to migrate from ``adferrand/letsencrypt-dns`` to ``adferrand/dnsrobocert``.
 
-If you followed the link displayed in logs from ``adferrand/letsencrypt-dns``, then this section is for you:
-your instance of ``letsencrypt-dns`` has been upgraded to DNSroboCert, and a migration path is proposed.
-
-To recall, ``domains.conf`` was holding the list of certificates to create and renew, and also the
-``autorestart`` and ``autocmd`` features for each certificate. On the other hand, environment variables were
-configuring the DNS provider to use, the specific options for Let's Encrypt (account email address, staging servers)
-and some custom operations on the certificate assets (like specific users and permissions).
+Indeed DNSroboCert started as a pure Docker implementation named ``adferrand/letsencrypt-dns``. It was coded in bash,
+and was using both environment variables and a file named ``domains.conf`` for its configuration. ``domains.conf`` was
+holding the list of certificates to create and renew, and also the ``autorestart`` and ``autocmd`` features for each
+certificate. On the other hand, environment variables were configuring the DNS provider to use, the specific options
+for Let's Encrypt (account email address, staging servers) and some custom operations on the certificate assets
+(like specific users and permissions).
 
 DNSroboCert supports all these features, improves them, and stores its configuration in one structured central file,
 located by default at ``/etc/dnsrobocert/config.yml``. As said by DNSroboCert in the logs, usage of the old environment
 variables and the ``domains.conf`` file is deprecated, and **you should move as soon as possible to the** ``config.yml``
-**file**.
+**file**. You should also use ``adferrand/dnsrobocert`` instead of ``adferrand/letsencrypt-dns`` starting from now.
 
-Let's see how to do that.
+If you followed the link displayed in logs from ``adferrand/letsencrypt-dns``, then this section is for you:
+your instance of ``letsencrypt-dns`` has been upgraded to DNSroboCert, and you should migrate
+to ``adferrand/dnsrobocert``.
 
-Assisted migration
-------------------
+Let's see this migration in details now.
 
-Writing configuration files. Do you agree? If so, you will be pleased to know that DNSroboCert handles this migration
-for you. As you may seen from the logs, DNSroboCert picked automatically the relevant environment variables you set
-and your ``domains.conf`` to generate the new configuration file dynamically.
+Tool-assisted migration
+-----------------------
+
+Writing configuration files is boring. Do you agree? If so, you will be pleased to know that DNSroboCert handles
+this migration for you. Indeed if you start an ``adferrand/dnsrobocert`` instance with the legacy configuration
+(environment variables + ``domains.conf``), DNSroboCert will automatically pick them and generate the new configuration
+file dynamically.
 
 Its location is `/etc/dnsrobocert/config-generated.yml`. It contains the necessary configuration to make DNSroboCert
 behave **exactly** like your ``adferrand/docker-letsencrypt-dns`` instance before.
 
-Here are the remaining steps to finish the migration:
+Here are the steps to achieve the migration.
 
-1. Extract the file from the docker into your host machine (assuming your docker is named ``letsencrypt-dns``)
+1. Pull the latest version of ``adferrand/docker-letsencrypt-dns`` and ``adferrand/dnsrobocert``:
+
+.. code-block:: console
+
+    docker pull adferrand/docker-letsencrypt-dns
+    docker pull adferrand/docker-dnsrobocert
+
+2. Restart your up-to-date instance of ``adferrand/docker-letsencrypt-dns`` appropriately with ``docker``
+   or ``docker-compose`` to ensure the new configuration file has been generated:
+
+3. Extract this file from the docker into your host machine (assuming your docker is named ``letsencrypt-dns``):
 
 .. code-block:: console
 
     mkdir -p /etc/dnsrobocert
     docker cp letsencrypt-dns:/etc/dnsrobocert/config-generated.yml /etc/dnsrobocert/config.yml
 
-2. Restart your Docker container with the new configuration file mounted at the right place
-   (adapt the command to your actual DNS provider configuration):
+4. Restart your Docker container with the new configuration file mounted at the right place:
 
-.. code-block:: console
+   * With docker command line, add the following flag:
 
-    docker run \
-        --name letsencrypt-dns \
-        --volume /etc/letsencrypt/domains.conf:/etc/letsencrypt/domains.conf \
-        --volume /var/docker-data/letsencrypt:/etc/letsencrypt \
-        --volume /etc/dnsrobocert/config.yml:/etc/dnsrobocert/config.yml \
-        --env 'LETSENCRYPT_USER_MAIL=admin@example.com' \
-        --env 'LEXICON_PROVIDER=cloudflare' \
-        --env 'LEXICON_CLOUDFLARE_AUTH_USERNAME=my_cloudflare_email' \
-        --env 'LEXICON_CLOUDFLARE_AUTH_TOKEN=my_cloudflare_global_api_key' \
-        adferrand/letsencrypt-dns
+    .. code-block:: console
 
-DNSroboCert will automatically pick the new configuration file. Once you confirmed that everything is working as
-before, you can restart the Docker without the environment variables and ``domains.conf``. Please take this occasion
-to change the image name from ``adferrand/letsencrypt-dns`` to ``adferrand/dnsrobocert``.
+        --volume /etc/dnsrobocert/config.yml:/etc/dnsrobocert/config.yml
+
+   * Or with docker-compose, add the mount directive in your ``docker-compose.yml``
+
+    .. code-block:: yaml
+
+        volumes:
+        - /etc/dnsrobocert/config.yml:/etc/dnsrobocert/config.yml
+
+**DNSroboCert will automatically pick the new configuration file.**
+
+5. Once you confirmed that everything is working as before, you can restart the Docker without the environment
+   variables and ``domains.conf`` mount. Please take this occasion to change the image name from
+   ``adferrand/letsencrypt-dns`` to ``adferrand/dnsrobocert``. For instance:
 
 .. code-block:: console
 
@@ -70,7 +84,7 @@ to change the image name from ``adferrand/letsencrypt-dns`` to ``adferrand/dnsro
         --volume /etc/dnsrobocert/config.yml:/etc/dnsrobocert/config.yml \
         adferrand/dnsrobocert
 
-.. note:
+.. note::
 
     Docker image ``adferrand/letsencrypt-dns`` is deprecated and is replaced by ``adferrand/dnsrobocert``.
 
