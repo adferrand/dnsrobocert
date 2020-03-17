@@ -19,9 +19,9 @@ jobs:
         displayName: Prepare environment
       - task: TwineAuthenticate@1
         displayName: Authenticate against PyPI
-#      - script: |
-#          twine upload -r pypi dist/*
-#        displayName: Upload Python dist to PyPI
+      - script: |
+          twine upload -r pypi dist/*
+        displayName: Upload Python dist to PyPI
 
   - job: docker
     pool:
@@ -89,4 +89,5 @@ jobs:
           title: DNSroboCert $(ReleaseVersion)
           releaseNotesFile: $(Build.SourcesDirectory)/changelog/release_$(ReleaseVersion).md
           isDraft: true
+          addChangeLog: true
         displayName: Create GitHub Release
