@@ -4,7 +4,7 @@ trigger:
       - "*"
   tags:
     include:
-      - "3.*"
+      - "v3.*"
 
 pr: none
 
