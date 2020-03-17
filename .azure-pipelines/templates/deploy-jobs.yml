@@ -17,13 +17,8 @@ jobs:
           python -m pip install -U pip
           pip install twine
         displayName: Prepare environment
-      - task: TwineAuthenticate@1
-        inputs:
-          pythonUploadServiceConnection: pypi-upload
-        displayName: Authenticate against PyPI
       - script: |
-          cat $(PYPIRC_PATH)
-          twine upload dist/* -r upload --config-file $(PYPIRC_PATH)
+          twine upload dist/* -u "$(twine.username)" -p "$(twine.password)" --repository-url https://test.pypi.org/legacy/
         displayName: Upload Python dist to PyPI
 
 #  - job: docker
