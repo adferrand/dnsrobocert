@@ -18,6 +18,7 @@ jobs:
           pip install twine
         displayName: Prepare environment
       - task: TwineAuthenticate@1
+        displayName: Authenticate against PyPI
 
   - job: docker
     pool:
@@ -27,13 +28,15 @@ jobs:
         inputs:
           artifact: docker
           path: $(Build.SourcesDirectory)/docker
-        displayName: Retrieve Python dist
+        displayName: Retrieve Docker image from artifacts
       - script: |
-          docker load < docker/dnsrobocert.tar
+          docker load < docker/dnsrobocert.tar.gz
+        displayName: Load Docker image
       - task: Docker@2
-        displayName: Login to ACR
         inputs:
           command: login
+          containerRegistry: docker-hub
+        displayName: Login to DockerHub
 
   - job: github_release
     pool:

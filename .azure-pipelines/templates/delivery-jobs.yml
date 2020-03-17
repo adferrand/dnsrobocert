@@ -40,7 +40,7 @@ jobs:
           GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert
         displayName: Check Docker container runtime
       - script: |
-          docker save adferrand/dnsrobocert > $(Build.ArtifactStagingDirectory)/dnsrobocert.tar
+          docker save adferrand/dnsrobocert | gzip > $(Build.ArtifactStagingDirectory)/dnsrobocert.tar.gz
         displayName: Archive Docker image
       - task: PublishPipelineArtifact@1
         inputs:
