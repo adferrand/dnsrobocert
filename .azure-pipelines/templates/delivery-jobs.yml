@@ -27,5 +27,5 @@ jobs:
       - script: |
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/dnsrobocert
+          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert
         displayName: Check Docker container runtime
