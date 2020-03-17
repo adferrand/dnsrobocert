@@ -22,6 +22,6 @@ jobs:
     steps:
       - task: Docker@2
         inputs:
-          repository: $(imageName)
+          repository: adferrand/dnsrobocert
           command: build
         displayName: Build Docker image
