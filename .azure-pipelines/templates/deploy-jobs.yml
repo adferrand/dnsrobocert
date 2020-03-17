@@ -19,7 +19,7 @@ jobs:
         displayName: Prepare environment
       - task: TwineAuthenticate@1
         inputs:
-          externalFeeds: pypi-upload
+          pythonUploadServiceConnection: pypi-upload
         displayName: Authenticate against PyPI
       - script: |
           cat $(PYPIRC_PATH)
