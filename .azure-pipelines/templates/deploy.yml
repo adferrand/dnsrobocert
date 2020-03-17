@@ -1,0 +1,36 @@
+jobs:
+  - job: pypi
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: python-dist
+          path: $(Build.SourcesDirectory)/dist
+        displayName: Retrieve Python dist
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: 3.8
+          addToPath: true
+        displayName: Install Python
+      - script: |
+          python -m pip install -U pip
+          pip install twine
+        displayName: Prepare environment
+      - task: TwineAuthenticate@1
+
+  - job: docker
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: python-dist
+          path: $(Build.SourcesDirectory)/docker
+        displayName: Retrieve Python dist
+      - script: |
+          docker load < docker/adferrand-dnsrobocert.tar
+      - task: Docker@2
+        displayName: Login to ACR
+        inputs:
+          command: login
