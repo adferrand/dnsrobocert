@@ -29,6 +29,15 @@ jobs:
           artifact: docker
           path: $(Build.SourcesDirectory)/docker
         displayName: Retrieve Docker image from artifacts
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: 3.8
+          addToPath: true
+        displayName: Install Python
+      - script: |
+          python -m pip install -U pip
+          pip install poetry
+        displayName: Prepare environment
       - script: |
           docker load < docker/dnsrobocert.tar.gz
         displayName: Load Docker image
@@ -37,6 +46,12 @@ jobs:
           command: login
           containerRegistry: docker-hub
         displayName: Login to DockerHub
+      - script: |
+          version=`poetry version | awk '{print $2}'`
+          docker tag adferrand/dnsrobocert adferrand/dnsrobocert:$version
+          # LEGACY DEPLOY
+          docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns
+          docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns:$version
 
   - job: github_release
     pool:
