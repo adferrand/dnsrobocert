@@ -48,7 +48,7 @@ jobs:
       - script: |
           python -m pip install -U pip
           pip install poetry tox
-        displayName: Install software
+        displayName: Prepare environment
       - script: |
           tox
-        displayName: Test software
+        displayName: Run tox env(s)
