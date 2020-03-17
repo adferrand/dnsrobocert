@@ -22,7 +22,6 @@ jobs:
           pythonUploadServiceConnection: pypi-upload
         displayName: Authenticate against PyPI
       - script: |
-          cat $(PYPIRC_PATH)
           twine upload dist/* -r upload --config-file $(PYPIRC_PATH)
         displayName: Upload Python dist to PyPI
 
