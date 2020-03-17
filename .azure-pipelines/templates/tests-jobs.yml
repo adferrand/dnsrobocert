@@ -22,7 +22,7 @@ jobs:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.6
           TOXENV: py36
-        linux-py38:
+        linux-py38-cover:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.8
           TOXENV: py38-cover
@@ -46,12 +46,14 @@ jobs:
         inputs:
           testResultsFiles: '**/test-*.xml'
           testRunTitle: 'Publish test results for Python $(PYTHON_VERSION) on $(IMAGE_NAME)'
+        displayName: Publish tests reports
       - task: PublishCodeCoverageResults@1
         condition: eq(variables['TOXENV'], 'py38-cover')
         inputs:
           codeCoverageTool: Cobertura
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
           reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+        displayName: Publish coverage reports
 
   - job: quality
     strategy:

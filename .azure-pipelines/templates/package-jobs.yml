@@ -1,5 +1,5 @@
 jobs:
-  - job: package
+  - job: package-pypi
     pool:
       vmImage: ubuntu-18.04
     steps:
@@ -15,3 +15,13 @@ jobs:
       - script: |
           poetry build
         displayName: Build distribution
+
+  - job: docker
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: Docker@2
+        inputs:
+          repository: $(imageName)
+          command: build
+        displayName: Build Docker image
