@@ -26,27 +26,27 @@ jobs:
           artifact: python-dist
         displayName: Publish Python dist to artifacts
 
-  - job: docker
-    pool:
-      vmImage: ubuntu-18.04
-    steps:
-      - script: |
-          docker pull adferrand/dnsrobocert || true
-          docker build --pull --cache-from adferrand/dnsrobocert -t adferrand/dnsrobocert .
-        displayName: Build Docker image
-      - script: |
-          mkdir -p ./bin
-          curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert
-        displayName: Check Docker container runtime
-      - script: |
-          docker save adferrand/dnsrobocert | gzip > $(Build.ArtifactStagingDirectory)/dnsrobocert.tar.gz
-        displayName: Archive Docker image
-      - task: PublishPipelineArtifact@1
-        inputs:
-          path: $(Build.ArtifactStagingDirectory)
-          artifact: docker
-        displayName: Publish Docker image to artifacts
+#  - job: docker
+#    pool:
+#      vmImage: ubuntu-18.04
+#    steps:
+#      - script: |
+#          docker pull adferrand/dnsrobocert || true
+#          docker build --pull --cache-from adferrand/dnsrobocert -t adferrand/dnsrobocert .
+#        displayName: Build Docker image
+#      - script: |
+#          mkdir -p ./bin
+#          curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+#          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert
+#        displayName: Check Docker container runtime
+#      - script: |
+#          docker save adferrand/dnsrobocert | gzip > $(Build.ArtifactStagingDirectory)/dnsrobocert.tar.gz
+#        displayName: Archive Docker image
+#      - task: PublishPipelineArtifact@1
+#        inputs:
+#          path: $(Build.ArtifactStagingDirectory)
+#          artifact: docker
+#        displayName: Publish Docker image to artifacts
 
   - job: release_changelog
     pool:

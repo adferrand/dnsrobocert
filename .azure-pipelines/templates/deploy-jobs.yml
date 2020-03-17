@@ -22,43 +22,44 @@ jobs:
           pythonUploadServiceConnection: pypi-upload
         displayName: Authenticate against PyPI
       - script: |
+          cat $(PYPIRC_PATH)
           twine upload dist/* -r upload --config-file $(PYPIRC_PATH)
         displayName: Upload Python dist to PyPI
 
-  - job: docker
-    pool:
-      vmImage: ubuntu-18.04
-    steps:
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          artifact: docker
-          path: $(Build.SourcesDirectory)/docker
-        displayName: Retrieve Docker image from artifacts
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: 3.8
-          addToPath: true
-        displayName: Install Python
-      - script: |
-          python -m pip install -U pip
-          pip install poetry
-        displayName: Prepare environment
-      - script: |
-          docker load < docker/dnsrobocert.tar.gz
-        displayName: Load Docker image
-      - task: Docker@2
-        inputs:
-          command: login
-          containerRegistry: docker-hub
-        displayName: Login to DockerHub
-      - script: |
-          version=`poetry version | awk '{print $2}'`
-          echo "Docker tag is: $version"
-          docker tag adferrand/dnsrobocert adferrand/dnsrobocert:$version
-          # LEGACY DEPLOY
-          docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns
-          docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns:$version
-        displayName: Tag Docker images
+#  - job: docker
+#    pool:
+#      vmImage: ubuntu-18.04
+#    steps:
+#      - task: DownloadPipelineArtifact@2
+#        inputs:
+#          artifact: docker
+#          path: $(Build.SourcesDirectory)/docker
+#        displayName: Retrieve Docker image from artifacts
+#      - task: UsePythonVersion@0
+#        inputs:
+#          versionSpec: 3.8
+#          addToPath: true
+#        displayName: Install Python
+#      - script: |
+#          python -m pip install -U pip
+#          pip install poetry
+#        displayName: Prepare environment
+#      - script: |
+#          docker load < docker/dnsrobocert.tar.gz
+#        displayName: Load Docker image
+#      - task: Docker@2
+#        inputs:
+#          command: login
+#          containerRegistry: docker-hub
+#        displayName: Login to DockerHub
+#      - script: |
+#          version=`poetry version | awk '{print $2}'`
+#          echo "Docker tag is: $version"
+#          docker tag adferrand/dnsrobocert adferrand/dnsrobocert:$version
+#          # LEGACY DEPLOY
+#          docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns
+#          docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns:$version
+#        displayName: Tag Docker images
 #      - script: |
 #          version=`poetry version | awk '{print $2}'`
 #          echo "Docker tag is: $version"
@@ -74,7 +75,7 @@ jobs:
       vmImage: ubuntu-18.04
     dependsOn:
       - pypi
-      - docker
+#      - docker
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:
