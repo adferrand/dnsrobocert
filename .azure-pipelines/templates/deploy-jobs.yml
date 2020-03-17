@@ -20,7 +20,7 @@ jobs:
       - task: TwineAuthenticate@1
         displayName: Authenticate against PyPI
       - script: |
-          twine upload -r pypi --config-file $(PYPIRC_PATH) dist/*
+          twine upload -r upload --config-file $(PYPIRC_PATH) dist/*
         displayName: Upload Python dist to PyPI
 
   - job: docker
