@@ -20,8 +20,12 @@ jobs:
     pool:
       vmImage: ubuntu-18.04
     steps:
-      - task: Docker@2
-        inputs:
-          repository: adferrand/dnsrobocert
-          command: build
+      - script: |
+          docker pull adferrand/dnsrobocert || true
+          docker build --pull --cache-from adferrand/dnsrobocert -t adferrand/dnsrobocert .
         displayName: Build Docker image
+      - script: |
+          mkdir -p ./bin
+          curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./tests ./bin/dgoss run adferrand/dnsrobocert
+        displayName: Check Docker container runtime
