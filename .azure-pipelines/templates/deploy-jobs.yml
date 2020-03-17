@@ -19,6 +19,9 @@ jobs:
         displayName: Prepare environment
       - task: TwineAuthenticate@1
         displayName: Authenticate against PyPI
+#      - script: |
+#          twine upload -r pypi dist/*
+#        displayName: Upload Python dist to PyPI
 
   - job: docker
     pool:
@@ -54,6 +57,15 @@ jobs:
           docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns
           docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns:$version
         displayName: Tag Docker images
+#      - script: |
+#          version=`poetry version | awk '{print $2}'`
+#          echo "Docker tag is: $version"
+#          docker push adferrand/dnsrobocert:$version
+#          docker push adferrand/dnsrobocert
+#          # LEGACY DEPLOY
+#          docker push adferrand/docker-letsencrypt-dns:$version
+#          docker push adferrand/docker-letsencrypt-dns
+#        displayName: Deploy Docker images to DockerHub
 
   - job: github_release
     pool:
@@ -68,4 +80,13 @@ jobs:
           path: $(Build.SourcesDirectory)/changelog
         displayName: Retrieve release changelog
       - script: |
-          cat changelog/release_changelog.md
+          version=`ls changelog/*.md | sed -E 's/.*release_(.*)\.md/\1/g'`
+          echo "Version is: $version"
+          echo "##vso[task.setvariable variable=ReleaseTitle;]ReleaseVersion $version"
+      - task: GithubRelease@0
+        inputs:
+          gitHubConnection: github-release
+          title: DNSroboCert $(ReleaseVersion)
+          releaseNotesFile: $(Build.SourcesDirectory)/changelog/release_$(ReleaseVersion).md
+          isDraft: true
+        displayName: Create GitHub Release

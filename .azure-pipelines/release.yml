@@ -1,3 +1,11 @@
+trigger:
+  branches:
+    exclude:
+      - "*"
+  tags:
+    include:
+      - "3.*"
+
 pr: none
 
 stages:
