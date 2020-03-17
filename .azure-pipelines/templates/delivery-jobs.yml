@@ -63,5 +63,5 @@ jobs:
       - task: PublishPipelineArtifact@1
         inputs:
           path: $(Build.ArtifactStagingDirectory)
-          artifact: docker
+          artifact: changelog
         displayName: Publish release changelog to artifacts
