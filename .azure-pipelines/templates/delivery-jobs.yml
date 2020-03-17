@@ -14,7 +14,17 @@ jobs:
         displayName: Prepare environment
       - script: |
           poetry build
-        displayName: Build distribution
+        displayName: Build Python dist
+      - task: CopyFiles@2
+        inputs:
+          sourceFolder: $(System.DefaultWorkingDirectory)/dist
+          targetFolder: $(Build.ArtifactStagingDirectory)
+        displayName: Prepare Python dist for artifacts
+      - task: PublishPipelineArtifact@1
+        inputs:
+          path: $(Build.ArtifactStagingDirectory)
+          artifact: windows-installer
+        displayName: Publish Python dist to artifacts
 
   - job: docker
     pool:
@@ -29,3 +39,11 @@ jobs:
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
           GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert
         displayName: Check Docker container runtime
+      - script: |
+          docker save adferrand/dnsrobocert > $(Build.ArtifactStagingDirectory)/dnsrobocert.tar
+        displayName: Archive Docker image
+      - task: PublishPipelineArtifact@1
+        inputs:
+          path: $(Build.ArtifactStagingDirectory)
+          artifact: docker
+        displayName: Publish Docker image to artifacts
