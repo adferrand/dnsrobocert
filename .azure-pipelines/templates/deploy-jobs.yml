@@ -18,6 +18,8 @@ jobs:
           pip install twine
         displayName: Prepare environment
       - task: TwineAuthenticate@1
+        inputs:
+          externalFeeds: pypi-upload
         displayName: Authenticate against PyPI
       - script: |
           twine upload -r upload --config-file $(PYPIRC_PATH) dist/*
