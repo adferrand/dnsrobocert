@@ -1,16 +1,15 @@
 ============================
 |logo| adferrand/dnsrobocert
 ============================
-|tags| |version| |docker| |ci|
+|version| |docker| |ci|
 
 .. |logo| image:: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/logo_from_realies_200px.png
-.. |tags| image:: https://img.shields.io/badge/tags-latest-lightgrey.svg
-.. |version| image:: https://images.microbadger.com/badges/version/adferrand/letsencrypt-dns:2.23.0.svg
+.. |version| image:: https://badge.fury.io/py/dnsrobocert.svg
+    :target: https://badge.fury.io/py/dnsrobocert
+.. |docker| image:: https://images.microbadger.com/badges/image/adferrand/dnsrobocert.svg
     :target: https://microbadger.com/images/adferrand/letsencrypt-dns:2.23.0
-.. |docker| image:: https://images.microbadger.com/badges/image/adferrand/letsencrypt-dns:2.23.0.svg
-    :target: https://microbadger.com/images/adferrand/letsencrypt-dns:2.23.0
-.. |ci| image:: https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master.svg?style=shield
-    :target: https://circleci.com/gh/adferrand/docker-letsencrypt-dns/tree/master
+.. |ci| image:: https://dev.azure.com/adferrand/dnsrobocert/_apis/build/status/main?branchName=dnsrobocert
+    :target: https://dev.azure.com/adferrand/dnsrobocert/_build/latest?definitionId=21&branchName=dnsrobocert
 
 .. tag:intro-begin
 
