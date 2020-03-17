@@ -26,20 +26,46 @@ jobs:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.8
           TOXENV: py38-cover
-        flake8:
-          IMAGE_NAME: ubuntu-18.04
-          PYTHON_VERSION: 3.8
-          TOXENV: flake8
-        mypy:
-          IMAGE_NAME: ubuntu-18.04
-          PYTHON_VERSION: 3.8
-          TOXENV: mypy
     pool:
       vmImage: $(IMAGE_NAME)
     steps:
       - task: UsePythonVersion@0
         inputs:
           versionSpec: $(PYTHON_VERSION)
+          addToPath: true
+        displayName: Install Python
+      - script: |
+          python -m pip install -U pip
+          pip install poetry tox
+        displayName: Prepare environment
+      - script: |
+          tox
+        displayName: Run tox env(s)
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFiles: '**/test-*.xml'
+          testRunTitle: 'Publish test results for Python $(PYTHON_VERSION) on $(IMAGE_NAME)'
+      - task: PublishCodeCoverageResults@1
+        condition: eq(variables['TOXENV'], 'py38-cover')
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+          reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+
+  - job: quality
+    strategy:
+      matrix:
+        flake8:
+          TOXENV: flake8
+        mypy:
+          TOXENV: mypy
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: 3.8
           addToPath: true
         displayName: Install Python
       - script: |
