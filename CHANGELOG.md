@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0-b1 - 17/03/2020
+### Modified
+* First release of DNSroboCert
+
 ## 2.23.0 - 04/03/2020
 ### Modified
 * Update Certbot to 1.3.0: automated handling for https://community.letsencrypt.org/t/revoking-certain-certificates-on-march-4/114864
