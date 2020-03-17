@@ -23,7 +23,7 @@ jobs:
       - task: PublishPipelineArtifact@1
         inputs:
           path: $(Build.ArtifactStagingDirectory)
-          artifact: windows-installer
+          artifact: python-dist
         displayName: Publish Python dist to artifacts
 
   - job: docker
@@ -47,3 +47,21 @@ jobs:
           path: $(Build.ArtifactStagingDirectory)
           artifact: docker
         displayName: Publish Docker image to artifacts
+
+  - job: release_changelog
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: $(PYTHON_VERSION)
+          addToPath: true
+        displayName: Install Python
+      - script: |
+          python utils\extract_changelog.py latest > $(Build.ArtifactStagingDirectory)/release_changelog.md
+        displayName: Generate release changelog
+      - task: PublishPipelineArtifact@1
+        inputs:
+          path: $(Build.ArtifactStagingDirectory)
+          artifact: docker
+        displayName: Publish release changelog to artifacts
