@@ -48,10 +48,12 @@ jobs:
         displayName: Login to DockerHub
       - script: |
           version=`poetry version | awk '{print $2}'`
+          echo "Docker tag is: $version"
           docker tag adferrand/dnsrobocert adferrand/dnsrobocert:$version
           # LEGACY DEPLOY
           docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns
           docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns:$version
+        displayName: Tag Docker images
 
   - job: github_release
     pool:
