@@ -25,7 +25,7 @@ jobs:
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:
-          artifact: python-dist
+          artifact: docker
           path: $(Build.SourcesDirectory)/docker
         displayName: Retrieve Python dist
       - script: |
@@ -34,3 +34,18 @@ jobs:
         displayName: Login to ACR
         inputs:
           command: login
+
+  - job: github_release
+    pool:
+      vmImage: ubuntu-18.04
+    dependsOn:
+      - pypi
+      - docker
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: changelog
+          path: $(Build.SourcesDirectory)/changelog
+        displayName: Retrieve release changelog
+      - script: |
+          cat changelog/release_changelog.md
