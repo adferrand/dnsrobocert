@@ -3,7 +3,7 @@ pr: none
 stages:
   - stage: tests
     jobs:
-      - template: templates/tests-jobs.yml
+      - template: templates/integration-jobs.yml
   - stage: package
     jobs:
-      - template: templates/package-jobs.yml
+      - template: templates/delivery-jobs.yml

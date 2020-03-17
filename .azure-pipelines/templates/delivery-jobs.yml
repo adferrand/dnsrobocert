@@ -1,5 +1,5 @@
 jobs:
-  - job: package-pypi
+  - job: pypi
     pool:
       vmImage: ubuntu-18.04
     steps:
