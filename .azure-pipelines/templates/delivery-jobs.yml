@@ -58,7 +58,7 @@ jobs:
           addToPath: true
         displayName: Install Python
       - script: |
-          python utils\extract_changelog.py latest > $(Build.ArtifactStagingDirectory)/release_changelog.md
+          python utils/extract_changelog.py latest > $(Build.ArtifactStagingDirectory)/release_changelog.md
         displayName: Generate release changelog
       - task: PublishPipelineArtifact@1
         inputs:
