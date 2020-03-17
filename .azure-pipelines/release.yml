@@ -1,5 +1,7 @@
 pr: none
 
 jobs:
-  - template: templates/tests-jobs.yml
-  - template: templates/publish-jobs.yml
+  - stage: tests
+    template: templates/tests-jobs.yml
+  - stage: package
+    template: templates/package-jobs.yml
