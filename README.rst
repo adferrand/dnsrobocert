@@ -3,7 +3,7 @@
 ============================
 |version| |docker| |ci|
 
-.. |logo| image:: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/logo_from_realies_200px.png
+.. |logo| image:: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/dnsrobocert_logo.png
 .. |version| image:: https://badge.fury.io/py/dnsrobocert.svg
     :target: https://badge.fury.io/py/dnsrobocert
 .. |docker| image:: https://images.microbadger.com/badges/image/adferrand/dnsrobocert.svg
