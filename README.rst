@@ -90,6 +90,6 @@ If you want to help in the DNSroboCert development, you are welcome!
 Please have a look at the `Developer guide`_ page to know how to start.
 
 .. _DNSroboCert ReadTheDoc page: https://dnsrobocert.readthedocs.io
-.. _User guide: https://dnsrobocert.readthedocs.io/user_guide.html
-.. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/lexicon_providers_config.html
-.. _Developer guide: https://dnsrobocert.readthedocs.io/developer_guide.html
+.. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
+.. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/latest/lexicon_providers_config.html
+.. _Developer guide: https://dnsrobocert.readthedocs.io/en/latest/developer_guide.html

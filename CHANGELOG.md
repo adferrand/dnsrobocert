@@ -1,12 +1,26 @@
 # Changelog
 
-## 3.0.0-b2 - 18/03/2020
-### Modified
-* First release of DNSroboCert (2)
+## 3.0.0 - 18/03/2020
+### Added
+* Complete refactoring of former `adferrand/letsencrypt-dns` into DNSroboCert. Docker image is now
+  `adferrand/dnsrobocer` and is available in DockerHub. Standalone tool is installable through PyPI at
+  https://pypi.org/project/dnsrobocert/.
+* DNSroboCert does not use environment variables + `domains.conf` anymore. If you come from the
+  `adferrand/letsencrypt-dns` Docker image, the corresponding YAML configuration file is dynamically
+  generated at `/etc/dnsrobocert/config.yml`. Please see
+  https://dnsrobocert.readthedocs.io/en/latest/miscellaneous.html#migration-from-docker-letsencrypt-dns
+  for more details.
+* New features (configurable with `config.yml`, not legacy configuration):
+    * you can now define multiple DNS providers in one single instance of DNSroboCert
+    * the custom deploy scripts and PFX exports are defined per certificate
+    * force renew can be set for specific certificates
+  
+## Modified
+* Along with migration to DNSroboCert, all bash files are rewritten into Python.
+* Certificate renewal is not handled automatically anymore by an external cron task, but by DNSroboCert directly.
 
-## 3.0.0-b1 - 17/03/2020
-### Modified
-* First release of DNSroboCert (1)
+## Removed
+* Configuration of certificate renewal frequency has been removed.
 
 ## 2.23.0 - 04/03/2020
 ### Modified

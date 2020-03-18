@@ -366,4 +366,4 @@ be defined in each relevant certificate configuration.
 
 
 .. _GitHub: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/src/dnsrobocert/schema.yml
-.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/lexicon_providers_config.html
+.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/en/latest/lexicon_providers_config.html
