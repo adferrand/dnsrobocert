@@ -1,0 +1,116 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: http://pacalis.net/dnsrobocert.schema.json
+title: NamedCrypt Configuration
+description: The YAML/JSON configuration for NamedCrypt
+type: object
+properties:
+  draft:
+    type: boolean
+  acme:
+    type: object
+    properties:
+      email_account:
+        type: string
+        pattern: ^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$
+      staging:
+        type: boolean
+      api_version:
+        type: number
+        enum: [1, 2]
+      directory_url:
+        type: string
+        # pattern: ^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$
+      certs_permissions:
+        type: object
+        properties:
+          files_mode:
+            type: integer
+          dirs_mode:
+            type: integer
+          user:
+            type: string
+          group:
+            type: string
+        additionalProperties: false
+      crontab_renew:
+        type: string
+    additionalProperties: false
+  api:
+    type: object
+  profiles:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        provider:
+          type: string
+        provider_options:
+          type: object
+        sleep_time:
+          type: number
+        max_checks:
+          type: number
+        delegated_subdomain:
+          type: string
+          pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
+      required: [name, provider]
+      additionalProperties: false
+  certificates:
+    type: array
+    items:
+      type: object
+      properties:
+        profile:
+          type: string
+        domains:
+          type: array
+          items:
+            type: string
+            pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
+        name:
+          type: string
+        pfx:
+          type: object
+          properties:
+            export:
+              type: boolean
+            passphrase:
+              type: string
+          required: [export]
+          additionalProperties: false
+        autorestart:
+          type: array
+          items:
+            type: object
+            properties:
+              containers:
+                type: array
+                items:
+                  type: string
+              swarm_services:
+                type: array
+                items:
+                  type: string
+          additionalProperties: false
+        autocmd:
+          type: array
+          items:
+            type: object
+            properties:
+              containers:
+                type: array
+                items:
+                  type: string
+              cmd:
+                type: string
+            required: [cmd]
+            additionalProperties: false
+        deploy_hook:
+          type: string
+        force_renew:
+          type: boolean
+      required: [domains, profile]
+      additionalProperties: false
+additionalProperties: false

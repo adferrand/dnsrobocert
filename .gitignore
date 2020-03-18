@@ -1,2 +1,13 @@
-bin
-data
+.venv
+.idea
+.vscode
+.mypy_cache
+.pytest_cache
+__pycache__
+*.egg-info
+.eggs
+.coverage
+/bin
+dist
+.tox
+test/assets/pebble*

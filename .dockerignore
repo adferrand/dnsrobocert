@@ -1,8 +1,8 @@
-.git
-.circleci
-images
-tests
-data
-LICENSE
-VERSION
-README.md
+**
+
+!/src
+!/pyproject.toml
+!/poetry.toml
+!/poetry.lock
+!/README.rst
+!/docker
