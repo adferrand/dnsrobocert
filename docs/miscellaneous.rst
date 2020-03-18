@@ -96,6 +96,11 @@ the documentation of the `User guide`_ and `Configuration reference`_.
 
 Once done, you can follow the previous section to restart your Docker container.
 
+Former configuration of ``adferrand/letsencrypt-dns``
+-----------------------------------------------------
+
+If needed, the former configuration for ``adferrand/letsencrypt-dns`` is available on GiHub_.
+
 What is new?
 ------------
 
@@ -121,3 +126,4 @@ Stay tuned for the new features!
 .. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
 .. _Configuration reference: https://dnsrobocert.readthedocs.io/en/latest/configuration_reference.html
 .. _Project V3 specifications: https://github.com/adferrand/docker-letsencrypt-dns/wiki/Project-V3-specifications,-aka-DNSroboCert
+.. _GiHub: https://github.com/adferrand/dnsrobocert/blob/legacy/README.md
