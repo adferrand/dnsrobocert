@@ -79,7 +79,7 @@ this project.
 Documentation
 =============
 
-Online documentation (user guide, configuration reference) is available in the `DNSroboCert ReadTheDoc page`_.
+Online documentation (user guide, configuration reference) is available in the `DNSroboCert documentation`_.
 
 For a quick start, please have a look in particular at the `User guide`_ and the `Lexicon provider configuration`_.
 
@@ -89,7 +89,7 @@ Contributing
 If you want to help in the DNSroboCert development, you are welcome!
 Please have a look at the `Developer guide`_ page to know how to start.
 
-.. _DNSroboCert ReadTheDoc page: https://dnsrobocert.readthedocs.io
+.. _DNSroboCert documentation: https://dnsrobocert.readthedocs.io
 .. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
 .. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/latest/lexicon_providers_config.html
 .. _Developer guide: https://dnsrobocert.readthedocs.io/en/latest/developer_guide.html
