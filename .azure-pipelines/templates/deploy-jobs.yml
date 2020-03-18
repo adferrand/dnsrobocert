@@ -65,8 +65,10 @@ jobs:
           docker push adferrand/letsencrypt-dns
         displayName: Deploy Docker images to DockerHub
       - script: |
-          curl -X POST $(dockerhub.triggerbuild.url)
-        displayName: Trigger DockerHub autobuild
+          curl -X POST $(microbadger.dnsrobocert.trigger)
+          # LEGACY DEPLOY
+          curl -X POST $(microbadger.letsencrypt-dns.trigger)
+        displayName: Trigger Microbadger inspection
 
   - job: github_release
     pool:
