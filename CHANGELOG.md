@@ -10,6 +10,7 @@
   generated at `/etc/dnsrobocert/config.yml`. Please see
   https://dnsrobocert.readthedocs.io/en/latest/miscellaneous.html#migration-from-docker-letsencrypt-dns
   for more details.
+* Complete CI/CD flow, with unit/integration tests, code quality, type checking and automated deployment.
 * New features (configurable with `config.yml`, not legacy configuration):
     * you can now define multiple DNS providers in one single instance of DNSroboCert
     * the custom deploy scripts and PFX exports are defined per certificate
