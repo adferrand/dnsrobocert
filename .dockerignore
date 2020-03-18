@@ -1,8 +1,0 @@
-**
-
-!/src
-!/pyproject.toml
-!/poetry.toml
-!/poetry.lock
-!/README.rst
-!/docker
