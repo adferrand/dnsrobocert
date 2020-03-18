@@ -8,3 +8,4 @@ master_doc = 'index'
 project = "DNSroboCert"
 version = release = metadata["version"]
 author = "Adrien Ferrand"
+copyright = "2020, Adrien Ferrand"

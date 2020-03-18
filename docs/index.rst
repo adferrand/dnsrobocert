@@ -6,7 +6,6 @@ Welcome to the DNSroboCert documentation
    :maxdepth: 2
 
    introduction
-   use_cases
    user_guide
    configuration_reference
    providers_options

@@ -199,7 +199,7 @@ configuration file will look like this now:
         auth_password: PASSWD
 
 Configuring ``certificates`` section
-----------------------------------
+------------------------------------
 
 Everything is ready to get the certificates. What you want as certificates is defined in the ``certificates``
 section. It contains a list of each certificate you want. The bare minimum content for a certificate is:
