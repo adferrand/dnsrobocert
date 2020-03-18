@@ -9,12 +9,12 @@ trigger:
 pr: none
 
 stages:
+  - stage: tests
+    jobs:
+      - template: templates/integration-jobs.yml
   - stage: package
     jobs:
       - template: templates/delivery-jobs.yml
   - stage: deploy
     jobs:
       - template: templates/deploy-jobs.yml
-#  - stage: tests
-#    jobs:
-#      - template: templates/integration-jobs.yml

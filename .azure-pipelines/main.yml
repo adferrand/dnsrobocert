@@ -1,5 +1,5 @@
 pr:
   - master
 
-#jobs:
-#  - template: templates/integration-jobs.yml
+jobs:
+  - template: templates/integration-jobs.yml
