@@ -325,6 +325,6 @@ continues to run upon your machine restart.
 .. _Pipx: https://github.com/pipxproject/pipx
 .. _Pip: https://docs.python.org/fr/3.6/installing/index.html
 .. _DockerHub: https://hub.docker.com/r/adferrand/letsencrypt-dns/
-.. _Configuration reference: https://dnsrobocert.readthedocs.io/en/dnsrobocert/lexicon_providers_config.html
-.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/en/dnsrobocert/lexicon_providers_config.html
+.. _Configuration reference: https://dnsrobocert.readthedocs.io/lexicon_providers_config.html
+.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/lexicon_providers_config.html
 .. _Certbot layout convention: https://certbot.eff.org/docs/using.html#where-are-my-certificates

@@ -8,8 +8,8 @@
     :target: https://badge.fury.io/py/dnsrobocert
 .. |docker| image:: https://images.microbadger.com/badges/image/adferrand/dnsrobocert.svg
     :target: https://microbadger.com/images/adferrand/dnsrobocert
-.. |ci| image:: https://dev.azure.com/adferrand/dnsrobocert/_apis/build/status/main?branchName=dnsrobocert
-    :target: https://dev.azure.com/adferrand/dnsrobocert/_build/latest?definitionId=21&branchName=dnsrobocert
+.. |ci| image:: https://dev.azure.com/adferrand/dnsrobocert/_apis/build/status/main?branchName=master
+    :target: https://dev.azure.com/adferrand/dnsrobocert/_build/latest?definitionId=21&branchName=master
 
 .. tag:intro-begin
 
@@ -90,6 +90,6 @@ If you want to help in the DNSroboCert development, you are welcome!
 Please have a look at the `Developer guide`_ page to know how to start.
 
 .. _DNSroboCert ReadTheDoc page: https://dnsrobocert.readthedocs.io
-.. _User guide: https://dnsrobocert.readthedocs.io/en/dnsrobocert/user_guide.html
-.. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/dnsrobocert/lexicon_providers_config.html
-.. _Developer guide: https://dnsrobocert.readthedocs.io/en/dnsrobocert/developer_guide.html
+.. _User guide: https://dnsrobocert.readthedocs.io/user_guide.html
+.. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/lexicon_providers_config.html
+.. _Developer guide: https://dnsrobocert.readthedocs.io/developer_guide.html

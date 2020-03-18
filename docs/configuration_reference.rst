@@ -365,5 +365,5 @@ be defined in each relevant certificate configuration.
       force_renew: false
 
 
-.. _GitHub: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/dnsrobocert/src/dnsrobocert/schema.yml
-.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/en/dnsrobocert/lexicon_providers_config.html
+.. _GitHub: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/src/dnsrobocert/schema.yml
+.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/lexicon_providers_config.html
