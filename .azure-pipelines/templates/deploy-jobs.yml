@@ -52,8 +52,8 @@ jobs:
           echo "Docker tag is: $version"
           docker tag adferrand/dnsrobocert adferrand/dnsrobocert:$version
           # LEGACY DEPLOY
-          docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns
-          docker tag adferrand/dnsrobocert adferrand/docker-letsencrypt-dns:$version
+          docker tag adferrand/dnsrobocert adferrand/letsencrypt-dns
+          docker tag adferrand/dnsrobocert adferrand/letsencrypt-dns:$version
         displayName: Tag Docker images
       - script: |
           version=`poetry version | awk '{print $2}'`
@@ -61,8 +61,8 @@ jobs:
           docker push adferrand/dnsrobocert:$version
           docker push adferrand/dnsrobocert
           # LEGACY DEPLOY
-          docker push adferrand/docker-letsencrypt-dns:$version
-          docker push adferrand/docker-letsencrypt-dns
+          docker push adferrand/letsencrypt-dns:$version
+          docker push adferrand/letsencrypt-dns
         displayName: Deploy Docker images to DockerHub
       - script: |
           curl -X POST $(dockerhub.triggerbuild.url)
