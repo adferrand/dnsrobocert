@@ -1,8 +1,8 @@
-from pathlib import Path
+from os.path import abspath, dirname, join
 
 import toml
 
-metadata = toml.load(Path(__file__).parent.parent / "pyproject.toml")["tool"]["poetry"]
+metadata = toml.load(join(dirname(dirname(abspath(__file__))), "pyproject.toml"))["tool"]["poetry"]
 
 master_doc = 'index'
 project = "DNSroboCert"
