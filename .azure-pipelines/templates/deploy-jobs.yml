@@ -89,6 +89,5 @@ jobs:
           gitHubConnection: github.com_adferrand
           title: DNSroboCert $(ReleaseVersion)
           releaseNotesFile: $(Build.SourcesDirectory)/changelog/release_$(ReleaseVersion).md
-          isDraft: true
-          addChangeLog: true
+          addChangeLog: false
         displayName: Create GitHub Release
