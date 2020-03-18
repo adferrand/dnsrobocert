@@ -1,8 +1,12 @@
 # Changelog
 
+## 3.0.0-b2 - 18/03/2020
+### Modified
+* First release of DNSroboCert (2)
+
 ## 3.0.0-b1 - 17/03/2020
 ### Modified
-* First release of DNSroboCert
+* First release of DNSroboCert (1)
 
 ## 2.23.0 - 04/03/2020
 ### Modified
