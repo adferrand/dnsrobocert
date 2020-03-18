@@ -64,6 +64,9 @@ jobs:
           docker push adferrand/docker-letsencrypt-dns:$version
           docker push adferrand/docker-letsencrypt-dns
         displayName: Deploy Docker images to DockerHub
+      - script: |
+          curl -X POST $(dockerhub.triggerbuild.url)
+        displayName: Trigger DockerHub autobuild
 
   - job: github_release
     pool:

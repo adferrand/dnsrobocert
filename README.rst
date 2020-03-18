@@ -7,7 +7,7 @@
 .. |version| image:: https://badge.fury.io/py/dnsrobocert.svg
     :target: https://badge.fury.io/py/dnsrobocert
 .. |docker| image:: https://images.microbadger.com/badges/image/adferrand/dnsrobocert.svg
-    :target: https://microbadger.com/images/adferrand/letsencrypt-dns:2.23.0
+    :target: https://microbadger.com/images/adferrand/dnsrobocert
 .. |ci| image:: https://dev.azure.com/adferrand/dnsrobocert/_apis/build/status/main?branchName=dnsrobocert
     :target: https://dev.azure.com/adferrand/dnsrobocert/_build/latest?definitionId=21&branchName=dnsrobocert
 
