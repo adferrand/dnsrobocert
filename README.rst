@@ -4,7 +4,7 @@
 
 |version| |docker| |ci|
 
-.. |logo| image:: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/dnsrobocert_logo.png
+.. |logo| image:: https://raw.githubusercontent.com/adferrand/dnsrobocert/master/images/dnsrobocert_logo.png
     :alt: DNSroboCert
 .. |version| image:: https://badge.fury.io/py/dnsrobocert.svg
     :target: https://badge.fury.io/py/dnsrobocert
