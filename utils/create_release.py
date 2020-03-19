@@ -1,12 +1,13 @@
 import subprocess
-import sys
 from distutils.version import StrictVersion
 
 
 def main():
-    git_clean = subprocess.check_output("git status --porcelain", universal_newlines=True).strip()
-    # if git_clean:
-    #     raise RuntimeError("Error, git workspace is not clean: \n{0}".format(git_clean))
+    git_clean = subprocess.check_output(
+        "git status --porcelain", universal_newlines=True
+    ).strip()
+    if git_clean:
+        raise RuntimeError("Error, git workspace is not clean: \n{0}".format(git_clean))
 
     current_version = subprocess.check_output(
         "poetry version", shell=True, universal_newlines=True
@@ -28,12 +29,17 @@ def main():
 
     try:
         subprocess.check_call("poetry version {0}".format(new_version), shell=True)
-        subprocess.check_call("poetry run isort src test utils", shell=True)
+        subprocess.check_call("poetry run isort -rc src test utils", shell=True)
         subprocess.check_call("poetry run black src test utils", shell=True)
-        subprocess.check_call("poetry run mypy src", shell=True)
-        subprocess.check_call("poetry run pytest test", shell=True)
-    except subprocess.CalledProcessError:
+
+        subprocess.check_call('git commit -a -m "Version {0}"'.format(new_version))
+        subprocess.check_call("git tag v{0}".format(new_version))
+
+    except subprocess.CalledProcessError as e:
+        print("Error detected, cleaning state.")
+        subprocess.call("git tag -d v{0}".format(new_version))
         subprocess.check_call("git reset --hard")
+        raise e
 
 
 if __name__ == "__main__":
