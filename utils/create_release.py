@@ -32,13 +32,14 @@ def main():
         subprocess.check_call("poetry run isort -rc src test utils", shell=True)
         subprocess.check_call("poetry run black src test utils", shell=True)
 
-        subprocess.check_call('git commit -a -m "Version {0}"'.format(new_version))
-        subprocess.check_call("git tag v{0}".format(new_version))
+        subprocess.check_call('git commit -a -m "Version {0}"'.format(new_version), shell=True)
+        subprocess.check_call("git tag v{0}".format(new_version), shell=True)
+        subprocess.check_call("git push --tags", shell=True)
 
     except subprocess.CalledProcessError as e:
         print("Error detected, cleaning state.")
-        subprocess.call("git tag -d v{0}".format(new_version))
-        subprocess.check_call("git reset --hard")
+        subprocess.call("git tag -d v{0}".format(new_version), shell=True)
+        subprocess.check_call("git reset --hard", shell=True)
         raise e
 
 
