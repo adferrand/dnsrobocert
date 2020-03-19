@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.1 - 19/03/2020
+### Added
+* Add Docker CLI
+
+### Modified
+* Update Lexicon to 3.3.18 (fix Hetzner provider)
+
 ## 3.0.0 - 18/03/2020
 ### Added
 * Complete refactoring of former `adferrand/letsencrypt-dns` into DNSroboCert. Docker image is now
