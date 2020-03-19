@@ -7,19 +7,20 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-NEW_SECTION_PATTERN = re.compile(r'^\s*##\s*[\d.]+\s*-\s*[\d/]+\s*$')
+NEW_SECTION_PATTERN = re.compile(r"^\s*##\s*[\d.]+\s*-\s*[\d/]+\s*$")
 
 
 def main():
     version = sys.argv[1]
 
-    if version == 'latest':
+    if version == "latest":
         section_pattern = NEW_SECTION_PATTERN
     else:
-        section_pattern = re.compile(r'^\s*##\s*{0}\s*-\s*[\d/]+\s*$'
-                                     .format(version.replace('.', '\\.')))
+        section_pattern = re.compile(
+            r"^\s*##\s*{0}\s*-\s*[\d/]+\s*$".format(version.replace(".", "\\."))
+        )
 
-    with open(os.path.join(ROOT, 'CHANGELOG.md')) as file_h:
+    with open(os.path.join(ROOT, "CHANGELOG.md")) as file_h:
         lines = file_h.read().splitlines()
 
     changelog = []
@@ -38,8 +39,8 @@ def main():
 
     changelog = [entry for entry in changelog if entry]
 
-    print('\n'.join(changelog))
+    print("\n".join(changelog))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

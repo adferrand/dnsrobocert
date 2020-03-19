@@ -32,7 +32,9 @@ def main():
         subprocess.check_call("poetry run isort -rc src test utils", shell=True)
         subprocess.check_call("poetry run black src test utils", shell=True)
 
-        subprocess.check_call('git commit -a -m "Version {0}"'.format(new_version), shell=True)
+        subprocess.check_call(
+            'git commit -a -m "Version {0}"'.format(new_version), shell=True
+        )
         subprocess.check_call("git tag v{0}".format(new_version), shell=True)
         subprocess.check_call("git push --tags", shell=True)
 
