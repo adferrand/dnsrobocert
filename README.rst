@@ -6,11 +6,11 @@
 
 .. |logo| image:: https://raw.githubusercontent.com/adferrand/dnsrobocert/master/images/dnsrobocert_logo.png
     :alt: DNSroboCert
-.. |version| image:: https://badge.fury.io/py/dnsrobocert.svg
+.. |version| image:: https://img.shields.io/pypi/v/dnsrobocert
     :target: https://badge.fury.io/py/dnsrobocert
 .. |docker| image:: https://images.microbadger.com/badges/image/adferrand/dnsrobocert.svg
     :target: https://microbadger.com/images/adferrand/dnsrobocert
-.. |ci| image:: https://dev.azure.com/adferrand/dnsrobocert/_apis/build/status/main?branchName=master
+.. |ci| image:: https://img.shields.io/azure-devops/build/adferrand/338d4cba-ab35-4cf9-a9c6-1d2601554b32/21/master
     :target: https://dev.azure.com/adferrand/dnsrobocert/_build/latest?definitionId=21&branchName=master
 
 .. tag:intro-begin
