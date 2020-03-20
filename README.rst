@@ -2,12 +2,14 @@
 |logo|
 ======
 
-|version| |docker| |ci|
+|version| |python_support| |docker| |ci|
 
 .. |logo| image:: https://raw.githubusercontent.com/adferrand/dnsrobocert/master/images/dnsrobocert_logo.png
     :alt: DNSroboCert
 .. |version| image:: https://img.shields.io/pypi/v/dnsrobocert
-    :target: https://badge.fury.io/py/dnsrobocert
+    :target: https://pypi.org/project/dnsrobocert/
+.. |python_support| image:: https://img.shields.io/pypi/pyversions/dnsrobocert
+    :target: https://pypi.org/project/dnsrobocert/
 .. |docker| image:: https://images.microbadger.com/badges/image/adferrand/dnsrobocert.svg
     :target: https://microbadger.com/images/adferrand/dnsrobocert
 .. |ci| image:: https://img.shields.io/azure-devops/build/adferrand/338d4cba-ab35-4cf9-a9c6-1d2601554b32/21/master
