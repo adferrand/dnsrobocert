@@ -1,6 +1,9 @@
-========================================
-Welcome to the DNSroboCert documentation
-========================================
+======
+|logo|
+======
+
+.. |logo| image:: ../_static/dnsrobocert.svg
+    :alt: DNSroboCert
 
 .. toctree::
    :maxdepth: 2
