@@ -2,9 +2,6 @@
 Configuration reference
 =======================
 
-.. contents:: Table of Contents
-   :local:
-
 DNSroboCert configuration is defined in a central file, usually located at ``/etc/dnsrobocert/config.yml``.
 Its location is defined by the ``-c`` flag when running DNSroboCert locally with the CLI, or with the
 ``CONFIG_PATH`` environment variable with Docker.
