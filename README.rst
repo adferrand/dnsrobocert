@@ -2,7 +2,7 @@
 |logo|
 ======
 
-|version| |python_support| |docker| |ci|
+|version| |python_support| |docker| |ci| |coverage|
 
 .. |logo| image:: https://raw.githubusercontent.com/adferrand/dnsrobocert/master/images/dnsrobocert_logo.png
     :alt: DNSroboCert
@@ -10,10 +10,12 @@
     :target: https://pypi.org/project/dnsrobocert/
 .. |python_support| image:: https://img.shields.io/pypi/pyversions/dnsrobocert
     :target: https://pypi.org/project/dnsrobocert/
-.. |docker| image:: https://images.microbadger.com/badges/image/adferrand/dnsrobocert.svg
+.. |docker| image:: https://img.shields.io/docker/image-size/adferrand/dnsrobocert
     :target: https://microbadger.com/images/adferrand/dnsrobocert
 .. |ci| image:: https://img.shields.io/azure-devops/build/adferrand/338d4cba-ab35-4cf9-a9c6-1d2601554b32/21/master
     :target: https://dev.azure.com/adferrand/dnsrobocert/_build/latest?definitionId=21&branchName=master
+.. |coverage| image:: https://img.shields.io/azure-devops/coverage/adferrand/338d4cba-ab35-4cf9-a9c6-1d2601554b32/21
+    :target: https://dev.azure.com/adferrand/dnsrobocert/_build?definitionId=21&view=ms.vss-pipelineanalytics-web.new-build-definition-pipeline-analytics-view-cardmetrics
 
 .. tag:intro-begin
 
