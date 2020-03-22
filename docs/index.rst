@@ -2,7 +2,7 @@
 |logo|
 ======
 
-.. |logo| image:: ../_static/dnsrobocert.svg
+.. |logo| image:: images/dnsrobocert.svg
     :alt: DNSroboCert
 
 .. toctree::
