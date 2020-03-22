@@ -6,6 +6,8 @@
     :alt: DNSroboCert
 
 .. toctree::
+   :caption: Table of Contents
+   :name: mastertoc
    :maxdepth: 2
 
    introduction
