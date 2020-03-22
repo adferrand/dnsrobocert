@@ -4,7 +4,7 @@
 
 |version| |python_support| |docker| |ci| |coverage|
 
-.. |logo| image:: https://raw.githubusercontent.com/adferrand/dnsrobocert/master/docs/images/dnsrobocert.png
+.. |logo| image:: https://adferrand.github.io/dnsrobocert/images/dnsrobocert.svg
     :alt: DNSroboCert
 .. |version| image:: https://img.shields.io/pypi/v/dnsrobocert
     :target: https://pypi.org/project/dnsrobocert/
