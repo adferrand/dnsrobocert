@@ -115,10 +115,10 @@ Configuring DNSroboCert consists in writing its unique configuration file (we as
 ``/etc/dnsrobocert/config.yml``). In particular 3 things need to be set up, and correspond to the 3
 main sections of the configuration file:
 
-* in `acme`, we define the Let's Encrypt account that will be used to issue certificates
-* in `profiles`, we describe the DNS credentials and the DNS provider associated to the DNS zone to fulfill
+* in ``acme``, we define the Let's Encrypt account that will be used to issue certificates
+* in ``profiles``, we describe the DNS credentials and the DNS provider associated to the DNS zone to fulfill
   DNS-01 challenges
-* and finally in `certificates`, we list the certificates that DNSroboCert will issue and regularly renew.
+* and finally in ``certificates``, we list the certificates that DNSroboCert will issue and regularly renew.
 
 We can write the configuration file in draft mode: in this case, DNSroboCert will validate the configuration
 file, but will not do anything with it. This is quite suitable during the initial configuration phase.
@@ -136,11 +136,13 @@ Basically we need to decide which email will be associated to the Let's Encrypt 
 by Let's Encrypt administrators to broadcast important messages, and particularly when your certificates
 are about to expire. This email is put in the `acme.email_account` property.
 
-During DNSroboCert configuration, you will certainly want to test things without targeting the Let's Encrypt
-production servers, since these servers have certificate rate creation limits. This can be done by setting
-the property `acme.staging` to `true`.
+.. note::
 
-At this point, our `config.yml` looks like this:
+    During DNSroboCert configuration, you will certainly want to test things without targeting the Let's Encrypt
+    production servers, since these servers have certificate rate creation limits. This can be done by setting
+    the property ``acme.staging`` to ``true``: in this case Let's Encrypt staging servers will be used.
+
+At this point, our ``config.yml`` looks like this:
 
 .. code-block:: yaml
 
@@ -263,6 +265,12 @@ the `Certbot layout convention`_. So given our example here, you will find:
 
 * the regular certificate for ``mail.example.net`` and ``ldap.example.net`` at ``/etc/letsencrypt/live/mail.example.net``
 * the wildcard certificate for ``*.example.net`` and ``example.net`` at ``/etc/letsencrypt/live/example.net``
+
+.. note::
+
+    If you used the Let's Encrypt staging servers to configure DNSroboCert, you can now go back to th
+    production servers to get real certificates: in ``config.yaml``, change ``acme.staging`` value to
+    ``false``. DNSroboCert will proceed immediately to replace the testing certificates by real certificates.
 
 Dynamic configuration
 ---------------------
