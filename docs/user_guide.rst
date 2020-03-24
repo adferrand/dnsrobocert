@@ -14,7 +14,7 @@ On Linux for instance, run:
 
 .. code-block:: console
 
-    mkdir /etc/dnsrobocert.yml
+    mkdir /etc/dnsrobocert
     touch /etc/dnsrobocert/config.yml
 
 DNSroboCert will store the certificates in a specific folder. Here also a good idea is to create it
