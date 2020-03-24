@@ -24,9 +24,9 @@ properties:
         type: object
         properties:
           files_mode:
-            type: integer
+            type: [integer, string]
           dirs_mode:
-            type: integer
+            type: [integer, string]
           user:
             type: string
           group:

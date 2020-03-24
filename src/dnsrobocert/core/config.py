@@ -57,6 +57,7 @@ Error while validating dnsrobocert configuration for node path {0}:
         return None
 
     try:
+        _values_conversion(config)
         _business_check(config)
     except ValueError as e:
         message = """\
@@ -144,8 +145,17 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
     return get_profile(config, profile_name)
 
 
+def _values_conversion(config: Dict[str, Any]):
+    certs_permissions = config.get("acme", {}).get("certs_permissions", {})
+    files_mode = certs_permissions.get("files_mode")
+    if isinstance(files_mode, str):
+        certs_permissions["files_mode"] = int(files_mode, 8)
+    dirs_mode = certs_permissions.get("dirs_mode")
+    if isinstance(dirs_mode, str):
+        certs_permissions["dirs_mode"] = int(dirs_mode, 8)
+
+
 def _business_check(config: Dict[str, Any]):
-    print("business check")
     profiles = [profile["name"] for profile in config.get("profiles", [])]
     lineages: Set[str] = set()
     for certificate_config in config.get("certificates", []):

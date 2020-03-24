@@ -47,7 +47,7 @@ def fake_config(tmp_path):
     config_data = """
     acme:
       certs_permissions:
-        files_mode: 0666
+        files_mode: "0666"
         dirs_mode: 0777
         user: nobody
         group: nogroup
