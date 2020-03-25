@@ -60,15 +60,12 @@ jobs:
       vmImage: ubuntu-18.04
     steps:
       - script: |
-          curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
-          export DOCKER_CLI_EXPERIMENTAL=enabled
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/dnsrobocert:build --output=type=image .
-        displayName: Build Docker images
+          docker build --t adferrand/dnsrobocert:temp .
+        displayName: Build Docker image
       - script: |
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert:build
+          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert:temp
         displayName: Check Docker container runtime
 
   - job: quality

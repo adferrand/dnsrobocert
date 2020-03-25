@@ -25,11 +25,6 @@ jobs:
     pool:
       vmImage: ubuntu-18.04
     steps:
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          artifact: docker
-          path: $(Build.SourcesDirectory)/docker
-        displayName: Retrieve Docker image from artifacts
       - task: UsePythonVersion@0
         inputs:
           versionSpec: 3.8
@@ -39,31 +34,24 @@ jobs:
           python -m pip install -U pip
           pip install poetry
         displayName: Prepare environment
-      - script: |
-          docker load < docker/dnsrobocert.tar.gz
-        displayName: Load Docker image
       - task: Docker@2
         inputs:
           command: login
           containerRegistry: docker-hub
         displayName: Login to DockerHub
       - script: |
-          version=`poetry version | awk '{print $2}'`
-          echo "Docker tag is: $version"
-          docker tag adferrand/dnsrobocert adferrand/dnsrobocert:$version
-          # LEGACY DEPLOY
-          docker tag adferrand/dnsrobocert adferrand/letsencrypt-dns
-          docker tag adferrand/dnsrobocert adferrand/letsencrypt-dns:$version
-        displayName: Tag Docker images
+          curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+          export DOCKER_CLI_EXPERIMENTAL=enabled
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          docker buildx create --use
+        displayName: Configure Docker buildx plugin
       - script: |
           version=`poetry version | awk '{print $2}'`
           echo "Docker tag is: $version"
-          docker push adferrand/dnsrobocert:$version
-          docker push adferrand/dnsrobocert
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/dnsrobocert --tag adferrand/dnsrobocert:$version --push .
           # LEGACY DEPLOY
-          docker push adferrand/letsencrypt-dns:$version
-          docker push adferrand/letsencrypt-dns
-        displayName: Deploy Docker images to DockerHub
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/letsencrypt-dns --tag adferrand/letsencrypt-dns:$version --push .
+        displayName: Build and deploy Docker images to DockerHub
       - script: |
           curl -X POST $(dockerhub.triggerbuild.url)
         displayName: Trigger DockerHub autobuild
