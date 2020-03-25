@@ -60,7 +60,7 @@ jobs:
       vmImage: ubuntu-18.04
     steps:
       - script: |
-          docker build --t adferrand/dnsrobocert:temp .
+          docker build --tag adferrand/dnsrobocert:temp .
         displayName: Build Docker image
       - script: |
           mkdir -p ./bin
