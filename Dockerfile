@@ -1,23 +1,12 @@
-FROM docker.io/python:3.8.2-slim-buster AS constraints
-
-COPY pyproject.toml poetry.toml poetry.lock /tmp/dnsrobocert/
-
-RUN python3 -m pip install --user poetry \
- && cd /tmp/dnsrobocert \
- && python3 -m poetry export --format requirements.txt --without-hashes > /tmp/dnsrobocert/constraints.txt
-
-FROM docker.io/python:3.8.2-slim-buster
+FROM alpine:3.11
 
 ENV CONFIG_PATH /etc/dnsrobocert/config.yml
 ENV CERTS_PATH /etc/letsencrypt
 
-COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/constraints.txt
-COPY src pyproject.toml poetry.toml README.rst /tmp/dnsrobocert/
-
-RUN python3 -m pip install --user pipx \
- && python3 -m pipx install --verbose --pip-args "-c /tmp/dnsrobocert/constraints.txt" /tmp/dnsrobocert \
- && mkdir -p /etc/dnsrobocert /etc/letsencrypt \
- && rm -rf /tmp/dnsrobocert
+RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories \
+&& apk add --no-cache py3-pip py3-cryptography py3-lxml py3-future py3-zope-proxy \
+&& pip3 install dnsrobocert[full]==3.0.2 \
+&& mkdir -p /etc/dnsrobocert /etc/letsencrypt
 
 COPY docker/run.sh /run.sh
 RUN chmod +x run.sh

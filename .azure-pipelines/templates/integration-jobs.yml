@@ -55,6 +55,21 @@ jobs:
           reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
         displayName: Publish coverage reports
 
+  - job: docker
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+      - script: |
+          export DOCKER_CLI_EXPERIMENTAL=enabled
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/dnsrobocert:build --output=type=image .
+        displayName: Build Docker images
+      - script: |
+          mkdir -p ./bin
+          curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
+          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert:build
+        displayName: Check Docker container runtime
+
   - job: quality
     strategy:
       matrix:

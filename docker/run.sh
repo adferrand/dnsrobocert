@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Inhibit config.yml creation if legacy config is detected
 # to avoid skipping this legacy config processing.
