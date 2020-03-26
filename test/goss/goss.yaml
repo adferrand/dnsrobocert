@@ -9,7 +9,7 @@ file:
     contains: []
   /usr/bin/dnsrobocert:
     exists: true
-    mode: "0777"
+    mode: "0755"
     size: 220
     owner: root
     group: root
