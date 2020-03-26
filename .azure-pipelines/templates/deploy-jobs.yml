@@ -44,14 +44,12 @@ jobs:
           export DOCKER_CLI_EXPERIMENTAL=enabled
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           docker buildx create --use
-        displayName: Configure Docker buildx plugin with multiarch support
-      - script: |
           version=`poetry version | awk '{print $2}'`
           echo "Docker tag is: $version"
           docker buildx build --platform linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x --tag adferrand/dnsrobocert --tag adferrand/dnsrobocert:$version --push .
           # LEGACY DEPLOY
           docker buildx build --platform linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x --tag adferrand/letsencrypt-dns --tag adferrand/letsencrypt-dns:$version --push .
-        displayName: Build and deploy Docker images to DockerHub
+        displayName: Build and deploy multi-arch Docker image to DockerHub
       - script: |
           curl -X POST $(microbadger.dnsrobocert.trigger)
           # LEGACY DEPLOY
