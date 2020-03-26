@@ -35,6 +35,7 @@ def main():
         )
         subprocess.check_call("git tag v{0}".format(new_version), shell=True)
         subprocess.check_call("git push --tags", shell=True)
+        subprocess.check_call("git push", shell=True)
 
     except subprocess.CalledProcessError as e:
         print("Error detected, cleaning state.")
