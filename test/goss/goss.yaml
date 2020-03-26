@@ -7,19 +7,10 @@ file:
     group: root
     filetype: file
     contains: []
-  /root/.local/pipx/venvs/dnsrobocert/bin/python:
-    exists: true
-    mode: "0777"
-    size: 7
-    owner: root
-    group: root
-    linked-to: python3
-    filetype: symlink
-    contains: []
-  /root/.local/pipx/venvs/dnsrobocert/bin/dnsrobocert:
+  /usr/bin/dnsrobocert:
     exists: true
     mode: "0755"
-    size: 250
+    size: 220
     owner: root
     group: root
     filetype: file
