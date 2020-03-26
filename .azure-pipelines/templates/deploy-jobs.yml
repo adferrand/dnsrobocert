@@ -44,7 +44,7 @@ jobs:
           export DOCKER_CLI_EXPERIMENTAL=enabled
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           docker buildx create --use
-        displayName: Configure Docker buildx plugin
+        displayName: Configure Docker buildx plugin with multiarch support
       - script: |
           version=`poetry version | awk '{print $2}'`
           echo "Docker tag is: $version"
