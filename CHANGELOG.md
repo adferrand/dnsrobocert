@@ -2,7 +2,8 @@
 
 ## 3.1.0 - 26/03/2020
 ### Added
-* Build multi-arch Docker image (`amd64`, `arm64` and `armv7`)
+* Build multi-arch Docker image (`amd64`, `i386`, `arm64`, `armv7`, `armv6`, `ppc64le` and `s390x`),
+  with the help of @patrickpissurno and @a16bitsysop.
 
 ### Modified
 * Use Alpine as base image again (3.11)
