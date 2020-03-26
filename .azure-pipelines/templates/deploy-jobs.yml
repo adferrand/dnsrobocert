@@ -53,8 +53,10 @@ jobs:
           docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/letsencrypt-dns --tag adferrand/letsencrypt-dns:$version --push .
         displayName: Build and deploy Docker images to DockerHub
       - script: |
-          curl -X POST $(dockerhub.triggerbuild.url)
-        displayName: Trigger DockerHub autobuild
+          curl -X POST $(microbadger.dnsrobocert.trigger)
+          # LEGACY DEPLOY
+          curl -X POST $(microbadger.letsencrypt-dns.trigger)
+        displayName: Trigger Microbadger inspection
 
   - job: github_release
     pool:
@@ -77,6 +79,5 @@ jobs:
           gitHubConnection: github.com_adferrand
           title: DNSroboCert $(ReleaseVersion)
           releaseNotesFile: $(Build.SourcesDirectory)/changelog/release_$(ReleaseVersion).md
-          isDraft: true
-          addChangeLog: true
+          addChangeLog: false
         displayName: Create GitHub Release

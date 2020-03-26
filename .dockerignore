@@ -1,8 +1,4 @@
-**
-
-!/src
-!/pyproject.toml
-!/poetry.toml
-!/poetry.lock
-!/README.rst
-!/docker
+.venv
+.mypy_cache
+.pytest_cache
+dist

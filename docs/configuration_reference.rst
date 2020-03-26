@@ -2,9 +2,6 @@
 Configuration reference
 =======================
 
-.. contents:: Table of Contents
-   :local:
-
 DNSroboCert configuration is defined in a central file, usually located at ``/etc/dnsrobocert/config.yml``.
 Its location is defined by the ``-c`` flag when running DNSroboCert locally with the CLI, or with the
 ``CONFIG_PATH`` environment variable with Docker.
@@ -73,12 +70,12 @@ generates the certificates) and how these certificates are stored locally.
 
     ``files_mode``
         * The permissions to apply to files, defined in POSIX octal notation
-        * *type*: ``integer`` defined in octal notation (eg. ``0644``)
+        * *type*: ``integer`` or ``string`` defined in octal notation (eg. ``0644`` or ``"0755"``)
         * *default*: ``0640``
 
     ``dirs_mode``
         * The permissions to apply to directories, defined in POSIX octal notation
-        * *type*: ``integer`` defined in octal notation (eg. ``0644``)
+        * *type*: ``integer`` or ``string`` defined in octal notation (eg. ``0755`` or ``"0755"``)
         * *default*: ``0750``
 
     ``user``

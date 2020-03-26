@@ -1,15 +1,21 @@
-============================
-|logo| adferrand/dnsrobocert
-============================
-|version| |docker| |ci|
+======
+|logo|
+======
 
-.. |logo| image:: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/images/logo_from_realies_200px.png
-.. |version| image:: https://badge.fury.io/py/dnsrobocert.svg
-    :target: https://badge.fury.io/py/dnsrobocert
-.. |docker| image:: https://images.microbadger.com/badges/image/adferrand/dnsrobocert.svg
+|version| |python_support| |docker| |ci| |coverage|
+
+.. |logo| image:: https://adferrand.github.io/dnsrobocert/images/dnsrobocert.svg
+    :alt: DNSroboCert
+.. |version| image:: https://img.shields.io/pypi/v/dnsrobocert
+    :target: https://pypi.org/project/dnsrobocert/
+.. |python_support| image:: https://img.shields.io/pypi/pyversions/dnsrobocert
+    :target: https://pypi.org/project/dnsrobocert/
+.. |docker| image:: https://img.shields.io/docker/image-size/adferrand/dnsrobocert
     :target: https://microbadger.com/images/adferrand/dnsrobocert
-.. |ci| image:: https://dev.azure.com/adferrand/dnsrobocert/_apis/build/status/main?branchName=master
+.. |ci| image:: https://img.shields.io/azure-devops/build/adferrand/338d4cba-ab35-4cf9-a9c6-1d2601554b32/21/master
     :target: https://dev.azure.com/adferrand/dnsrobocert/_build/latest?definitionId=21&branchName=master
+.. |coverage| image:: https://img.shields.io/azure-devops/coverage/adferrand/338d4cba-ab35-4cf9-a9c6-1d2601554b32/21
+    :target: https://dev.azure.com/adferrand/dnsrobocert/_build?definitionId=21&view=ms.vss-pipelineanalytics-web.new-build-definition-pipeline-analytics-view-cardmetrics
 
 .. tag:intro-begin
 
@@ -79,7 +85,7 @@ this project.
 Documentation
 =============
 
-Online documentation (user guide, configuration reference) is available in the `DNSroboCert ReadTheDoc page`_.
+Online documentation (user guide, configuration reference) is available in the `DNSroboCert documentation`_.
 
 For a quick start, please have a look in particular at the `User guide`_ and the `Lexicon provider configuration`_.
 
@@ -89,7 +95,7 @@ Contributing
 If you want to help in the DNSroboCert development, you are welcome!
 Please have a look at the `Developer guide`_ page to know how to start.
 
-.. _DNSroboCert ReadTheDoc page: https://dnsrobocert.readthedocs.io
+.. _DNSroboCert documentation: https://dnsrobocert.readthedocs.io
 .. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
 .. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/latest/lexicon_providers_config.html
 .. _Developer guide: https://dnsrobocert.readthedocs.io/en/latest/developer_guide.html

@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.0.2 - 24/03/2020
+### Added
+* Allow to define octal values of `acme.dirs_mode` and `acme.files_mode` as strings
+  (eg `"0755"`) in the YAML configuration file
+  
+### Modified
+* Improve the User Guide (@Neejoh with #84)
+
+## 3.0.1 - 19/03/2020
+### Added
+* Add Docker CLI
+
+### Modified
+* Update Lexicon to 3.3.18 (fix Hetzner provider)
+
 ## 3.0.0 - 18/03/2020
 ### Added
 * Complete refactoring of former `adferrand/letsencrypt-dns` into DNSroboCert. Docker image is now
