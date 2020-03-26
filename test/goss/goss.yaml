@@ -10,11 +10,10 @@ file:
   /usr/bin/dnsrobocert:
     exists: true
     mode: "0777"
-    size: 7
+    size: 220
     owner: root
     group: root
-    linked-to: python3
-    filetype: symlink
+    filetype: file
     contains: []
 process:
   dnsrobocert:
