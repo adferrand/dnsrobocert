@@ -13,15 +13,12 @@ def main():
     current_version = subprocess.check_output(
         "poetry version", shell=True, universal_newlines=True
     ).replace("dnsrobocert ", "")
-    current_version = StrictVersion(current_version)
 
     print("Current version is: {0}".format(current_version))
     print("Please insert new version:")
     new_version = str(input())
 
-    new_version = StrictVersion(new_version)
-
-    if new_version <= current_version:
+    if StrictVersion(new_version) <= StrictVersion(current_version):
         raise RuntimeError(
             "Error new version is below current version: {0} < {1}".format(
                 new_version, current_version
