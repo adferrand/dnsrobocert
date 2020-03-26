@@ -99,5 +99,5 @@ Please have a look at the `Developer guide`_ page to know how to start.
 
 .. _DNSroboCert documentation: https://dnsrobocert.readthedocs.io
 .. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
-.. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/latest/lexicon_providers_config.html
+.. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/latest/providers_options.html
 .. _Developer guide: https://dnsrobocert.readthedocs.io/en/latest/developer_guide.html
