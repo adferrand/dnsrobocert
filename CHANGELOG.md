@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.0 - 26/03/2020
+### Added
+* Build multi-arch Docker image (`amd64`, `arm64` and `armv7`)
+
+### Modified
+* Use Alpine as base image again (3.11)
+* Update Lexicon to 3.3.19 (improvments for SafeDNS and DigitalOcean providers)
+
 ## 3.0.2 - 24/03/2020
 ### Added
 * Allow to define octal values of `acme.dirs_mode` and `acme.files_mode` as strings
