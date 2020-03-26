@@ -2,7 +2,7 @@
 |logo|
 ======
 
-|version| |python_support| |docker| |ci| |coverage|
+|version| |python_support| |docker| |ci| |coverage| |spectrum|
 
 .. |logo| image:: https://adferrand.github.io/dnsrobocert/images/dnsrobocert.svg
     :alt: DNSroboCert
@@ -16,6 +16,8 @@
     :target: https://dev.azure.com/adferrand/dnsrobocert/_build/latest?definitionId=21&branchName=master
 .. |coverage| image:: https://img.shields.io/azure-devops/coverage/adferrand/338d4cba-ab35-4cf9-a9c6-1d2601554b32/21
     :target: https://dev.azure.com/adferrand/dnsrobocert/_build?definitionId=21&view=ms.vss-pipelineanalytics-web.new-build-definition-pipeline-analytics-view-cardmetrics
+.. |spectrum| image:: https://withspectrum.github.io/badge/badge.svg
+    :target: https://spectrum.chat/dnsrobocert
 
 .. tag:intro-begin
 
