@@ -1,4 +1,9 @@
 .venv
 .mypy_cache
 .pytest_cache
+.tox
+.vscode
+docs
 dist
+test
+bin
