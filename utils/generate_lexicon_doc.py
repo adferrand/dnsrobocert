@@ -16,9 +16,6 @@ def main():
 Lexicon providers options
 =========================
 
-.. contents:: Table of Contents
-   :local:
-
 Supported providers
 ===================
 

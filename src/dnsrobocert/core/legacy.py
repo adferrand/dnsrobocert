@@ -139,6 +139,9 @@ def _handle_specific_envs_variables(
     if envs.get("LEXICON_MAX_CHECKS"):
         migrated_config["profiles"][0]["max_checks"] = int(envs["LEXICON_MAX_CHECKS"])
 
+    if envs.get("LEXICON_TTL"):
+        migrated_config["profiles"][0]["ttl"] = int(envs["LEXICON_TTL"])
+
     if envs.get("DEPLOY_HOOK"):
         for value in migrated_config.get("certificates", []):
             value["deploy_hook"] = envs["DEPLOY_HOOK"]

@@ -148,19 +148,23 @@ def _txt_challenge(
             )
         )
 
+    config_dict = {
+        "action": action,
+        "domain": domain,
+        "type": "TXT",
+        "name": "_acme-challenge.{0}.".format(domain),
+        "content": token,
+        "delegated": profile.get("delegated_domain"),
+        "provider_name": provider_name,
+        provider_name: provider_options,
+    }
+
+    ttl = profile.get("ttl")
+    if ttl:
+        config_dict["ttl"] = ttl
+
     lexicon_config = ConfigResolver()
-    lexicon_config.with_dict(
-        {
-            "action": action,
-            "domain": domain,
-            "type": "TXT",
-            "name": "_acme-challenge.{0}.".format(domain),
-            "content": token,
-            "delegated": profile.get("delegated_domain"),
-            "provider_name": provider_name,
-            provider_name: provider_options,
-        }
-    )
+    lexicon_config.with_dict(config_dict)
 
     Client(lexicon_config).execute()
 

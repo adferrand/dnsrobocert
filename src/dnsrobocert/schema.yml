@@ -55,6 +55,8 @@ properties:
         delegated_subdomain:
           type: string
           pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
+        ttl:
+          type: number
       required: [name, provider]
       additionalProperties: false
   certificates:

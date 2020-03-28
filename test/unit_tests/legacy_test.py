@@ -47,6 +47,7 @@ test1.sub.example.com test2.sub.example.com autorestart-containers=container1,co
     )
     monkeypatch.setenv("LEXICON_SLEEP_TIME", "60")
     monkeypatch.setenv("LEXICON_MAX_CHECKS", "3")
+    monkeypatch.setenv("LEXICON_TTL", "42")
     monkeypatch.setenv("LETSENCRYPT_USER_MAIL", "john.doe@example.com")
     monkeypatch.setenv("LETSENCRYPT_STAGING", "true")
     monkeypatch.setenv("LETSENCRYPT_ACME_V1", "true")
@@ -113,5 +114,6 @@ profiles:
     auth_consumer_key: CONSUMER_KEY
     auth_entrypoint: ovh-eu
   sleep_time: 60
+  ttl: 42
 """
     )
