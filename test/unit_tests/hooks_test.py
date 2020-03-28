@@ -57,6 +57,7 @@ def fake_config(tmp_path):
       provider_options:
         auth_token: TOKEN
       sleep_time: 0.1
+      ttl: 42
     certificates:
     - name: {0}
       domains:
@@ -90,6 +91,7 @@ def test_auth_cli(client, fake_config):
     assert resolver.resolve("lexicon:name") == "_acme-challenge.{0}.".format(LINEAGE)
     assert resolver.resolve("lexicon:content") == "VALIDATION"
     assert resolver.resolve("lexicon:provider_name") == "dummy"
+    assert resolver.resolve("lexicon:ttl") == 42
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
 
 

@@ -172,6 +172,11 @@ must be unique.
     * *type*: ``string``
     * *default*: ``null`` (there is no subdomain delegation)
 
+``ttl``
+    * Time to live in seconds for the TXT entries inserted in the DNS zone during a DNS-01 challenge.
+    * *type*: ``integer``
+    * *default*: ``null`` (use any default TTL value specific to the DNS provider associated to this profile)
+
 **Section example**
 
 .. code-block:: yaml
