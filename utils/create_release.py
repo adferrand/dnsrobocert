@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import datetime
 import subprocess
 from distutils.version import StrictVersion
 
@@ -26,6 +27,24 @@ def main():
         )
 
     try:
+        with open("CHANGELOG.md") as f:
+            changelog = f.read()
+
+        today = datetime.datetime.today()
+        changelog = changelog.replace(
+            "## master - CURRENT\n",
+            """\
+## master - CURRENT
+
+## {0} - {1}
+""".format(
+                new_version, today.strftime("%d/%m/%Y")
+            ),
+        )
+
+        with open("CHANGELOG.md", "w") as f:
+            f.write(changelog)
+
         subprocess.check_call("poetry version {0}".format(new_version), shell=True)
         subprocess.check_call("poetry run isort -rc src test utils", shell=True)
         subprocess.check_call("poetry run black src test utils", shell=True)

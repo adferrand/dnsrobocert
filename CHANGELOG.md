@@ -1,5 +1,7 @@
 # Changelog
 
+## master - CURRENT
+
 ## 3.1.1 - 28/03/2020
 ### Added
 * Add the `ttl` parameter in the providers definition. It allows to control the TTL value in TXT entries
