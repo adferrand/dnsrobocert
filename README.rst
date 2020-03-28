@@ -91,6 +91,11 @@ Online documentation (user guide, configuration reference) is available in the `
 
 For a quick start, please have a look in particular at the `User guide`_ and the `Lexicon provider configuration`_.
 
+Support
+=======
+
+Do not hesitate to join the `DNSroboCert community on Spectrum`_ if you need help to use or develop DNSroboCert!
+
 Contributing
 ============
 
@@ -101,3 +106,4 @@ Please have a look at the `Developer guide`_ page to know how to start.
 .. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
 .. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/latest/providers_options.html
 .. _Developer guide: https://dnsrobocert.readthedocs.io/en/latest/developer_guide.html
+.. _DNSroboCert community on Spectrum: https://spectrum.chat/dnsrobocert
