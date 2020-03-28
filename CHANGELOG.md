@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.1 - 28/03/2020
+### Added
+* Add the `ttl` parameter in the providers definition. It allows to control the TTL value in TXT entries
+  inserted during the DNS-01 challenges. This value for environment variable `LEXICON_TTL` from legacy
+  configuration is properly migrated.
+
 ## 3.1.0 - 26/03/2020
 ### Added
 * Build multi-arch Docker image (`amd64`, `i386`, `arm64`, `armv7`, `armv6`, `ppc64le` and `s390x`),
