@@ -24,30 +24,21 @@ def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
     env = env.copy()
     env["PYTHONUNBUFFERED "] = "1"
 
-    LOGGER.debug("Launching command: {0}".format(subprocess.list2cmdline(args)))
-    process = subprocess.Popen(
-        args,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        env=env,
-        universal_newlines=True,
-    )
+    call = subprocess.check_call if check else subprocess.call
 
-    while True:
-        output = process.stdout.readline()
-        if output == "" and process.poll() is not None:
-            break
-        if output:
-            sys.stdout.write(" | " + output)
+    LOGGER.info("Launching command: {0}".format(subprocess.list2cmdline(args)))
+    sys.stdout.write("----------\n")
+    
+    error = None
+    try:
+        call(args, env=env)
+    except subprocess.CalledProcessError as e:
+        error = e
 
-    errcode = process.poll()
+    sys.stdout.write("----------\n")
 
-    if errcode != 0 and check:
-        raise RuntimeError(
-            "Following command with non-zero errorcode ({0}):\n{1}".format(
-                errcode, subprocess.list2cmdline(args)
-            )
-        )
+    if error:
+        raise error
 
 
 def fix_permissions(certificate_permissions: Dict[str, Any], target_path: str):
