@@ -28,7 +28,7 @@ def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
 
     LOGGER.info("Launching command: {0}".format(subprocess.list2cmdline(args)))
     sys.stdout.write("----------\n")
-    
+
     error = None
     try:
         call(args, env=env)

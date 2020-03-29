@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.1.2 - 29/03/2020
 ### Modified
 * More consistent output for sub-commands launched by DNSroboCert
 
