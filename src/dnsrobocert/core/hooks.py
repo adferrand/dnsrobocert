@@ -82,13 +82,18 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
             )
             time.sleep(sleep_time)
 
-            answers = resolver.query("_acme-challenge.{0}.".format(domain), "TXT")
-            validation_answers = [
-                rdata
-                for rdata in answers
-                for txt_string in rdata.strings
-                if txt_string.decode("utf-8") == token
-            ]
+            validation_answers = None
+            try:
+                answers = resolver.query("_acme-challenge.{0}.".format(domain), "TXT")
+                validation_answers = [
+                    rdata
+                    for rdata in answers
+                    for txt_string in rdata.strings
+                    if txt_string.decode("utf-8") == token
+                ]
+            except (resolver.NXDOMAIN, resolver.NoAnswer):
+                # Will be handled below.
+                pass
 
             if validation_answers:
                 LOGGER.info(
@@ -99,7 +104,7 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
                 break
 
             LOGGER.info(
-                "TXT _acme-challenge.{0} did not have the expected token value (try {1}/{2})".format(
+                "TXT _acme-challenge.{0} does not exist or does not have the expected token value (try {1}/{2})".format(
                     domain, checks, max_checks
                 )
             )
