@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Protect the auth hook from NXDOMAIN failures when checking if the TXT entry of a challenge
+  has been propagated in the DNS zone.
+* Improve logs during sub-command execution (flush the output)
 
 ## 3.1.3 - 30/03/2020
 ### Added
