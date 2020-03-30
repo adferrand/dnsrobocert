@@ -65,7 +65,7 @@ def fix_permissions(certificate_permissions: Dict[str, Any], target_path: str):
 
         if isinstance(group, int):
             gid = group
-        elif isinstance(user, str):
+        elif isinstance(group, str):
             gid = grp.getgrnam(group)[2]
 
         os.chown(target_path, uid, gid)  # type: ignore
