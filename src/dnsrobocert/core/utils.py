@@ -47,8 +47,9 @@ def fix_permissions(certificate_permissions: Dict[str, Any], target_path: str):
 
     os.chmod(target_path, dirs_mode)
 
-    uid = None
-    gid = None
+    uid = -1
+    gid = -1
+
     user = certificate_permissions.get("user")
     group = certificate_permissions.get("group")
 
@@ -57,8 +58,16 @@ def fix_permissions(certificate_permissions: Dict[str, Any], target_path: str):
             "Setting user and group for certificates/keys is not supported on Windows."
         )
     elif POSIX_MODE:
-        uid = pwd.getpwnam(user)[2] if user else -1
-        gid = grp.getgrnam(group)[2] if group else -1
+        if isinstance(user, int):
+            uid = user
+        elif isinstance(user, str):
+            uid = pwd.getpwnam(user)[2]
+
+        if isinstance(group, int):
+            gid = group
+        elif isinstance(group, str):
+            gid = grp.getgrnam(group)[2]
+
         os.chown(target_path, uid, gid)  # type: ignore
 
     for root, dirs, files in os.walk(target_path):
