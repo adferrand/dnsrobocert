@@ -1,6 +1,9 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* `acme.certs_permissions.user` and `acme.certs_permissions.group` can know be defined as integer
+  to set the uid or gid instead of the user name and group name owner of the certificates.
 
 ## 3.1.2 - 29/03/2020
 ### Modified

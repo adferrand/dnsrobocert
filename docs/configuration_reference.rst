@@ -79,13 +79,13 @@ generates the certificates) and how these certificates are stored locally.
         * *default*: ``0750``
 
     ``user``
-        * The user that should be owner of the certificates
-        * *type*: ``string``
+        * The user name or uid that should be owner of the certificates
+        * *type*: ``integer`` (for a uid, eg. ``1000``) or ``string`` (for a user name, eg. ``"myuser"``)
         * *default*: ``null`` (user running DNSroboCert will be owner of the certificates)
 
     ``group``
-        * The group that should group owner of the certificates
-        * *type*: ``string``
+        * The group name or gid that should group owner of the certificates
+        * *type*: ``integer`` (for a gid, eg. ``1000``) or ``string`` (for a user name, eg. ``"mygroup"``)
         * *default*: ``null`` (group running DNSroboCert will group owner of the certificates)
 
 ``crontab_renew``

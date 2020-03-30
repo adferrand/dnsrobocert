@@ -28,9 +28,9 @@ properties:
           dirs_mode:
             type: [integer, string]
           user:
-            type: string
+            type: [integer, string]
           group:
-            type: string
+            type: [integer, string]
         additionalProperties: false
       crontab_renew:
         type: string
