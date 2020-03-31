@@ -1,9 +1,9 @@
 import hashlib
 import logging
 import os
+import re
 import subprocess
 import sys
-import re
 from typing import Any, Dict, List
 
 import coloredlogs
