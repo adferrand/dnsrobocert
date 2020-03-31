@@ -1,12 +1,13 @@
 import logging
 import os
-import re
 from typing import Any, Dict, Optional, Set
 
 import coloredlogs
 import jsonschema
 import pkg_resources
 import yaml
+
+from dnsrobocert.core import utils
 
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
@@ -96,7 +97,7 @@ def get_lineage(certificate_config: Dict[str, Any]) -> str:
     lineage = (
         certificate_config.get("name")
         if certificate_config.get("name")
-        else re.sub(r"^\*\.", "", certificate_config.get("domains", [None])[0])
+        else utils.normalize_lineage(certificate_config.get("domains", [None])[0])
     )
     if not lineage:
         raise ValueError(

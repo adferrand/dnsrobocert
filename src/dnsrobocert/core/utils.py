@@ -3,6 +3,7 @@ import logging
 import os
 import subprocess
 import sys
+import re
 from typing import Any, Dict, List
 
 import coloredlogs
@@ -100,7 +101,7 @@ def configure_certbot_workspace(
     fix_permissions(certificate_permissions, archive_path)
 
 
-def digest(path):
+def digest(path: str):
     if not os.path.exists(path):
         return None
 
@@ -110,3 +111,7 @@ def digest(path):
     md5 = hashlib.md5()
     md5.update(config_data)
     return md5.digest()
+
+
+def normalize_lineage(domain: str):
+    return re.sub(r"^\*\.", "", domain)
