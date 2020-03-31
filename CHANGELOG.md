@@ -1,6 +1,9 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Ensure a certificate name does not have wildcard characters when migrating from legacy config
+  (eg. `example.com` for domains `[*.example.com`, `example.com]` instead of `*.example.com`).
 
 ## 3.1.4 - 30/03/2020
 ### Modified

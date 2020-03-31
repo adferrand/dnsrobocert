@@ -35,6 +35,7 @@ auth_consumer_key: CONSUMER_KEY
         f.write(
             """\
 test1.sub.example.com test2.sub.example.com autorestart-containers=container1,container2 autocmd-containers=container3:cmd3 arg3,container4:cmd4 arg4a arg4b
+*.sub.example.com sub.example.com
 """
         )
 
@@ -98,6 +99,15 @@ certificates:
   - test1.sub.example.com
   - test2.sub.example.com
   name: test1.sub.example.com
+  pfx:
+    export: true
+    passphrase: PASSPHRASE
+  profile: ovh
+- deploy_hook: ./deploy.sh
+  domains:
+  - '*.sub.example.com'
+  - sub.example.com
+  name: sub.example.com
   pfx:
     export: true
     passphrase: PASSPHRASE

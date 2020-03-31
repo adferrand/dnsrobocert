@@ -10,6 +10,8 @@ import coloredlogs
 import yaml
 from lexicon import config, parser
 
+from dnsrobocert.core import utils
+
 LEGACY_CONFIGURATION_PATH = "/etc/letsencrypt/domains.conf"
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
@@ -257,7 +259,7 @@ def _extract_certificates(envs: Dict[str, str], profile: str) -> List[Dict[str, 
 
             if domains:
                 certificate: Dict[str, Any] = {
-                    "name": domains[0],
+                    "name": utils.normalize_lineage(domains[0]),
                     "domains": domains,
                     "profile": profile,
                 }
