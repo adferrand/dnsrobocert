@@ -3,6 +3,9 @@
 ## master - CURRENT
 ## Changed
 * Update runtime dependencies (including cryptography 2.9)
+* Fix the `delegated_subdomain` parameter in providers configuration that was not taken into account
+  (@davidyuk #96)
+* Fix providers configuration link in the documentation (@davidyuk #95)
 
 ## 3.1.5 - 01/04/2020
 ### Changed
