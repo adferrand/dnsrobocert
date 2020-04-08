@@ -3,7 +3,7 @@ FROM docker.io/${BUILDER_ARCH}/python:3-slim-buster AS constraints
 
 COPY . /tmp/dnsrobocert
 
-RUN python3 -m pip install --user poetry \
+RUN python3 -m pip install --user poetry --no-warn-script-location \
  && cd /tmp/dnsrobocert \
  && python3 -m poetry export --format requirements.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
  && python3 -m poetry build -f wheel
