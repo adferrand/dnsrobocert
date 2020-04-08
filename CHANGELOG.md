@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.1.6 - 08/04/2020
 ## Changed
 * Update runtime dependencies (including cryptography 2.9)
 * Fix the `delegated_subdomain` parameter in providers configuration that was not taken into account
