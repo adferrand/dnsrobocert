@@ -159,7 +159,7 @@ def _txt_challenge(
         "type": "TXT",
         "name": "_acme-challenge.{0}.".format(domain),
         "content": token,
-        "delegated": profile.get("delegated_domain"),
+        "delegated": profile.get("delegated_subdomain"),
         "provider_name": provider_name,
         provider_name: provider_options,
     }
