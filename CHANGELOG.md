@@ -1,14 +1,16 @@
 # Changelog
 
 ## master - CURRENT
+## Changed
+* Update runtime dependencies (including cryptography 2.9)
 
 ## 3.1.5 - 01/04/2020
-### Modified
+### Changed
 * Ensure a certificate name does not have wildcard characters when migrating from legacy config
   (eg. `example.com` for domains `[*.example.com`, `example.com]` instead of `*.example.com`).
 
 ## 3.1.4 - 30/03/2020
-### Modified
+### Changed
 * Protect the auth hook from NXDOMAIN failures when checking if the TXT entry of a challenge
   has been propagated in the DNS zone.
 * Improve logs during sub-command execution (flush the output)
@@ -19,7 +21,7 @@
   to set the uid or gid instead of the user name and group name owner of the certificates.
 
 ## 3.1.2 - 29/03/2020
-### Modified
+### Changed
 * More consistent output for sub-commands launched by DNSroboCert
 
 ## 3.1.1 - 28/03/2020
@@ -33,7 +35,7 @@
 * Build multi-arch Docker image (`amd64`, `i386`, `arm64`, `armv7`, `armv6`, `ppc64le` and `s390x`),
   with the help of @patrickpissurno and @a16bitsysop.
 
-### Modified
+### Changed
 * Use Alpine as base image again (3.11)
 * Update Lexicon to 3.3.19 (improvments for SafeDNS and DigitalOcean providers)
 
@@ -42,14 +44,14 @@
 * Allow to define octal values of `acme.dirs_mode` and `acme.files_mode` as strings
   (eg `"0755"`) in the YAML configuration file
   
-### Modified
+### Changed
 * Improve the User Guide (@Neejoh with #84)
 
 ## 3.0.1 - 19/03/2020
 ### Added
 * Add Docker CLI
 
-### Modified
+### Changed
 * Update Lexicon to 3.3.18 (fix Hetzner provider)
 
 ## 3.0.0 - 18/03/2020
@@ -68,7 +70,7 @@
     * the custom deploy scripts and PFX exports are defined per certificate
     * force renew can be set for specific certificates
   
-## Modified
+## Changed
 * Along with migration to DNSroboCert, all bash files are rewritten into Python.
 * Certificate renewal is not handled automatically anymore by an external cron task, but by DNSroboCert directly.
 
@@ -76,31 +78,31 @@
 * Configuration of certificate renewal frequency has been removed.
 
 ## 2.23.0 - 04/03/2020
-### Modified
+### Changed
 * Update Certbot to 1.3.0: automated handling for https://community.letsencrypt.org/t/revoking-certain-certificates-on-march-4/114864
 
 ## 2.22.0 - 07/02/2020
-### Modified
+### Changed
 * Update Lexicon to 3.3.17: support private domains and add Gransy provider, that generalize and replace Subreg.
 * Update Certbot to 1.2.0: remove POST-as-GET fallback
 
 ## 2.21.0 - 10/01/2020
-### Modified
+### Changed
 * Update Lexicon to 3.3.14 (add EUServ)
 * Update base image to Alpine 3.11 and Python 3.8
 
 ## 2.20.0 - 07/12/2019
-### Modified
+### Changed
 * Update Lexicon to 3.3.11 (add HostingDE, RcodeZero)
 * Update Certbot to 1.0.0
 
 ## 2.19.0 - 04/11/2019
-### Modified
+### Changed
 * Update Lexicon to 3.3.8 (add HostingDE, RcodeZero)
 * Update Certbot to 0.39.0
 
 ## 2.18.0 - 25/09/2019
-### Modified
+### Changed
 * Update Lexicon to 3.3.3 (add DirectAdmin provider)
 * Update Certbot to 0.38.0 (forward support to Python 3.8)
 
@@ -110,24 +112,24 @@
 * Pre-generation of a `domain.conf` to avoid the creation of a directory when `domain.conf` is
   host mounted from a non existent path (@Akkarine #60)
 
-### Modified
+### Changed
 * Update Lexicon to 3.3.2 that fixes Yandex provider
 * Update Certbot to 0.37.2 (various fixes)
 * Various corrections in `README.md` (@Akkarine #60)
 
 ## 2.16.0 - 17/07/2019
-### Modified
+### Changed
 * Update Lexicon to 3.3.1 (add SafeDNS, Dreamhost, Dinahosting)
 * Update Certbot to 0.36.0 (various fixes)
 * Update base image to Alpine 3.10
 
 ## 2.15.0 - 19/06/2019
-### Modified
+### Changed
 * Update Lexicon to 3.2.7 (add Aliyun, Azure DNS and GratisDNS providers)
 * Update Certbot to 0.35.1 (various fixes)
 
 ## 2.14.1 - 27/05/2019
-### Modified
+### Changed
 * Certbot's work dir and logs dir are now set to be in the config dir `/etc/letsencrypt` (respectively under
   `work` and `logs`). This allows to persist both certbot backups and logs.
 
@@ -138,7 +140,7 @@
   service restart command to restart the service name specified in `autorestart-containers=...` directive.
   For now, only Swarm is supported: support is triggered using `DOCKER_CLUSTER_PROVIDER=swarm`.
 
-### Modified
+### Changed
 * Python libraries uses now the pip option --no-cache-dir to reduce container footprints.
 * The autorestart and autocmd directives are now triggered upon certificate renewal as before, but also
   upon first certificate issuance now.
@@ -149,7 +151,7 @@
   at which frequency, and on which timezone the renewal cron job will be executed. By default it is twice a day,
   at midday and midnight UTC.
 
-### Modified
+### Changed
 * Update Lexicon to 3.2.5
 * Update Certbot to 0.34.2
 
@@ -159,7 +161,7 @@
   is created or renewed. This deploy command can be used for instance to do some post-process formatting on the
   certificates before their deployment on a service requiring a specific certificate format.
 
-## Modified
+## Changed
 * Update Lexicon to 3.2.4 (new providers: Netcup)
 
 ## 2.11.0 - 10/04/2019
@@ -170,16 +172,16 @@
 * By modifying the `run.sh` script, the container now responds to interruption signals and proceed to shutdown by
   itself, without the need from the Docker daemon to kill it.
 
-### Modified
+### Changed
 * Update Lexicon to 3.2.1 (various fixes)
 * Update Certbot to 0.33.1 (various fixes)
 
 ## 2.10.1 - 10/03/2019
-### Modified
+### Changed
 * Use `full` extra of Lexicon PyPI package to ensure all providers have their optional dependencies fulfilled.
 
 ## 2.10.0 - 09/03/2019
-### Modified
+### Changed
 * Update base image to Alpine 3.9
 * Update Lexicon to 3.1.6 (new providers: Hover, Zilore)
 * Update Certbot to 0.32.0
@@ -188,7 +190,7 @@
 ### Added
 * Ignore README file in /etc/letsencrypt/live
 
-### Modified
+### Changed
 * Update Lexicon to 3.0.8
 * Update Certbot to 0.30.0
 
@@ -196,7 +198,7 @@
 ### Added
 * Support new providers thanks to Lexicon update: Internet.bs, Hetzner
 
-### Modified
+### Changed
 * Update Lexicon to 3.0.7
 * Update Certbot to 0.29.1
 
@@ -205,7 +207,7 @@
 * Support new providers thanks to Lexicon update: Auto (dns provider auto-resolution), ConoHa, NFSN, Easyname, LocalZone (bind9)
 * Allow to configure the DNS API connection using YAML files, thanks to the new configuration system of Lexicon 3
 
-### Modified
+### Changed
 * Update Lexicon to 3.0.2
 * Update Certbot to 0.28.0
 * README.md updated to refer to YAML files, update environment variable parsing
@@ -214,7 +216,7 @@
 ### Added
 * Support new providers thanks to Lexicon update: Plesk, Inwx, Hurricane Electric
 
-### Modified
+### Changed
 * Update Lexicon to 2.7.9
 
 ## 2.6.0 - 17/09/2018
@@ -222,7 +224,7 @@
 * Continuous integration/deployment is now handled by CircleCI to allow more advanced strategies and faster builds
 * Add and configure Circus, an alternative to Supervisor, compatible with Python 3, with better control over environment variables propagation, and network sockets supervision (not used yet here)
 
-### Modified
+### Changed
 * Update base image to Alpine 3.8
 * Update Lexicon to 2.7.3
 * Update Certbot to 0.27.1
@@ -283,7 +285,7 @@ Add `LEXICON_OPTIONS` environment variable for specific lexicon options
 ### Added
 * Add `LEXICON_PROVIDER_OPTIONS` environment variable to pass DNS provider authentication parameters directly to lexicon executable
 
-### Modified
+### Changed
 * Update Certbot to 0.23.0
 
 ## 2.0.1 - 14/04/2018
@@ -297,7 +299,7 @@ Add `LEXICON_OPTIONS` environment variable for specific lexicon options
 * Allow use of old ACME v1 servers through `LEXICON_ACME_V1` environment variable
 * Clean autocmd/autorestart jobs on the live container when needed
 
-### Modified
+### Changed
 * Update Certbot to 0.22.2 to supports the ACME v2 servers
 * Update Lexicon to 0.22.1 adding support for following DNS providers: AuroraDNS, Gehirn Infrastructure Service, OnApp and Sakura Cloud
 * Correct deploy hook about files/directory permission fixation
