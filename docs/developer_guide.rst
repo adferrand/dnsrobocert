@@ -61,7 +61,7 @@ DNSroboCert uses Poetry_ to configure an environment development, build the proj
 .. code-block:: console
 
     cd dnsrobocert
-    poetry use env python3
+    poetry env use python3
 
 5. Activate the virtual environment:
 
