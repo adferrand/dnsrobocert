@@ -6,8 +6,8 @@ services:
     container_name: dnsrobocert
     env_file: .env
     volumes:
-      - $ROOT/dnsrobocert.yml:/etc/letsencrypt/dnsrobocert.yml
-      - $ROOT/:/etc/letsencrypt
+    - $ROOT/letsencrypt:/etc/letsencrypt
+    - $ROOT/dnsrobocert:/etc/dnsrobocert
     environment:
-      - VERSION=latest
+    - VERSION=latest
     restart: always
