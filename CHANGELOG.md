@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.1.7 - 04/05/2020
 ### Added 
 * DNSroboCert can now display logs in your current timezone if the `TIMEZONE` environment variable
   is set (@a16bitsysop #104)
