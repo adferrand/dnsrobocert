@@ -101,6 +101,13 @@ Former configuration of ``adferrand/letsencrypt-dns``
 
 If needed, the former configuration for ``adferrand/letsencrypt-dns`` is available on GiHub_.
 
+Executing the DNSroboCert docker in a specific timezone
+-------------------------------------------------------
+
+The default timezone is UTC.
+You can set a local timezone in the docker `adferrand/dnsrobocert` by populating the ``TIMEZONE`` environment variable.
+In this case, automated renewal will be done in this timezone, and logs will use the local date.
+
 What is new?
 ------------
 

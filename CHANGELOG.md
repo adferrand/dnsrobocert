@@ -1,6 +1,12 @@
 # Changelog
 
 ## master - CURRENT
+### Added 
+* DNSroboCert can now display logs in your current timezone if the `TIMEZONE` environment variable
+  is set (@a16bitsysop #104)
+
+### Changed
+* Update Lexicon to 3.3.20 (rebranded Hetzner provider, support pagination on CloudFlare)
 
 ## 3.1.6 - 08/04/2020
 ## Changed
