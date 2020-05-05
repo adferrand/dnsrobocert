@@ -1,6 +1,5 @@
 import os
-
-import mock
+from unittest import mock
 
 from dnsrobocert.core import config, legacy
 
