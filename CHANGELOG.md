@@ -1,6 +1,9 @@
 # Changelog
 
 ## master - CURRENT
+### Changed
+* Update Lexicon to 3.3.21 (API tokens for Cloudflare)
+* Update Certbot to 1.4.0
 
 ## 3.1.7 - 04/05/2020
 ### Added 

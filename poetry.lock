@@ -4,13 +4,12 @@ description = "ACME protocol implementation in Python"
 name = "acme"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "1.3.0"
+version = "1.4.0"
 
 [package.dependencies]
 PyOpenSSL = ">=0.13.1"
 cryptography = ">=1.2.3"
 josepy = ">=1.1.0"
-mock = "*"
 pyrfc3339 = "*"
 pytz = "*"
 requests-toolbelt = ">=0.3.0"
@@ -110,10 +109,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = false
 python-versions = "*"
-version = "1.13.1"
+version = "1.13.3"
 
 [package.dependencies]
-botocore = ">=1.16.1,<1.17.0"
+botocore = ">=1.16.3,<1.17.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -123,7 +122,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = false
 python-versions = "*"
-version = "1.16.1"
+version = "1.16.3"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -148,16 +147,15 @@ description = "ACME client"
 name = "certbot"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "1.3.0"
+version = "1.4.0"
 
 [package.dependencies]
 ConfigArgParse = ">=0.9.3"
-acme = ">=0.40.0"
+acme = ">=1.4.0"
 configobj = "*"
 cryptography = ">=1.2.3"
 distro = ">=1.0.1"
 josepy = ">=1.1.0"
-mock = "*"
 parsedatetime = ">=1.3"
 pyrfc3339 = "*"
 pytz = "*"
@@ -310,7 +308,7 @@ description = "Manipulate DNS records on various DNS providers in a standardized
 name = "dns-lexicon"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "3.3.20"
+version = "3.3.21"
 
 [package.dependencies]
 cryptography = "*"
@@ -658,19 +656,6 @@ name = "mccabe"
 optional = false
 python-versions = "*"
 version = "0.6.1"
-
-[[package]]
-category = "main"
-description = "Rolling backport of unittest.mock for all Pythons"
-name = "mock"
-optional = false
-python-versions = ">=3.6"
-version = "4.0.2"
-
-[package.extras]
-build = ["twine", "wheel", "blurb"]
-docs = ["sphinx"]
-test = ["pytest", "pytest-cov"]
 
 [[package]]
 category = "dev"
@@ -1250,7 +1235,7 @@ description = "Virtual Python Environment builder"
 name = "virtualenv"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-version = "20.0.19"
+version = "20.0.20"
 
 [package.dependencies]
 appdirs = ">=1.4.3,<2"
@@ -1453,13 +1438,13 @@ docs = ["sphinx", "repoze.sphinx.autointerface"]
 test = ["zope.security", "zope.testrunner"]
 
 [metadata]
-content-hash = "0e3b5260327b05f5c86046b3b7d4b9d030ba7bb6077ba698717282d37b96b099"
+content-hash = "997d75a8613446bd1ecbfa135f8f4ebdba9cbfe7e91bf73912abb2231d9e2046"
 python-versions = "^3.6"
 
 [metadata.files]
 acme = [
-    {file = "acme-1.3.0-py2.py3-none-any.whl", hash = "sha256:b888757c750e393407a3cdf0eb5c2d06036951e10c41db4c83537617568561b6"},
-    {file = "acme-1.3.0.tar.gz", hash = "sha256:c0de9e1fbcb4a28509825a4d19ab5455910862b23fa338acebc7bbe7c0abd20d"},
+    {file = "acme-1.4.0-py2.py3-none-any.whl", hash = "sha256:d2f6799f7fce2414fc1a6753ced91c0ccdf1d0b2cee892c509851db45402fb5b"},
+    {file = "acme-1.4.0.tar.gz", hash = "sha256:f12cb59762e0b833911b87e95cb16e85a162517ba4aa3440594bdf3b8126fc69"},
 ]
 appdirs = [
     {file = "appdirs-1.4.3-py2.py3-none-any.whl", hash = "sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e"},
@@ -1487,20 +1472,20 @@ bleach = [
     {file = "bleach-3.1.5.tar.gz", hash = "sha256:3c4c520fdb9db59ef139915a5db79f8b51bc2a7257ea0389f30c846883430a4b"},
 ]
 boto3 = [
-    {file = "boto3-1.13.1-py2.py3-none-any.whl", hash = "sha256:6374e39ea66433250ac6e4726623fe59ec32bfd52e5c871140c883ab72b0375c"},
-    {file = "boto3-1.13.1.tar.gz", hash = "sha256:7a2474db6576d7d3f5c3336ec54450e34211d44e2342e501a67e2fae35916e63"},
+    {file = "boto3-1.13.3-py2.py3-none-any.whl", hash = "sha256:dc4d17a9b0bd6fb03b2650a0f7c7b6a458583fe7bebbcd6bbefd299d7169fb5b"},
+    {file = "boto3-1.13.3.tar.gz", hash = "sha256:989ede38b9f69743e2536ccf371941354e77103b47b37d5ba90f77718368a248"},
 ]
 botocore = [
-    {file = "botocore-1.16.1-py2.py3-none-any.whl", hash = "sha256:c6d3dd976c1462a4e0f2dabde09c38de2a641e6b6bb0af505ac8465735796367"},
-    {file = "botocore-1.16.1.tar.gz", hash = "sha256:879cedb22baf9446323240f1cf57d4e0e7ba262ba6fde6d3540cf7fdd7ddad34"},
+    {file = "botocore-1.16.3-py2.py3-none-any.whl", hash = "sha256:e2c384f378d96c09079d9fa44be4f6a849c4d5295de68c9c8afc8783f7a5a2a2"},
+    {file = "botocore-1.16.3.tar.gz", hash = "sha256:d291035e643c353029df8985cbc0bbdcdf9117fff81c715dd688aadd51816f41"},
 ]
 cached-property = [
     {file = "cached-property-1.5.1.tar.gz", hash = "sha256:9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"},
     {file = "cached_property-1.5.1-py2.py3-none-any.whl", hash = "sha256:3a026f1a54135677e7da5ce819b0c690f156f37976f3e30c5430740725203d7f"},
 ]
 certbot = [
-    {file = "certbot-1.3.0-py2.py3-none-any.whl", hash = "sha256:979793b36151be26c159f1946d065a0cbbcaed3e9ac452c19a142b0d2d2b42e3"},
-    {file = "certbot-1.3.0.tar.gz", hash = "sha256:bc2091cbbc2f432872ed69309046e79771d9c81cd441bde3e6a6553ecd04b1d8"},
+    {file = "certbot-1.4.0-py2.py3-none-any.whl", hash = "sha256:5f8be1e6087d2f1f742caf0048b0f46bac8d3a655d038d5355abd1638523d87e"},
+    {file = "certbot-1.4.0.tar.gz", hash = "sha256:69b5b7925de0d3b693b00a40bf109d85afb24c7199bf616339d74d59a80d8d96"},
 ]
 certifi = [
     {file = "certifi-2020.4.5.1-py2.py3-none-any.whl", hash = "sha256:1d987a998c75633c40847cc966fcf5904906c920a7f17ef374f5aa4282abd304"},
@@ -1624,7 +1609,7 @@ distro = [
     {file = "distro-1.5.0.tar.gz", hash = "sha256:0e58756ae38fbd8fc3020d54badb8eae17c5b9dcbed388b17bb55b8a5928df92"},
 ]
 dns-lexicon = [
-    {file = "dns-lexicon-3.3.20.tar.gz", hash = "sha256:bd76a64ed3710ec6596087b1d526dca2773acb67dbd82190c9fda259de527aaa"},
+    {file = "dns-lexicon-3.3.21.tar.gz", hash = "sha256:d1ef402b868185b18f010f59c331af80e4edb756e1f2e679de107a0c07b3328b"},
 ]
 dnspython = [
     {file = "dnspython-1.15.0-py2.py3-none-any.whl", hash = "sha256:861e6e58faa730f9845aaaa9c6c832851fbf89382ac52915a51f89c71accdd31"},
@@ -1737,10 +1722,6 @@ lxml = [
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
-]
-mock = [
-    {file = "mock-4.0.2-py3-none-any.whl", hash = "sha256:3f9b2c0196c60d21838f307f5825a7b86b678cedc58ab9e50a8988187b4d81e0"},
-    {file = "mock-4.0.2.tar.gz", hash = "sha256:dd33eb70232b6118298d516bbcecd26704689c386594f0f3c4f13867b2c56f72"},
 ]
 more-itertools = [
     {file = "more-itertools-8.2.0.tar.gz", hash = "sha256:b1ddb932186d8a6ac451e1d95844b382f55e12686d51ca0c68b6f61f2ab7a507"},
@@ -2012,8 +1993,8 @@ urllib3 = [
     {file = "urllib3-1.25.9.tar.gz", hash = "sha256:3018294ebefce6572a474f0604c2021e33b3fd8006ecd11d62107a5d2a963527"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.0.19-py2.py3-none-any.whl", hash = "sha256:b86480fc1fe3908a85d7377eee8dc9644a58090b9d3a3701b347c69c308f3e72"},
-    {file = "virtualenv-20.0.19.tar.gz", hash = "sha256:8bb59b586fea2eb3bb5600f7ef53d11fd4a64806cdf1a7217b29e7d943dbd8dc"},
+    {file = "virtualenv-20.0.20-py2.py3-none-any.whl", hash = "sha256:b4c14d4d73a0c23db267095383c4276ef60e161f94fde0427f2f21a0132dde74"},
+    {file = "virtualenv-20.0.20.tar.gz", hash = "sha256:fd0e54dec8ac96c1c7c87daba85f0a59a7c37fe38748e154306ca21c73244637"},
 ]
 wcwidth = [
     {file = "wcwidth-0.1.9-py2.py3-none-any.whl", hash = "sha256:cafe2186b3c009a04067022ce1dcd79cb38d8d65ee4f4791b8888d6599d1bbe1"},
