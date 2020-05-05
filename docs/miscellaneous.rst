@@ -2,6 +2,18 @@
 Miscellaneous
 =============
 
+Activating staging ACME servers
+===============================
+
+During development it is not advised to generate certificates against production ACME servers,
+as one could reach easily the weekly limit of Let's Encrypt and could not generate certificates for a certain period
+of time. Staging ACME servers do not have this limit.
+
+To use them, set the parameter ``acme.staging`` to ``true`` in your DNSroboCert YAML configuration file.
+
+You will need to wipe content of /etc/letsencrypt volume before container re-creation when enabling or disabling
+staging. Otherwise accounts and/or certificates may be in conflict between their staging and production versions.
+
 Executing the DNSroboCert docker in a specific timezone
 =======================================================
 
