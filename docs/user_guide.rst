@@ -85,7 +85,7 @@ An up-to-date Docker image is available in DockerHub_. In order to persist DNSro
 the generated certificates, you should mount its configuration and the dedicated folder for certificates
 from the host into the container.
 
-* For the configuration file, expected path is ``/etc/letsencrypt/dnsrobocert.yml``
+* For the configuration file, expected path is ``/etc/dnsrobocert/config.yml``
 * For the certificates folder, expected path is ``/etc/letsencrypt``
 
 .. note::
