@@ -146,7 +146,7 @@ def main(args: Optional[List[str]] = None):
     parser.add_argument(
         "--config",
         "-c",
-        default=os.path.join(misc.get_default_folder("config"), "dnsrobocert.yml"),
+        default=os.path.join(os.getcwd(), "dnsrobocert.yml"),
         help="Set the dnsrobocert config to use.",
     )
     parser.add_argument(
