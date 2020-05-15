@@ -8,12 +8,13 @@ from typing import List, Optional
 import coloredlogs
 from certbot import main
 
+import dnsrobocert
 from dnsrobocert.core import config, utils
 
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
-_DEFAULT_FLAGS = ["-n"]
+_DEFAULT_FLAGS = ["-n", "--user-agent-comment", "DNSroboCert/{0}".format(dnsrobocert.__version__)]
 
 
 def account(config_path: str, directory_path: str):
