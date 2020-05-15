@@ -1,6 +1,12 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Set the User-Agent comment for Let'sEncrypt statistics
+
+### Changed
+* Update Lexicon to 3.3.22
+* Search for `dnsrobocert.yml` config file in current directory when `--config` flag is not set.
 
 ## 3.2.0 - 06/05/2020
 ### Changed
