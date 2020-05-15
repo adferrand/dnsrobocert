@@ -51,6 +51,7 @@ pyyaml = "^5.3"
 schedule = "^0.6"
 coloredlogs = "^14.0"
 colorama = "^0.4"
+appdirs = "^1.4.4"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"

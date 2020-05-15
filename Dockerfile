@@ -18,6 +18,7 @@ ENV CERTS_PATH /etc/letsencrypt
 RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories \
  && apk add --no-cache \
         py3-pip \
+        py3-wheel \
         # Core dependencies that would need a compilation
         "py3-cryptography=~$(grep cryptography /tmp/dnsrobocert/constraints.txt | sed 's/.*==//g')" \
         "py3-lxml=~$(grep lxml /tmp/dnsrobocert/constraints.txt | sed 's/.*==//g')" \
