@@ -14,7 +14,11 @@ from dnsrobocert.core import config, utils
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
-_DEFAULT_FLAGS = ["-n", "--user-agent-comment", "DNSroboCert/{0}".format(dnsrobocert.__version__)]
+_DEFAULT_FLAGS = [
+    "-n",
+    "--user-agent-comment",
+    "DNSroboCert/{0}".format(dnsrobocert.__version__),
+]
 
 
 def account(config_path: str, directory_path: str):

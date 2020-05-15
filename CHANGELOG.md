@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.3.0 - 15/05/2020
 ### Added
 * Set the User-Agent comment for Let'sEncrypt statistics
 
