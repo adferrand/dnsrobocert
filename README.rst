@@ -32,7 +32,8 @@ DNSroboCert is designed to manage `Let's Encrypt`_ SSL certificates based on `DN
 * Let's Encrypt wildcard and regular certificates generation by Certbot_ using DNS challenges,
 * Integrated automated renewal of almost expired certificates,
 * Standardized API through Lexicon_ library to insert the DNS challenge with various DNS providers,
-* Centralized YAML configuration file to maintain several certificates with configuration validity control,
+* Centralized YAML configuration file to maintain several certificates and several DNS providers
+  with configuration validity control,
 * Modification of container configuration without restart,
 * Flexible hooks upon certificate creation/renewal including containers restart, commands in containers
   or custom hooks,

@@ -118,8 +118,8 @@ credentials and specific configuration to apply to a DNS provider supported by L
 to fulfill a DNS-01 challenge.
 
 Each profile is referenced by its ``name``, which can be used in one or more certificates in the
-``certificates`` section. Multiple profiles can be defined for the same DNS provider. However, each profile ``name``
-must be unique.
+``certificates`` section. Multiple profiles can be defined for the same DNS provider. However, each profile
+``name`` must be unique.
 
 ``profile`` properties
 ----------------------

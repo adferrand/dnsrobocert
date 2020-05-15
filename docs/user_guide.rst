@@ -200,6 +200,11 @@ configuration file will look like this now:
         auth_username: USER
         auth_password: PASSWD
 
+.. note::
+
+    You can declare multiple profiles to use different providers and/or the same provider with
+    different credentials.
+
 Configuring ``certificates`` section
 ------------------------------------
 
@@ -249,6 +254,7 @@ The configuration file looks like this now:
     - domains:
       - "*.example.net"
       - example.net
+      profile: henet_profile
 
 Running DNSroboCert
 ===================
