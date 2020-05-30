@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.3.1 - 30/05/2020
 ### Added
 * Validate the directory URL with a regex
 
