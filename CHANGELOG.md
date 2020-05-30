@@ -1,6 +1,11 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Validate the directory URL with a regex
+
+### Changed
+* Improve the regex check to email account for better compatibility
 
 ## 3.3.0 - 15/05/2020
 ### Added
