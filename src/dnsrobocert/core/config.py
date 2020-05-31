@@ -154,17 +154,20 @@ def _inject_env_variables(raw_config: str):
     def replace(match):
         entry = match.group(0)
 
-        if '$${' in entry:
-            return entry.replace('$${', '${')
+        if "$${" in entry:
+            return entry.replace("$${", "${")
 
         variable_name = match.group(1)
         if variable_name not in os.environ:
-            raise ValueError('Error while parsing config: environment variable {0} does not exist.'
-                             .format(variable_name))
+            raise ValueError(
+                "Error while parsing config: environment variable {0} does not exist.".format(
+                    variable_name
+                )
+            )
 
         return os.environ[variable_name]
 
-    return re.sub(r'\${1,2}{(\S+)}', replace, raw_config)
+    return re.sub(r"\${1,2}{(\S+)}", replace, raw_config)
 
 
 def _values_conversion(config: Dict[str, Any]):

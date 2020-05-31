@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.3.2 - 31/05/2020
 ### Added
 * Allow environment variable injection in the configuration file
 
