@@ -367,5 +367,40 @@ be defined in each relevant certificate configuration.
       force_renew: false
 
 
+Environment variables
+=====================
+
+You can inject environment variables in the configuration file using the ``${MY_VARIABLE}`` format.
+
+For instance, given that an environment variable named ``AUTH_TOKEN`` with the value ``my-secret-token`` exists,
+you can write the following file configuration content:
+
+.. code-block:: yaml
+
+    profiles:
+      - name: my_profile
+        provider: digitalocean
+        provider_options:
+          auth_token: ${AUTH_TOKEN}
+    certificates: []
+
+Then it will be resolved as:
+
+.. code-block:: yaml
+
+    profiles:
+      - name: my_profile
+        provider: digitalocean
+        provider_options:
+          auth_token: my-secret-token
+    certificates: []
+
+Non-existent variables declared in the configuration file will raise an error.
+
+.. note::
+
+    If you want to write a literal ``${NOT_A_VARIABLE}`` that should not be resolved, you can escape the ``${}``
+    syntax by by prepending a second dollar sign like so: ``$${NOT_A_VARIABLE}``.
+
 .. _GitHub: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/src/dnsrobocert/schema.yml
 .. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/en/latest/lexicon_providers_config.html
