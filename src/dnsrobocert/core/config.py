@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 from typing import Any, Dict, Optional, Set
 
 import coloredlogs
@@ -20,6 +21,9 @@ def load(config_path: str) -> Optional[Dict[str, Any]]:
 
     with open(config_path) as file_h:
         raw_config = file_h.read()
+
+    raw_config = _inject_env_variables(raw_config)
+    print(raw_config)
 
     try:
         config = yaml.load(raw_config, yaml.FullLoader)
@@ -144,6 +148,23 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
         )
 
     return get_profile(config, profile_name)
+
+
+def _inject_env_variables(raw_config: str):
+    def replace(match):
+        entry = match.group(0)
+
+        if '$${' in entry:
+            return entry.replace('$${', '${')
+
+        variable_name = match.group(1)
+        if variable_name not in os.environ:
+            raise ValueError('Error while parsing config: environment variable {0} does not exist.'
+                             .format(variable_name))
+
+        return os.environ[variable_name]
+
+    return re.sub(r'\${1,2}{(\S+)}', replace, raw_config)
 
 
 def _values_conversion(config: Dict[str, Any]):
