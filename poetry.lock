@@ -4,7 +4,7 @@ description = "ACME protocol implementation in Python"
 name = "acme"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "1.4.0"
+version = "1.5.0"
 
 [package.dependencies]
 PyOpenSSL = ">=0.13.1"
@@ -109,10 +109,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = false
 python-versions = "*"
-version = "1.13.19"
+version = "1.13.22"
 
 [package.dependencies]
-botocore = ">=1.16.19,<1.17.0"
+botocore = ">=1.16.22,<1.17.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -122,7 +122,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = false
 python-versions = "*"
-version = "1.16.19"
+version = "1.16.22"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -147,7 +147,7 @@ description = "ACME client"
 name = "certbot"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "1.4.0"
+version = "1.5.0"
 
 [package.dependencies]
 ConfigArgParse = ">=0.9.3"
@@ -308,7 +308,7 @@ description = "Manipulate DNS records on various DNS providers in a standardized
 name = "dns-lexicon"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "3.3.22"
+version = "3.3.24"
 
 [package.dependencies]
 cryptography = "*"
@@ -674,7 +674,7 @@ description = "Parse human-readable date/time text."
 name = "parsedatetime"
 optional = false
 python-versions = "*"
-version = "2.5"
+version = "2.6"
 
 [[package]]
 category = "dev"
@@ -856,7 +856,7 @@ description = "pytest: simple powerful testing with Python"
 name = "pytest"
 optional = false
 python-versions = ">=3.5"
-version = "5.4.2"
+version = "5.4.3"
 
 [package.dependencies]
 atomicwrites = ">=1.0"
@@ -1128,7 +1128,7 @@ description = "Fast, Extensible Progress Meter"
 name = "tqdm"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*"
-version = "4.46.0"
+version = "4.46.1"
 
 [package.extras]
 dev = ["py-make (>=0.1.0)", "twine", "argopt", "pydoc-markdown"]
@@ -1224,11 +1224,11 @@ testing = ["pytest (>=4)", "coverage (>=5)", "coverage-enable-subprocess (>=1)",
 
 [[package]]
 category = "main"
-description = "Measures number of Terminal column cells of wide-character codes"
+description = "Measures the displayed width of unicode strings in a terminal"
 name = "wcwidth"
 optional = false
 python-versions = "*"
-version = "0.1.9"
+version = "0.2.3"
 
 [[package]]
 category = "dev"
@@ -1405,13 +1405,13 @@ docs = ["sphinx", "repoze.sphinx.autointerface"]
 test = ["zope.security", "zope.testrunner"]
 
 [metadata]
-content-hash = "ede297cf553ee9d597b848610c6ae32a1e9f06d4b25671c1b6f047f7dcef53f5"
+content-hash = "bf9476239f99ae9ab0956cf0a464111155e29fd74c3a43a8901c44f1e48ad436"
 python-versions = "^3.6"
 
 [metadata.files]
 acme = [
-    {file = "acme-1.4.0-py2.py3-none-any.whl", hash = "sha256:d2f6799f7fce2414fc1a6753ced91c0ccdf1d0b2cee892c509851db45402fb5b"},
-    {file = "acme-1.4.0.tar.gz", hash = "sha256:f12cb59762e0b833911b87e95cb16e85a162517ba4aa3440594bdf3b8126fc69"},
+    {file = "acme-1.5.0-py2.py3-none-any.whl", hash = "sha256:66de67b394bb7606f97f2c21507e6eb6a88936db2a940f5c4893025f87e3852a"},
+    {file = "acme-1.5.0.tar.gz", hash = "sha256:b051ff7dd3935b2032c2f8c8386e905d9b658eba9f3455e352650d85bea9c8f0"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -1439,20 +1439,20 @@ bleach = [
     {file = "bleach-3.1.5.tar.gz", hash = "sha256:3c4c520fdb9db59ef139915a5db79f8b51bc2a7257ea0389f30c846883430a4b"},
 ]
 boto3 = [
-    {file = "boto3-1.13.19-py2.py3-none-any.whl", hash = "sha256:2e58368d32171f42100353007fb48fe583ea9deafd0ec556aa2bc1ce1582d06d"},
-    {file = "boto3-1.13.19.tar.gz", hash = "sha256:c774003dc13d6de74b5e19d2b84d625da4456e64bd97f44baa1fcf40d808d29a"},
+    {file = "boto3-1.13.22-py2.py3-none-any.whl", hash = "sha256:9f556ab7124aac29ce64d0dcc2219c14960c5faaee8fe7aef1fd9cf8577b6426"},
+    {file = "boto3-1.13.22.tar.gz", hash = "sha256:fd0800a3acda1dc15ac4675123f15efb160dc05467df3e19489b3245ea8f689d"},
 ]
 botocore = [
-    {file = "botocore-1.16.19-py2.py3-none-any.whl", hash = "sha256:7b8b1f082665c8670b9aa70143ee527c5d04939fe027a63ac5958359be20ccb0"},
-    {file = "botocore-1.16.19.tar.gz", hash = "sha256:5cb537e7a4cf2d59a2a8dfbbc8e14ec3bc5b640eb81a1bf3bb0523c0a75e6b1b"},
+    {file = "botocore-1.16.22-py2.py3-none-any.whl", hash = "sha256:5df4dc49392922dc23042333187ca33686552ae5a901e91d0bc4140c4226995c"},
+    {file = "botocore-1.16.22.tar.gz", hash = "sha256:eb077e2da1654558c9d97888a2e0710b92cc3162a6641959545451e1a21eea8a"},
 ]
 cached-property = [
     {file = "cached-property-1.5.1.tar.gz", hash = "sha256:9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"},
     {file = "cached_property-1.5.1-py2.py3-none-any.whl", hash = "sha256:3a026f1a54135677e7da5ce819b0c690f156f37976f3e30c5430740725203d7f"},
 ]
 certbot = [
-    {file = "certbot-1.4.0-py2.py3-none-any.whl", hash = "sha256:5f8be1e6087d2f1f742caf0048b0f46bac8d3a655d038d5355abd1638523d87e"},
-    {file = "certbot-1.4.0.tar.gz", hash = "sha256:69b5b7925de0d3b693b00a40bf109d85afb24c7199bf616339d74d59a80d8d96"},
+    {file = "certbot-1.5.0-py2.py3-none-any.whl", hash = "sha256:ec1f01af06b52a6f079f5b02cb70e88f0671a7b13ecb3e45b040563e32c6e53a"},
+    {file = "certbot-1.5.0.tar.gz", hash = "sha256:c52017a4f84137e1312c898d6ae69c5f7977d79d2bd4c2df013cbbf39b6539bf"},
 ]
 certifi = [
     {file = "certifi-2020.4.5.1-py2.py3-none-any.whl", hash = "sha256:1d987a998c75633c40847cc966fcf5904906c920a7f17ef374f5aa4282abd304"},
@@ -1576,7 +1576,7 @@ distro = [
     {file = "distro-1.5.0.tar.gz", hash = "sha256:0e58756ae38fbd8fc3020d54badb8eae17c5b9dcbed388b17bb55b8a5928df92"},
 ]
 dns-lexicon = [
-    {file = "dns-lexicon-3.3.22.tar.gz", hash = "sha256:ebc58b1496fc2082a6f340a3b4aa96cd9d40f2700c75b646504622fb126466cd"},
+    {file = "dns-lexicon-3.3.24.tar.gz", hash = "sha256:17efc88c957ed3e9ab58a5af45d59bcb24cedd7c5490cb23f31bd50e4ea541ad"},
 ]
 dnspython = [
     {file = "dnspython-1.15.0-py2.py3-none-any.whl", hash = "sha256:861e6e58faa730f9845aaaa9c6c832851fbf89382ac52915a51f89c71accdd31"},
@@ -1711,8 +1711,8 @@ packaging = [
     {file = "packaging-20.4.tar.gz", hash = "sha256:4357f74f47b9c12db93624a82154e9b120fa8293699949152b22065d556079f8"},
 ]
 parsedatetime = [
-    {file = "parsedatetime-2.5-py2-none-any.whl", hash = "sha256:3b835fc54e472c17ef447be37458b400e3fefdf14bb1ffdedb5d2c853acf4ba1"},
-    {file = "parsedatetime-2.5.tar.gz", hash = "sha256:d2e9ddb1e463de871d32088a3f3cea3dc8282b1b2800e081bd0ef86900451667"},
+    {file = "parsedatetime-2.6-py3-none-any.whl", hash = "sha256:cb96edd7016872f58479e35879294258c71437195760746faffedb692aef000b"},
+    {file = "parsedatetime-2.6.tar.gz", hash = "sha256:4cb368fbb18a0b7231f4d76119165451c8d2e35951455dfee97c62a87b04d455"},
 ]
 pathspec = [
     {file = "pathspec-0.8.0-py2.py3-none-any.whl", hash = "sha256:7d91249d21749788d07a2d0f94147accd8f845507400749ea19c1ec9054a12b0"},
@@ -1781,8 +1781,8 @@ pyrsistent = [
     {file = "pyrsistent-0.16.0.tar.gz", hash = "sha256:28669905fe725965daa16184933676547c5bb40a5153055a8dee2a4bd7933ad3"},
 ]
 pytest = [
-    {file = "pytest-5.4.2-py3-none-any.whl", hash = "sha256:95c710d0a72d91c13fae35dce195633c929c3792f54125919847fdcdf7caa0d3"},
-    {file = "pytest-5.4.2.tar.gz", hash = "sha256:eb2b5e935f6a019317e455b6da83dd8650ac9ffd2ee73a7b657a30873d67a698"},
+    {file = "pytest-5.4.3-py3-none-any.whl", hash = "sha256:5c0db86b698e8f170ba4582a492248919255fcd4c79b1ee64ace34301fb589a1"},
+    {file = "pytest-5.4.3.tar.gz", hash = "sha256:7979331bfcba207414f5e1263b5a0f8f521d0f457318836a7355531ed1a4c7d8"},
 ]
 pytest-cov = [
     {file = "pytest-cov-2.9.0.tar.gz", hash = "sha256:b6a814b8ed6247bd81ff47f038511b57fe1ce7f4cc25b9106f1a4b106f1d9322"},
@@ -1907,8 +1907,8 @@ tox = [
     {file = "tox-3.15.1.tar.gz", hash = "sha256:8c9ad9b48659d291c5bc78bcabaa4d680d627687154b812fa52baedaa94f9f83"},
 ]
 tqdm = [
-    {file = "tqdm-4.46.0-py2.py3-none-any.whl", hash = "sha256:acdafb20f51637ca3954150d0405ff1a7edde0ff19e38fb99a80a66210d2a28f"},
-    {file = "tqdm-4.46.0.tar.gz", hash = "sha256:4733c4a10d0f2a4d098d801464bdaf5240c7dadd2a7fde4ee93b0a0efd9fb25e"},
+    {file = "tqdm-4.46.1-py2.py3-none-any.whl", hash = "sha256:07c06493f1403c1380b630ae3dcbe5ae62abcf369a93bbc052502279f189ab8c"},
+    {file = "tqdm-4.46.1.tar.gz", hash = "sha256:cd140979c2bebd2311dfb14781d8f19bd5a9debb92dcab9f6ef899c987fcf71f"},
 ]
 transip = [
     {file = "transip-2.1.2-py2.py3-none-any.whl", hash = "sha256:ad49b41316105d1b6cb091a49b6c49421a874ecd4a147f289e07c8fa42028501"},
@@ -1955,8 +1955,8 @@ virtualenv = [
     {file = "virtualenv-20.0.21.tar.gz", hash = "sha256:a116629d4e7f4d03433b8afa27f43deba09d48bc48f5ecefa4f015a178efb6cf"},
 ]
 wcwidth = [
-    {file = "wcwidth-0.1.9-py2.py3-none-any.whl", hash = "sha256:cafe2186b3c009a04067022ce1dcd79cb38d8d65ee4f4791b8888d6599d1bbe1"},
-    {file = "wcwidth-0.1.9.tar.gz", hash = "sha256:ee73862862a156bf77ff92b09034fc4825dd3af9cf81bc5b360668d425f3c5f1"},
+    {file = "wcwidth-0.2.3-py2.py3-none-any.whl", hash = "sha256:980fbf4f3c196c0f329cdcd1e84c554d6a211f18e252e525a0cf4223154a41d6"},
+    {file = "wcwidth-0.2.3.tar.gz", hash = "sha256:edbc2b718b4db6cdf393eefe3a420183947d6aa312505ce6754516f458ff8830"},
 ]
 webencodings = [
     {file = "webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78"},

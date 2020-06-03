@@ -39,9 +39,9 @@ homepage = "https://dnsrobocert.readthedocs.io"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-acme = "==1.4.0"
-certbot = "==1.4.0"
-dns-lexicon = { version = "==3.3.22", extras = [ "full" ] }
+acme = "==1.5.0"
+certbot = "==1.5.0"
+dns-lexicon = { version = "==3.3.24", extras = [ "full" ] }
 cryptography = "^2.9"
 dnspython3 = "^1.15"
 jsonschema = "^3.2"
