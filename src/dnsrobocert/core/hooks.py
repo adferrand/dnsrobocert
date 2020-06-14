@@ -1,15 +1,13 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 import argparse
-import logging
 import os
 import subprocess
 import sys
 import time
 import traceback
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-import coloredlogs
 import OpenSSL
 import pem
 from dns import resolver
@@ -17,9 +15,6 @@ from lexicon.client import Client
 from lexicon.config import ConfigResolver
 
 from dnsrobocert.core import config, utils
-
-LOGGER = logging.getLogger(__name__)
-coloredlogs.install(logger=LOGGER)
 
 
 def main(args: List[str] = None) -> int:
@@ -37,18 +32,18 @@ def main(args: List[str] = None) -> int:
     dnsrobocert_config = config.load(parsed_args.config)
 
     if not dnsrobocert_config:
-        LOGGER.error(
+        print(
             "Error occured while loading the configuration file, aborting the `{0}` hook.".format(
                 parsed_args.type
-            )
+            ), file=sys.stderr
         )
         return 1
 
     try:
         globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
     except BaseException as e:
-        LOGGER.error("Error while executing the `{0}` hook:".format(parsed_args.type))
-        LOGGER.error(e)
+        print("Error while executing the `{0}` hook:".format(parsed_args.type), file=sys.stderr)
+        print(e, file=sys.stderr)
         traceback.print_exc(file=sys.stderr)
         return 1
 
@@ -60,67 +55,107 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
+    print('Executing auth hook for domain {0}, lineage {1}.'.format(domain, lineage))
+
     _txt_challenge(profile, token, domain, action="create")
+
+    remaining_challenges = int(os.environ.get("CERTBOT_REMAINING_CHALLENGES", "0"))
+    if remaining_challenges != 0:
+        print(
+            "Still {0} challenges to handle, skip checks until last challenge.".format(
+                remaining_challenges
+            )
+        )
+        return
+
+    all_domains = os.environ.get("CERTBOT_ALL_DOMAINS", "")
+    all_domains = all_domains.split(",")
+    challenges_to_check = [
+        "_acme-challenge.{0}".format(domain) for domain in all_domains
+    ]
 
     sleep_time = profile.get("sleep_time", 30)
     max_checks = profile.get("max_checks", 0)
     if max_checks:
+        print("Challenges to check: {0}".format(challenges_to_check))
         checks = 0
         while True:
             checks = checks + 1
             if checks > max_checks:
-                LOGGER.error(
-                    "The challenge was not propagated after the maximum tries of {0}".format(
+                print(
+                    "All challenges were not propagated after the maximum tries of {0}".format(
                         max_checks
-                    )
+                    ), file=sys.stderr
                 )
                 raise RuntimeError("Auth hook failed.")
 
-            LOGGER.info(
-                "Wait {0} seconds before checking that TXT _acme-challenge.{1} has the expected value "
-                "(try {2}/{3})".format(sleep_time, domain, checks, max_checks)
+            print(
+                "Wait {0} seconds before checking that all challenges have the expected value "
+                "(try {1}/{2})".format(sleep_time, checks, max_checks)
             )
             time.sleep(sleep_time)
 
-            validation_answers = None
-            try:
-                answers = resolver.query("_acme-challenge.{0}.".format(domain), "TXT")
-                validation_answers = [
-                    rdata
-                    for rdata in answers
-                    for txt_string in rdata.strings
-                    if txt_string.decode("utf-8") == token
-                ]
-            except (resolver.NXDOMAIN, resolver.NoAnswer):
-                # Will be handled below.
-                pass
+            challenges_to_check = [
+                challenge
+                for challenge in challenges_to_check
+                if not _check_one_challenge(
+                    challenge,
+                    token
+                    if challenge == "_acme-challenge.{0}".format(domain)
+                    else None,
+                )
+            ]
 
-            if validation_answers:
-                LOGGER.info(
-                    "TXT _acme-challenge.{0} has the expected token value (try {1}/{2})".format(
-                        domain, checks, max_checks
+            if not challenges_to_check:
+                print(
+                    "All challenges have been propagated (try {0}/{1}).".format(
+                        checks, max_checks
                     )
                 )
                 break
-
-            LOGGER.info(
-                "TXT _acme-challenge.{0} does not exist or does not have the expected token value (try {1}/{2})".format(
-                    domain, checks, max_checks
-                )
-            )
     else:
-        LOGGER.info(
-            "Wait {0} seconds to let TXT _acme-challenge.{1} entry be propagated".format(
-                sleep_time, domain
+        print(
+            "Wait {0} seconds to let all challenges be propagated: {1}".format(
+                sleep_time, challenges_to_check
             )
         )
         time.sleep(sleep_time)
+
+
+def _check_one_challenge(challenge: str, token: Optional[str]) -> bool:
+    try:
+        answers = resolver.query(challenge, "TXT")
+    except (resolver.NXDOMAIN, resolver.NoAnswer) as e:
+        print("TXT {0} does not exist.".format(challenge))
+        return False
+    else:
+        print("TXT {0} exists.".format(challenge))
+
+    if token:
+        validation_answers = [
+            rdata
+            for rdata in answers
+            for txt_string in rdata.strings
+            if txt_string.decode("utf-8") == token
+        ]
+
+        if not validation_answers:
+            print(
+                "TXT {0} does not have the expected token value.".format(challenge)
+            )
+            return False
+
+        print("TXT {0} has the expected token value.")
+
+    return True
 
 
 def cleanup(dnsrobocert_config: Dict[str, str], lineage: str):
     profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
+
+    print('Executing cleanup hook for domain {0}, lineage {1}.'.format(domain, lineage))
 
     _txt_challenge(profile, token, domain, action="delete")
 

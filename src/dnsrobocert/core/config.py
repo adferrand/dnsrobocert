@@ -23,7 +23,6 @@ def load(config_path: str) -> Optional[Dict[str, Any]]:
         raw_config = file_h.read()
 
     raw_config = _inject_env_variables(raw_config)
-    print(raw_config)
 
     try:
         config = yaml.load(raw_config, yaml.FullLoader)

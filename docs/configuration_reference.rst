@@ -30,7 +30,7 @@ reconfigure itself with it and will not proceed to any further action. This is u
 in the file without DNSroboCert taking them into account immediately, then apply all modifications altogether
 by disabling the draft mode.
 
-**Section example:**
+**Section reference:**
 
 .. code-block:: yaml
 
@@ -41,6 +41,23 @@ by disabling the draft mode.
 
 This section contains all general configuration parameters for Certbot (the underlying ACME client that
 generates the certificates) and how these certificates are stored locally.
+
+**Section reference:**
+
+.. code-block:: yaml
+
+    acme:
+      email_account: my.email@example.net
+      staging: false
+      api_version: 2
+      # If directory_url is set, values of staging and api_version are ignored
+      directory_url: https://example.net/dir
+      certs_permissions:
+        files_mode: 0644
+        dirs_mode: 0755
+        user: nobody
+        group: nogroup
+      crontab_renew: 12 01,13 * * *
 
 ``email_account``
     * The email account used to create an account against Let's Encrypt
@@ -93,23 +110,6 @@ generates the certificates) and how these certificates are stored locally.
     * *type*: ``string`` representing a valid cron pattern
     * *default*: ``12 01,13 * * *`` (twice a day)
 
-**Section example:**
-
-.. code-block:: yaml
-
-    acme:
-      email_account: my.email@example.net
-      staging: false
-      api_version: 2
-      # If directory_url is set, values of staging and api_version are ignored
-      directory_url: https://example.net/dir
-      certs_permissions:
-        files_mode: 0644
-        dirs_mode: 0755
-        user: nobody
-        group: nogroup
-      crontab_renew: 12 01,13 * * *
-
 ``profiles`` Section
 ====================
 
@@ -120,6 +120,24 @@ to fulfill a DNS-01 challenge.
 Each profile is referenced by its ``name``, which can be used in one or more certificates in the
 ``certificates`` section. Multiple profiles can be defined for the same DNS provider. However, each profile
 ``name`` must be unique.
+
+**Section reference**
+
+.. code-block:: yaml
+
+    profiles:
+      - name: my_profile1
+        provider: digitalocean
+        provider_options:
+          auth_token: TOKEN
+        sleep_time: 45
+        max_checks: 5
+      - name: my_profile2_delegated
+        provider: henet
+        provider_options:
+          auth_username: USER
+          auth_password: PASSWORD
+        delegated_subdomain: sub.example.net
 
 ``profile`` properties
 ----------------------
@@ -177,24 +195,6 @@ Each profile is referenced by its ``name``, which can be used in one or more cer
     * *type*: ``integer``
     * *default*: ``null`` (use any default TTL value specific to the DNS provider associated to this profile)
 
-**Section example**
-
-.. code-block:: yaml
-
-    profiles:
-      - name: my_profile1
-        provider: digitalocean
-        provider_options:
-          auth_token: TOKEN
-        sleep_time: 45
-        max_checks: 5
-      - name: my_profile2_delegated
-        provider: henet
-        provider_options:
-          auth_username: USER
-          auth_password: PASSWORD
-        delegated_subdomain: sub.example.net
-
 ``certificates`` Section
 ========================
 
@@ -205,6 +205,34 @@ profile is referred by its name, and **must** exist in the ``profiles`` Section.
 
 In parallel several actions can be defined when a certificate is created or renewed. These actions have to
 be defined in each relevant certificate configuration.
+
+**Section reference**
+
+.. code-block:: yaml
+
+    certificates:
+    - name: my-wildcard-cert
+      domains:
+      - "*.example.net"
+      - example.net
+      profile: my_profile1
+      pfx:
+        export: true
+        passphrase: PASSPHRASE
+      autorestart:
+      - containers:
+        - container1
+      - swarm_services:
+        - service1
+      autocmd:
+      - cmd: /usr/bin/remote_deploy.sh
+        containers:
+        - container2
+    - domains:
+      - www.sub.example.net
+      profile: my_profile2_delegated
+      deploy_hook: python /home/user/local_deploy.py
+      force_renew: false
 
 ``certificate`` properties
 --------------------------
@@ -337,35 +365,6 @@ be defined in each relevant certificate configuration.
         is not executed in a shell on the target, and variables would be resolved against the DNSroboCert container
         environment. If you want to operate advanced scripting, put an executable script in the target container,
         and use its path in the relevant ``autocmd[].cmd`` property.
-
-**Section example**
-
-.. code-block:: yaml
-
-    certificates:
-    - name: my-wildcard-cert
-      domains:
-      - "*.example.net"
-      - example.net
-      profile: my_profile1
-      pfx:
-        export: true
-        passphrase: PASSPHRASE
-      autorestart:
-      - containers:
-        - container1
-      - swarm_services:
-        - service1
-      autocmd:
-      - cmd: /usr/bin/remote_deploy.sh
-        containers:
-        - container2
-    - domains:
-      - www.sub.example.net
-      profile: my_profile2_delegated
-      deploy_hook: python /home/user/local_deploy.py
-      force_renew: false
-
 
 Environment variables
 =====================
