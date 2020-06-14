@@ -36,9 +36,11 @@ The following Lexicon providers are supported by DNSroboCert.
 +----------------+----------------+----------------+----------------+
 |rcodezero_      |route53_        |safedns_        |sakuracloud_    |
 +----------------+----------------+----------------+----------------+
-|softlayer_      |subreg_         |transip_        |vultr_          |
+|softlayer_      |subreg_         |transip_        |ultradns_       |
 +----------------+----------------+----------------+----------------+
-|yandex_         |zeit_           |zilore_         |zonomi_         |
+|vultr_          |yandex_         |zeit_           |zilore_         |
++----------------+----------------+----------------+----------------+
+|zonomi_         |                |                |                |
 +----------------+----------------+----------------+----------------+
 
 Providers options
@@ -418,6 +420,13 @@ subreg
 transip
     * ``auth_username`` Specify username for authentication
     * ``auth_api_key`` Specify api private key for authentication
+
+.. _ultradns:
+
+ultradns
+    * ``auth_token`` Specify token for authentication; if not set --auth-token, --auth-password are used
+    * ``auth_username`` Specify username for authentication
+    * ``auth_password`` Specify password for authentication
 
 .. _vultr:
 
