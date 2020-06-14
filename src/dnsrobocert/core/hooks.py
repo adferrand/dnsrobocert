@@ -35,14 +35,18 @@ def main(args: List[str] = None) -> int:
         print(
             "Error occured while loading the configuration file, aborting the `{0}` hook.".format(
                 parsed_args.type
-            ), file=sys.stderr
+            ),
+            file=sys.stderr,
         )
         return 1
 
     try:
         globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
     except BaseException as e:
-        print("Error while executing the `{0}` hook:".format(parsed_args.type), file=sys.stderr)
+        print(
+            "Error while executing the `{0}` hook:".format(parsed_args.type),
+            file=sys.stderr,
+        )
         print(e, file=sys.stderr)
         traceback.print_exc(file=sys.stderr)
         return 1
@@ -55,7 +59,7 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
-    print('Executing auth hook for domain {0}, lineage {1}.'.format(domain, lineage))
+    print("Executing auth hook for domain {0}, lineage {1}.".format(domain, lineage))
 
     _txt_challenge(profile, token, domain, action="create")
 
@@ -85,7 +89,8 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
                 print(
                     "All challenges were not propagated after the maximum tries of {0}".format(
                         max_checks
-                    ), file=sys.stderr
+                    ),
+                    file=sys.stderr,
                 )
                 raise RuntimeError("Auth hook failed.")
 
@@ -140,9 +145,7 @@ def _check_one_challenge(challenge: str, token: Optional[str]) -> bool:
         ]
 
         if not validation_answers:
-            print(
-                "TXT {0} does not have the expected token value.".format(challenge)
-            )
+            print("TXT {0} does not have the expected token value.".format(challenge))
             return False
 
         print("TXT {0} has the expected token value.")
@@ -155,7 +158,7 @@ def cleanup(dnsrobocert_config: Dict[str, str], lineage: str):
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
-    print('Executing cleanup hook for domain {0}, lineage {1}.'.format(domain, lineage))
+    print("Executing cleanup hook for domain {0}, lineage {1}.".format(domain, lineage))
 
     _txt_challenge(profile, token, domain, action="delete")
 

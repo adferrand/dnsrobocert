@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.4.0 - 14/06/2020
 ### Added
 * DNS challenges are now all run before any wait or check happens. This is useful for certificates that
   contains  lot of domains, because DNSroboCert will wait only once the provided `sleep_time`, instead
