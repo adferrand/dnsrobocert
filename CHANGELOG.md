@@ -1,6 +1,14 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* DNS challenges are now all run before any wait or check happens. This is useful for certificates that
+  contains  lot of domains, because DNSroboCert will wait only once the provided `sleep_time`, instead
+  of waiting after each challenge. This optimizations is also valid for `max_checks`.
+  
+### Modified
+* Improve log output from the auth and cleanup hooks.
+* Improve documentation.
 
 ## 3.3.4 - 14/06/2020
 ### Modified
