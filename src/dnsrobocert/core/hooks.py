@@ -72,8 +72,8 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
         )
         return
 
-    all_domains = os.environ.get("CERTBOT_ALL_DOMAINS", "")
-    all_domains = all_domains.split(",")
+    all_domains_str = os.environ.get("CERTBOT_ALL_DOMAINS", "")
+    all_domains = all_domains_str.split(",")
     challenges_to_check = [
         "_acme-challenge.{0}".format(domain) for domain in all_domains
     ]
@@ -130,7 +130,7 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
 def _check_one_challenge(challenge: str, token: Optional[str]) -> bool:
     try:
         answers = resolver.query(challenge, "TXT")
-    except (resolver.NXDOMAIN, resolver.NoAnswer) as e:
+    except (resolver.NXDOMAIN, resolver.NoAnswer):
         print("TXT {0} does not exist.".format(challenge))
         return False
     else:
