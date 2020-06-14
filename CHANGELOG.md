@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Upgrade Lexicon to 3.3.26 (fix errors with Godaddy provider)
 
 ## 3.3.3 - 03/06/2020
 ### Modified
