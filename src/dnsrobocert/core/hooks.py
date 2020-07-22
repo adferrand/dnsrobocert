@@ -279,7 +279,10 @@ def _autocmd(certificate: Dict[str, Any]):
 
             containers = onecmd.get("containers", [])
             for container in containers:
-                utils.execute(["docker", "exec", container, command])
+                if isinstance(command, list):
+                    utils.execute(["docker", "exec", container, *command])
+                else:
+                    utils.execute(f"docker exec {container} {command}", shell=True)
 
 
 def _deploy_hook(certificate: Dict[str, Any]):

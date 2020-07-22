@@ -108,7 +108,11 @@ properties:
                 items:
                   type: string
               cmd:
-                type: string
+                anyOf:
+                 - type: string
+                 - type: array
+                   items:
+                     type: string
             required: [cmd]
             additionalProperties: false
         deploy_hook:

@@ -4,7 +4,7 @@ import os
 import re
 import subprocess
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 import coloredlogs
 
@@ -19,7 +19,7 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
+def execute(command: Union[List[str], str], check: bool = True, shell: bool = False, env: Dict[str, str] = None):
     if not env:
         env = os.environ.copy()
     env = env.copy()
@@ -27,13 +27,13 @@ def execute(args: List[str], check: bool = True, env: Dict[str, str] = None):
 
     call = subprocess.check_call if check else subprocess.call
 
-    LOGGER.info("Launching command: {0}".format(subprocess.list2cmdline(args)))
+    LOGGER.info(f"Launching command: {subprocess.list2cmdline(command) if isinstance(command, list) else command}")
     sys.stdout.write("----------\n")
     sys.stdout.flush()
 
     error = None
     try:
-        call(args, env=env)
+        call(command, shell=shell, env=env)
     except subprocess.CalledProcessError as e:
         error = e
 
