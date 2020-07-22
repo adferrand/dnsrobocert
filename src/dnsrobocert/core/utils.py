@@ -10,8 +10,8 @@ import coloredlogs
 
 try:
     POSIX_MODE = True
-    import pwd
     import grp
+    import pwd
 except ImportError:
     POSIX_MODE = False
 
@@ -19,7 +19,12 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def execute(command: Union[List[str], str], check: bool = True, shell: bool = False, env: Dict[str, str] = None):
+def execute(
+    command: Union[List[str], str],
+    check: bool = True,
+    shell: bool = False,
+    env: Dict[str, str] = None,
+):
     if not env:
         env = os.environ.copy()
     env = env.copy()
@@ -27,7 +32,9 @@ def execute(command: Union[List[str], str], check: bool = True, shell: bool = Fa
 
     call = subprocess.check_call if check else subprocess.call
 
-    LOGGER.info(f"Launching command: {subprocess.list2cmdline(command) if isinstance(command, list) else command}")
+    LOGGER.info(
+        f"Launching command: {subprocess.list2cmdline(command) if isinstance(command, list) else command}"
+    )
     sys.stdout.write("----------\n")
     sys.stdout.flush()
 

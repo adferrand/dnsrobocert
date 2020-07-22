@@ -336,8 +336,8 @@ be defined in each relevant certificate configuration.
     * *default*: ``null`` (no automated command is triggered)
 
     ``cmd``
-        * The command to execute in each target container.
-        * *type*: ``string``
+        * The command to execute in each target container. Only commands of string type will be executed in a shell.
+        * *type*: ``string`` or ``list[string]``
         * **Mandatory property**
 
     ``containers``
@@ -353,14 +353,14 @@ be defined in each relevant certificate configuration.
         - containers:
           - container1
           - container2
-          cmd: echo "Hello World!"
+          cmd: [echo, "Hello World!"]
         - containers:
           - container3
           cmd: env
 
     .. warning::
 
-        The feature ``automcd`` is intended to call a simple executable file with few potential arguments.
+        The feature ``autocmd`` is intended to call a simple executable file with few potential arguments.
         It is not made to call some advanced bash script, and would likely fail if you do so. In fact, the command
         is not executed in a shell on the target, and variables would be resolved against the DNSroboCert container
         environment. If you want to operate advanced scripting, put an executable script in the target container,

@@ -14,8 +14,8 @@ from dnsrobocert.core import config, hooks
 
 try:
     POSIX_MODE = True
-    import pwd
     import grp
+    import pwd
 except ImportError:
     POSIX_MODE = False
 
@@ -66,8 +66,10 @@ def fake_config(tmp_path):
       pfx:
         export: true
       autocmd:
-      - cmd: echo 'Hello World!'
+      - cmd: [echo, "Hello World!"]
         containers: [foo, bar]
+      - cmd: echo test
+        containers: [dummy]
       autorestart:
       - containers: [container1, container2]
       - swarm_services: [service1, service2]
@@ -169,9 +171,10 @@ def test_autocmd(
 ):
     hooks.deploy(config.load(fake_config), LINEAGE)
 
-    call_foo = call(["docker", "exec", "foo", "echo 'Hello World!'"])
-    call_bar = call(["docker", "exec", "bar", "echo 'Hello World!'"])
-    check_call.assert_has_calls([call_foo, call_bar])
+    call_foo = call(["docker", "exec", "foo", "echo", "Hello World!"])
+    call_bar = call(["docker", "exec", "bar", "echo", "Hello World!"])
+    call_dummy = call("docker exec dummy echo test", shell=True)
+    check_call.assert_has_calls([call_foo, call_bar, call_dummy])
 
 
 @patch("dnsrobocert.core.hooks._fix_permissions")

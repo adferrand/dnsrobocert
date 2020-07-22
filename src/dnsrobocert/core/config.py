@@ -25,7 +25,7 @@ def load(config_path: str) -> Optional[Dict[str, Any]]:
     raw_config = _inject_env_variables(raw_config)
 
     try:
-        config = yaml.load(raw_config, yaml.FullLoader)
+        config = yaml.load(raw_config, Loader=yaml.FullLoader)
     except BaseException:
         message = """
 Error while validating dnsrobocert configuration:

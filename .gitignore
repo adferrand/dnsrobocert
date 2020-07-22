@@ -11,3 +11,4 @@ __pycache__
 dist
 .tox
 test/assets/pebble*
+test-results.xml
