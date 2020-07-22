@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.5.0 - 23/07/2020
 ## Added
 * `autocmd.command` now accepts list of string. If a list of string is provided, the command will
   be executed outside of a shell. If a string is provided, it will be executed inside a shell.
