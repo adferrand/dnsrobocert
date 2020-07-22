@@ -16,31 +16,31 @@ The following Lexicon providers are supported by DNSroboCert.
 +----------------+----------------+----------------+----------------+
 |dnsmadeeasy_    |dnspark_        |dnspod_         |dreamhost_      |
 +----------------+----------------+----------------+----------------+
-|easydns_        |easyname_       |euserv_         |exoscale_       |
+|dynu_           |easydns_        |easyname_       |euserv_         |
 +----------------+----------------+----------------+----------------+
-|gandi_          |gehirn_         |glesys_         |godaddy_        |
+|exoscale_       |gandi_          |gehirn_         |glesys_         |
 +----------------+----------------+----------------+----------------+
-|googleclouddns_ |gransy_         |gratisdns_      |henet_          |
+|godaddy_        |googleclouddns_ |gransy_         |gratisdns_      |
 +----------------+----------------+----------------+----------------+
-|hetzner_        |hostingde_      |hover_          |infoblox_       |
+|henet_          |hetzner_        |hostingde_      |hover_          |
 +----------------+----------------+----------------+----------------+
-|internetbs_     |inwx_           |linode_         |linode4_        |
+|infoblox_       |internetbs_     |inwx_           |linode_         |
 +----------------+----------------+----------------+----------------+
-|localzone_      |luadns_         |memset_         |namecheap_      |
+|linode4_        |localzone_      |luadns_         |memset_         |
 +----------------+----------------+----------------+----------------+
-|namesilo_       |netcup_         |nfsn_           |nsone_          |
+|namecheap_      |namesilo_       |netcup_         |nfsn_           |
 +----------------+----------------+----------------+----------------+
-|onapp_          |online_         |ovh_            |plesk_          |
+|nsone_          |onapp_          |online_         |ovh_            |
 +----------------+----------------+----------------+----------------+
-|pointhq_        |powerdns_       |rackspace_      |rage4_          |
+|plesk_          |pointhq_        |powerdns_       |rackspace_      |
 +----------------+----------------+----------------+----------------+
-|rcodezero_      |route53_        |safedns_        |sakuracloud_    |
+|rage4_          |rcodezero_      |route53_        |safedns_        |
 +----------------+----------------+----------------+----------------+
-|softlayer_      |subreg_         |transip_        |ultradns_       |
+|sakuracloud_    |softlayer_      |subreg_         |transip_        |
 +----------------+----------------+----------------+----------------+
-|vultr_          |yandex_         |zeit_           |zilore_         |
+|ultradns_       |vultr_          |yandex_         |zeit_           |
 +----------------+----------------+----------------+----------------+
-|zonomi_         |                |                |                |
+|zilore_         |zonomi_         |                |                |
 +----------------+----------------+----------------+----------------+
 
 Providers options
@@ -152,6 +152,11 @@ dnspod
 .. _dreamhost:
 
 dreamhost
+    * ``auth_token`` Specify api key for authentication
+
+.. _dynu:
+
+dynu
     * ``auth_token`` Specify api key for authentication
 
 .. _easydns:
