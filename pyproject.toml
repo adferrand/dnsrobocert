@@ -42,7 +42,9 @@ python = "^3.6"
 acme = "==1.6.0"
 certbot = "==1.6.0"
 dns-lexicon = { version = "==3.3.27", extras = [ "full" ] }
-cryptography = "^2.9.2"  # Alpine does not have cryptography >= 3.0 yet.
+cryptography = "2.8"  # Pinned to a version available in Alpine.
+cffi = "1.13.2"  # Pinned to a version available in Alpine.
+lxml = "4.4.2"  # Pined to a version available in Alpine.
 dnspython3 = "^1.15.0"
 jsonschema = "^3.2.0"
 pem = "^20.1.0"
@@ -51,7 +53,6 @@ pyyaml = "^5.3.1"
 schedule = "^0.6.0"
 coloredlogs = "^14.0"
 colorama = "^0.4.3"
-appdirs = "^1.4.4"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"
