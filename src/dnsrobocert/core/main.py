@@ -48,9 +48,7 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
             lineage = config.get_lineage(certificate)
             domains = certificate["domains"]
             force_renew = certificate.get("force_renew", False)
-            LOGGER.info(
-                "Handling the certificate for domain(s): {0}".format(", ".join(domains))
-            )
+            LOGGER.info(f"Handling the certificate for domain(s): {', '.join(domains)}")
             certbot.certonly(
                 runtime_config_path,
                 directory_path,
@@ -60,9 +58,7 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
             )
         except BaseException as error:
             LOGGER.error(
-                "An error occurred while processing certificate config `{0}`:\n{1}".format(
-                    certificate, error
-                )
+                f"An error occurred while processing certificate config `{certificate}`:\n{error}"
             )
 
     LOGGER.info("Revoke and delete certificates if needed")
@@ -71,7 +67,7 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
         if domain != "README":
             domain = re.sub(r"^\*\.", "", domain)
             if domain not in lineages:
-                LOGGER.info("Removing the certificate {0}".format(domain))
+                LOGGER.info(f"Removing the certificate {domain}")
                 certbot.revoke(runtime_config_path, directory_path, domain)
 
 
@@ -93,7 +89,7 @@ def _renew_job(config_path: str, directory_path: str):
     random_delay_seconds = 21600  # Random delay up to 12 hours
     wait_time = int(random() * random_delay_seconds)
     LOGGER.info("Automated execution: renew certificates if needed.")
-    LOGGER.info("Random wait for this execution: {0} seconds".format(wait_time))
+    LOGGER.info(f"Random wait for this execution: {wait_time} seconds")
     time.sleep(wait_time)
     certbot.renew(config_path, directory_path)
 

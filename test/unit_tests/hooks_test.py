@@ -44,38 +44,36 @@ def fake_env(tmp_path, monkeypatch):
 @pytest.fixture
 def fake_config(tmp_path):
     config_path = tmp_path / "config.yml"
-    config_data = """
-    acme:
-      certs_permissions:
-        files_mode: "0666"
-        dirs_mode: 0777
-        user: nobody
-        group: nogroup
-    profiles:
-    - name: dummy-profile
-      provider: dummy
-      provider_options:
-        auth_token: TOKEN
-      sleep_time: 0.1
-      ttl: 42
-    certificates:
-    - name: {0}
-      domains:
-      - {0}
-      profile: dummy-profile
-      pfx:
-        export: true
-      autocmd:
-      - cmd: [echo, "Hello World!"]
-        containers: [foo, bar]
-      - cmd: echo test
-        containers: [dummy]
-      autorestart:
-      - containers: [container1, container2]
-      - swarm_services: [service1, service2]
-    """.format(
-        LINEAGE
-    )
+    config_data = f"""\
+acme:
+  certs_permissions:
+    files_mode: "0666"
+    dirs_mode: 0777
+    user: nobody
+    group: nogroup
+profiles:
+- name: dummy-profile
+  provider: dummy
+  provider_options:
+    auth_token: TOKEN
+  sleep_time: 0.1
+  ttl: 42
+certificates:
+- name: {LINEAGE}
+  domains:
+  - {LINEAGE}
+  profile: dummy-profile
+  pfx:
+    export: true
+  autocmd:
+  - cmd: [echo, "Hello World!"]
+    containers: [foo, bar]
+  - cmd: echo test
+    containers: [dummy]
+  autorestart:
+  - containers: [container1, container2]
+  - swarm_services: [service1, service2]
+"""
     config_path.write_text(config_data)
     yield config_path
 
@@ -90,7 +88,7 @@ def test_auth_cli(client, fake_config):
     assert resolver.resolve("lexicon:action") == "create"
     assert resolver.resolve("lexicon:domain") == LINEAGE
     assert resolver.resolve("lexicon:type") == "TXT"
-    assert resolver.resolve("lexicon:name") == "_acme-challenge.{0}.".format(LINEAGE)
+    assert resolver.resolve("lexicon:name") == f"_acme-challenge.{LINEAGE}."
     assert resolver.resolve("lexicon:content") == "VALIDATION"
     assert resolver.resolve("lexicon:provider_name") == "dummy"
     assert resolver.resolve("lexicon:ttl") == 42
@@ -107,7 +105,7 @@ def test_cleanup_cli(client, fake_config):
     assert resolver.resolve("lexicon:action") == "delete"
     assert resolver.resolve("lexicon:domain") == LINEAGE
     assert resolver.resolve("lexicon:type") == "TXT"
-    assert resolver.resolve("lexicon:name") == "_acme-challenge.{0}.".format(LINEAGE)
+    assert resolver.resolve("lexicon:name") == f"_acme-challenge.{LINEAGE}."
     assert resolver.resolve("lexicon:content") == "VALIDATION"
     assert resolver.resolve("lexicon:provider_name") == "dummy"
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
@@ -137,7 +135,7 @@ def test_pfx(_autorestart, _autocmd, _fix_permissions, fake_env, fake_config):
         )
 
     subject = issuer = x509.Name(
-        [x509.NameAttribute(NameOID.COMMON_NAME, u"example.com")]
+        [x509.NameAttribute(NameOID.COMMON_NAME, "example.com")]
     )
     cert = (
         x509.CertificateBuilder()

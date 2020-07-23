@@ -37,13 +37,9 @@ def _fetch(workspace):
 
 
 def _fetch_asset(asset, suffix):
-    asset_path = os.path.join(
-        _ASSETS_PATH, "{0}_{1}_{2}".format(asset, _PEBBLE_VERSION, suffix)
-    )
+    asset_path = os.path.join(_ASSETS_PATH, f"{asset}_{_PEBBLE_VERSION}_{suffix}")
     if not os.path.exists(asset_path):
-        asset_url = "https://github.com/letsencrypt/pebble/releases/download/{0}/{1}_{2}".format(
-            _PEBBLE_VERSION, asset, suffix
-        )
+        asset_url = f"https://github.com/letsencrypt/pebble/releases/download/{_PEBBLE_VERSION}/{asset}_{suffix}"
         response = requests.get(asset_url)
         response.raise_for_status()
         with open(asset_path, "wb") as file_h:
@@ -83,9 +79,7 @@ def _check_until_timeout(url, attempts=30):
         except requests.exceptions.ConnectionError:
             pass
 
-    raise ValueError(
-        "Error, url did not respond after {0} attempts: {1}".format(attempts, url)
-    )
+    raise ValueError(f"Error, url did not respond after {attempts} attempts: {url}")
 
 
 @contextlib.contextmanager
@@ -182,5 +176,5 @@ certificates:
                 main.main(["-c", str(config_path), "-d", str(directory_path)])
 
         assert os.path.exists(
-            os.path.join(directory_path, "live", "test1.example.net", "cert.pem")
+            str(directory_path / "live" / "test1.example.net" / "cert.pem")
         )

@@ -157,11 +157,11 @@ def revoke(config_path: str, directory_path: str, lineage: str):
 
 
 def _hook_cmd(hook_type: str, config_path: str, lineage: str = None) -> str:
-    command = '{0} -m dnsrobocert.core.hooks -t {1} -c "{2}"'.format(
-        sys.executable, hook_type, config_path
+    command = (
+        f'{sys.executable} -m dnsrobocert.core.hooks -t {hook_type} -c "{config_path}"'
     )
     if lineage:
-        command = '{0} -l "{1}"'.format(command, lineage)
+        command = f'{command} -l "{lineage}"'
     return command
 
 

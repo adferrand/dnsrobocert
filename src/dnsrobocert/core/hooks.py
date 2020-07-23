@@ -33,9 +33,7 @@ def main(args: List[str] = None) -> int:
 
     if not dnsrobocert_config:
         print(
-            "Error occured while loading the configuration file, aborting the `{0}` hook.".format(
-                parsed_args.type
-            ),
+            f"Error occured while loading the configuration file, aborting the `{parsed_args.type}` hook.",
             file=sys.stderr,
         )
         return 1
@@ -44,8 +42,7 @@ def main(args: List[str] = None) -> int:
         globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
     except BaseException as e:
         print(
-            "Error while executing the `{0}` hook:".format(parsed_args.type),
-            file=sys.stderr,
+            f"Error while executing the `{parsed_args.type}` hook:", file=sys.stderr,
         )
         print(e, file=sys.stderr)
         traceback.print_exc(file=sys.stderr)
@@ -59,44 +56,38 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
-    print("Executing auth hook for domain {0}, lineage {1}.".format(domain, lineage))
+    print(f"Executing auth hook for domain {domain}, lineage {lineage}.")
 
     _txt_challenge(profile, token, domain, action="create")
 
     remaining_challenges = int(os.environ.get("CERTBOT_REMAINING_CHALLENGES", "0"))
     if remaining_challenges != 0:
         print(
-            "Still {0} challenges to handle, skip checks until last challenge.".format(
-                remaining_challenges
-            )
+            f"Still {remaining_challenges} challenges to handle, skip checks until last challenge."
         )
         return
 
     all_domains_str = os.environ.get("CERTBOT_ALL_DOMAINS", "")
     all_domains = all_domains_str.split(",")
-    challenges_to_check = [
-        "_acme-challenge.{0}".format(domain) for domain in all_domains
-    ]
+    challenges_to_check = [f"_acme-challenge.{domain}" for domain in all_domains]
 
     sleep_time = profile.get("sleep_time", 30)
     max_checks = profile.get("max_checks", 0)
     if max_checks:
-        print("Challenges to check: {0}".format(challenges_to_check))
+        print(f"Challenges to check: {challenges_to_check}")
         checks = 0
         while True:
             checks = checks + 1
             if checks > max_checks:
                 print(
-                    "All challenges were not propagated after the maximum tries of {0}".format(
-                        max_checks
-                    ),
+                    f"All challenges were not propagated after the maximum tries of {max_checks}",
                     file=sys.stderr,
                 )
                 raise RuntimeError("Auth hook failed.")
 
             print(
-                "Wait {0} seconds before checking that all challenges have the expected value "
-                "(try {1}/{2})".format(sleep_time, checks, max_checks)
+                f"Wait {sleep_time} seconds before checking that all challenges have the expected value "
+                f"(try {checks}/{max_checks})"
             )
             time.sleep(sleep_time)
 
@@ -105,24 +96,18 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
                 for challenge in challenges_to_check
                 if not _check_one_challenge(
                     challenge,
-                    token
-                    if challenge == "_acme-challenge.{0}".format(domain)
-                    else None,
+                    token if challenge == "_acme-challenge.{domain}" else None,
                 )
             ]
 
             if not challenges_to_check:
                 print(
-                    "All challenges have been propagated (try {0}/{1}).".format(
-                        checks, max_checks
-                    )
+                    f"All challenges have been propagated (try {checks}/{max_checks})."
                 )
                 break
     else:
         print(
-            "Wait {0} seconds to let all challenges be propagated: {1}".format(
-                sleep_time, challenges_to_check
-            )
+            f"Wait {sleep_time0} seconds to let all challenges be propagated: {challenges_to_check}"
         )
         time.sleep(sleep_time)
 
@@ -131,10 +116,10 @@ def _check_one_challenge(challenge: str, token: Optional[str]) -> bool:
     try:
         answers = resolver.query(challenge, "TXT")
     except (resolver.NXDOMAIN, resolver.NoAnswer):
-        print("TXT {0} does not exist.".format(challenge))
+        print(f"TXT {challenge} does not exist.")
         return False
     else:
-        print("TXT {0} exists.".format(challenge))
+        print(f"TXT {challenge} exists.")
 
     if token:
         validation_answers = [
@@ -145,10 +130,10 @@ def _check_one_challenge(challenge: str, token: Optional[str]) -> bool:
         ]
 
         if not validation_answers:
-            print("TXT {0} does not have the expected token value.".format(challenge))
+            print(f"TXT {challenge} does not have the expected token value.")
             return False
 
-        print("TXT {0} has the expected token value.")
+        print(f"TXT {challenge} has the expected token value.")
 
     return True
 
@@ -158,7 +143,7 @@ def cleanup(dnsrobocert_config: Dict[str, str], lineage: str):
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
-    print("Executing cleanup hook for domain {0}, lineage {1}.".format(domain, lineage))
+    print(f"Executing cleanup hook for domain {domain}, lineage {lineage}.")
 
     _txt_challenge(profile, token, domain, action="delete")
 
@@ -186,9 +171,8 @@ def _txt_challenge(
 
     if not provider_options:
         print(
-            "No provider_options are defined for profile {0}, any call to the provider API is likely to fail.".format(
-                profile_name
-            )
+            f"No provider_options are defined for profile {profile_name}, "
+            "any call to the provider API is likely to fail."
         )
 
     config_dict = {
