@@ -1,15 +1,8 @@
 # Changelog
 
 ## master - CURRENT
-## Added
-* `autocmd.command` now accepts list of string. If a list of string is provided, the command will
-  be executed outside of a shell. If a string is provided, it will be executed inside a shell.
-  The list of string form should be used if you do not need the features of a shell since it allows
-  a better control of the arguments passed to the command and avoid potential injections attacks.
-
 ## Modified
-* Upgrade Lexicon to 3.3.27 (support for Dynu.com provider)
-* Upgrade Docker base image to Alpine 3.12
+* Modify dependencies versions pinning to fix the docker images builds
 
 ## 3.5.0 - 23/07/2020
 ## Added
