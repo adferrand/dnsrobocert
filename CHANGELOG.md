@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.5.1 - 24/07/2020
 ## Modified
 * Modify dependencies versions pinning to fix the docker images builds
 
