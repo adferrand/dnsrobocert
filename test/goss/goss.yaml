@@ -2,7 +2,6 @@ file:
   /etc/dnsrobocert/config.yml:
     exists: true
     mode: "0644"
-    size: 12
     owner: root
     group: root
     filetype: file
@@ -10,7 +9,6 @@ file:
   /usr/bin/dnsrobocert:
     exists: true
     mode: "0755"
-    size: 220
     owner: root
     group: root
     filetype: file

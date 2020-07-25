@@ -107,7 +107,7 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
                 break
     else:
         print(
-            f"Wait {sleep_time0} seconds to let all challenges be propagated: {challenges_to_check}"
+            f"Wait {sleep_time} seconds to let all challenges be propagated: {challenges_to_check}"
         )
         time.sleep(sleep_time)
 
