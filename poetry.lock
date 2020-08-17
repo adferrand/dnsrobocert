@@ -4,7 +4,7 @@ description = "ACME protocol implementation in Python"
 name = "acme"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "1.6.0"
+version = "1.7.0"
 
 [package.dependencies]
 PyOpenSSL = ">=0.15.1"
@@ -1415,13 +1415,13 @@ docs = ["sphinx", "repoze.sphinx.autointerface"]
 test = ["zope.security", "zope.testrunner"]
 
 [metadata]
-content-hash = "8bdd22d2e3a4469101fab42204626af52194b8a5eac8b5b9d4b42632e42e2dca"
+content-hash = "fbe875d20f00fea93d30ada0ed4cafda809f8f8418187bc61a403265a0c50bfb"
 python-versions = "^3.6"
 
 [metadata.files]
 acme = [
-    {file = "acme-1.6.0-py2.py3-none-any.whl", hash = "sha256:dc532fee475dde07a843232f69f54b185ba23af6cce9d2e1a1dc132ce2e34f64"},
-    {file = "acme-1.6.0.tar.gz", hash = "sha256:fe76e06ae1e9b12304f9e9691ff901da6d2fd588fea2765f891b8cd15d6b3f2b"},
+    {file = "acme-1.7.0-py2.py3-none-any.whl", hash = "sha256:ef0e84d670f59c096e9ed8c3bf9e6a7d22ee378fdb4175503c06cc485672c79a"},
+    {file = "acme-1.7.0.tar.gz", hash = "sha256:288d9bbb075278961d224e43f7f386c491d25366a98ed89a62771c5022978386"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
