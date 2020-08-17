@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.6.0 - 17/08/2020
 ## Modified
 * Upgrade Lexicon to 3.3.28
 * Upgrade Certbot to 1.7.0
