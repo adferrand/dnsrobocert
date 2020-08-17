@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+## Modified
+* Upgrade Lexicon to 3.3.28
+* Upgrade Certbot to 1.7.0
+* Upgrade Docker base image to Alpine 3.12
 
 ## 3.5.1 - 25/07/2020
 ## Modified
