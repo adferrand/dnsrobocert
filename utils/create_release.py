@@ -46,7 +46,7 @@ def main():
             f.write(changelog)
 
         subprocess.check_call("poetry version {0}".format(new_version), shell=True)
-        subprocess.check_call("poetry run isort -rc src test utils", shell=True)
+        subprocess.check_call("poetry run isort src test utils", shell=True)
         subprocess.check_call("poetry run black src test utils", shell=True)
 
         subprocess.check_call(
