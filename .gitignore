@@ -12,3 +12,4 @@ dist
 .tox
 test/assets/pebble*
 test-results.xml
+coverage.xml
