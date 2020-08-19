@@ -1,0 +1,42 @@
+name: dnsrobocert
+summary: Deploy and orchestrate DNS-challenged Let's Encrypt TLS certificates
+description: |
+  DNSroboCert is designed to manage Let's Encrypt SSL certificates based on DNS challenges.
+
+  - Let's Encrypt wildcard and regular certificates generation by Certbot using DNS challenges,
+  - Integrated automated renewal of almost expired certificates,
+  - Standardized API through Lexicon library to insert the DNS challenge with various DNS providers,
+  - Centralized YAML configuration file to maintain several certificates and several DNS providers with configuration validity control,
+  - Modification of container configuration without restart,
+  - Flexible hooks upon certificate creation/renewal including containers restart, commands in containers or custom hooks,
+  - Linux, Mac OS X and Windows support, with a particular care for Docker services,
+  - Delivered as a standalone application and a Docker image.
+confinement: strict
+base: core20
+grade: devel
+adopt-info: dnsrobocert
+
+apps:
+  dnsrobocert:
+    command: bin/dnsrobocert
+    environment:
+      PATH: "$SNAP/bin:$SNAP/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+
+parts:
+  dnsrobocert:
+    plugin: python
+    source: .
+    constraints: [$SNAPCRAFT_PART_SRC/snap-constraints.txt]
+    python-packages:
+      - ./
+    build-packages:
+      - python3-wheel
+    build-environment:
+      - SNAPCRAFT_PYTHON_VENV_ARGS: --system-site-packages
+    override-pull: |
+      set -e
+      snapcraftctl pull
+      apt install -y curl
+      curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
+      $HOME/.poetry/bin/poetry export --format requirements.txt --without-hashes > $SNAPCRAFT_PART_SRC/snap-constraints.txt
+      snapcraftctl set-version $(python3 -m poetry version | awk '{print $2}')
