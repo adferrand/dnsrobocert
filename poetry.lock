@@ -76,18 +76,24 @@ description = "The uncompromising code formatter."
 name = "black"
 optional = false
 python-versions = ">=3.6"
-version = "19.10b0"
+version = "20.8b1"
 
 [package.dependencies]
 appdirs = "*"
-attrs = ">=18.1.0"
-click = ">=6.5"
+click = ">=7.1.2"
+mypy-extensions = ">=0.4.3"
 pathspec = ">=0.6,<1"
-regex = "*"
-toml = ">=0.9.4"
+regex = ">=2020.1.8"
+toml = ">=0.10.1"
 typed-ast = ">=1.4.0"
+typing-extensions = ">=3.7.4"
+
+[package.dependencies.dataclasses]
+python = "<3.7"
+version = ">=0.6"
 
 [package.extras]
+colorama = ["colorama (>=0.4.3)"]
 d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [[package]]
@@ -277,6 +283,15 @@ docstest = ["doc8", "pyenchant (>=1.6.11)", "twine (>=1.12.0)", "sphinxcontrib-s
 idna = ["idna (>=2.1)"]
 pep8test = ["flake8", "flake8-import-order", "pep8-naming"]
 test = ["pytest (>=3.6.0,<3.9.0 || >3.9.0,<3.9.1 || >3.9.1,<3.9.2 || >3.9.2)", "pretend", "iso8601", "pytz", "hypothesis (>=1.11.4,<3.79.2 || >3.79.2)"]
+
+[[package]]
+category = "dev"
+description = "A backport of the dataclasses module for Python 3.6"
+marker = "python_version < \"3.7\""
+name = "dataclasses"
+optional = false
+python-versions = "*"
+version = "0.6"
 
 [[package]]
 category = "main"
@@ -940,7 +955,7 @@ category = "main"
 description = "YAML parser and emitter for Python"
 name = "pyyaml"
 optional = false
-python-versions = "*"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "5.3.1"
 
 [[package]]
@@ -1424,8 +1439,7 @@ docs = ["sphinx", "repoze.sphinx.autointerface"]
 test = ["zope.security", "zope.testrunner"]
 
 [metadata]
-content-hash = "ca06aecfff67d6e85b86231ec6856286ba07c3c1cf947ee63b4a71bbdb795a87"
-lock-version = "1.0"
+content-hash = "288167ffed0164c628de7176b61452a15a3adf2a62b8143ac24116e326e3bfec"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1451,8 +1465,8 @@ beautifulsoup4 = [
     {file = "beautifulsoup4-4.9.1.tar.gz", hash = "sha256:73cc4d115b96f79c7d77c1c7f7a0a8d4c57860d1041df407dd1aae7f07a77fd7"},
 ]
 black = [
-    {file = "black-19.10b0-py36-none-any.whl", hash = "sha256:1b30e59be925fafc1ee4565e5e08abef6b03fe455102883820fe5ee2e4734e0b"},
-    {file = "black-19.10b0.tar.gz", hash = "sha256:c2edb73a08e9e0e6f65a0e6af18b059b8b1cdd5bef997d7a0b181df93dc81539"},
+    {file = "black-20.8b1-py3-none-any.whl", hash = "sha256:70b62ef1527c950db59062cda342ea224d772abdf6adc58b86a45421bab20a6b"},
+    {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 bleach = [
     {file = "bleach-3.1.5-py2.py3-none-any.whl", hash = "sha256:2bce3d8fab545a6528c8fa5d9f9ae8ebc85a56da365c7f85180bfe96a35ef22f"},
@@ -1586,6 +1600,10 @@ cryptography = [
     {file = "cryptography-2.9.2-cp38-cp38-win32.whl", hash = "sha256:844a76bc04472e5135b909da6aed84360f522ff5dfa47f93e3dd2a0b84a89fa0"},
     {file = "cryptography-2.9.2-cp38-cp38-win_amd64.whl", hash = "sha256:1dfa985f62b137909496e7fc182dac687206d8d089dd03eaeb28ae16eec8e7d5"},
     {file = "cryptography-2.9.2.tar.gz", hash = "sha256:a0c30272fb4ddda5f5ffc1089d7405b7a71b0b0f51993cb4e5dbb4590b2fc229"},
+]
+dataclasses = [
+    {file = "dataclasses-0.6-py3-none-any.whl", hash = "sha256:454a69d788c7fda44efd71e259be79577822f5e3f53f029a22d08004e951dc9f"},
+    {file = "dataclasses-0.6.tar.gz", hash = "sha256:6988bd2b895eef432d562370bb707d540f32f7360ab13da45340101bc2307d84"},
 ]
 defusedxml = [
     {file = "defusedxml-0.6.0-py2.py3-none-any.whl", hash = "sha256:6687150770438374ab581bb7a1b327a847dd9c5749e396102de3fad4e8a3ef93"},
@@ -2119,24 +2137,28 @@ zipp = [
     {file = "zope.proxy-4.3.5-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:a69f5cbf4addcfdf03dda564a671040127a6b7c34cf9fe4973582e68441b63fa"},
     {file = "zope.proxy-4.3.5-cp27-cp27mu-manylinux2010_i686.whl", hash = "sha256:207aa914576b1181597a1516e1b90599dc690c095343ae281b0772e44945e6a4"},
     {file = "zope.proxy-4.3.5-cp27-cp27mu-manylinux2010_x86_64.whl", hash = "sha256:cfc781ce442ec407c841e9aa51d0e1024f72b6ec34caa8fdb6ef9576d549acf2"},
+    {file = "zope.proxy-4.3.5-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:5903d38362b6c716e66bbe470f190579c530a5baf03dbc8500e5c2357aa569a5"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:7e162bdc5e3baad26b2262240be7d2bab36991d85a6a556e48b9dfb402370261"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:219a7db5ed53e523eb4a4769f13105118b6d5b04ed169a283c9775af221e231f"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-manylinux2010_i686.whl", hash = "sha256:6943da9c09870490dcfd50c4909c0cc19f434fa6948f61282dc9cb07bcf08160"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-manylinux2010_x86_64.whl", hash = "sha256:fc45a53219ed30a7f670a6d8c98527af0020e6fd4ee4c0a8fb59f147f06d816c"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-win32.whl", hash = "sha256:74884a0aec1f1609190ec8b34b5d58fb3b5353cf22b96161e13e0e835f13518f"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-win_amd64.whl", hash = "sha256:7007227f4ea85b40a2f5e5a244479f6a6dfcf906db9b55e812a814a8f0e2c28d"},
+    {file = "zope.proxy-4.3.5-cp36-cp36m-macosx_10_6_intel.whl", hash = "sha256:6bbaa245015d933a4172395baad7874373f162955d73612f0b66b6c2c33b6366"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:00573dfa755d0703ab84bb23cb6ecf97bb683c34b340d4df76651f97b0bab068"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:b6ed71e4a7b4690447b626f499d978aa13197a0e592950e5d7020308f6054698"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:19577dfeb70e8a67249ba92c8ad20589a1a2d86a8d693647fa8385408a4c17b0"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:dea9f6f8633571e18bc20cad83603072e697103a567f4b0738d52dd0211b4527"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-win32.whl", hash = "sha256:63ddb992931a5e616c87d3d89f5a58db086e617548005c7f9059fac68c03a5cc"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-win_amd64.whl", hash = "sha256:0cbd27b4d3718b5ec74fc65ffa53c78d34c65c6fd9411b8352d2a4f855220cf1"},
+    {file = "zope.proxy-4.3.5-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:7d25fe5571ddb16369054f54cdd883f23de9941476d97f2b92eb6d7d83afe22d"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:e7106374d4a74ed9ff00c46cc00f0a9f06a0775f8868e423f85d4464d2333679"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:6b44433a79bdd7af0e3337bd7bbcf53dd1f9b0fa66bf21bcb756060ce32a96c1"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:61b55ae3c23a126a788b33ffb18f37d6668e79a05e756588d9e4d4be7246ab1c"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:5ef6bc5ed98139e084f4e91100f2b098a0cd3493d4e76f9d6b3f7b95d7ad0f06"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-win32.whl", hash = "sha256:f64840e68483316eb58d82c376ad3585ca995e69e33b230436de0cdddf7363f9"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-win_amd64.whl", hash = "sha256:e4a86a1d5eb2cce83c5972b3930c7c1eac81ab3508464345e2b8e54f119d5505"},
+    {file = "zope.proxy-4.3.5-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:cf19b5f63a59c20306e034e691402b02055c8f4e38bf6792c23cad489162a642"},
     {file = "zope.proxy-4.3.5-cp38-cp38-manylinux1_i686.whl", hash = "sha256:6ad40f85c1207803d581d5d75e9ea25327cd524925699a83dfc03bf8e4ba72b7"},
     {file = "zope.proxy-4.3.5-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:b00f9f0c334d07709d3f73a7cb8ae63c6ca1a90c790a63b5e7effa666ef96021"},
     {file = "zope.proxy-4.3.5-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:cd7a318a15fe6cc4584bf3c4426f092ed08c0fd012cf2a9173114234fe193e11"},
