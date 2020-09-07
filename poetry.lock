@@ -47,13 +47,13 @@ description = "Classes Without Boilerplate"
 name = "attrs"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "19.3.0"
+version = "20.2.0"
 
 [package.extras]
-azure-pipelines = ["coverage", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface", "pytest-azurepipelines"]
-dev = ["coverage", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface", "sphinx", "pre-commit"]
-docs = ["sphinx", "zope.interface"]
-tests = ["coverage", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface"]
+dev = ["coverage (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface", "sphinx", "sphinx-rtd-theme", "pre-commit"]
+docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
+tests = ["coverage (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface"]
+tests_no_zope = ["coverage (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six"]
 
 [[package]]
 category = "main"
@@ -115,10 +115,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = false
 python-versions = "*"
-version = "1.14.44"
+version = "1.14.56"
 
 [package.dependencies]
-botocore = ">=1.17.44,<1.18.0"
+botocore = ">=1.17.56,<1.18.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -128,7 +128,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = false
 python-versions = "*"
-version = "1.17.44"
+version = "1.17.56"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -522,11 +522,11 @@ description = "A Python utility / library to sort Python imports."
 name = "isort"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.4.2"
+version = "5.5.1"
 
 [package.extras]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
-pipfile_deprecated_finder = ["pipreqs", "requirementslib", "tomlkit (>=0.5.3)"]
+pipfile_deprecated_finder = ["pipreqs", "requirementslib"]
 requirements_deprecated_finder = ["pipreqs", "pip-api"]
 
 [[package]]
@@ -554,8 +554,8 @@ category = "main"
 description = "JOSE protocol implementation in Python"
 name = "josepy"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "1.3.0"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "1.4.0"
 
 [package.dependencies]
 PyOpenSSL = ">=0.13"
@@ -565,7 +565,7 @@ six = ">=1.9.0"
 
 [package.extras]
 dev = ["pytest", "tox"]
-dev3 = ["mypy", "typing"]
+dev3 = ["mypy"]
 docs = ["Sphinx (>=1.0)", "sphinx-rtd-theme"]
 tests = ["coverage (>=4.0)", "pytest-cache (>=1.0)", "pytest-cov", "flake8", "pytest-flake8 (>=0.5)", "pytest (>=2.8.0)", "mock"]
 
@@ -597,7 +597,7 @@ description = "Store and access your passwords safely."
 name = "keyring"
 optional = false
 python-versions = ">=3.6"
-version = "21.3.0"
+version = "21.4.0"
 
 [package.dependencies]
 SecretStorage = ">=3"
@@ -651,7 +651,7 @@ description = "More routines for operating on iterables, beyond itertools"
 name = "more-itertools"
 optional = false
 python-versions = ">=3.5"
-version = "8.4.0"
+version = "8.5.0"
 
 [[package]]
 category = "dev"
@@ -955,7 +955,7 @@ category = "main"
 description = "YAML parser and emitter for Python"
 name = "pyyaml"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = "*"
 version = "5.3.1"
 
 [[package]]
@@ -1081,7 +1081,7 @@ description = "A library for SoftLayer's API"
 name = "softlayer"
 optional = false
 python-versions = ">=3.5"
-version = "5.8.9"
+version = "5.9.0"
 
 [package.dependencies]
 click = ">=7"
@@ -1134,7 +1134,7 @@ description = "tox is a generic virtualenv management and test command line tool
 name = "tox"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
-version = "3.19.0"
+version = "3.20.0"
 
 [package.dependencies]
 colorama = ">=0.4.1"
@@ -1215,7 +1215,7 @@ description = "Backported and Experimental Type Hints for Python 3.5+"
 name = "typing-extensions"
 optional = false
 python-versions = "*"
-version = "3.7.4.2"
+version = "3.7.4.3"
 
 [[package]]
 category = "main"
@@ -1440,6 +1440,7 @@ test = ["zope.security", "zope.testrunner"]
 
 [metadata]
 content-hash = "288167ffed0164c628de7176b61452a15a3adf2a62b8143ac24116e326e3bfec"
+lock-version = "1.0"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1456,8 +1457,8 @@ atomicwrites = [
     {file = "atomicwrites-1.4.0.tar.gz", hash = "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"},
 ]
 attrs = [
-    {file = "attrs-19.3.0-py2.py3-none-any.whl", hash = "sha256:08a96c641c3a74e44eb59afb61a24f2cb9f4d7188748e76ba4bb5edfa3cb7d1c"},
-    {file = "attrs-19.3.0.tar.gz", hash = "sha256:f7b7ce16570fe9965acd6d30101a28f62fb4a7f9e926b3bbc9b61f8b04247e72"},
+    {file = "attrs-20.2.0-py2.py3-none-any.whl", hash = "sha256:fce7fc47dfc976152e82d53ff92fa0407700c21acd20886a13777a0d20e655dc"},
+    {file = "attrs-20.2.0.tar.gz", hash = "sha256:26b54ddbbb9ee1d34d5d3668dd37d6cf74990ab23c828c2888dccdceee395594"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.9.1-py2-none-any.whl", hash = "sha256:e718f2342e2e099b640a34ab782407b7b676f47ee272d6739e60b8ea23829f2c"},
@@ -1473,12 +1474,12 @@ bleach = [
     {file = "bleach-3.1.5.tar.gz", hash = "sha256:3c4c520fdb9db59ef139915a5db79f8b51bc2a7257ea0389f30c846883430a4b"},
 ]
 boto3 = [
-    {file = "boto3-1.14.44-py2.py3-none-any.whl", hash = "sha256:b1936392d1491b4de04a972636c91904ec814519d8847d11e3375d77d5df1b12"},
-    {file = "boto3-1.14.44.tar.gz", hash = "sha256:01d45a986abd81d4b55f5649060fcbc49f6f87deaa508b99367a9d9ea21c0347"},
+    {file = "boto3-1.14.56-py2.py3-none-any.whl", hash = "sha256:2ab73b0c400ab8c7df84bee7564ef8a0813021da28dd7a05fcbffb77a8ae9de9"},
+    {file = "boto3-1.14.56.tar.gz", hash = "sha256:bb2222fa02fcd09b39e581e532d4f013ea850742d8cd46e9c10a21028b6d2ef5"},
 ]
 botocore = [
-    {file = "botocore-1.17.44-py2.py3-none-any.whl", hash = "sha256:1b46ffe1d13922066c873323186cbf97e77c137e08e27039d9d684552ccc4892"},
-    {file = "botocore-1.17.44.tar.gz", hash = "sha256:1f6175bf59ffa068055b65f7d703eb1f748c338594a40dfdc645a6130280d8bb"},
+    {file = "botocore-1.17.56-py2.py3-none-any.whl", hash = "sha256:73fd22d70611fdcfbb44d1e5f77f7edf8a45a58e6286d50963cc19f9cf9e3e67"},
+    {file = "botocore-1.17.56.tar.gz", hash = "sha256:5a72e1758f3c89c663d74eb733d313f69d059ab4fd571ad41829d666e3367392"},
 ]
 cached-property = [
     {file = "cached-property-1.5.1.tar.gz", hash = "sha256:9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"},
@@ -1669,8 +1670,8 @@ isodate = [
     {file = "isodate-0.6.0.tar.gz", hash = "sha256:2e364a3d5759479cdb2d37cce6b9376ea504db2ff90252a2e5b7cc89cc9ff2d8"},
 ]
 isort = [
-    {file = "isort-5.4.2-py3-none-any.whl", hash = "sha256:60a1b97e33f61243d12647aaaa3e6cc6778f5eb9f42997650f1cc975b6008750"},
-    {file = "isort-5.4.2.tar.gz", hash = "sha256:d488ba1c5a2db721669cc180180d5acf84ebdc5af7827f7aaeaa75f73cf0e2b8"},
+    {file = "isort-5.5.1-py3-none-any.whl", hash = "sha256:a200d47b7ee8b7f7d0a9646650160c4a51b6a91a9413fd31b1da2c4de789f5d3"},
+    {file = "isort-5.5.1.tar.gz", hash = "sha256:92533892058de0306e51c88f22ece002a209dc8e80288aa3cec6d443060d584f"},
 ]
 jeepney = [
     {file = "jeepney-0.4.3-py3-none-any.whl", hash = "sha256:d6c6b49683446d2407d2fe3acb7a368a77ff063f9182fe427da15d622adc24cf"},
@@ -1681,16 +1682,16 @@ jmespath = [
     {file = "jmespath-0.10.0.tar.gz", hash = "sha256:b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9"},
 ]
 josepy = [
-    {file = "josepy-1.3.0-py2.py3-none-any.whl", hash = "sha256:e54882c64be12a2a76533f73d33cba9e331950fda9e2731e843490b774e7a01c"},
-    {file = "josepy-1.3.0.tar.gz", hash = "sha256:c341ffa403399b18e9eae9012f804843045764d1390f9cb4648980a7569b1619"},
+    {file = "josepy-1.4.0-py2.py3-none-any.whl", hash = "sha256:42c5900b0627573facede884d309369ed9f2e8e8119b13e32f5114e23fed73e6"},
+    {file = "josepy-1.4.0.tar.gz", hash = "sha256:c37ff4b93606e6a452b72cdb992da5e0544be12912fac01b31ddbdd61f6d5bd0"},
 ]
 jsonschema = [
     {file = "jsonschema-3.2.0-py2.py3-none-any.whl", hash = "sha256:4e5b3cf8216f577bee9ce139cbe72eca3ea4f292ec60928ff24758ce626cd163"},
     {file = "jsonschema-3.2.0.tar.gz", hash = "sha256:c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"},
 ]
 keyring = [
-    {file = "keyring-21.3.0-py3-none-any.whl", hash = "sha256:e7a17caf40c40b6bb8c4772224a487e4a63013560ed0c521065aeba7ecd42182"},
-    {file = "keyring-21.3.0.tar.gz", hash = "sha256:22df6abfed49912fc560806030051067fba9f0069cffa79da72899aeea4ccbd5"},
+    {file = "keyring-21.4.0-py3-none-any.whl", hash = "sha256:4e34ea2fdec90c1c43d6610b5a5fafa1b9097db1802948e90caf5763974b8f8d"},
+    {file = "keyring-21.4.0.tar.gz", hash = "sha256:9aeadd006a852b78f4b4ef7c7556c2774d2432bbef8ee538a3e9089ac8b11466"},
 ]
 localzone = [
     {file = "localzone-0.9.6-py2.py3-none-any.whl", hash = "sha256:9591fac685dc7e4ae40d4b0949cbc70052d6ff89db610c467cfe228a08f33c6c"},
@@ -1730,8 +1731,8 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 more-itertools = [
-    {file = "more-itertools-8.4.0.tar.gz", hash = "sha256:68c70cc7167bdf5c7c9d8f6954a7837089c6a36bf565383919bb595efb8a17e5"},
-    {file = "more_itertools-8.4.0-py3-none-any.whl", hash = "sha256:b78134b2063dd214000685165d81c154522c3ee0a1c0d4d113c80361c234c5a2"},
+    {file = "more-itertools-8.5.0.tar.gz", hash = "sha256:6f83822ae94818eae2612063a5101a7311e68ae8002005b5e05f03fd74a86a20"},
+    {file = "more_itertools-8.5.0-py3-none-any.whl", hash = "sha256:9b30f12df9393f0d28af9210ff8efe48d10c94f73e5daf886f10c4b0b0b4f03c"},
 ]
 mypy = [
     {file = "mypy-0.782-cp35-cp35m-macosx_10_6_x86_64.whl", hash = "sha256:2c6cde8aa3426c1682d35190b59b71f661237d74b053822ea3d748e2c9578a7c"},
@@ -1934,8 +1935,8 @@ six = [
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
 ]
 softlayer = [
-    {file = "SoftLayer-5.8.9-py2.py3-none-any.whl", hash = "sha256:953f7820c2135bfcee40bd2f64794fe6ab2e8eccea50780890edaedfddf99d44"},
-    {file = "SoftLayer-5.8.9.tar.gz", hash = "sha256:3f4db34846eb1b143e37e3a309e1e75884bec567dda354cba53279765f608dc9"},
+    {file = "SoftLayer-5.9.0-py2.py3-none-any.whl", hash = "sha256:bc5c76e5218728d73d35209039c10fefb7a12c3569243b08b1c8f6b4efeea27a"},
+    {file = "SoftLayer-5.9.0.tar.gz", hash = "sha256:ccd73fc181b9c1988abe3b5edbac99f8ba5b34be565d4e8c1efde5a74c2c9fd2"},
 ]
 soupsieve = [
     {file = "soupsieve-1.9.6-py2.py3-none-any.whl", hash = "sha256:feb1e937fa26a69e08436aad4a9037cd7e1d4c7212909502ba30701247ff8abd"},
@@ -1954,8 +1955,8 @@ toml = [
     {file = "toml-0.10.1.tar.gz", hash = "sha256:926b612be1e5ce0634a2ca03470f95169cf16f939018233a670519cb4ac58b0f"},
 ]
 tox = [
-    {file = "tox-3.19.0-py2.py3-none-any.whl", hash = "sha256:3d94b6921a0b6dc90fd8128df83741f30bb41ccd6cd52d131a6a6944ca8f16e6"},
-    {file = "tox-3.19.0.tar.gz", hash = "sha256:17e61a93afe5c49281fb969ab71f7a3f22d7586d1c56f9a74219910f356fe7d3"},
+    {file = "tox-3.20.0-py2.py3-none-any.whl", hash = "sha256:e6318f404aff16522ff5211c88cab82b39af121735a443674e4e2e65f4e4637b"},
+    {file = "tox-3.20.0.tar.gz", hash = "sha256:eb629ddc60e8542fd4a1956b2462e3b8771d49f1ff630cecceacaa0fbfb7605a"},
 ]
 tqdm = [
     {file = "tqdm-4.48.2-py2.py3-none-any.whl", hash = "sha256:1a336d2b829be50e46b84668691e0a2719f26c97c62846298dd5ae2937e4d5cf"},
@@ -1993,9 +1994,9 @@ typed-ast = [
     {file = "typed_ast-1.4.1.tar.gz", hash = "sha256:8c8aaad94455178e3187ab22c8b01a3837f8ee50e09cf31f1ba129eb293ec30b"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-3.7.4.2-py2-none-any.whl", hash = "sha256:f8d2bd89d25bc39dabe7d23df520442fa1d8969b82544370e03d88b5a591c392"},
-    {file = "typing_extensions-3.7.4.2-py3-none-any.whl", hash = "sha256:6e95524d8a547a91e08f404ae485bbb71962de46967e1b71a0cb89af24e761c5"},
-    {file = "typing_extensions-3.7.4.2.tar.gz", hash = "sha256:79ee589a3caca649a9bfd2a8de4709837400dfa00b6cc81962a1e6a1815969ae"},
+    {file = "typing_extensions-3.7.4.3-py2-none-any.whl", hash = "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"},
+    {file = "typing_extensions-3.7.4.3-py3-none-any.whl", hash = "sha256:7cb407020f00f7bfc3cb3e7881628838e69d8f3fcab2f64742a5e76b2f841918"},
+    {file = "typing_extensions-3.7.4.3.tar.gz", hash = "sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c"},
 ]
 urllib3 = [
     {file = "urllib3-1.25.10-py2.py3-none-any.whl", hash = "sha256:e7983572181f5e1522d9c98453462384ee92a0be7fac5f1413a1e35c56cc0461"},
@@ -2137,28 +2138,24 @@ zipp = [
     {file = "zope.proxy-4.3.5-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:a69f5cbf4addcfdf03dda564a671040127a6b7c34cf9fe4973582e68441b63fa"},
     {file = "zope.proxy-4.3.5-cp27-cp27mu-manylinux2010_i686.whl", hash = "sha256:207aa914576b1181597a1516e1b90599dc690c095343ae281b0772e44945e6a4"},
     {file = "zope.proxy-4.3.5-cp27-cp27mu-manylinux2010_x86_64.whl", hash = "sha256:cfc781ce442ec407c841e9aa51d0e1024f72b6ec34caa8fdb6ef9576d549acf2"},
-    {file = "zope.proxy-4.3.5-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:5903d38362b6c716e66bbe470f190579c530a5baf03dbc8500e5c2357aa569a5"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:7e162bdc5e3baad26b2262240be7d2bab36991d85a6a556e48b9dfb402370261"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:219a7db5ed53e523eb4a4769f13105118b6d5b04ed169a283c9775af221e231f"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-manylinux2010_i686.whl", hash = "sha256:6943da9c09870490dcfd50c4909c0cc19f434fa6948f61282dc9cb07bcf08160"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-manylinux2010_x86_64.whl", hash = "sha256:fc45a53219ed30a7f670a6d8c98527af0020e6fd4ee4c0a8fb59f147f06d816c"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-win32.whl", hash = "sha256:74884a0aec1f1609190ec8b34b5d58fb3b5353cf22b96161e13e0e835f13518f"},
     {file = "zope.proxy-4.3.5-cp35-cp35m-win_amd64.whl", hash = "sha256:7007227f4ea85b40a2f5e5a244479f6a6dfcf906db9b55e812a814a8f0e2c28d"},
-    {file = "zope.proxy-4.3.5-cp36-cp36m-macosx_10_6_intel.whl", hash = "sha256:6bbaa245015d933a4172395baad7874373f162955d73612f0b66b6c2c33b6366"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:00573dfa755d0703ab84bb23cb6ecf97bb683c34b340d4df76651f97b0bab068"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:b6ed71e4a7b4690447b626f499d978aa13197a0e592950e5d7020308f6054698"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:19577dfeb70e8a67249ba92c8ad20589a1a2d86a8d693647fa8385408a4c17b0"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:dea9f6f8633571e18bc20cad83603072e697103a567f4b0738d52dd0211b4527"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-win32.whl", hash = "sha256:63ddb992931a5e616c87d3d89f5a58db086e617548005c7f9059fac68c03a5cc"},
     {file = "zope.proxy-4.3.5-cp36-cp36m-win_amd64.whl", hash = "sha256:0cbd27b4d3718b5ec74fc65ffa53c78d34c65c6fd9411b8352d2a4f855220cf1"},
-    {file = "zope.proxy-4.3.5-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:7d25fe5571ddb16369054f54cdd883f23de9941476d97f2b92eb6d7d83afe22d"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:e7106374d4a74ed9ff00c46cc00f0a9f06a0775f8868e423f85d4464d2333679"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:6b44433a79bdd7af0e3337bd7bbcf53dd1f9b0fa66bf21bcb756060ce32a96c1"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:61b55ae3c23a126a788b33ffb18f37d6668e79a05e756588d9e4d4be7246ab1c"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:5ef6bc5ed98139e084f4e91100f2b098a0cd3493d4e76f9d6b3f7b95d7ad0f06"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-win32.whl", hash = "sha256:f64840e68483316eb58d82c376ad3585ca995e69e33b230436de0cdddf7363f9"},
     {file = "zope.proxy-4.3.5-cp37-cp37m-win_amd64.whl", hash = "sha256:e4a86a1d5eb2cce83c5972b3930c7c1eac81ab3508464345e2b8e54f119d5505"},
-    {file = "zope.proxy-4.3.5-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:cf19b5f63a59c20306e034e691402b02055c8f4e38bf6792c23cad489162a642"},
     {file = "zope.proxy-4.3.5-cp38-cp38-manylinux1_i686.whl", hash = "sha256:6ad40f85c1207803d581d5d75e9ea25327cd524925699a83dfc03bf8e4ba72b7"},
     {file = "zope.proxy-4.3.5-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:b00f9f0c334d07709d3f73a7cb8ae63c6ca1a90c790a63b5e7effa666ef96021"},
     {file = "zope.proxy-4.3.5-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:cd7a318a15fe6cc4584bf3c4426f092ed08c0fd012cf2a9173114234fe193e11"},
