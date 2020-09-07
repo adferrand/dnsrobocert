@@ -64,7 +64,7 @@ isort = "^5.1.4"
 requests = "^2.24.0"
 pygments = "^2.6.1"
 twine = "^3.2.0"
-tox = "^3.17.1"
+tox = "^3.20.0"
 
 [tool.poetry.scripts]
 dnsrobocert = "dnsrobocert.core.main:main"
