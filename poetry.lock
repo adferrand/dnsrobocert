@@ -522,11 +522,11 @@ description = "A Python utility / library to sort Python imports."
 name = "isort"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.4.2"
+version = "5.5.1"
 
 [package.extras]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
-pipfile_deprecated_finder = ["pipreqs", "requirementslib", "tomlkit (>=0.5.3)"]
+pipfile_deprecated_finder = ["pipreqs", "requirementslib"]
 requirements_deprecated_finder = ["pipreqs", "pip-api"]
 
 [[package]]
@@ -1439,7 +1439,8 @@ docs = ["sphinx", "repoze.sphinx.autointerface"]
 test = ["zope.security", "zope.testrunner"]
 
 [metadata]
-content-hash = "288167ffed0164c628de7176b61452a15a3adf2a62b8143ac24116e326e3bfec"
+content-hash = "08c10cff5fd7010498dada1c2a6cabe60b74f1f9f1721b45356b9e7f3bf4fc85"
+lock-version = "1.0"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1669,8 +1670,8 @@ isodate = [
     {file = "isodate-0.6.0.tar.gz", hash = "sha256:2e364a3d5759479cdb2d37cce6b9376ea504db2ff90252a2e5b7cc89cc9ff2d8"},
 ]
 isort = [
-    {file = "isort-5.4.2-py3-none-any.whl", hash = "sha256:60a1b97e33f61243d12647aaaa3e6cc6778f5eb9f42997650f1cc975b6008750"},
-    {file = "isort-5.4.2.tar.gz", hash = "sha256:d488ba1c5a2db721669cc180180d5acf84ebdc5af7827f7aaeaa75f73cf0e2b8"},
+    {file = "isort-5.5.1-py3-none-any.whl", hash = "sha256:a200d47b7ee8b7f7d0a9646650160c4a51b6a91a9413fd31b1da2c4de789f5d3"},
+    {file = "isort-5.5.1.tar.gz", hash = "sha256:92533892058de0306e51c88f22ece002a209dc8e80288aa3cec6d443060d584f"},
 ]
 jeepney = [
     {file = "jeepney-0.4.3-py3-none-any.whl", hash = "sha256:d6c6b49683446d2407d2fe3acb7a368a77ff063f9182fe427da15d622adc24cf"},
