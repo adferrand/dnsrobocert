@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+## Modified
+* Upgrade Lexicon to 3.4.3 (add Njalla provider)
 
 ## 3.6.0 - 17/08/2020
 ## Modified

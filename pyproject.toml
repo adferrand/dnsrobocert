@@ -42,6 +42,15 @@ python = "^3.6"
 acme = "==1.7.0"
 certbot = "==1.7.0"
 dns-lexicon = { version = "==3.4.3", extras = [ "full" ] }
+# Optional deps on dns-lexicon
+zeep = "*"
+xmltodict = "*"
+transip = "*"
+softlayer = "*"
+pynamecheap = "*"
+localzone = "*"
+boto3 = "*"
+# --
 cryptography = "2.9.2"  # Pinned to a version available in Alpine.
 cffi = "1.14.0"  # Pinned to a version available in Alpine.
 lxml = "4.5.1"  # Pined to a version available in Alpine.
