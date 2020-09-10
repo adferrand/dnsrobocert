@@ -6,7 +6,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "dnsrobocert"
-version = "3.6.0"
+version = "3.7.0"
 description = "A tool to manage your DNS-challenged TLS certificates"
 license = "MIT"
 keywords = [

@@ -40,25 +40,19 @@ def migrate(config_path):
     }
 
     for key, value in configs.get(provider, {}).items():
-        provider_config.setdefault("provider_options", {})[  # type: ignore
-            key
-        ] = value
+        provider_config.setdefault("provider_options", {})[key] = value  # type: ignore
 
     env_key_prefix = "LEXICON_{0}_".format(provider.upper())
     for key, value in envs.items():
         if key.startswith(env_key_prefix):
-            provider_config.setdefault(
-                "provider_options", {}  # type: ignore
-            )[
+            provider_config.setdefault("provider_options", {})[  # type: ignore
                 key.replace(env_key_prefix, "").lower()
             ] = value
 
     _handle_specific_envs_variables(envs, migrated_config)
 
     for key, value in args.get(provider, {}).items():
-        provider_config.setdefault("provider_options", {})[  # type: ignore
-            key
-        ] = value
+        provider_config.setdefault("provider_options", {})[key] = value  # type: ignore
     if args.get("delegated"):
         provider_config["delegated_subdomain"] = args.get("delegated")
 

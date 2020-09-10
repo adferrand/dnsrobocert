@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.7.0 - 11/09/2020
 ## Modified
 * Upgrade Lexicon to 3.4.3 (add Njalla provider)
 * Upgrade Certbot to 1.8.0

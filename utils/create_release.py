@@ -6,7 +6,9 @@ from distutils.version import StrictVersion
 
 def main():
     git_clean = subprocess.check_output(
-        "git status --porcelain", shell=True, universal_newlines=True,
+        "git status --porcelain",
+        shell=True,
+        universal_newlines=True,
     ).strip()
     if git_clean:
         raise RuntimeError("Error, git workspace is not clean: \n{0}".format(git_clean))

@@ -42,7 +42,8 @@ def main(args: List[str] = None) -> int:
         globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
     except BaseException as e:
         print(
-            f"Error while executing the `{parsed_args.type}` hook:", file=sys.stderr,
+            f"Error while executing the `{parsed_args.type}` hook:",
+            file=sys.stderr,
         )
         print(e, file=sys.stderr)
         traceback.print_exc(file=sys.stderr)
@@ -163,7 +164,10 @@ def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
 
 
 def _txt_challenge(
-    profile: Dict[str, Any], token: str, domain: str, action: str = "create",
+    profile: Dict[str, Any],
+    token: str,
+    domain: str,
+    action: str = "create",
 ):
     profile_name = profile["name"]
     provider_name = profile["provider"]
