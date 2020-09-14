@@ -15,7 +15,7 @@ properties:
       staging:
         type: boolean
       api_version:
-        type: number
+        type: integer
         enum: [1, 2]
       directory_url:
         type: string
@@ -51,14 +51,14 @@ properties:
         provider_options:
           type: object
         sleep_time:
-          type: number
+          type: integer
         max_checks:
-          type: number
+          type: integer
         delegated_subdomain:
           type: string
           pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
         ttl:
-          type: number
+          type: integer
       required: [name, provider]
       additionalProperties: false
   certificates:

@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, Optional, Set, Union
 
 import coloredlogs
 import jsonschema
@@ -140,7 +140,73 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
     return get_profile(config, profile_name)
 
 
-def _inject_env_variables(raw_config: str):
+def extract_config_from_drc_env() -> Optional[Dict[str, Any]]:
+    schema_path = pkg_resources.resource_filename("dnsrobocert", "schema.yml")
+    with open(schema_path) as file_h:
+        schema = yaml.load(file_h.read(), yaml.FullLoader)
+
+    drc_vars = [(key, re.sub(r"^DRC__", "", key).split("__"), value)
+                for key, value in os.environ.items()
+                if key.startswith('DRC__')]
+    drc_vars.sort(key=lambda item: item[0])
+    if not drc_vars:
+        return None
+
+    config = {}
+
+    for var_name, fragments, value in drc_vars:
+        parent_element: Union[dict, list] = config
+        parent_description = schema
+        try:
+            for index, fragment in enumerate(fragments):
+                fragment = fragment.lower()
+                if parent_description["type"] == "array":
+                    if not fragment.isnumeric():
+                        raise ValueError(f"expected a number instead of __{fragment.upper()}")
+                    fragment = int(fragment)
+                    current_description = parent_description["items"]
+                    if current_description["type"] == "object":
+                        current_element = parent_element[fragment] if fragment < len(parent_element) else {}
+                    elif current_description["type"] == "array":
+                        current_element = parent_element[fragment] if fragment < len(parent_element) else []
+                    else:
+                        if index + 1 < len(fragments):
+                            raise ValueError(f"variable name should finish with __{fragment}")
+                        parent_element.insert(fragment, _convert_primitive(value, current_description["type"]))
+                        break
+                    if fragment >= len(parent_element):
+                        parent_element.insert(fragment, current_element)
+                else:  # Can only be an object
+                    current_description = parent_description.get("properties", {fragment: {"type": "any"}}).get(fragment)
+                    if not current_description:
+                        raise ValueError(f"variable name should not contain __{fragment.upper()}")
+                    if current_description["type"] == "object":
+                        current_element = parent_element.setdefault(fragment, {})
+                    elif current_description["type"] == "array":
+                        current_element = parent_element.setdefault(fragment, [])
+                    else:
+                        if index + 1 < len(fragments):
+                            raise ValueError(f"variable name should finish with __{fragment.upper()}")
+                        parent_element[fragment] = _convert_primitive(value, current_description["type"])
+                        break
+                parent_element = current_element
+                parent_description = current_description
+        except BaseException as e:
+            LOGGER.warning(f"Environment variable {var_name} is invalid: {str(e)}.")
+
+    return config
+
+
+def _convert_primitive(value: str, field_type: str):
+    if field_type == "boolean":
+        return bool(value)
+    if field_type == "integer":
+        return int(value)
+    # For anything else (string, any, multiple choices), just take the value as it
+    return value
+
+
+def _inject_env_variables(raw_config: str) -> str:
     def replace(match):
         entry = match.group(0)
 
@@ -158,7 +224,7 @@ def _inject_env_variables(raw_config: str):
     return re.sub(r"\${1,2}{(\S+)}", replace, raw_config)
 
 
-def _values_conversion(config: Dict[str, Any]):
+def _values_conversion(config: Dict[str, Any]) -> None:
     certs_permissions = config.get("acme", {}).get("certs_permissions", {})
     files_mode = certs_permissions.get("files_mode")
     if isinstance(files_mode, str):
@@ -168,7 +234,7 @@ def _values_conversion(config: Dict[str, Any]):
         certs_permissions["dirs_mode"] = int(dirs_mode, 8)
 
 
-def _business_check(config: Dict[str, Any]):
+def _business_check(config: Dict[str, Any]) -> None:
     profiles = [profile["name"] for profile in config.get("profiles", [])]
     lineages: Set[str] = set()
     for certificate_config in config.get("certificates", []):

@@ -139,3 +139,31 @@ certificates:
         str(raised.value)
         == "Error while parsing config: environment variable DRAFT_VALUE does not exist."
     )
+
+
+def test_extract_config_from_drc_env(monkeypatch, caplog):
+    # Valid values
+    monkeypatch.setenv("DRC__ACME__EMAIL_ACCOUNT", "my.email@example.net")
+    monkeypatch.setenv("DRC__ACME__DIRECTORY_URL", "http://example.net/directory")
+    monkeypatch.setenv("DRC__PROFILES__0__NAME", "my_profile1")
+    monkeypatch.setenv("DRC__PROFILES__0__PROVIDER", "digitalocean")
+    monkeypatch.setenv("DRC__PROFILES__0__PROVIDER_OPTIONS__AUTH_TOKEN", "TOKEN")
+
+    # Invalid values
+    monkeypatch.setenv("DRC__UNKNOWN", "dummy")
+    monkeypatch.setenv("DRC__ACME__API_VERSION", "notanumber")
+    monkeypatch.setenv("DRC__PROFILES__NOTANUMBER__NAME", "dummy")
+    monkeypatch.setenv("DRC__PROFILES__0__NAME__ISALEAF", "dummy")
+
+    extracted_config = config.extract_config_from_drc_env()
+    assert extracted_config["acme"]["email_account"] == "my.email@example.net"
+    assert extracted_config["acme"]["directory_url"] == "http://example.net/directory"
+    assert extracted_config["profiles"][0]["name"] == "my_profile1"
+    assert extracted_config["profiles"][0]["provider"] == "digitalocean"
+    assert extracted_config["profiles"][0]["provider_options"]["auth_token"] == "TOKEN"
+
+    warnings = [record.message for record in caplog.records]
+    assert "Environment variable DRC__ACME__API_VERSION is invalid: invalid literal for int() with base 10: 'notanumber'." in warnings
+    assert "Environment variable DRC__PROFILES__0__NAME__ISALEAF is invalid: variable name should finish with __NAME." in warnings
+    assert "Environment variable DRC__PROFILES__NOTANUMBER__NAME is invalid: expected a number instead of __NOTANUMBER." in warnings
+    assert "Environment variable DRC__UNKNOWN is invalid: variable name should not contain __UNKNOWN." in warnings
