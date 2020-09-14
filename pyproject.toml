@@ -53,7 +53,7 @@ boto3 = "*"
 # --
 cryptography = "2.9.2"  # Pinned to a version available in Alpine.
 cffi = "1.14.0"  # Pinned to a version available in Alpine.
-lxml = "4.5.1"  # Pined to a version available in Alpine.
+lxml = "4.5.2"  # Pined to a version available in Alpine.
 dnspython3 = "^1"
 jsonschema = "^3"
 pem = "^20"
