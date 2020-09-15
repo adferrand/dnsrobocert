@@ -167,3 +167,49 @@ def test_extract_config_from_drc_env(monkeypatch, caplog):
     assert "Environment variable DRC__PROFILES__0__NAME__ISALEAF is invalid: variable name should finish with __NAME." in warnings
     assert "Environment variable DRC__PROFILES__NOTANUMBER__NAME is invalid: expected a number instead of __NOTANUMBER." in warnings
     assert "Environment variable DRC__UNKNOWN is invalid: variable name should not contain __UNKNOWN." in warnings
+
+
+def test_merge_config_with_drc_envs(monkeypatch, tmp_path):
+    config_path = tmp_path / "config.yml"
+
+    # With config only
+    with open(str(config_path), "w") as f:
+        f.write(
+            """\
+    draft: true
+    acme:
+      api_version: 2
+    """
+        )
+
+    parsed = config.load(str(config_path), merge_drc_envs=True)
+    assert parsed["draft"] is True
+    assert parsed["acme"]["api_version"] == 2
+    assert "email_account" not in parsed["acme"]
+
+    # With config + drc env
+    monkeypatch.setenv("DRC__ACME__EMAIL_ACCOUNT", "my.email@example.net")
+
+    parsed = config.load(str(config_path), merge_drc_envs=True)
+    assert parsed["draft"] is True
+    assert parsed["acme"]["api_version"] == 2
+    assert parsed["acme"]["email_account"] == "my.email@example.net"
+
+    # With drc env only
+    os.remove(config_path)
+
+    parsed = config.load(str(config_path), merge_drc_envs=True)
+    assert "draft" not in parsed
+    assert parsed["acme"]["email_account"] == "my.email@example.net"
+
+    # Check field priority order (config file takes precedence)
+    with open(str(config_path), "w") as f:
+        f.write(
+            """\
+    acme:
+      email_account: another.email@example.net
+    """
+        )
+
+    parsed = config.load(str(config_path), merge_drc_envs=True)
+    assert parsed["acme"]["email_account"] == "another.email@example.net"

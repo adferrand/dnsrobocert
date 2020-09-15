@@ -1,6 +1,8 @@
 import logging
 import os
 import re
+from copy import deepcopy
+from functools import reduce
 from typing import Any, Dict, Optional, Set, Union
 
 import coloredlogs
@@ -14,37 +16,43 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def load(config_path: str) -> Optional[Dict[str, Any]]:
-    if not os.path.exists(config_path):
+def load(config_path: str, merge_drc_envs: bool = False) -> Optional[Dict[str, Any]]:
+    if not os.path.exists(config_path) and not merge_drc_envs:
         LOGGER.error(f"Configuration file {config_path} does not exist.")
         return None
 
-    with open(config_path) as file_h:
-        raw_config = file_h.read()
+    if os.path.exists(config_path):
+        with open(config_path) as file_h:
+            raw_config = file_h.read()
 
-    raw_config = _inject_env_variables(raw_config)
+        raw_config = _inject_env_variables(raw_config)
 
-    try:
-        config = yaml.load(raw_config, Loader=yaml.FullLoader)
-    except BaseException:
-        message = """
+        try:
+            config = yaml.load(raw_config, Loader=yaml.FullLoader)
+        except BaseException:
+            message = """
 Error while validating dnsrobocert configuration:
 Configuration file is not a valid YAML file.\
-"""
-        LOGGER.error(message)
-        return None
+    """
+            LOGGER.error(message)
+            return None
+
+        if not config:
+            message = """
+Error while validating dnsrobocert configuration:
+Configuration file is empty.\
+    """
+            LOGGER.error(message)
+            return None
+    else:
+        config = {}
+
+    if merge_drc_envs:
+        config = _deep_merge(extract_config_from_drc_env(), config)
 
     schema_path = pkg_resources.resource_filename("dnsrobocert", "schema.yml")
     with open(schema_path) as file_h:
         schema = yaml.load(file_h.read(), yaml.FullLoader)
-
-    if not config:
-        message = """
-Error while validating dnsrobocert configuration:
-Configuration file is empty.\
-"""
-        LOGGER.error(message)
-        return None
 
     try:
         jsonschema.validate(instance=config, schema=schema)
@@ -54,8 +62,8 @@ Configuration file is empty.\
 Error while validating dnsrobocert configuration for node path {node}:
 {e.message}.
 -----
-{raw_config}\
-"""
+{yaml.dump(config)}\
+    """
         LOGGER.error(message)
         return None
 
@@ -67,7 +75,7 @@ Error while validating dnsrobocert configuration for node path {node}:
 Error while validating dnsrobocert configuration:
 {str(e)}
 -----
-{raw_config}\
+{yaml.dump(config)}\
 """
         LOGGER.error(message)
         return None
@@ -140,7 +148,7 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
     return get_profile(config, profile_name)
 
 
-def extract_config_from_drc_env() -> Optional[Dict[str, Any]]:
+def extract_config_from_drc_env() -> Dict[str, Any]:
     schema_path = pkg_resources.resource_filename("dnsrobocert", "schema.yml")
     with open(schema_path) as file_h:
         schema = yaml.load(file_h.read(), yaml.FullLoader)
@@ -149,8 +157,6 @@ def extract_config_from_drc_env() -> Optional[Dict[str, Any]]:
                 for key, value in os.environ.items()
                 if key.startswith('DRC__')]
     drc_vars.sort(key=lambda item: item[0])
-    if not drc_vars:
-        return None
 
     config = {}
 
@@ -197,9 +203,21 @@ def extract_config_from_drc_env() -> Optional[Dict[str, Any]]:
     return config
 
 
+def _deep_merge(dict1: dict, dict2: dict) -> dict:
+    def merge_into(d1: dict, d2: dict):
+        for key in d2:
+            if key not in d1 or not isinstance(d1[key], dict):
+                d1[key] = deepcopy(d2[key])
+            else:
+                d1[key] = merge_into(d1[key], d2[key])
+        return d1
+
+    return reduce(merge_into, [dict1, dict2], {})
+
+
 def _convert_primitive(value: str, field_type: str):
     if field_type == "boolean":
-        return bool(value)
+        return value == "true"
     if field_type == "integer":
         return int(value)
     # For anything else (string, any, multiple choices), just take the value as it
@@ -235,6 +253,7 @@ def _values_conversion(config: Dict[str, Any]) -> None:
 
 
 def _business_check(config: Dict[str, Any]) -> None:
+    print(config)
     profiles = [profile["name"] for profile in config.get("profiles", [])]
     lineages: Set[str] = set()
     for certificate_config in config.get("certificates", []):

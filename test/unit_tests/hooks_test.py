@@ -56,7 +56,7 @@ profiles:
   provider: dummy
   provider_options:
     auth_token: TOKEN
-  sleep_time: 0.1
+  sleep_time: 10
   ttl: 42
 certificates:
 - name: {LINEAGE}
@@ -78,8 +78,9 @@ certificates:
     yield config_path
 
 
+@patch("dnsrobocert.core.hooks.time.sleep")
 @patch("dnsrobocert.core.hooks.Client")
-def test_auth_cli(client, fake_config):
+def test_auth_cli(client, _sleep, fake_config):
     hooks.main(["-t", "auth", "-c", str(fake_config), "-l", LINEAGE])
 
     assert len(client.call_args[0]) == 1
@@ -95,8 +96,9 @@ def test_auth_cli(client, fake_config):
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
 
 
+@patch("dnsrobocert.core.hooks.time.sleep")
 @patch("dnsrobocert.core.hooks.Client")
-def test_cleanup_cli(client, fake_config):
+def test_cleanup_cli(client, _sleep, fake_config):
     hooks.main(["-t", "cleanup", "-c", str(fake_config), "-l", LINEAGE])
 
     assert len(client.call_args[0]) == 1
@@ -111,16 +113,18 @@ def test_cleanup_cli(client, fake_config):
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
 
 
+@patch("dnsrobocert.core.hooks.time.sleep")
 @patch("dnsrobocert.core.hooks.deploy")
-def test_deploy_cli(deploy, fake_config):
+def test_deploy_cli(deploy, _sleep, fake_config):
     hooks.main(["-t", "deploy", "-c", str(fake_config), "-l", LINEAGE])
     deploy.assert_called_with(config.load(fake_config), LINEAGE)
 
 
+@patch("dnsrobocert.core.hooks.time.sleep")
 @patch("dnsrobocert.core.hooks._fix_permissions")
 @patch("dnsrobocert.core.hooks._autocmd")
 @patch("dnsrobocert.core.hooks._autorestart")
-def test_pfx(_autorestart, _autocmd, _fix_permissions, fake_env, fake_config):
+def test_pfx(_autorestart, _autocmd, _fix_permissions, _sleep, fake_env, fake_config):
     archive_path = fake_env["archive"]
     key = rsa.generate_private_key(
         public_exponent=65537, key_size=2048, backend=default_backend()
@@ -159,13 +163,14 @@ def test_pfx(_autorestart, _autocmd, _fix_permissions, fake_env, fake_config):
     assert os.stat(archive_path / "cert.pfx").st_size != 0
 
 
+@patch("dnsrobocert.core.hooks.time.sleep")
 @patch("dnsrobocert.core.hooks._fix_permissions")
 @patch("dnsrobocert.core.hooks._pfx_export")
 @patch("dnsrobocert.core.hooks._autorestart")
 @patch("dnsrobocert.core.hooks.os.path.exists")
 @patch("dnsrobocert.core.hooks.utils.execute")
 def test_autocmd(
-    check_call, _exists, _autorestart, _pfx_export, _fix_permissions, fake_config
+    check_call, _exists, _autorestart, _pfx_export, _fix_permissions, _sleep, fake_config,
 ):
     hooks.deploy(config.load(fake_config), LINEAGE)
 
@@ -175,13 +180,14 @@ def test_autocmd(
     check_call.assert_has_calls([call_foo, call_bar, call_dummy])
 
 
+@patch("dnsrobocert.core.hooks.time.sleep")
 @patch("dnsrobocert.core.hooks._fix_permissions")
 @patch("dnsrobocert.core.hooks._pfx_export")
 @patch("dnsrobocert.core.hooks._autocmd")
 @patch("dnsrobocert.core.hooks.os.path.exists")
 @patch("dnsrobocert.core.hooks.utils.execute")
 def test_autorestart(
-    check_call, _exists, _autocmd, _pfx_export, _fix_permissions, fake_config
+    check_call, _exists, _autocmd, _pfx_export, _fix_permissions, _sleep, fake_config
 ):
     hooks.deploy(config.load(fake_config), LINEAGE)
 
@@ -198,10 +204,11 @@ def test_autorestart(
     )
 
 
+@patch("dnsrobocert.core.hooks.time.sleep")
 @patch("dnsrobocert.core.hooks._pfx_export")
 @patch("dnsrobocert.core.hooks._autocmd")
 @patch("dnsrobocert.core.hooks._autorestart")
-def test_fix_permissions(_autorestart, _autocmd, _pfx_export, fake_config, fake_env):
+def test_fix_permissions(_autorestart, _autocmd, _pfx_export, _sleep, fake_config, fake_env):
     archive_path = str(fake_env["archive"])
     live_path = str(fake_env["live"])
 

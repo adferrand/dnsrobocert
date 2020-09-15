@@ -23,8 +23,8 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def _process_config(config_path: str, directory_path: str, runtime_config_path: str):
-    dnsrobocert_config = config.load(config_path)
+def _process_config(config_path: str, merge_drc_envs: bool, directory_path: str, runtime_config_path: str):
+    dnsrobocert_config = config.load(config_path, merge_drc_envs=merge_drc_envs)
 
     if not dnsrobocert_config:
         return
@@ -33,8 +33,11 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
         LOGGER.info("Configuration file is in draft mode: no action will be done.")
         return
 
+    dnsrobocert_config_content = yaml.dump(dnsrobocert_config)
     with open(runtime_config_path, "w") as f:
-        f.write(yaml.dump(dnsrobocert_config))
+        f.write(dnsrobocert_config_content)
+
+    LOGGER.info(f"Effective configuration:\n{dnsrobocert_config_content}")
 
     utils.configure_certbot_workspace(dnsrobocert_config, directory_path)
 
@@ -94,7 +97,7 @@ def _renew_job(config_path: str, directory_path: str):
     certbot.renew(config_path, directory_path)
 
 
-def _watch_config(config_path: str, directory_path: str):
+def _watch_config(config_path: str, directory_path: str, merge_drc_envs: bool):
     LOGGER.info("Starting DNSroboCert.")
 
     with tempfile.TemporaryDirectory() as workspace:
@@ -122,7 +125,7 @@ def _watch_config(config_path: str, directory_path: str):
                 if digest != previous_digest:
                     previous_digest = digest
                     _process_config(
-                        effective_config_path, directory_path, runtime_config_path
+                        effective_config_path, merge_drc_envs, directory_path, runtime_config_path
                     )
             except BaseException as error:
                 LOGGER.error("An error occurred during DNSroboCert watch:")
@@ -151,11 +154,19 @@ def main(args: Optional[List[str]] = None):
         default=misc.get_default_folder("config"),
         help="Set the directory path where certificates are stored.",
     )
+    parser.add_argument(
+        "--environment",
+        "-e",
+        action="store_true",
+        help="If set, feed configuration from DRC__* environment variables."
+    )
 
     parsed_args = parser.parse_args(args)
 
+    print(parsed_args)
+
     _watch_config(
-        os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)
+        os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory), parsed_args.environment
     )
 
 
