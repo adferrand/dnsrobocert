@@ -115,10 +115,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = false
 python-versions = "*"
-version = "1.14.60"
+version = "1.15.3"
 
 [package.dependencies]
-botocore = ">=1.17.60,<1.18.0"
+botocore = ">=1.18.3,<1.19.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -128,10 +128,9 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = false
 python-versions = "*"
-version = "1.17.60"
+version = "1.18.3"
 
 [package.dependencies]
-docutils = ">=0.10,<0.16"
 jmespath = ">=0.7.1,<1.0.0"
 python-dateutil = ">=2.1,<3.0.0"
 
@@ -250,6 +249,9 @@ name = "configobj"
 optional = false
 python-versions = "*"
 version = "5.0.6"
+
+[package.dependencies]
+six = "*"
 
 [[package]]
 category = "dev"
@@ -388,7 +390,7 @@ version = "1.15.0"
 dnspython = "1.15.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Docutils -- Python Documentation Utilities"
 name = "docutils"
 optional = false
@@ -935,7 +937,7 @@ category = "main"
 description = "YAML parser and emitter for Python"
 name = "pyyaml"
 optional = false
-python-versions = "*"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "5.3.1"
 
 [[package]]
@@ -1420,6 +1422,7 @@ test = ["zope.security", "zope.testrunner"]
 
 [metadata]
 content-hash = "73de304ea89e1100158b478663871cfc6f3dc1f4c2ed0979f3107c101697358a"
+lock-version = "1.0"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1445,7 +1448,6 @@ beautifulsoup4 = [
     {file = "beautifulsoup4-4.9.1.tar.gz", hash = "sha256:73cc4d115b96f79c7d77c1c7f7a0a8d4c57860d1041df407dd1aae7f07a77fd7"},
 ]
 black = [
-    {file = "black-20.8b1-py3-none-any.whl", hash = "sha256:70b62ef1527c950db59062cda342ea224d772abdf6adc58b86a45421bab20a6b"},
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 bleach = [
@@ -1453,12 +1455,12 @@ bleach = [
     {file = "bleach-3.1.5.tar.gz", hash = "sha256:3c4c520fdb9db59ef139915a5db79f8b51bc2a7257ea0389f30c846883430a4b"},
 ]
 boto3 = [
-    {file = "boto3-1.14.60-py2.py3-none-any.whl", hash = "sha256:79e95f428c485ea817969a78e77a311d2ec4d82e0955639d6126189c990ddad3"},
-    {file = "boto3-1.14.60.tar.gz", hash = "sha256:d8ca27ee13deeb1a9e79f2fe5f923effa60947ed49bbdfbc2a9f5790aef64217"},
+    {file = "boto3-1.15.3-py2.py3-none-any.whl", hash = "sha256:b2aa8a8ddb6a4301741a713ecc44262d49782fda754444e499851aaba8feb2bd"},
+    {file = "boto3-1.15.3.tar.gz", hash = "sha256:3f0d8dc7dec39876b7b224469639d8eef4dba1c2dc779a1b30fc73f99a18f742"},
 ]
 botocore = [
-    {file = "botocore-1.17.60-py2.py3-none-any.whl", hash = "sha256:e55a4fc652537f5ccb2362133f3928ebeafb04ee9fe15ea11c2df80ba4ef8a12"},
-    {file = "botocore-1.17.60.tar.gz", hash = "sha256:193f193a66ac79106725e14dd73e28ed36bcec99b37156538a2202d061056a58"},
+    {file = "botocore-1.18.3-py2.py3-none-any.whl", hash = "sha256:37d4bd89e55b6873b5c08a8cdc8d41654c7b3c0b7cb44e30210b539503d03da6"},
+    {file = "botocore-1.18.3.tar.gz", hash = "sha256:f84fcfe329faa576a4e705756ffb896bd8227947fef764c72ef382135f6ecb22"},
 ]
 cached-property = [
     {file = "cached-property-1.5.1.tar.gz", hash = "sha256:9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"},
