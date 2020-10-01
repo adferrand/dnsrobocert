@@ -1054,7 +1054,7 @@ description = "A library for SoftLayer's API"
 name = "softlayer"
 optional = false
 python-versions = ">=3.5"
-version = "5.9.0"
+version = "5.9.1"
 
 [package.dependencies]
 click = ">=7"
@@ -1903,8 +1903,8 @@ six = [
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
 ]
 softlayer = [
-    {file = "SoftLayer-5.9.0-py2.py3-none-any.whl", hash = "sha256:bc5c76e5218728d73d35209039c10fefb7a12c3569243b08b1c8f6b4efeea27a"},
-    {file = "SoftLayer-5.9.0.tar.gz", hash = "sha256:ccd73fc181b9c1988abe3b5edbac99f8ba5b34be565d4e8c1efde5a74c2c9fd2"},
+    {file = "SoftLayer-5.9.1-py2.py3-none-any.whl", hash = "sha256:5f64eb4485bbb667a24bf5b291d113085a59bb465aadc2542b9f79e7f9c4b287"},
+    {file = "SoftLayer-5.9.1.tar.gz", hash = "sha256:80ebc52022b5c87f6ae4284b95e6bc598c0285765ae812335f3a4cbe9e0da58e"},
 ]
 soupsieve = [
     {file = "soupsieve-1.9.6-py2.py3-none-any.whl", hash = "sha256:feb1e937fa26a69e08436aad4a9037cd7e1d4c7212909502ba30701247ff8abd"},
