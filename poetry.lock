@@ -152,11 +152,11 @@ description = "ACME client"
 name = "certbot"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
-version = "1.8.0"
+version = "1.9.0"
 
 [package.dependencies]
 ConfigArgParse = ">=0.9.3"
-acme = ">=1.6.0"
+acme = ">=1.8.0"
 configobj = "*"
 cryptography = ">=1.2.3"
 distro = ">=1.0.1"
@@ -1412,7 +1412,7 @@ docs = ["sphinx", "repoze.sphinx.autointerface"]
 test = ["zope.security", "zope.testrunner"]
 
 [metadata]
-content-hash = "73de304ea89e1100158b478663871cfc6f3dc1f4c2ed0979f3107c101697358a"
+content-hash = "f717e225c1070474281f0ec1c4deaf8535bb4c5de48bb4e8b1f9cc565d2fc310"
 lock-version = "1.0"
 python-versions = "^3.6"
 
@@ -1458,8 +1458,8 @@ cached-property = [
     {file = "cached_property-1.5.1-py2.py3-none-any.whl", hash = "sha256:3a026f1a54135677e7da5ce819b0c690f156f37976f3e30c5430740725203d7f"},
 ]
 certbot = [
-    {file = "certbot-1.8.0-py2.py3-none-any.whl", hash = "sha256:4bde86c53e30dc5bc0e78a0862045b053971703af727ac20c6a7da06596c7549"},
-    {file = "certbot-1.8.0.tar.gz", hash = "sha256:4837c516af6543ccd10d70f1498a2113bbdf9ef9a05d3a18b1558b291a2953e4"},
+    {file = "certbot-1.9.0-py2.py3-none-any.whl", hash = "sha256:d5a804d32e471050921f7b39ed9859e2e9de02824176ed78f57266222036b53a"},
+    {file = "certbot-1.9.0.tar.gz", hash = "sha256:2ff9bf7d9af381c7efee22dec2dd6938d9d8fddcc9e11682b86e734164a30b57"},
 ]
 certifi = [
     {file = "certifi-2020.6.20-py2.py3-none-any.whl", hash = "sha256:8fc0819f1f30ba15bdb34cceffb9ef04d99f420f68eb75d901e9560b8749fc41"},
