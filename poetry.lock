@@ -603,7 +603,7 @@ description = "A simple library for managing DNS zones."
 name = "localzone"
 optional = false
 python-versions = ">=2.7.0"
-version = "0.9.6"
+version = "0.9.7"
 
 [package.dependencies]
 dnspython = "*"
@@ -1666,8 +1666,8 @@ keyring = [
     {file = "keyring-21.4.0.tar.gz", hash = "sha256:9aeadd006a852b78f4b4ef7c7556c2774d2432bbef8ee538a3e9089ac8b11466"},
 ]
 localzone = [
-    {file = "localzone-0.9.6-py2.py3-none-any.whl", hash = "sha256:9591fac685dc7e4ae40d4b0949cbc70052d6ff89db610c467cfe228a08f33c6c"},
-    {file = "localzone-0.9.6.tar.gz", hash = "sha256:5b21eced782e18db0e75cbb72eacf17b54cd0bbfa97cd9fb391c9842a70744ee"},
+    {file = "localzone-0.9.7-py2.py3-none-any.whl", hash = "sha256:9ed35a5b35412f1c8c30c2972f1ecdc5e02ca787eaa5621e318a4cd2428e223d"},
+    {file = "localzone-0.9.7.tar.gz", hash = "sha256:6873bd4a863da3d9743756369af09a4035a5b37772e91efa10502258cd0762f8"},
 ]
 lxml = [
     {file = "lxml-4.5.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:ee2be8b8f72a2772e72ab926a3bccebf47bb727bda41ae070dc91d1fb759b726"},
