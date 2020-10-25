@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.7.1 - 25/10/2020
 * Upgrade Lexicon to 3.4.4 (fix Gandi provider)
 * Upgrade Certbot to 1.9.0
 
