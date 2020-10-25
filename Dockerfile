@@ -18,9 +18,9 @@ ENV CERTS_PATH /etc/letsencrypt
 RUN apk add --no-cache \
         py3-pip \
         # Core dependencies that would need a compilation
-        "py3-cryptography=~$(grep cryptography /tmp/dnsrobocert/constraints.txt | sed 's/.*==//g')" \
-        "py3-cffi=~$(grep cffi /tmp/dnsrobocert/constraints.txt | sed 's/.*==//g')" \
-        "py3-lxml=~$(grep lxml /tmp/dnsrobocert/constraints.txt | sed 's/.*==//g')" \
+        "py3-cryptography=~$(grep cryptography /tmp/dnsrobocert/constraints.txt | sed 's/;.*//g' | sed 's/.*==//g')" \
+        "py3-cffi=~$(grep cffi /tmp/dnsrobocert/constraints.txt | sed 's/;.*//g' | sed 's/.*==//g')" \
+        "py3-lxml=~$(grep lxml /tmp/dnsrobocert/constraints.txt | sed 's/;.*//g' | sed 's/.*==//g')" \
         # Hooks dependencies
         docker-cli \
         bash \
