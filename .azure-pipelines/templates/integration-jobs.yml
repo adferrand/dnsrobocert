@@ -8,24 +8,24 @@ jobs:
           TOXENV: py36
         macos-py38:
           IMAGE_NAME: macOS-10.14
-          PYTHON_VERSION: 3.8
-          TOXENV: py38
+          PYTHON_VERSION: 3.9
+          TOXENV: py39
         windows-py36:
           IMAGE_NAME: windows-2019
           PYTHON_VERSION: 3.6
           TOXENV: py36
         windows-py38:
           IMAGE_NAME: windows-2019
-          PYTHON_VERSION: 3.8
-          TOXENV: py38
+          PYTHON_VERSION: 3.9
+          TOXENV: py39
         linux-py36:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.6
           TOXENV: py36
         linux-py38-cover:
           IMAGE_NAME: ubuntu-18.04
-          PYTHON_VERSION: 3.8
-          TOXENV: py38-cover
+          PYTHON_VERSION: 3.9
+          TOXENV: py39-cover
     pool:
       vmImage: $(IMAGE_NAME)
     steps:

@@ -24,6 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities"
 ]
@@ -41,7 +42,7 @@ homepage = "https://dnsrobocert.readthedocs.io"
 python = "^3.6"
 acme = "==1.9.0"
 certbot = "==1.9.0"
-dns-lexicon = { version = "==3.4.4", extras = [ "full" ] }
+dns-lexicon = { version = "==3.4.5", extras = [ "full" ] }
 # Optional deps on dns-lexicon
 zeep = "*"
 xmltodict = "*"
