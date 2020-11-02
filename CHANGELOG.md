@@ -1,8 +1,14 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Add Python 3.9 official support
+
+### Modified
+* Upgrade Lexicon to 3.4.5 (various fixes on providers)
 
 ## 3.7.1 - 25/10/2020
+### Modified
 * Upgrade Lexicon to 3.4.4 (fix Gandi provider)
 * Upgrade Certbot to 1.9.0
 
