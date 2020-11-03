@@ -59,6 +59,8 @@ jobs:
     pool:
       vmImage: ubuntu-18.04
     steps:
+      - checkout: self
+        lfs: true
       - script: |
           docker build --tag adferrand/dnsrobocert:temp .
         displayName: Build Docker image
