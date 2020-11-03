@@ -6,7 +6,7 @@ jobs:
           IMAGE_NAME: macOS-10.14
           PYTHON_VERSION: 3.6
           TOXENV: py36
-        macos-py38:
+        macos-py39:
           IMAGE_NAME: macOS-10.14
           PYTHON_VERSION: 3.9
           TOXENV: py39
@@ -14,7 +14,7 @@ jobs:
           IMAGE_NAME: windows-2019
           PYTHON_VERSION: 3.6
           TOXENV: py36
-        windows-py38:
+        windows-py39:
           IMAGE_NAME: windows-2019
           PYTHON_VERSION: 3.9
           TOXENV: py39
@@ -22,7 +22,7 @@ jobs:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.6
           TOXENV: py36
-        linux-py38-cover:
+        linux-py39-cover:
           IMAGE_NAME: ubuntu-18.04
           PYTHON_VERSION: 3.9
           TOXENV: py39-cover

@@ -10,7 +10,7 @@ jobs:
         displayName: Retrieve Python dist
       - task: UsePythonVersion@0
         inputs:
-          versionSpec: 3.8
+          versionSpec: 3.9
           addToPath: true
         displayName: Install Python
       - script: |
@@ -29,7 +29,7 @@ jobs:
         lfs: true
       - task: UsePythonVersion@0
         inputs:
-          versionSpec: 3.8
+          versionSpec: 3.9
           addToPath: true
         displayName: Install Python
       - script: |
