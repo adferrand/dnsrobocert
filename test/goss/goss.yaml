@@ -6,7 +6,7 @@ file:
     group: root
     filetype: file
     contains: []
-  /usr/bin/dnsrobocert:
+  /usr/local/bin/dnsrobocert:
     exists: true
     mode: "0755"
     owner: root
