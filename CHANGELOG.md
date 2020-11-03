@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.7.3 - 03/11/2020
 ### Modified
 * Fix i686 docker image build
 
