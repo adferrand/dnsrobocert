@@ -1,31 +1,25 @@
 ARG BUILDER_ARCH=amd64
 FROM docker.io/${BUILDER_ARCH}/python:3-slim-buster AS constraints
 
-COPY . /tmp/dnsrobocert
+COPY src poetry.lock poetry.toml pyproject.toml README.rst /tmp/dnsrobocert/
 
 RUN python3 -m pip install --user poetry --no-warn-script-location \
  && cd /tmp/dnsrobocert \
  && python3 -m poetry export --format requirements.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
  && python3 -m poetry build -f wheel
 
-FROM docker.io/alpine:3.12
+FROM docker.io/python:3.8-alpine3.12
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
+COPY wheels /tmp/dnsrobocert/precompiled-wheels
 
 ENV CONFIG_PATH /etc/dnsrobocert/config.yml
 ENV CERTS_PATH /etc/letsencrypt
 
-RUN apk add --no-cache \
-        py3-pip \
-        # Core dependencies that would need a compilation
-        "py3-cryptography=~$(grep cryptography /tmp/dnsrobocert/constraints.txt | sed 's/;.*//g' | sed 's/.*==//g')" \
-        "py3-cffi=~$(grep cffi /tmp/dnsrobocert/constraints.txt | sed 's/;.*//g' | sed 's/.*==//g')" \
-        "py3-lxml=~$(grep lxml /tmp/dnsrobocert/constraints.txt | sed 's/;.*//g' | sed 's/.*==//g')" \
-        # Hooks dependencies
-        docker-cli \
-        bash \
- && pip3 install wheel \
- && pip3 install -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
+RUN apk add --no-cache docker-cli bash \
+ && python -m pip install --upgrade pip wheel \
+ && pip install /tmp/dnsrobocert/precompiled-wheels/*_$(uname -m).whl \
+ && pip install -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
  && mkdir -p /etc/dnsrobocert /etc/letsencrypt \
  && rm -rf /tmp/dnsrobocert
 

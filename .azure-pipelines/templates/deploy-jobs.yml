@@ -25,6 +25,8 @@ jobs:
     pool:
       vmImage: ubuntu-18.04
     steps:
+      - checkout: self
+        lfs: true
       - task: UsePythonVersion@0
         inputs:
           versionSpec: 3.8
