@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import glob
+import json
 import os
 import re
 import shutil
@@ -8,11 +8,12 @@ import tempfile
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 WHEELS_DIR = os.path.join(ROOT_DIR, "wheels")
+BUILD_JSON = os.path.join(WHEELS_DIR, "build.json")
 
 TARGETS = ["cryptography", "cffi", "lxml"]
 ARCHS = ["linux/amd64", "linux/386", "linux/arm64", "linux/arm/v7", "linux/arm/v6", "linux/ppc64le", "linux/s390x"]
-PYTHON_VERSION = 3.8
-ALPINE_VERSION = 3.12
+PYTHON_VERSION = "3.8"
+ALPINE_VERSION = "3.12"
 
 DOCKERFILE = f"""
 FROM docker.io/python:{PYTHON_VERSION}-alpine{ALPINE_VERSION}
@@ -27,6 +28,32 @@ CMD ["cp", "-ra", "/precompiled-wheels", "/wheels"]
 """
 
 
+def _need_rebuild(requirements):
+    if not os.path.exists(BUILD_JSON):
+        return True
+
+    with open(BUILD_JSON) as file_h:
+        descriptor = json.loads(file_h.read())
+
+    if descriptor.get("python_version") != PYTHON_VERSION:
+        return True
+
+    if descriptor.get("alpine_version") != ALPINE_VERSION:
+        return True
+
+    for requirement in requirements:
+        package, version = _extract_req(requirement)
+        if descriptor.get("packages").get(package) != version:
+            return True
+
+    return False
+
+
+def _extract_req(requirement):
+    match = re.match(r'^(.*)==(.*?)(?:$|;\w*.*$)', requirement)
+    return match.group(1), match.group(2)
+
+
 def main():
     with tempfile.TemporaryDirectory() as workspace:
         output = subprocess.check_output(["poetry", "export", "--format", "requirements.txt", "--without-hashes"],
@@ -35,6 +62,12 @@ def main():
         for entry in output.split("\n"):
             if re.match(rf"^({'|'.join(TARGETS)}).*$", entry):
                 requirements.append(entry)
+
+        if _need_rebuild(requirements):
+            print("Wheels are out-of-date and need to be rebuilt.")
+        else:
+            print("Wheels are up-to-date, no rebuild is needed.")
+            return
 
         requirements_path = os.path.join(workspace, "requirements.txt")
         with open(requirements_path, "w+") as file_h:
@@ -58,6 +91,16 @@ def main():
         for arch in ARCHS:
             arch = arch.replace("/", "_")
             shutil.copytree(os.path.join(workspace, arch, "precompiled-wheels"), WHEELS_DIR, dirs_exist_ok=True)
+
+        extracted_requirements = [_extract_req(requirement) for requirement in requirements]
+        build_data = {
+            "python_version": PYTHON_VERSION,
+            "alpine_version": ALPINE_VERSION,
+            "packages": {package: version for package, version in extracted_requirements}
+        }
+
+        with open(BUILD_JSON, "w") as file_h:
+            file_h.write(json.dumps(build_data))
 
 
 if __name__ == "__main__":
