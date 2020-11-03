@@ -1,0 +1,1 @@
+{"python_version": "3.8", "alpine_version": "3.12", "packages": {"cffi": "1.14.3", "cryptography": "3.2.1", "lxml": "4.6.1"}}

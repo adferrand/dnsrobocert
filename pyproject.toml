@@ -52,9 +52,9 @@ pynamecheap = "*"
 localzone = "*"
 boto3 = "*"
 # --
-cryptography = "2.9.2"  # Pinned to a version available in Alpine.
-cffi = "1.14.0"  # Pinned to a version available in Alpine.
-lxml = "4.5.1"  # Pined to a version available in Alpine.
+cryptography = ">=2 <4"
+cffi = "^1"
+lxml = "^4"
 dnspython3 = "^1"
 jsonschema = "^3"
 pem = "^20"
