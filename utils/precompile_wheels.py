@@ -11,7 +11,15 @@ WHEELS_DIR = os.path.join(ROOT_DIR, "wheels")
 BUILD_JSON = os.path.join(WHEELS_DIR, "build.json")
 
 TARGETS = ["cryptography", "cffi", "lxml"]
-ARCHS = ["linux/amd64", "linux/386", "linux/arm64", "linux/arm/v7", "linux/arm/v6", "linux/ppc64le", "linux/s390x"]
+ARCHS = [
+    "linux/amd64",
+    "linux/386",
+    "linux/arm64",
+    "linux/arm/v7",
+    "linux/arm/v6",
+    "linux/ppc64le",
+    "linux/s390x",
+]
 PYTHON_VERSION = "3.8"
 ALPINE_VERSION = "3.12"
 
@@ -50,14 +58,16 @@ def _need_rebuild(requirements):
 
 
 def _extract_req(requirement):
-    match = re.match(r'^(.*)==(.*?)(?:$|;\w*.*$)', requirement)
+    match = re.match(r"^(.*)==(.*?)(?:$|;\w*.*$)", requirement)
     return match.group(1), match.group(2)
 
 
 def main():
     with tempfile.TemporaryDirectory() as workspace:
-        output = subprocess.check_output(["poetry", "export", "--format", "requirements.txt", "--without-hashes"],
-                                         universal_newlines=True)
+        output = subprocess.check_output(
+            ["poetry", "export", "--format", "requirements.txt", "--without-hashes"],
+            universal_newlines=True,
+        )
         requirements = []
         for entry in output.split("\n"):
             if re.match(rf"^({'|'.join(TARGETS)}).*$", entry):
@@ -77,26 +87,55 @@ def main():
         with open(os.path.join(workspace, "Dockerfile"), "w") as file_h:
             file_h.write(DOCKERFILE)
 
-        subprocess.check_call(["docker", "run", "--rm", "--privileged",
-                               "docker.io/multiarch/qemu-user-static", "--reset", "-p", "yes"])
+        subprocess.check_call(
+            [
+                "docker",
+                "run",
+                "--rm",
+                "--privileged",
+                "docker.io/multiarch/qemu-user-static",
+                "--reset",
+                "-p",
+                "yes",
+            ]
+        )
 
         subprocess.check_call(["docker", "buildx", "create", "--use"])
 
-        subprocess.check_call(["docker", "buildx", "build", "--platform", ",".join(ARCHS),
-                               f"--output=type=local,dest={workspace}", "--tag", "dnsrobocert-wheels", workspace])
+        subprocess.check_call(
+            [
+                "docker",
+                "buildx",
+                "build",
+                "--platform",
+                ",".join(ARCHS),
+                f"--output=type=local,dest={workspace}",
+                "--tag",
+                "dnsrobocert-wheels",
+                workspace,
+            ]
+        )
 
         if os.path.exists(WHEELS_DIR):
             shutil.rmtree(WHEELS_DIR)
 
         for arch in ARCHS:
             arch = arch.replace("/", "_")
-            shutil.copytree(os.path.join(workspace, arch, "precompiled-wheels"), WHEELS_DIR, dirs_exist_ok=True)
+            shutil.copytree(
+                os.path.join(workspace, arch, "precompiled-wheels"),
+                WHEELS_DIR,
+                dirs_exist_ok=True,
+            )
 
-        extracted_requirements = [_extract_req(requirement) for requirement in requirements]
+        extracted_requirements = [
+            _extract_req(requirement) for requirement in requirements
+        ]
         build_data = {
             "python_version": PYTHON_VERSION,
             "alpine_version": ALPINE_VERSION,
-            "packages": {package: version for package, version in extracted_requirements}
+            "packages": {
+                package: version for package, version in extracted_requirements
+            },
         }
 
         with open(BUILD_JSON, "w") as file_h:
