@@ -52,7 +52,7 @@ pynamecheap = "*"
 localzone = "*"
 boto3 = "*"
 # --
-cryptography = ">=2 <4"
+cryptography = ">=2,<4"
 cffi = "^1"
 lxml = "^4"
 dnspython3 = "^1"
