@@ -147,29 +147,38 @@ def validate_snap_environment(args: argparse.Namespace):
         return
 
     errors = []
-    valid_paths = [os.environ.get("SNAP_REAL_HOME")]
+
+    home_path = os.environ.get("SNAP_REAL_HOME")
 
     try:
         os.listdir("/etc")
-        valid_paths.append("/etc")
+        system_files_interface = True
     except PermissionError:
-        # Do nothing, interface system-files is not connected
-        pass
+        system_files_interface = False
 
-    if not [
-        path
-        for path in valid_paths
-        if os.path.abspath(args.config).startswith(path)
-        and not any(part for part in split_path(args.config) if part.startswith("."))
-    ]:
+    if not (
+        (
+            os.path.abspath(args.config).startswith(home_path)
+            and not any(
+                part for part in split_path(args.config) if part.startswith(".")
+            )
+        )
+        or (system_files_interface and os.path.abspath(args.config).startswith("/etc"))
+    ):
         errors.append(f"Invalid --config value: {args.config}")
 
-    if not [
-        path
-        for path in valid_paths
-        if os.path.abspath(args.directory).startswith(path)
-        and not any(part for part in split_path(args.directory) if part.startswith("."))
-    ]:
+    if not (
+        (
+            os.path.abspath(args.directory).startswith(home_path)
+            and not any(
+                part for part in split_path(args.directory) if part.startswith(".")
+            )
+        )
+        or (
+            system_files_interface
+            and os.path.abspath(args.directory).startswith("/etc")
+        )
+    ):
         errors.append(f"Invalid --directory value: {args.directory}")
 
     for error in errors:
