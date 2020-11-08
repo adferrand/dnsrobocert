@@ -147,7 +147,7 @@ def validate_snap_environment(args: argparse.Namespace):
     if not [
         path for path in valid_paths if os.path.abspath(args.directory).startswith(path)
     ]:
-        errors.append(f"Invalid --directory value: {args.config}")
+        errors.append(f"Invalid --directory value: {args.directory}")
 
     for error in errors:
         LOGGER.error(error)
@@ -157,9 +157,7 @@ def validate_snap_environment(args: argparse.Namespace):
             "The snap DNSroboCert can only use files and directories from the user HOME folder by default."
         )
         LOGGER.error(
-            "You can also give to DNSroboCert an access to the /etc directory, by running the following "
-            "command on a prompt with admin privileges:"
+            "DNSroboCert can also use the /etc directory after command is launched: snap connect dnsrobocert:etc"
         )
-        LOGGER.error("\tsnap connect dnsrobocert:etc")
 
         sys.exit(1)
