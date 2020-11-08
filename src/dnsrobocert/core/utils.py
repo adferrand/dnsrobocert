@@ -186,7 +186,7 @@ def validate_snap_environment(args: argparse.Namespace):
 
     if errors:
         LOGGER.error(
-            "The snap DNSroboCert can only use non-hidden files and directories "
+            "Snap DNSroboCert can only use non-hidden files and directories "
             "located in the user HOME folder by default."
         )
         LOGGER.error(
