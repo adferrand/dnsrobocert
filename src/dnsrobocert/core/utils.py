@@ -8,6 +8,7 @@ import sys
 from typing import Any, Dict, List, Union
 
 import coloredlogs
+from certbot.compat import misc
 
 try:
     POSIX_MODE = True
@@ -154,10 +155,27 @@ def validate_snap_environment(args: argparse.Namespace):
 
     if errors:
         LOGGER.error(
-            "The snap DNSroboCert can only use files and directories from the user HOME folder by default."
+            "The snap DNSroboCert can only use files and directories located in the user HOME folder by default."
         )
         LOGGER.error(
-            "DNSroboCert can also use the /etc directory after command is launched: snap connect dnsrobocert:etc"
+            "DNSroboCert can be granted to use the /etc directory with this command: snap connect dnsrobocert:etc"
         )
 
         sys.exit(1)
+
+
+def get_default_args() -> Dict[str, str]:
+    if os.environ.get("SNAP"):
+        return {
+            "config": os.path.join(
+                os.environ.get("SNAP_REAL_HOME"), ".config/dnsrobocert.yml"
+            ),
+            "directory": os.path.join(
+                os.environ.get("SNAP_REAL_HOME"), ".config/dnsrobocert.yml"
+            ),
+        }
+
+    return {
+        "config": os.path.join(os.getcwd(), "dnsrobocert.yml"),
+        "directory": misc.get_default_folder("config"),
+    }
