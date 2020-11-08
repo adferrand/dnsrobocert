@@ -126,6 +126,22 @@ def normalize_lineage(domain: str):
     return re.sub(r"^\*\.", "", domain)
 
 
+def split_path(path):
+    all_parts = []
+    while 1:
+        parts = os.path.split(path)
+        if parts[0] == path:  # sentinel for absolute paths
+            all_parts.insert(0, parts[0])
+            break
+        elif parts[1] == path:  # sentinel for relative paths
+            all_parts.insert(0, parts[1])
+            break
+        else:
+            path = parts[0]
+            all_parts.insert(0, parts[1])
+    return all_parts
+
+
 def validate_snap_environment(args: argparse.Namespace):
     if not os.environ.get("SNAP"):
         return
@@ -141,12 +157,18 @@ def validate_snap_environment(args: argparse.Namespace):
         pass
 
     if not [
-        path for path in valid_paths if os.path.abspath(args.config).startswith(path)
+        path
+        for path in valid_paths
+        if os.path.abspath(args.config).startswith(path)
+        and not any(part for part in split_path(args.config) if part.startswith("."))
     ]:
         errors.append(f"Invalid --config value: {args.config}")
 
     if not [
-        path for path in valid_paths if os.path.abspath(args.directory).startswith(path)
+        path
+        for path in valid_paths
+        if os.path.abspath(args.directory).startswith(path)
+        and not any(part for part in split_path(args.directory) if part.startswith("."))
     ]:
         errors.append(f"Invalid --directory value: {args.directory}")
 
@@ -155,10 +177,12 @@ def validate_snap_environment(args: argparse.Namespace):
 
     if errors:
         LOGGER.error(
-            "The snap DNSroboCert can only use files and directories located in the user HOME folder by default."
+            "The snap DNSroboCert can only use non-hidden files and directories "
+            "located in the user HOME folder by default."
         )
         LOGGER.error(
-            "DNSroboCert can be granted to use the /etc directory with this command: snap connect dnsrobocert:etc"
+            "DNSroboCert can be granted to use the /etc directory with this command: "
+            "snap connect dnsrobocert:etc"
         )
 
         sys.exit(1)
@@ -168,16 +192,16 @@ def get_default_args() -> Dict[str, str]:
     if os.environ.get("SNAP"):
         return {
             "config": os.path.join(
-                os.environ.get("SNAP_REAL_HOME"), ".config/dnsrobocert.yml"
+                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/dnsrobocert.yml"
             ),
             "configDesc": os.path.join(
-                os.environ.get("SNAP_REAL_HOME"), ".config/dnsrobocert.yml"
+                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/dnsrobocert.yml"
             ),
             "directory": os.path.join(
-                os.environ.get("SNAP_REAL_HOME"), ".config/letsencrypt"
+                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/letsencrypt"
             ),
             "directoryDesc": os.path.join(
-                os.environ.get("SNAP_REAL_HOME"), ".config/letsencrypt"
+                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/letsencrypt"
             ),
         }
 
