@@ -18,7 +18,7 @@ adopt-info: dnsrobocert
 
 apps:
   dnsrobocert:
-    command: bin/dnsrobocert
+    command: bin/python3 $SNAP/bin/dnsrobocert
     environment:
       PATH: "$SNAP/bin:$SNAP/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 
