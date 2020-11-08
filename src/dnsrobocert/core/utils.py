@@ -170,12 +170,20 @@ def get_default_args() -> Dict[str, str]:
             "config": os.path.join(
                 os.environ.get("SNAP_REAL_HOME"), ".config/dnsrobocert.yml"
             ),
-            "directory": os.path.join(
+            "configDesc": os.path.join(
                 os.environ.get("SNAP_REAL_HOME"), ".config/dnsrobocert.yml"
+            ),
+            "directory": os.path.join(
+                os.environ.get("SNAP_REAL_HOME"), ".config/letsencrypt"
+            ),
+            "directoryDesc": os.path.join(
+                os.environ.get("SNAP_REAL_HOME"), ".config/letsencrypt"
             ),
         }
 
     return {
         "config": os.path.join(os.getcwd(), "dnsrobocert.yml"),
+        "configDesc": "$(pwd)/dnsrobocert.yml",
         "directory": misc.get_default_folder("config"),
+        "directoryDesc": misc.get_default_folder("config"),
     }

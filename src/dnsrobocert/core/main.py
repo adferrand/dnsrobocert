@@ -144,13 +144,13 @@ def main(args: Optional[List[str]] = None):
         "--config",
         "-c",
         default=defaults["config"],
-        help=f"set the dnsrobocert config to use (default {defaults['config']})",
+        help=f"set the dnsrobocert config to use (default {defaults['configDesc']})",
     )
     parser.add_argument(
         "--directory",
         "-d",
         default=defaults["directory"],
-        help=f"set the directory path where certificates are stored (default: {defaults['directory']})",
+        help=f"set the directory path where certificates are stored (default: {defaults['directoryDesc']})",
     )
 
     parsed_args = parser.parse_args(args)
