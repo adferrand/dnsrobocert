@@ -21,22 +21,15 @@ apps:
     command: bin/python3 $SNAP/bin/dnsrobocert
     environment:
       PATH: "$SNAP/bin:$SNAP/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+    plugs: [home]
 
 parts:
   dnsrobocert:
     plugin: python
     source: .
-    constraints: [$SNAPCRAFT_PART_SRC/snap-constraints.txt]
     python-packages:
-      - ./
-    build-packages:
-      - python3-wheel
-    build-environment:
-      - SNAPCRAFT_PYTHON_VENV_ARGS: --system-site-packages
+      - .
     override-pull: |
       set -e
       snapcraftctl pull
-      apt install -y curl
-      curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
-      $HOME/.poetry/bin/poetry export --format requirements.txt --without-hashes > $SNAPCRAFT_PART_SRC/snap-constraints.txt
-      snapcraftctl set-version $(python3 -m poetry version | awk '{print $2}')
+      snapcraftctl set-version $(cat pyproject.toml | grep '^version = .*' | sed -E 's/version = "(.*)"/\1/g')
