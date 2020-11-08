@@ -29,6 +29,7 @@ parts:
     source: .
     python-packages:
       - .
+    build-packages: [python3-wheel]
     override-pull: |
       set -e
       snapcraftctl pull
@@ -37,7 +38,5 @@ parts:
 plugs:
   etc:
     interface: system-files
-    read:
-      - /etc
-    write:
-      - /etc
+    read: [/etc]
+    write: [/etc]

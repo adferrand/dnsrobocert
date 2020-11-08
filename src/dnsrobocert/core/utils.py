@@ -122,3 +122,43 @@ def digest(path: str):
 
 def normalize_lineage(domain: str):
     return re.sub(r"^\*\.", "", domain)
+
+
+def validate_snap_environment(args: argparse.Namespace):
+    if not os.environ.get("SNAP"):
+        return
+
+    errors = []
+    valid_paths = [os.environ.get("SNAP_REAL_HOME")]
+
+    try:
+        os.listdir("/etc")
+        valid_paths.append("/etc")
+    except PermissionError:
+        # Do nothing, interface system-files is not connected
+        pass
+
+    if not [
+        path for path in valid_paths if os.path.abspath(args.config).startswith(path)
+    ]:
+        errors.append(f"Invalid --config value: {args.config}")
+
+    if not [
+        path for path in valid_paths if os.path.abspath(args.directory).startswith(path)
+    ]:
+        errors.append(f"Invalid --directory value: {args.config}")
+
+    for error in errors:
+        LOGGER.error(error)
+
+    if errors:
+        LOGGER.error(
+            "The snap DNSroboCert can only use files and directories from the user HOME folder by default."
+        )
+        LOGGER.error(
+            "You can also give to DNSroboCert an access to the /etc directory, by running the following "
+            "command on a prompt with admin privileges:"
+        )
+        LOGGER.error("\tsnap connect dnsrobocert:etc")
+
+        sys.exit(1)
