@@ -17,7 +17,7 @@ import schedule
 import yaml
 from certbot.compat import misc
 
-from dnsrobocert.core import certbot, config, legacy, utils
+from dnsrobocert.core import certbot, config, legacy, snap, utils
 
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
@@ -153,6 +153,8 @@ def main(args: Optional[List[str]] = None):
     )
 
     parsed_args = parser.parse_args(args)
+
+    snap.validate_snap_environment(parsed_args)
 
     _watch_config(
         os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)
