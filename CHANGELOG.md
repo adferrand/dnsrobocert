@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Upgrade Lexicon to 3.5.0 (add Joker provider, various fixes)
 
 ## 3.7.3 - 03/11/2020
 ### Modified

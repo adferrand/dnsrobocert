@@ -24,23 +24,23 @@ The following Lexicon providers are supported by DNSroboCert.
 +----------------+----------------+----------------+----------------+
 |henet_          |hetzner_        |hostingde_      |hover_          |
 +----------------+----------------+----------------+----------------+
-|infoblox_       |internetbs_     |inwx_           |linode_         |
+|infoblox_       |internetbs_     |inwx_           |joker_          |
 +----------------+----------------+----------------+----------------+
-|linode4_        |localzone_      |luadns_         |memset_         |
+|linode_         |linode4_        |localzone_      |luadns_         |
 +----------------+----------------+----------------+----------------+
-|namecheap_      |namesilo_       |netcup_         |nfsn_           |
+|memset_         |namecheap_      |namesilo_       |netcup_         |
 +----------------+----------------+----------------+----------------+
-|nsone_          |onapp_          |online_         |ovh_            |
+|nfsn_           |njalla_         |nsone_          |onapp_          |
 +----------------+----------------+----------------+----------------+
-|plesk_          |pointhq_        |powerdns_       |rackspace_      |
+|online_         |ovh_            |plesk_          |pointhq_        |
 +----------------+----------------+----------------+----------------+
-|rage4_          |rcodezero_      |route53_        |safedns_        |
+|powerdns_       |rackspace_      |rage4_          |rcodezero_      |
 +----------------+----------------+----------------+----------------+
-|sakuracloud_    |softlayer_      |subreg_         |transip_        |
+|route53_        |safedns_        |sakuracloud_    |softlayer_      |
 +----------------+----------------+----------------+----------------+
-|ultradns_       |vultr_          |yandex_         |zeit_           |
+|transip_        |ultradns_       |vultr_          |yandex_         |
 +----------------+----------------+----------------+----------------+
-|zilore_         |zonomi_         |                |                |
+|zeit_           |zilore_         |zonomi_         |                |
 +----------------+----------------+----------------+----------------+
 
 Providers options
@@ -270,6 +270,11 @@ inwx
     * ``auth_username`` Specify username for authentication
     * ``auth_password`` Specify password for authentication
 
+.. _joker:
+
+joker
+    * ``auth_token`` Specify the api key to connect to the joker.com api
+
 .. _linode:
 
 linode
@@ -321,6 +326,11 @@ netcup
 nfsn
     * ``auth_username`` Specify username used to authenticate
     * ``auth_token`` Specify token used to authenticate
+
+.. _njalla:
+
+njalla
+    * ``auth_token`` Specify api token for authentication
 
 .. _nsone:
 
@@ -413,12 +423,6 @@ sakuracloud
 softlayer
     * ``auth_username`` Specify username for authentication
     * ``auth_api_key`` Specify api private key for authentication
-
-.. _subreg:
-
-subreg
-    * ``auth_username`` Specify username for authentication
-    * ``auth_password`` Specify password for authentication
 
 .. _transip:
 
