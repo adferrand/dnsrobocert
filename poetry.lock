@@ -103,20 +103,20 @@ webencodings = "*"
 
 [[package]]
 name = "boto3"
-version = "1.16.21"
+version = "1.16.23"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-botocore = ">=1.19.21,<1.20.0"
+botocore = ">=1.19.23,<1.20.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.19.21"
+version = "1.19.23"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -305,7 +305,7 @@ python-versions = "*"
 
 [[package]]
 name = "dns-lexicon"
-version = "3.5.1"
+version = "3.5.2"
 description = "Manipulate DNS records on various DNS providers in a standardized/agnostic way"
 category = "main"
 optional = false
@@ -475,7 +475,7 @@ colors = ["colorama (>=0.4.3,<0.5.0)"]
 
 [[package]]
 name = "jeepney"
-version = "0.5.0"
+version = "0.6.0"
 description = "Low-level, pure Python DBus protocol wrapper."
 category = "dev"
 optional = false
@@ -1025,7 +1025,7 @@ python-versions = "*"
 
 [[package]]
 name = "tldextract"
-version = "3.0.2"
+version = "3.1.0"
 description = "Accurately separate the TLD from the registered domain and subdomains of a URL, using the Public Suffix List. By default, this includes the public ICANN TLDs and their exceptions. You can optionally support the Public Suffix List's private domains as well."
 category = "main"
 optional = false
@@ -1070,11 +1070,11 @@ testing = ["flaky (>=3.4.0)", "freezegun (>=0.3.11)", "pathlib2 (>=2.3.3)", "psu
 
 [[package]]
 name = "tqdm"
-version = "4.52.0"
+version = "4.53.0"
 description = "Fast, Extensible Progress Meter"
 category = "dev"
 optional = false
-python-versions = ">=2.6, !=3.0.*, !=3.1.*"
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
 
 [package.extras]
 dev = ["py-make (>=0.1.0)", "twine", "argopt", "pydoc-markdown", "wheel"]
@@ -1142,7 +1142,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "virtualenv"
-version = "20.1.0"
+version = "20.2.0"
 description = "Virtual Python Environment builder"
 category = "dev"
 optional = false
@@ -1328,7 +1328,7 @@ test = ["zope.security", "zope.testrunner"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "fc6ccb590a77ac495ffcfe61719b58d183c390c383d5543a5d563dc57400a180"
+content-hash = "8bbf7bbe65ffa53e7676c3fe3cb4474f2ee5443493bc7d9e5936ccca95efc088"
 
 [metadata.files]
 acme = [
@@ -1360,12 +1360,12 @@ bleach = [
     {file = "bleach-3.2.1.tar.gz", hash = "sha256:52b5919b81842b1854196eaae5ca29679a2f2e378905c346d3ca8227c2c66080"},
 ]
 boto3 = [
-    {file = "boto3-1.16.21-py2.py3-none-any.whl", hash = "sha256:dd63506b8b5e46be0b55d18ab9a62dea8b3b46aa46ce6c3b1fc4e41788c375b8"},
-    {file = "boto3-1.16.21.tar.gz", hash = "sha256:7a8063418d11690a8ee87bc1c3e32aa4830aee20e3767fe780a99a7fa2410b13"},
+    {file = "boto3-1.16.23-py2.py3-none-any.whl", hash = "sha256:22a6f11383965d7ece9e391722b2989780960c62997b1aa464ffa1f886e1cfa8"},
+    {file = "boto3-1.16.23.tar.gz", hash = "sha256:6e6bd178f930309c2ec79643436aae5cf6f26d51e35aa5e58162675a04785e62"},
 ]
 botocore = [
-    {file = "botocore-1.19.21-py2.py3-none-any.whl", hash = "sha256:3b01898413ab3a5bc6a15d449d2a35d8061c7142b86d4419a08860c8935e0d38"},
-    {file = "botocore-1.19.21.tar.gz", hash = "sha256:8f065fb5ca2271ec76e791c23136f72b11f5c917a1b6502cc627fd0a882de8a0"},
+    {file = "botocore-1.19.23-py2.py3-none-any.whl", hash = "sha256:d73a223bf88d067c3ae0a9a3199abe56e99c94267da77d7fed4c39f572f522c0"},
+    {file = "botocore-1.19.23.tar.gz", hash = "sha256:9f9efca44b2ab2d9c133ceeafa377e4b3d260310109284123ebfffc15e28481e"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1516,8 +1516,8 @@ distro = [
     {file = "distro-1.5.0.tar.gz", hash = "sha256:0e58756ae38fbd8fc3020d54badb8eae17c5b9dcbed388b17bb55b8a5928df92"},
 ]
 dns-lexicon = [
-    {file = "dns-lexicon-3.5.1.tar.gz", hash = "sha256:8ce1dc5317deb22fd64c395056665ebdcdc7a8f72c7283f28debd0b380a6f8ac"},
-    {file = "dns_lexicon-3.5.1-py3-none-any.whl", hash = "sha256:4edff033024f6331d07c5dcddc0fd0bd0ea1850b48ae7d723082c9a1510989fd"},
+    {file = "dns-lexicon-3.5.2.tar.gz", hash = "sha256:e282fa4dd3054971f4a312d5b595f3501a000d2ee6daf696035aad3edf93a09e"},
+    {file = "dns_lexicon-3.5.2-py3-none-any.whl", hash = "sha256:2fac89c84ad1a6293c6d8af1c2fffcba011517d713d9f63a9ac51a6ea3379712"},
 ]
 dnspython = [
     {file = "dnspython-1.15.0-py2.py3-none-any.whl", hash = "sha256:861e6e58faa730f9845aaaa9c6c832851fbf89382ac52915a51f89c71accdd31"},
@@ -1570,8 +1570,8 @@ isort = [
     {file = "isort-5.6.4.tar.gz", hash = "sha256:dcaeec1b5f0eca77faea2a35ab790b4f3680ff75590bfcb7145986905aab2f58"},
 ]
 jeepney = [
-    {file = "jeepney-0.5.0-py3-none-any.whl", hash = "sha256:e0e057fe2069a54257de32eb26cf14aac5fa90f5836f49926009a5022fb1e31a"},
-    {file = "jeepney-0.5.0.tar.gz", hash = "sha256:2531d17ccfb3485d4eaee03c1a19a75f28b3ac0fbb5a1b683b77b820e5b0f509"},
+    {file = "jeepney-0.6.0-py3-none-any.whl", hash = "sha256:aec56c0eb1691a841795111e184e13cad504f7703b9a64f63020816afa79a8ae"},
+    {file = "jeepney-0.6.0.tar.gz", hash = "sha256:7d59b6622675ca9e993a6bd38de845051d315f8b0c72cca3aef733a20b648657"},
 ]
 jmespath = [
     {file = "jmespath-0.10.0-py2.py3-none-any.whl", hash = "sha256:cdf6525904cc597730141d61b36f2e4b8ecc257c420fa2f4549bac2c2d0cb72f"},
@@ -1867,8 +1867,8 @@ suds-jurko = [
     {file = "suds-jurko-0.6.zip", hash = "sha256:1cb7252cb13018fc32887c3a834ed7c6648a5b5c4c159be5806da2e1785399e8"},
 ]
 tldextract = [
-    {file = "tldextract-3.0.2-py2.py3-none-any.whl", hash = "sha256:d2762b1aa2a36857df8420d63c2c31706e4924da8773439a543365d38459afd8"},
-    {file = "tldextract-3.0.2.tar.gz", hash = "sha256:f188eab8c90ff935f3fa49d9228049cd7f37fb47105c3f15f8e6dd6f6e25924a"},
+    {file = "tldextract-3.1.0-py2.py3-none-any.whl", hash = "sha256:e57f22b6d00a28c21673d2048112f1bdcb6a14d4711568305f6bb96cf5bb53a1"},
+    {file = "tldextract-3.1.0.tar.gz", hash = "sha256:cfae9bc8bda37c3e8c7c8639711ad20e95dc85b207a256b60b0b23d7ff5540ea"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
@@ -1879,8 +1879,8 @@ tox = [
     {file = "tox-3.20.1.tar.gz", hash = "sha256:4321052bfe28f9d85082341ca8e233e3ea901fdd14dab8a5d3fbd810269fbaf6"},
 ]
 tqdm = [
-    {file = "tqdm-4.52.0-py2.py3-none-any.whl", hash = "sha256:80d9d5165d678dbd027dd102dfb99f71bf05f333b61fb761dbba13b4ab719ead"},
-    {file = "tqdm-4.52.0.tar.gz", hash = "sha256:18d6a615aedd09ec8456d9524489dab330af4bd5c2a14a76eb3f9a0e14471afe"},
+    {file = "tqdm-4.53.0-py2.py3-none-any.whl", hash = "sha256:5ff3f5232b19fa4c5531641e480b7fad4598819f708a32eb815e6ea41c5fa313"},
+    {file = "tqdm-4.53.0.tar.gz", hash = "sha256:3d3f1470d26642e88bd3f73353cb6ff4c51ef7d5d7efef763238f4bc1f7e4e81"},
 ]
 transip = [
     {file = "transip-2.1.2-py2.py3-none-any.whl", hash = "sha256:ad49b41316105d1b6cb091a49b6c49421a874ecd4a147f289e07c8fa42028501"},
@@ -1932,8 +1932,8 @@ urllib3 = [
     {file = "urllib3-1.26.2.tar.gz", hash = "sha256:19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.1.0-py2.py3-none-any.whl", hash = "sha256:b0011228208944ce71052987437d3843e05690b2f23d1c7da4263fde104c97a2"},
-    {file = "virtualenv-20.1.0.tar.gz", hash = "sha256:b8d6110f493af256a40d65e29846c69340a947669eec8ce784fcf3dd3af28380"},
+    {file = "virtualenv-20.2.0-py2.py3-none-any.whl", hash = "sha256:6af42359fbb33a6c7eab4d3246524b96fd9d8e07e7141b7a65998f96e28b2c57"},
+    {file = "virtualenv-20.2.0.tar.gz", hash = "sha256:fd4147c5ba3f694e2e4fc3c767407dc2226899623bb9b49c2f15637c2ee335b3"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
