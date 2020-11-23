@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.7.5 - 23/11/2020
 ### Modified
 * Upgrade Lexicon to 3.5.2 (various fixes)
 
