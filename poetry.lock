@@ -743,14 +743,14 @@ requests = "*"
 
 [[package]]
 name = "pyopenssl"
-version = "19.1.0"
+version = "20.0.0"
 description = "Python wrapper module around the OpenSSL library"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
 
 [package.dependencies]
-cryptography = ">=2.8"
+cryptography = ">=3.2"
 six = ">=1.5.2"
 
 [package.extras]
@@ -1328,7 +1328,7 @@ test = ["zope.security", "zope.testrunner"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "8bbf7bbe65ffa53e7676c3fe3cb4474f2ee5443493bc7d9e5936ccca95efc088"
+content-hash = "5dd6b00361722b0b4b2f4ebdb742b679a8b1408439af5641c69d969fe320d48b"
 
 [metadata.files]
 acme = [
@@ -1711,8 +1711,8 @@ pynamecheap = [
     {file = "PyNamecheap-0.0.3.tar.gz", hash = "sha256:d428f9455f6226f5dbe2e67c5a81b5b37a215edf94d55f7576164904c4e76b72"},
 ]
 pyopenssl = [
-    {file = "pyOpenSSL-19.1.0-py2.py3-none-any.whl", hash = "sha256:621880965a720b8ece2f1b2f54ea2071966ab00e2970ad2ce11d596102063504"},
-    {file = "pyOpenSSL-19.1.0.tar.gz", hash = "sha256:9a24494b2602aaf402be5c9e30a0b82d4a5c67528fe8fb475e3f3bc00dd69507"},
+    {file = "pyOpenSSL-20.0.0-py2.py3-none-any.whl", hash = "sha256:898aefbde331ba718570244c3b01dcddb1b31a3b336613436a45e52e27d9a82d"},
+    {file = "pyOpenSSL-20.0.0.tar.gz", hash = "sha256:92f08eccbd73701cf744e8ffd6989aa7842d48cbe3fea8a7c031c5647f590ac5"},
 ]
 pyparsing = [
     {file = "pyparsing-2.4.7-py2.py3-none-any.whl", hash = "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"},
