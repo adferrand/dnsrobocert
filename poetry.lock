@@ -207,7 +207,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "coloredlogs"
-version = "14.0"
+version = "14.2"
 description = "Colored terminal output for Python's logging module"
 category = "main"
 optional = false
@@ -1430,8 +1430,8 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 coloredlogs = [
-    {file = "coloredlogs-14.0-py2.py3-none-any.whl", hash = "sha256:346f58aad6afd48444c2468618623638dadab76e4e70d5e10822676f2d32226a"},
-    {file = "coloredlogs-14.0.tar.gz", hash = "sha256:a1fab193d2053aa6c0a97608c4342d031f1f93a3d1218432c59322441d31a505"},
+    {file = "coloredlogs-14.2-py2.py3-none-any.whl", hash = "sha256:4d31b0c9df42d09b24eedcecbbef39c1778c931e1b6f8a275895589d64d22c82"},
+    {file = "coloredlogs-14.2.tar.gz", hash = "sha256:ac35144b5c39699318fdea8afdf3ca3308f274759af56a479e6d657b1850e246"},
 ]
 configargparse = [
     {file = "ConfigArgParse-1.2.3.tar.gz", hash = "sha256:edd17be986d5c1ba2e307150b8e5f5107aba125f3574dddd02c85d5cdcfd37dc"},
