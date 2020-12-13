@@ -78,7 +78,7 @@ certificates:
     yield config_path
 
 
-@patch("dnsrobocert.core.hooks.Client")
+@patch("dnsrobocert.core.challenge.Client")
 def test_auth_cli(client, fake_config):
     hooks.main(["-t", "auth", "-c", str(fake_config), "-l", LINEAGE])
 
@@ -95,7 +95,7 @@ def test_auth_cli(client, fake_config):
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
 
 
-@patch("dnsrobocert.core.hooks.Client")
+@patch("dnsrobocert.core.challenge.Client")
 def test_cleanup_cli(client, fake_config):
     hooks.main(["-t", "cleanup", "-c", str(fake_config), "-l", LINEAGE])
 
