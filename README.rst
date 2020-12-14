@@ -37,8 +37,12 @@ DNSroboCert is designed to manage `Let's Encrypt`_ SSL certificates based on `DN
 * Modification of container configuration without restart,
 * Flexible hooks upon certificate creation/renewal including containers restart, commands in containers
   or custom hooks,
+* Support for `DNS alias mode`_ (see the ``follow_cnames`` option in the `certificate section`_),
 * Linux, Mac OS X and Windows support, with a particular care for Docker services,
 * Delivered as a standalone application and a Docker image.
+
+.. _DNS alias mode: https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode
+.. _certificate section: https://dnsrobocert.readthedocs.io/en/latest/configuration_reference.html#certificate-properties
 
 Why use DNSroboCert
 ===================
