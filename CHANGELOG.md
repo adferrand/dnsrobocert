@@ -1,6 +1,15 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* DNS challenges can now be done using the DNS alias mode, which consists in delegating
+  challenges to a different DNS zone different using CNAME records. To use it the
+  `certificate` now includes the `follow_cnames` option (default `false`). If set to
+  `true`, DNSroboCert will follow the CNAME records to find the actual TXT record name
+  to create for a DNS-01 challenge.
+
+### Modified
+* Upgrade Certbot to 1.10.1 (official Python 3.9 support)
 
 ## 3.7.5 - 23/11/2020
 ### Modified
