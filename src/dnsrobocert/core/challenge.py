@@ -92,7 +92,9 @@ def resolve_canonical_challenge_name(name: str) -> str:
 
     while True:
         try:
-            answer = resolver.resolve(current_name, rdtype=dns.rdatatype.RdataType.CNAME)
+            answer = resolver.resolve(
+                current_name, rdtype=dns.rdatatype.RdataType.CNAME
+            )
             current_name = str(answer[0].target)
             if current_name in visited:
                 resolution_map = " -> ".join([*visited, current_name])

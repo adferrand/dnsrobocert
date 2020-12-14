@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.8.0 - 15/12/2020
 ### Added
 * DNS challenges can now be done using the DNS alias mode, which consists in delegating
   challenges to a different DNS zone different using CNAME records. To use it the
