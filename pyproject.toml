@@ -55,7 +55,7 @@ boto3 = "*"
 cryptography = ">=2,<4"
 cffi = "^1"
 lxml = "^4"
-dnspython3 = "^1"
+dnspython = "^2"
 jsonschema = "^3"
 pem = "^20"
 pyopenssl = ">=19,<21"
@@ -63,6 +63,7 @@ pyyaml = "^5"
 schedule = "^0"
 coloredlogs = "^14"
 colorama = "^0"
+tldextract = "^3"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

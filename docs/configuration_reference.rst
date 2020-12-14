@@ -278,10 +278,19 @@ be defined in each relevant certificate configuration.
     * *default*: ``null`` (no deploy hook is configured)
 
 ``force_renew``
-    * If ``true``, the certificate will be force renewed when DNSroboCert configuration changes. Usefull
+    * If ``true``, the certificate will be force renewed when DNSroboCert configuration changes. Useful
       for debugging purposes.
     * *type*: ``boolean``
     * *default*: ``false`` (the certificate is not force renewed)
+
+``follow_cnames``
+    * If ``true``, DNSroboCert will follow the chain of CNAME that may be defined for the challenge
+      DNS names ``_acme-challenge.DOMAIN`` (where ``DOMAIN`` is the domain to validate and integrate
+      in the certificate). This allows to delegate the validation to another DNS zone for security
+      purpose. See this link_ for more details.
+
+
+.. _link: https://letsencrypt.org/2019/10/09/onboarding-your-customers-with-lets-encrypt-and-acme.html#the-advantages-of-a-cname
 
 .. warning::
 

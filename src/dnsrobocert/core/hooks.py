@@ -6,15 +6,13 @@ import subprocess
 import sys
 import time
 import traceback
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import OpenSSL
 import pem
-from dns import resolver
-from lexicon.client import Client
-from lexicon.config import ConfigResolver
 
 from dnsrobocert.core import config, utils
+from dnsrobocert.core.challenge import check_one_challenge, txt_challenge
 
 
 def main(args: List[str] = None) -> int:
@@ -53,13 +51,14 @@ def main(args: List[str] = None) -> int:
 
 
 def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
+    certificate = config.get_certificate(dnsrobocert_config, lineage)
     profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
     print(f"Executing auth hook for domain {domain}, lineage {lineage}.")
 
-    _txt_challenge(profile, token, domain, action="create")
+    txt_challenge(certificate, profile, token, domain, action="create")
 
     remaining_challenges = int(os.environ.get("CERTBOT_REMAINING_CHALLENGES", "0"))
     if remaining_challenges != 0:
@@ -95,7 +94,7 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
             challenges_to_check = [
                 challenge
                 for challenge in challenges_to_check
-                if not _check_one_challenge(
+                if not check_one_challenge(
                     challenge,
                     token if challenge == "_acme-challenge.{domain}" else None,
                 )
@@ -113,40 +112,15 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
         time.sleep(sleep_time)
 
 
-def _check_one_challenge(challenge: str, token: Optional[str]) -> bool:
-    try:
-        answers = resolver.query(challenge, "TXT")
-    except (resolver.NXDOMAIN, resolver.NoAnswer):
-        print(f"TXT {challenge} does not exist.")
-        return False
-    else:
-        print(f"TXT {challenge} exists.")
-
-    if token:
-        validation_answers = [
-            rdata
-            for rdata in answers
-            for txt_string in rdata.strings
-            if txt_string.decode("utf-8") == token
-        ]
-
-        if not validation_answers:
-            print(f"TXT {challenge} does not have the expected token value.")
-            return False
-
-        print(f"TXT {challenge} has the expected token value.")
-
-    return True
-
-
 def cleanup(dnsrobocert_config: Dict[str, str], lineage: str):
+    certificate = config.get_certificate(dnsrobocert_config, lineage)
     profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
     print(f"Executing cleanup hook for domain {domain}, lineage {lineage}.")
 
-    _txt_challenge(profile, token, domain, action="delete")
+    txt_challenge(certificate, profile, token, domain, action="delete")
 
 
 def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
@@ -161,43 +135,6 @@ def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
     _autorestart(certificate)
     _autocmd(certificate)
     _deploy_hook(certificate)
-
-
-def _txt_challenge(
-    profile: Dict[str, Any],
-    token: str,
-    domain: str,
-    action: str = "create",
-):
-    profile_name = profile["name"]
-    provider_name = profile["provider"]
-    provider_options = profile.get("provider_options", {})
-
-    if not provider_options:
-        print(
-            f"No provider_options are defined for profile {profile_name}, "
-            "any call to the provider API is likely to fail."
-        )
-
-    config_dict = {
-        "action": action,
-        "domain": domain,
-        "type": "TXT",
-        "name": "_acme-challenge.{0}.".format(domain),
-        "content": token,
-        "delegated": profile.get("delegated_subdomain"),
-        "provider_name": provider_name,
-        provider_name: provider_options,
-    }
-
-    ttl = profile.get("ttl")
-    if ttl:
-        config_dict["ttl"] = ttl
-
-    lexicon_config = ConfigResolver()
-    lexicon_config.with_dict(config_dict)
-
-    Client(lexicon_config).execute()
 
 
 def _pfx_export(certificate: Dict[str, Any], lineage_path: str):

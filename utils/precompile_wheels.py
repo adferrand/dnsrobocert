@@ -30,7 +30,7 @@ RUN apk --no-cache add build-base openssl-dev libxml2-dev libxslt-dev libffi-dev
 
 COPY requirements.txt .
 RUN mkdir -p /precompiled-wheels/$(uname -m) \
- && pip wheel --no-deps -r requirements.txt -w /precompiled-wheels
+ && python -m pip wheel --no-deps -r requirements.txt -w /precompiled-wheels
 
 CMD ["cp", "-ra", "/precompiled-wheels", "/wheels"]
 """
