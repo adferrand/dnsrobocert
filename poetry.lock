@@ -1,6 +1,6 @@
 [[package]]
 name = "acme"
-version = "1.9.0"
+version = "1.10.1"
 description = "ACME protocol implementation in Python"
 category = "main"
 optional = false
@@ -103,20 +103,20 @@ webencodings = "*"
 
 [[package]]
 name = "boto3"
-version = "1.16.35"
+version = "1.16.36"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-botocore = ">=1.19.35,<1.20.0"
+botocore = ">=1.19.36,<1.20.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.19.35"
+version = "1.19.36"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -137,7 +137,7 @@ python-versions = "*"
 
 [[package]]
 name = "certbot"
-version = "1.9.0"
+version = "1.10.1"
 description = "ACME client"
 category = "main"
 optional = false
@@ -1322,12 +1322,12 @@ test = ["zope.security", "zope.testrunner"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "720e29b1df009359e9b1adbc5e10f3cf189b2b1a026f58f4a5dc690b1886f1f6"
+content-hash = "0673f6474f12789302ba8afc4cf25c137b3bb56cc021450bbac54e82ebb3ffb4"
 
 [metadata.files]
 acme = [
-    {file = "acme-1.9.0-py2.py3-none-any.whl", hash = "sha256:d8061b396a22b21782c9b23ff9a945b23e50fca2573909a42f845e11d5658ac5"},
-    {file = "acme-1.9.0.tar.gz", hash = "sha256:38a1630c98e144136c62eec4d2c545a1bdb1a3cd4eca82214be6b83a1f5a161f"},
+    {file = "acme-1.10.1-py2.py3-none-any.whl", hash = "sha256:752d598e54e98ad1e874de53fd50c61044f1b566d6deb790db5676ce9c573546"},
+    {file = "acme-1.10.1.tar.gz", hash = "sha256:fcbb559aedc96b404edf593e78517dcd7291984d5a37036c3fc77f3c5c122fd8"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -1354,20 +1354,20 @@ bleach = [
     {file = "bleach-3.2.1.tar.gz", hash = "sha256:52b5919b81842b1854196eaae5ca29679a2f2e378905c346d3ca8227c2c66080"},
 ]
 boto3 = [
-    {file = "boto3-1.16.35-py2.py3-none-any.whl", hash = "sha256:2a6e92194bd6f2341908dc9b133af057ea1ff20b7d7e54674f48cdb531d93ca5"},
-    {file = "boto3-1.16.35.tar.gz", hash = "sha256:a35e0915547ea659ddd832c9aaf55038c56fa894c4cc2a2a46cd6c642494012a"},
+    {file = "boto3-1.16.36-py2.py3-none-any.whl", hash = "sha256:4ef19b74babe3925255cc0718bbed228e9b147f05051c39b3081c8e7fa6f1044"},
+    {file = "boto3-1.16.36.tar.gz", hash = "sha256:a1e64250415afd441799df4f70ac401bcf1611a300f3221547121193e3b10479"},
 ]
 botocore = [
-    {file = "botocore-1.19.35-py2.py3-none-any.whl", hash = "sha256:d31dce56799edb5796085d5296931faae201e28e14e568d9db4dac237a135fe3"},
-    {file = "botocore-1.19.35.tar.gz", hash = "sha256:633aa910509b060717df4130f7e2841f1101c0c47fd5871f4903b4b1dbab7e23"},
+    {file = "botocore-1.19.36-py2.py3-none-any.whl", hash = "sha256:9fba0246e29dbe0d4576a602aa5bc7a7caeaffb4e3c7f396f563dcdf04e26abf"},
+    {file = "botocore-1.19.36.tar.gz", hash = "sha256:a5ad68d2a2cd3781fa26dba36f355169c2a0ee103bcd544fdfc71d5709ecf0c1"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
     {file = "cached_property-1.5.2-py2.py3-none-any.whl", hash = "sha256:df4f613cf7ad9a588cc381aaf4a512d26265ecebd5eb9e1ba12f1319eb85a6a0"},
 ]
 certbot = [
-    {file = "certbot-1.9.0-py2.py3-none-any.whl", hash = "sha256:d5a804d32e471050921f7b39ed9859e2e9de02824176ed78f57266222036b53a"},
-    {file = "certbot-1.9.0.tar.gz", hash = "sha256:2ff9bf7d9af381c7efee22dec2dd6938d9d8fddcc9e11682b86e734164a30b57"},
+    {file = "certbot-1.10.1-py2.py3-none-any.whl", hash = "sha256:011ac980fa21b9f29e02c9b8d8b86e8a4bf4670b51b6ad91656e401e9d2d2231"},
+    {file = "certbot-1.10.1.tar.gz", hash = "sha256:0d9ee3fc09e0d03b2d1b1f1c4916e61ecfc6904b4216ddef4e6a5ca1424d9cb7"},
 ]
 certifi = [
     {file = "certifi-2020.12.5-py2.py3-none-any.whl", hash = "sha256:719a74fb9e33b9bd44cc7f3a8d94bc35e4049deebe19ba7d8e108280cfd59830"},
