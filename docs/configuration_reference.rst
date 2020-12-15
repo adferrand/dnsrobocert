@@ -297,7 +297,7 @@ be defined in each relevant certificate configuration.
     The following paragraphs describe the ``autorestart`` and ``autocmd`` features. To allow them to work properly,
     DNSroboCert must have access to the Docker client socket file (usually at path `/var/run/docker.sock`).
 
-    If DNSroboCert is run directly on the host, this usually require to use a user with administrative privileges,
+    If DNSroboCert is run directly on the host, this usually requires to use a user with administrative privileges,
     or member of the `docker` group.
 
     If DNSroboCert is run as a Docker, you will need to mount the Docker client socket file into the container.
