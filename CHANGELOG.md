@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Improve CI/CD pipelines stability
 
 ## 3.8.0 - 15/12/2020
 ### Added
