@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.8.2 - 25/12/2020
 ### Modified
 * Fix s390x compilation
 
