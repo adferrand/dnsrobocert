@@ -14,10 +14,12 @@ jobs:
           addToPath: true
         displayName: Install Python
       - script: |
+          set -e
           python -m pip install -U pip
           pip install twine
         displayName: Prepare environment
       - script: |
+          set -e
           twine upload dist/* -u "$(twine.username)" -p "$(twine.password)"
         displayName: Upload Python dist to PyPI
 
@@ -33,6 +35,7 @@ jobs:
           addToPath: true
         displayName: Install Python
       - script: |
+          set -e
           python -m pip install -U pip
           pip install poetry
         displayName: Prepare environment
@@ -42,6 +45,7 @@ jobs:
           containerRegistry: docker-hub
         displayName: Login to DockerHub
       - script: |
+          set -e
           curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
           export DOCKER_CLI_EXPERIMENTAL=enabled
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
@@ -53,6 +57,7 @@ jobs:
           docker buildx build --platform linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x --tag adferrand/letsencrypt-dns --tag adferrand/letsencrypt-dns:$version --push .
         displayName: Build and deploy multi-arch Docker image to DockerHub
       - script: |
+          set -e
           curl -X POST $(microbadger.dnsrobocert.trigger)
           # LEGACY DEPLOY
           curl -X POST $(microbadger.letsencrypt-dns.trigger)
@@ -71,6 +76,7 @@ jobs:
           path: $(Build.SourcesDirectory)/changelog
         displayName: Retrieve release changelog
       - script: |
+          set -e
           version=`ls changelog/*.md | sed -E 's/.*release_(.*)\.md/\1/g'`
           echo "Version is: $version"
           echo "##vso[task.setvariable variable=ReleaseVersion;]$version"

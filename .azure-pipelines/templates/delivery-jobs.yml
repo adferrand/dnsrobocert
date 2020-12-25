@@ -9,10 +9,12 @@ jobs:
           addToPath: true
         displayName: Install Python
       - script: |
+          set -e
           python -m pip install -U pip
           pip install poetry
         displayName: Prepare environment
       - script: |
+          set -e
           poetry build
         displayName: Build Python dist
       - task: CopyFiles@2
@@ -36,10 +38,12 @@ jobs:
           addToPath: true
         displayName: Install Python
       - script: |
+          set -e
           python -m pip install -U pip
           pip install poetry
         displayName: Prepare environment
       - script: |
+          set -e
           version=`poetry version | awk '{print $2}'`
           echo "Version is: $version"
           python utils/extract_changelog.py $version > $(Build.ArtifactStagingDirectory)/release_$version.md

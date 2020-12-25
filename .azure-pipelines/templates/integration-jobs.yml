@@ -35,10 +35,12 @@ jobs:
           addToPath: true
         displayName: Install Python
       - script: |
+          set -e
           python -m pip install -U pip
           pip install poetry tox
         displayName: Prepare environment
       - script: |
+          set -e
           tox
         displayName: Run tox env(s)
       - task: PublishTestResults@2
@@ -62,9 +64,11 @@ jobs:
       - checkout: self
         lfs: true
       - script: |
+          set -e
           docker build --tag adferrand/dnsrobocert:temp .
         displayName: Build Docker image
       - script: |
+          set -e
           mkdir -p ./bin
           curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
           GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert:temp
@@ -86,9 +90,11 @@ jobs:
           addToPath: true
         displayName: Install Python
       - script: |
+          set -e
           python -m pip install -U pip
           pip install poetry tox
         displayName: Prepare environment
       - script: |
+          set -e
           tox
         displayName: Run tox env(s)
