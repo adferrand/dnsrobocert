@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Removed
+* Remove s390x compilation
 
 ## 3.8.2 - 25/12/2020
 ### Modified
