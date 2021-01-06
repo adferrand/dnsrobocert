@@ -41,7 +41,7 @@ homepage = "https://dnsrobocert.readthedocs.io"
 [tool.poetry.dependencies]
 python = "^3.6"
 acme = "==1.10.1"
-certbot = "==1.10.1"
+certbot = "==1.11.0"
 dns-lexicon = { version = "==3.5.3", extras = [ "full" ] }
 # Optional deps on dns-lexicon
 zeep = "*"
