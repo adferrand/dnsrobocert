@@ -7,6 +7,7 @@ import subprocess
 import sys
 import threading
 from typing import Any, Dict, List, Optional, Union
+from pathlib import Path
 
 import coloredlogs
 from certbot.compat import misc
@@ -169,18 +170,19 @@ def get_default_args() -> Dict[str, str]:
     Retrieve the default values of CLI flags depending on the execution context.
     """
     if os.environ.get("SNAP"):
+        user_home = os.environ.get("SNAP_REAL_HOME", str(Path.home()))
         return {
             "config": os.path.join(
-                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/dnsrobocert.yml"
+                user_home, "dnsrobocert/dnsrobocert.yml"
             ),
             "configDesc": os.path.join(
-                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/dnsrobocert.yml"
+                user_home, "dnsrobocert/dnsrobocert.yml"
             ),
             "directory": os.path.join(
-                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/letsencrypt"
+                user_home, "dnsrobocert/letsencrypt"
             ),
             "directoryDesc": os.path.join(
-                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/letsencrypt"
+                user_home, "dnsrobocert/letsencrypt"
             ),
         }
 
@@ -198,7 +200,7 @@ def _is_valid_path_for_snap(path: str):
     * is relative to home_path and it is not composed of hidden parts (folder/files starting with "."),
     * or is located inside /etc if the snap is authorized to use /etc (connected to system_file interface).
     """
-    home_path = os.environ.get("SNAP_REAL_HOME")
+    home_path = os.environ.get("SNAP_REAL_HOME", str(Path.home()))
 
     # Check if the snap is authorized to use the /etc directory
     try:
@@ -218,7 +220,7 @@ def _split_path(path: str) -> List[str]:
     Split the given path into an array containing each part composing the path.
     For instance: /etc/to/my/config.yml => ["/", "etc", "to", "my", "config.yml"].
     """
-    all_parts = []
+    all_parts: List[str] = []
     while 1:
         parts = os.path.split(path)
         if parts[0] == path:  # sentinel for absolute paths
