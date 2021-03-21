@@ -9,15 +9,12 @@ import sys
 import tempfile
 import time
 import traceback
-from random import random
 from typing import List, Optional
 
 import coloredlogs
-import schedule
 import yaml
 from certbot.compat import misc
-
-from dnsrobocert.core import certbot, config, legacy, utils
+from dnsrobocert.core import certbot, config, legacy, utils, background
 
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
@@ -85,51 +82,35 @@ class _Daemon:
         return self._do_shutdown
 
 
-def _renew_job(config_path: str, directory_path: str):
-    random_delay_seconds = 21600  # Random delay up to 12 hours
-    wait_time = int(random() * random_delay_seconds)
-    LOGGER.info("Automated execution: renew certificates if needed.")
-    LOGGER.info(f"Random wait for this execution: {wait_time} seconds")
-    time.sleep(wait_time)
-    certbot.renew(config_path, directory_path)
-
-
 def _watch_config(config_path: str, directory_path: str):
     LOGGER.info("Starting DNSroboCert.")
 
     with tempfile.TemporaryDirectory() as workspace:
         runtime_config_path = os.path.join(workspace, "dnsrobocert-runtime.yml")
 
-        schedule.every().day.at("12:00").do(
-            _renew_job, config_path=runtime_config_path, directory_path=directory_path
-        )
-        schedule.every().day.at("00:00").do(
-            _renew_job, config_path=runtime_config_path, directory_path=directory_path
-        )
+        with background.worker(runtime_config_path, directory_path):
 
-        daemon = _Daemon()
-        previous_digest = ""
-        while not daemon.do_shutdown():
-            schedule.run_pending()
-
-            try:
-                generated_config_path = legacy.migrate(config_path)
-                effective_config_path = (
-                    generated_config_path if generated_config_path else config_path
-                )
-                digest = utils.digest(effective_config_path)
-
-                if digest != previous_digest:
-                    previous_digest = digest
-                    _process_config(
-                        effective_config_path, directory_path, runtime_config_path
+            daemon = _Daemon()
+            previous_digest = ""
+            while not daemon.do_shutdown():
+                try:
+                    generated_config_path = legacy.migrate(config_path)
+                    effective_config_path = (
+                        generated_config_path if generated_config_path else config_path
                     )
-            except BaseException as error:
-                LOGGER.error("An error occurred during DNSroboCert watch:")
-                LOGGER.error(error)
-                traceback.print_exc(file=sys.stderr)
+                    digest = utils.digest(effective_config_path)
 
-            time.sleep(1)
+                    if digest != previous_digest:
+                        previous_digest = digest
+                        _process_config(
+                            effective_config_path, directory_path, runtime_config_path
+                        )
+                except BaseException as error:
+                    LOGGER.error("An error occurred during DNSroboCert watch:")
+                    LOGGER.error(error)
+                    traceback.print_exc(file=sys.stderr)
+
+                time.sleep(1)
 
     LOGGER.info("Exiting DNSroboCert.")
 
