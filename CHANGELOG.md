@@ -1,6 +1,14 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Update Lexicon to 3.5.5 (add Mythic Beasts and Infomaniak providers)
+* Update Certbot to 1.13.0
+* Use `poetry-core` to build DNSroboCert (#306)
+* Various fixes on the documentation (#291 #292)
+
+### Removed
+* Stop using `--manual-public-ip-logging-ok` deprecated flag on Certbot 
 
 ## 3.8.3 - 25/12/2020
 ### Removed
