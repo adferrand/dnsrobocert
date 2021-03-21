@@ -1,8 +1,6 @@
 # Changelog
 
 ## master - CURRENT
-
-## 3.9.0 - 21/03/2021
 ### Modified
 * Update Lexicon to 3.5.5 (add Mythic Beasts and Infomaniak providers)
 * Update Certbot to 1.13.0
