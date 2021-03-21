@@ -6,8 +6,8 @@ import re
 import subprocess
 import sys
 import threading
-from typing import Any, Dict, List, Optional, Union
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
 import coloredlogs
 from certbot.compat import misc
@@ -172,18 +172,10 @@ def get_default_args() -> Dict[str, str]:
     if os.environ.get("SNAP"):
         user_home = os.environ.get("SNAP_REAL_HOME", str(Path.home()))
         return {
-            "config": os.path.join(
-                user_home, "dnsrobocert/dnsrobocert.yml"
-            ),
-            "configDesc": os.path.join(
-                user_home, "dnsrobocert/dnsrobocert.yml"
-            ),
-            "directory": os.path.join(
-                user_home, "dnsrobocert/letsencrypt"
-            ),
-            "directoryDesc": os.path.join(
-                user_home, "dnsrobocert/letsencrypt"
-            ),
+            "config": os.path.join(user_home, "dnsrobocert/dnsrobocert.yml"),
+            "configDesc": os.path.join(user_home, "dnsrobocert/dnsrobocert.yml"),
+            "directory": os.path.join(user_home, "dnsrobocert/letsencrypt"),
+            "directoryDesc": os.path.join(user_home, "dnsrobocert/letsencrypt"),
         }
 
     return {
