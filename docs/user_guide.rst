@@ -74,7 +74,7 @@ And run DNSroboCert with:
 
 .. code-block:: console
 
-    dnsrobocert -c /etc/dnsrobocert.yml -d /etc/letsencrypt
+    dnsrobocert -c /etc/dnsrobocert/config.yml -d /etc/letsencrypt
 
 DNSroboCert will continue to run in the foreground. To stop it, press CTRL+C.
 
