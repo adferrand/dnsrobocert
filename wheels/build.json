@@ -1,1 +1,1 @@
-{"python_version": "3.8", "alpine_version": "3.12", "packages": {"cffi": "1.14.4", "cryptography": "3.3.1", "lxml": "4.6.2"}}
+{"python_version": "3.9", "alpine_version": "3.13", "architectures": ["linux/amd64", "linux/386", "linux/arm64", "linux/arm/v7", "linux/arm/v6", "linux/ppc64le"], "packages": {"cffi": "1.14.5", "cryptography": "3.4.6", "lxml": "4.6.2"}}

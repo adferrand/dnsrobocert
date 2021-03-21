@@ -18,19 +18,18 @@ ARCHS = [
     "linux/arm/v7",
     "linux/arm/v6",
     "linux/ppc64le",
-    "linux/s390x",
 ]
-PYTHON_VERSION = "3.8"
-ALPINE_VERSION = "3.12"
+PYTHON_VERSION = "3.9"
+ALPINE_VERSION = "3.13"
 
 DOCKERFILE = f"""
 FROM docker.io/python:{PYTHON_VERSION}-alpine{ALPINE_VERSION}
 
-RUN apk --no-cache add build-base openssl-dev libxml2-dev libxslt-dev libffi-dev zlib-dev
+RUN apk --no-cache add build-base openssl-dev libxml2-dev libxslt-dev libffi-dev zlib-dev rust cargo
 
 COPY requirements.txt .
 RUN mkdir -p /precompiled-wheels/$(uname -m) \
- && python -m pip wheel --no-deps -r requirements.txt -w /precompiled-wheels
+ && CRYPTOGRAPHY_DONT_BUILD_RUST=1 python -m pip wheel --no-deps -r requirements.txt -w /precompiled-wheels
 
 CMD ["cp", "-ra", "/precompiled-wheels", "/wheels"]
 """
@@ -47,6 +46,9 @@ def _need_rebuild(requirements):
         return True
 
     if descriptor.get("alpine_version") != ALPINE_VERSION:
+        return True
+
+    if descriptor.get("architectures") != ARCHS:
         return True
 
     for requirement in requirements:
@@ -118,6 +120,7 @@ def main():
 
         if os.path.exists(WHEELS_DIR):
             shutil.rmtree(WHEELS_DIR)
+        os.makedirs(WHEELS_DIR, exist_ok=True)
 
         for arch in ARCHS:
             arch = arch.replace("/", "_")
@@ -133,6 +136,7 @@ def main():
         build_data = {
             "python_version": PYTHON_VERSION,
             "alpine_version": ALPINE_VERSION,
+            "architectures": ARCHS,
             "packages": {
                 package: version for package, version in extracted_requirements
             },

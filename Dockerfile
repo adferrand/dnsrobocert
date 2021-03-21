@@ -8,7 +8,7 @@ RUN python3 -m pip install --user poetry --no-warn-script-location \
  && python3 -m poetry export --format requirements.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
  && python3 -m poetry build -f wheel
 
-FROM docker.io/python:3.8-alpine3.12
+FROM docker.io/python:3.9.2-alpine3.13
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
 COPY wheels /tmp/dnsrobocert/precompiled-wheels
