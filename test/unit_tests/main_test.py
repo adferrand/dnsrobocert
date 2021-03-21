@@ -7,9 +7,9 @@ from dnsrobocert.core import main
 @patch("dnsrobocert.core.main.certbot.account")
 @patch("dnsrobocert.core.main.certbot.certonly")
 @patch("dnsrobocert.core.main.certbot.revoke")
-@patch("dnsrobocert.core.main.schedule")
+@patch("dnsrobocert.core.main.background")
 @patch.object(main._Daemon, "do_shutdown")
-def test_main_loop(shutdown, schedule, revoke, certonly, account, tmp_path):
+def test_main_loop(shutdown, background, revoke, certonly, account, tmp_path):
     directory_path = tmp_path / "letsencrypt"
     os.mkdir(directory_path)
 
@@ -40,4 +40,4 @@ certificates:
     assert account.called
     assert certonly.called
     assert not revoke.called
-    assert schedule.run_pending.called
+    assert background.worker.called
