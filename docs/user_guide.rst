@@ -62,7 +62,7 @@ Then install DNSroboCert on the desired version (eg. ``3.0.0``):
 
 .. code-block:: console
 
-    python3 -m pipx dnsrobocert==3.0.0
+    python3 -m pipx install dnsrobocert==3.0.0
 
 At this point DNSroboCert is installed and available in the ``PATH``. You can display the inline help using:
 
