@@ -4,7 +4,8 @@ import os
 import re
 import subprocess
 import sys
-from typing import Any, Dict, List, Union
+import threading
+from typing import Any, Dict, List, Optional, Union
 
 import coloredlogs
 
@@ -24,6 +25,7 @@ def execute(
     check: bool = True,
     shell: bool = False,
     env: Dict[str, str] = None,
+    lock: Optional[threading.Lock] = None,
 ):
     if not env:
         env = os.environ.copy()
@@ -40,7 +42,11 @@ def execute(
 
     error = None
     try:
-        call(command, shell=shell, env=env)
+        if lock:
+            with lock:
+                call(command, shell=shell, env=env)
+        else:
+            call(command, shell=shell, env=env)
     except subprocess.CalledProcessError as e:
         error = e
 

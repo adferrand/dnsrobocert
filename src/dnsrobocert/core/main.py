@@ -7,6 +7,7 @@ import re
 import signal
 import sys
 import tempfile
+import threading
 import time
 import traceback
 from typing import List, Optional
@@ -14,13 +15,19 @@ from typing import List, Optional
 import coloredlogs
 import yaml
 from certbot.compat import misc
-from dnsrobocert.core import certbot, config, legacy, utils, background
+
+from dnsrobocert.core import background, certbot, config, legacy, utils
 
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def _process_config(config_path: str, directory_path: str, runtime_config_path: str):
+def _process_config(
+    config_path: str,
+    directory_path: str,
+    runtime_config_path: str,
+    lock: threading.Lock,
+):
     dnsrobocert_config = config.load(config_path)
 
     if not dnsrobocert_config:
@@ -36,7 +43,7 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
     utils.configure_certbot_workspace(dnsrobocert_config, directory_path)
 
     LOGGER.info("Registering ACME account if needed.")
-    certbot.account(runtime_config_path, directory_path)
+    certbot.account(runtime_config_path, directory_path, lock)
 
     LOGGER.info("Creating missing certificates if needed (~1min for each)")
     certificates = dnsrobocert_config.get("certificates", {})
@@ -50,6 +57,7 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
                 runtime_config_path,
                 directory_path,
                 lineage,
+                lock,
                 domains,
                 force_renew=force_renew,
             )
@@ -65,7 +73,7 @@ def _process_config(config_path: str, directory_path: str, runtime_config_path: 
             domain = re.sub(r"^\*\.", "", domain)
             if domain not in lineages:
                 LOGGER.info(f"Removing the certificate {domain}")
-                certbot.revoke(runtime_config_path, directory_path, domain)
+                certbot.revoke(runtime_config_path, directory_path, domain, lock)
 
 
 class _Daemon:
@@ -87,9 +95,9 @@ def _watch_config(config_path: str, directory_path: str):
 
     with tempfile.TemporaryDirectory() as workspace:
         runtime_config_path = os.path.join(workspace, "dnsrobocert-runtime.yml")
+        certbot_lock = threading.Lock()
 
-        with background.worker(runtime_config_path, directory_path):
-
+        with background.worker(runtime_config_path, directory_path, certbot_lock):
             daemon = _Daemon()
             previous_digest = ""
             while not daemon.do_shutdown():
@@ -103,7 +111,10 @@ def _watch_config(config_path: str, directory_path: str):
                     if digest != previous_digest:
                         previous_digest = digest
                         _process_config(
-                            effective_config_path, directory_path, runtime_config_path
+                            effective_config_path,
+                            directory_path,
+                            runtime_config_path,
+                            certbot_lock,
                         )
                 except BaseException as error:
                     LOGGER.error("An error occurred during DNSroboCert watch:")

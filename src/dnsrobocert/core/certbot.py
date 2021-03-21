@@ -3,6 +3,7 @@
 import logging
 import os
 import sys
+import threading
 from typing import List, Optional
 
 import coloredlogs
@@ -21,7 +22,7 @@ _DEFAULT_FLAGS = [
 ]
 
 
-def account(config_path: str, directory_path: str):
+def account(config_path: str, directory_path: str, lock: threading.Lock):
     dnsrobocert_config = config.load(config_path)
     acme = dnsrobocert_config.get("acme", {})
     email = acme.get("email_account")
@@ -54,6 +55,7 @@ def account(config_path: str, directory_path: str):
             url,
         ],
         check=False,
+        lock=lock,
     )
 
 
@@ -61,6 +63,7 @@ def certonly(
     config_path: str,
     directory_path: str,
     lineage: str,
+    lock: threading.Lock,
     domains: Optional[List[str]] = None,
     force_renew: bool = False,
 ):
@@ -104,11 +107,12 @@ def certonly(
             "--cert-name",
             lineage,
             *additional_params,
-        ]
+        ],
+        lock=lock,
     )
 
 
-def renew(config_path: str, directory_path: str):
+def renew(config_path: str, directory_path: str, lock: threading.Lock):
     dnsrobocert_config = config.load(config_path)
 
     if dnsrobocert_config:
@@ -127,11 +131,12 @@ def renew(config_path: str, directory_path: str):
                 os.path.join(directory_path, "workdir"),
                 "--logs-dir",
                 os.path.join(directory_path, "logs"),
-            ]
+            ],
+            lock=lock,
         )
 
 
-def revoke(config_path: str, directory_path: str, lineage: str):
+def revoke(config_path: str, directory_path: str, lineage: str, lock: threading.Lock):
     url = config.get_acme_url(config.load(config_path))
 
     utils.execute(
@@ -151,7 +156,8 @@ def revoke(config_path: str, directory_path: str, lineage: str):
             url,
             "--cert-path",
             os.path.join(directory_path, "live", lineage, "cert.pem"),
-        ]
+        ],
+        lock=lock,
     )
 
 

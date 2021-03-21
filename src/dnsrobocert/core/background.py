@@ -6,6 +6,7 @@ from random import random
 
 import coloredlogs
 import schedule
+
 from dnsrobocert.core import certbot
 
 LOGGER = logging.getLogger(__name__)
@@ -13,14 +14,21 @@ coloredlogs.install(logger=LOGGER)
 
 
 @contextmanager
-def worker(config_path: str, directory_path: str):
+def worker(config_path: str, directory_path: str, lock: threading.Lock):
     stop_thread = threading.Event()
 
     schedule.every().day.at("12:00").do(
-        _renew_job, config_path=config_path, directory_path=directory_path, stop_thread=stop_thread,
+        _renew_job,
+        config_path=config_path,
+        directory_path=directory_path,
+        lock=lock,
+        stop_thread=stop_thread,
     )
     schedule.every().day.at("00:00").do(
-        _renew_job, config_path=config_path, directory_path=directory_path
+        _renew_job,
+        config_path=config_path,
+        directory_path=directory_path,
+        lock=lock,
     )
 
     _launch_background_jobs(stop_thread)
@@ -43,7 +51,12 @@ def _launch_background_jobs(stop_thread: threading.Event, interval: int = 1):
     continuous_thread.start()
 
 
-def _renew_job(config_path: str, directory_path: str, stop_thread: threading.Event):
+def _renew_job(
+    config_path: str,
+    directory_path: str,
+    lock: threading.Lock,
+    stop_thread: threading.Event,
+):
     random_delay_seconds = 21600  # Random delay up to 12 hours
     wait_time = int(random() * random_delay_seconds)
 
@@ -53,4 +66,4 @@ def _renew_job(config_path: str, directory_path: str, stop_thread: threading.Eve
     interrupted = stop_thread.wait(wait_time)
 
     if not interrupted:
-        certbot.renew(config_path, directory_path)
+        certbot.renew(config_path, directory_path, lock)
