@@ -14,7 +14,6 @@ from typing import List, Optional
 
 import coloredlogs
 import yaml
-from certbot.compat import misc
 
 from dnsrobocert.core import background, certbot, config, legacy, utils
 
@@ -130,21 +129,25 @@ def main(args: Optional[List[str]] = None):
     if not args:
         args = sys.argv[1:]
 
+    defaults = utils.get_default_args()
+
     parser = argparse.ArgumentParser(description="Start dnsrobocert.")
     parser.add_argument(
         "--config",
         "-c",
-        default=os.path.join(os.getcwd(), "dnsrobocert.yml"),
-        help="Set the dnsrobocert config to use.",
+        default=defaults["config"],
+        help=f"set the dnsrobocert config to use (default {defaults['configDesc']})",
     )
     parser.add_argument(
         "--directory",
         "-d",
-        default=misc.get_default_folder("config"),
-        help="Set the directory path where certificates are stored.",
+        default=defaults["directory"],
+        help=f"set the directory path where certificates are stored (default: {defaults['directoryDesc']})",
     )
 
     parsed_args = parser.parse_args(args)
+
+    utils.validate_snap_environment(parsed_args)
 
     _watch_config(
         os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)

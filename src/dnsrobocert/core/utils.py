@@ -1,3 +1,4 @@
+import argparse
 import hashlib
 import logging
 import os
@@ -8,6 +9,7 @@ import threading
 from typing import Any, Dict, List, Optional, Union
 
 import coloredlogs
+from certbot.compat import misc
 
 try:
     POSIX_MODE = True
@@ -128,3 +130,104 @@ def digest(path: str):
 
 def normalize_lineage(domain: str):
     return re.sub(r"^\*\.", "", domain)
+
+
+def validate_snap_environment(args: argparse.Namespace):
+    """
+    Verify that the provided CLI flags are compatible with an execution of
+    DNSroboCert inside snap. No-op if we are not in a snap.
+    """
+    if not os.environ.get("SNAP"):
+        return
+
+    errors = []
+
+    if not _is_valid_path_for_snap(args.config):
+        errors.append(f"Invalid --config value: {args.config}")
+
+    if not _is_valid_path_for_snap(args.directory):
+        errors.append(f"Invalid --directory value: {args.directory}")
+
+    for error in errors:
+        LOGGER.error(error)
+
+    if errors:
+        LOGGER.error(
+            "Snap DNSroboCert can only use non-hidden files and directories "
+            "located in the user HOME folder by default."
+        )
+        LOGGER.error(
+            "DNSroboCert can be granted to use the /etc directory with this command: "
+            "snap connect dnsrobocert:etc"
+        )
+
+        sys.exit(1)
+
+
+def get_default_args() -> Dict[str, str]:
+    """
+    Retrieve the default values of CLI flags depending on the execution context.
+    """
+    if os.environ.get("SNAP"):
+        return {
+            "config": os.path.join(
+                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/dnsrobocert.yml"
+            ),
+            "configDesc": os.path.join(
+                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/dnsrobocert.yml"
+            ),
+            "directory": os.path.join(
+                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/letsencrypt"
+            ),
+            "directoryDesc": os.path.join(
+                os.environ.get("SNAP_REAL_HOME"), "dnsrobocert/letsencrypt"
+            ),
+        }
+
+    return {
+        "config": os.path.join(os.getcwd(), "dnsrobocert.yml"),
+        "configDesc": "$(pwd)/dnsrobocert.yml",
+        "directory": misc.get_default_folder("config"),
+        "directoryDesc": misc.get_default_folder("config"),
+    }
+
+
+def _is_valid_path_for_snap(path: str):
+    """
+    Check that the given path:
+    * is relative to home_path and it is not composed of hidden parts (folder/files starting with "."),
+    * or is located inside /etc if the snap is authorized to use /etc (connected to system_file interface).
+    """
+    home_path = os.environ.get("SNAP_REAL_HOME")
+
+    # Check if the snap is authorized to use the /etc directory
+    try:
+        os.listdir("/etc")
+        system_files_interface = True
+    except PermissionError:
+        system_files_interface = False
+
+    return (
+        os.path.abspath(path).startswith(home_path)
+        and not any(part for part in _split_path(path) if part.startswith("."))
+    ) or (system_files_interface and os.path.abspath(path).startswith("/etc/"))
+
+
+def _split_path(path: str) -> List[str]:
+    """
+    Split the given path into an array containing each part composing the path.
+    For instance: /etc/to/my/config.yml => ["/", "etc", "to", "my", "config.yml"].
+    """
+    all_parts = []
+    while 1:
+        parts = os.path.split(path)
+        if parts[0] == path:  # sentinel for absolute paths
+            all_parts.insert(0, parts[0])
+            break
+        elif parts[1] == path:  # sentinel for relative paths
+            all_parts.insert(0, parts[1])
+            break
+        else:
+            path = parts[0]
+            all_parts.insert(0, parts[1])
+    return all_parts
