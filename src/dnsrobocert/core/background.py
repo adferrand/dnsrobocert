@@ -14,14 +14,16 @@ coloredlogs.install(logger=LOGGER)
 
 @contextmanager
 def worker(config_path: str, directory_path: str):
+    stop_thread = threading.Event()
+
     schedule.every().day.at("12:00").do(
-        _renew_job, config_path=config_path, directory_path=directory_path
+        _renew_job, config_path=config_path, directory_path=directory_path, stop_thread=stop_thread,
     )
     schedule.every().day.at("00:00").do(
         _renew_job, config_path=config_path, directory_path=directory_path
     )
 
-    stop_thread = _launch_background_jobs()
+    _launch_background_jobs(stop_thread)
 
     try:
         yield
@@ -29,9 +31,7 @@ def worker(config_path: str, directory_path: str):
         stop_thread.set()
 
 
-def _launch_background_jobs(interval: int = 1) -> threading.Event:
-    stop_thread = threading.Event()
-
+def _launch_background_jobs(stop_thread: threading.Event, interval: int = 1):
     class ScheduleThread(threading.Thread):
         @classmethod
         def run(cls):
@@ -42,13 +42,15 @@ def _launch_background_jobs(interval: int = 1) -> threading.Event:
     continuous_thread = ScheduleThread()
     continuous_thread.start()
 
-    return stop_thread
 
-
-def _renew_job(config_path: str, directory_path: str):
+def _renew_job(config_path: str, directory_path: str, stop_thread: threading.Event):
     random_delay_seconds = 21600  # Random delay up to 12 hours
     wait_time = int(random() * random_delay_seconds)
+
     LOGGER.info("Automated execution: renew certificates if needed.")
     LOGGER.info(f"Random wait for this execution: {wait_time} seconds")
-    time.sleep(wait_time)
-    certbot.renew(config_path, directory_path)
+
+    interrupted = stop_thread.wait(wait_time)
+
+    if not interrupted:
+        certbot.renew(config_path, directory_path)
