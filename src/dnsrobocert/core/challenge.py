@@ -65,6 +65,9 @@ def check_one_challenge(challenge: str, token: Optional[str]) -> bool:
     except (resolver.NXDOMAIN, resolver.NoAnswer):
         print(f"TXT {challenge} does not exist.")
         return False
+    except dns.exception.Timeout as e:
+        print(f"Timeout while trying to check TXT {challenge}: {e}")
+        return False
     else:
         print(f"TXT {challenge} exists.")
 
