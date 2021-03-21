@@ -96,7 +96,6 @@ def certonly(
             _hook_cmd("auth", config_path, lineage),
             "--manual-cleanup-hook",
             _hook_cmd("cleanup", config_path, lineage),
-            "--manual-public-ip-logging-ok",
             "--expand",
             "--deploy-hook",
             _hook_cmd("deploy", config_path, lineage),
