@@ -119,6 +119,8 @@ properties:
           type: string
         force_renew:
           type: boolean
+        follow_cnames:
+          type: boolean
       required: [domains, profile]
       additionalProperties: false
 additionalProperties: false

@@ -1,5 +1,5 @@
 ARG BUILDER_ARCH=amd64
-FROM docker.io/${BUILDER_ARCH}/python:3-slim-buster AS constraints
+FROM docker.io/${BUILDER_ARCH}/python:3-slim AS constraints
 
 COPY src poetry.lock poetry.toml pyproject.toml README.rst /tmp/dnsrobocert/
 

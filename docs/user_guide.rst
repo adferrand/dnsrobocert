@@ -62,7 +62,7 @@ Then install DNSroboCert on the desired version (eg. ``3.0.0``):
 
 .. code-block:: console
 
-    python3 -m pipx dnsrobocert==3.0.0
+    python3 -m pipx install dnsrobocert==3.0.0
 
 At this point DNSroboCert is installed and available in the ``PATH``. You can display the inline help using:
 
@@ -74,7 +74,7 @@ And run DNSroboCert with:
 
 .. code-block:: console
 
-    dnsrobocert -c /etc/dnsrobocert.yml -d /etc/letsencrypt
+    dnsrobocert -c /etc/dnsrobocert/config.yml -d /etc/letsencrypt
 
 DNSroboCert will continue to run in the foreground. To stop it, press CTRL+C.
 

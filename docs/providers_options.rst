@@ -24,11 +24,13 @@ The following Lexicon providers are supported by DNSroboCert.
 +----------------+----------------+----------------+----------------+
 |henet_          |hetzner_        |hostingde_      |hover_          |
 +----------------+----------------+----------------+----------------+
-|infoblox_       |internetbs_     |inwx_           |linode_         |
+|infoblox_       |infomaniak_     |internetbs_     |inwx_           |
 +----------------+----------------+----------------+----------------+
-|linode4_        |localzone_      |luadns_         |memset_         |
+|joker_          |linode_         |linode4_        |localzone_      |
 +----------------+----------------+----------------+----------------+
-|namecheap_      |namesilo_       |netcup_         |nfsn_           |
+|luadns_         |memset_         |mythicbeasts_   |namecheap_      |
++----------------+----------------+----------------+----------------+
+|namesilo_       |netcup_         |nfsn_           |njalla_         |
 +----------------+----------------+----------------+----------------+
 |nsone_          |onapp_          |online_         |ovh_            |
 +----------------+----------------+----------------+----------------+
@@ -36,11 +38,11 @@ The following Lexicon providers are supported by DNSroboCert.
 +----------------+----------------+----------------+----------------+
 |rage4_          |rcodezero_      |route53_        |safedns_        |
 +----------------+----------------+----------------+----------------+
-|sakuracloud_    |softlayer_      |subreg_         |transip_        |
+|sakuracloud_    |softlayer_      |transip_        |ultradns_       |
 +----------------+----------------+----------------+----------------+
-|ultradns_       |vultr_          |yandex_         |zeit_           |
+|vultr_          |yandex_         |zeit_           |zilore_         |
 +----------------+----------------+----------------+----------------+
-|zilore_         |zonomi_         |                |                |
+|zonomi_         |                |                |                |
 +----------------+----------------+----------------+----------------+
 
 Providers options
@@ -258,6 +260,11 @@ infoblox
     * ``ib_view`` Specify dns view to manage at the infoblox
     * ``ib_host`` Specify infoblox host exposing the wapi
 
+.. _infomaniak:
+
+infomaniak
+    * ``auth_token`` Specify the token
+
 .. _internetbs:
 
 internetbs
@@ -269,6 +276,11 @@ internetbs
 inwx
     * ``auth_username`` Specify username for authentication
     * ``auth_password`` Specify password for authentication
+
+.. _joker:
+
+joker
+    * ``auth_token`` Specify the api key to connect to the joker.com api
 
 .. _linode:
 
@@ -296,6 +308,13 @@ luadns
 memset
     * ``auth_token`` Specify api key for authentication
 
+.. _mythicbeasts:
+
+mythicbeasts
+    * ``auth_username`` Specify api credentials username
+    * ``auth_password`` Specify api credentials password
+    * ``auth_token`` Specify api token for authentication
+
 .. _namecheap:
 
 namecheap
@@ -321,6 +340,11 @@ netcup
 nfsn
     * ``auth_username`` Specify username used to authenticate
     * ``auth_token`` Specify token used to authenticate
+
+.. _njalla:
+
+njalla
+    * ``auth_token`` Specify api token for authentication
 
 .. _nsone:
 
@@ -413,12 +437,6 @@ sakuracloud
 softlayer
     * ``auth_username`` Specify username for authentication
     * ``auth_api_key`` Specify api private key for authentication
-
-.. _subreg:
-
-subreg
-    * ``auth_username`` Specify username for authentication
-    * ``auth_password`` Specify password for authentication
 
 .. _transip:
 

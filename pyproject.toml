@@ -1,12 +1,10 @@
 [build-system]
-requires = [
-    "poetry>=0.12"
-]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "dnsrobocert"
-version = "3.7.3"
+version = "3.9.0"
 description = "A tool to manage your DNS-challenged TLS certificates"
 license = "MIT"
 keywords = [
@@ -40,9 +38,9 @@ homepage = "https://dnsrobocert.readthedocs.io"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-acme = "==1.9.0"
-certbot = "==1.9.0"
-dns-lexicon = { version = "==3.4.5", extras = [ "full" ] }
+acme = "==1.13.0"
+certbot = "==1.13.0"
+dns-lexicon = { version = "==3.5.5", extras = [ "full" ] }
 # Optional deps on dns-lexicon
 zeep = "*"
 xmltodict = "*"
@@ -55,14 +53,15 @@ boto3 = "*"
 cryptography = ">=2,<4"
 cffi = "^1"
 lxml = "^4"
-dnspython3 = "^1"
+dnspython = "^2"
 jsonschema = "^3"
 pem = "^20"
-pyopenssl = "^19"
+pyopenssl = ">=19,<21"
 pyyaml = "^5"
 schedule = "^0"
 coloredlogs = "^14"
 colorama = "^0"
+tldextract = "^3"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

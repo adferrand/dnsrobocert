@@ -2,6 +2,47 @@
 
 ## master - CURRENT
 
+## 3.9.0 - 21/03/2021
+### Modified
+* Update Lexicon to 3.5.5 (add Mythic Beasts and Infomaniak providers)
+* Update Certbot to 1.13.0
+* Use `poetry-core` to build DNSroboCert (#306)
+* Various fixes on the documentation (#291 #292)
+
+### Removed
+* Stop using `--manual-public-ip-logging-ok` deprecated flag on Certbot 
+
+## 3.8.3 - 25/12/2020
+### Removed
+* Remove s390x compilation
+
+## 3.8.2 - 25/12/2020
+### Modified
+* Fix s390x compilation
+
+## 3.8.1 - 25/12/2020
+### Modified
+* Improve CI/CD pipelines stability
+
+## 3.8.0 - 15/12/2020
+### Added
+* DNS challenges can now be done using the DNS alias mode, which consists in delegating
+  challenges to a different DNS zone different using CNAME records. To use it the
+  `certificate` now includes the `follow_cnames` option (default `false`). If set to
+  `true`, DNSroboCert will follow the CNAME records to find the actual TXT record name
+  to create for a DNS-01 challenge.
+
+### Modified
+* Upgrade Certbot to 1.10.1 (official Python 3.9 support)
+
+## 3.7.5 - 23/11/2020
+### Modified
+* Upgrade Lexicon to 3.5.2 (various fixes)
+
+## 3.7.4 - 19/11/2020
+### Added
+* Upgrade Lexicon to 3.5.0 (add Joker provider, various fixes)
+
 ## 3.7.3 - 03/11/2020
 ### Modified
 * Fix i686 docker image build
