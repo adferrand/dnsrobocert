@@ -21,7 +21,8 @@ apps:
     command: bin/python3 -s $SNAP/bin/dnsrobocert
     environment:
       PATH: "$SNAP/bin:$SNAP/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
-    plugs: [home, etc]
+    plugs:
+      - home
 
 parts:
   dnsrobocert:
@@ -34,9 +35,3 @@ parts:
       set -e
       snapcraftctl pull
       snapcraftctl set-version $(cat pyproject.toml | grep '^version = .*' | sed -E 's/version = "(.*)"/\1/g')
-
-plugs:
-  etc:
-    interface: system-files
-    read: [/etc]
-    write: [/etc]

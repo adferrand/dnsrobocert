@@ -13,10 +13,8 @@ BUILD_JSON = os.path.join(WHEELS_DIR, "build.json")
 TARGETS = ["cryptography", "cffi", "lxml"]
 ARCHS = [
     "linux/amd64",
-    "linux/386",
     "linux/arm64",
     "linux/arm/v7",
-    "linux/arm/v6",
     "linux/ppc64le",
 ]
 PYTHON_VERSION = "3.9"
@@ -25,11 +23,18 @@ ALPINE_VERSION = "3.13"
 DOCKERFILE = f"""
 FROM docker.io/python:{PYTHON_VERSION}-alpine{ALPINE_VERSION}
 
-RUN apk --no-cache add build-base openssl-dev libxml2-dev libxslt-dev libffi-dev zlib-dev rust cargo
+RUN apk --no-cache add \
+        build-base \
+        openssl-dev \
+        libxml2-dev \
+        libxslt-dev \
+        libffi-dev \
+        zlib-dev \
+        cargo
 
 COPY requirements.txt .
-RUN mkdir -p /precompiled-wheels/$(uname -m) \
- && CRYPTOGRAPHY_DONT_BUILD_RUST=1 python -m pip wheel --no-deps -r requirements.txt -w /precompiled-wheels
+
+RUN python -m pip wheel --no-binary :all: --no-deps -r requirements.txt -w /precompiled-wheels
 
 CMD ["cp", "-ra", "/precompiled-wheels", "/wheels"]
 """
