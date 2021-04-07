@@ -139,7 +139,7 @@ python-versions = "*"
 
 [[package]]
 name = "certbot"
-version = "1.13.0"
+version = "1.14.0"
 description = "ACME client"
 category = "main"
 optional = false
@@ -160,7 +160,7 @@ pywin32 = {version = ">=300", markers = "sys_platform == \"win32\""}
 "zope.interface" = "*"
 
 [package.extras]
-dev = ["astroid", "azure-devops", "coverage", "ipdb", "mypy", "pygithub", "pylint", "pytest", "pytest-cov", "pytest-xdist", "tox", "twine", "wheel"]
+dev = ["astroid", "azure-devops", "coverage", "ipdb", "mypy", "pygithub", "poetry (>=1.1.0)", "pylint", "pytest", "pytest-cov", "pytest-xdist", "typing-extensions", "tox", "twine", "wheel"]
 docs = ["repoze.sphinx.autointerface", "Sphinx (>=1.2)", "sphinx-rtd-theme"]
 
 [[package]]
@@ -1322,7 +1322,7 @@ test = ["zope.security", "zope.testrunner"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "99b5b651ab6d9a59cb57cf9adf4d6b2fff721d1eec9ce689686d7eb4f892eae3"
+content-hash = "a078bfd0d580b5335e5a310473310226841ef3caad3e9336249cd30261965e59"
 
 [metadata.files]
 acme = [
@@ -1366,8 +1366,8 @@ cached-property = [
     {file = "cached_property-1.5.2-py2.py3-none-any.whl", hash = "sha256:df4f613cf7ad9a588cc381aaf4a512d26265ecebd5eb9e1ba12f1319eb85a6a0"},
 ]
 certbot = [
-    {file = "certbot-1.13.0-py2.py3-none-any.whl", hash = "sha256:082eb732e1318bb9605afa7aea8db2c2f4c5029d523c73f24c6aa98f03caff76"},
-    {file = "certbot-1.13.0.tar.gz", hash = "sha256:64cf41b57df7667d9d849fcaa9031a4f151788246733d1f4c3f37a5aa5e2f458"},
+    {file = "certbot-1.14.0-py2.py3-none-any.whl", hash = "sha256:67b4d26ceaea6c7f8325d0d45169e7a165a2cabc7122c84bc971ba068ca19cca"},
+    {file = "certbot-1.14.0.tar.gz", hash = "sha256:959ea90c6bb8dca38eab9772722cb940972ef6afcd5f15deef08b3c3636841eb"},
 ]
 certifi = [
     {file = "certifi-2020.12.5-py2.py3-none-any.whl", hash = "sha256:719a74fb9e33b9bd44cc7f3a8d94bc35e4049deebe19ba7d8e108280cfd59830"},
