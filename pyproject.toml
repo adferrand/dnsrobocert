@@ -59,7 +59,7 @@ pem = ">=20,<22"
 pyopenssl = ">=19,<21"
 pyyaml = "^5"
 schedule = "^0"
-coloredlogs = "^14"
+coloredlogs = ">=14,<16"
 colorama = "^0"
 tldextract = "^3"
 
