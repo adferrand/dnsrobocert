@@ -40,7 +40,7 @@ homepage = "https://dnsrobocert.readthedocs.io"
 python = "^3.6"
 acme = "==1.13.0"
 certbot = "==1.13.0"
-dns-lexicon = { version = "==3.5.5", extras = [ "full" ] }
+dns-lexicon = { version = "==3.5.6", extras = [ "full" ] }
 # Optional deps on dns-lexicon
 zeep = "*"
 xmltodict = "*"
