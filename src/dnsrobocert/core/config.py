@@ -25,7 +25,7 @@ def load(config_path: str) -> Optional[Dict[str, Any]]:
     raw_config = _inject_env_variables(raw_config)
 
     try:
-        config = yaml.load(raw_config, Loader=yaml.FullLoader)
+        config = yaml.load(raw_config, Loader=yaml.SafeLoader)
     except BaseException:
         message = """
 Error while validating dnsrobocert configuration:
@@ -36,7 +36,7 @@ Configuration file is not a valid YAML file.\
 
     schema_path = pkg_resources.resource_filename("dnsrobocert", "schema.yml")
     with open(schema_path) as file_h:
-        schema = yaml.load(file_h.read(), yaml.FullLoader)
+        schema = yaml.load(file_h.read(), yaml.SafeLoader)
 
     if not config:
         message = """
