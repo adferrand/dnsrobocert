@@ -20,6 +20,9 @@ ARCHS = [
 PYTHON_VERSION = "3.9"
 ALPINE_VERSION = "3.13"
 
+# We need to set CRYPTOGRAPHY_DONT_BUILD_RUST for now because Rust is not working properly
+# for emulated 32 bits architecture with QEMU (eg. armv7) on 64 bits architecture (eg. amd64).
+# See https://github.com/docker/buildx/issues/395
 DOCKERFILE = f"""
 FROM docker.io/python:{PYTHON_VERSION}-alpine{ALPINE_VERSION}
 
@@ -33,6 +36,8 @@ RUN apk --no-cache add \
         cargo
 
 COPY requirements.txt .
+
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 RUN python -m pip wheel --no-binary :all: --no-deps -r requirements.txt -w /precompiled-wheels
 
