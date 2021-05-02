@@ -2,6 +2,8 @@
 
 ## master - CURRENT
 
+## 3.9.1 - 02/05/2021
+
 ## 3.9.0 - 21/03/2021
 ### Modified
 * Update Lexicon to 3.5.5 (add Mythic Beasts and Infomaniak providers)
