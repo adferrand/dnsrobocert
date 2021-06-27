@@ -212,14 +212,14 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "coloredlogs"
-version = "14.3"
+version = "15.0.1"
 description = "Colored terminal output for Python's logging module"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
-humanfriendly = ">=7.1"
+humanfriendly = ">=9.1"
 
 [package.extras]
 cron = ["capturer (>=2.4)"]
@@ -1340,7 +1340,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "bbbdfe643522fde82739a731af43a405bb8a81fd9cb89a654b5734bd3e5f613a"
+content-hash = "9d05c71a8ab7e8a0e86a3a060cf14de008ad9bae5b50c4f9307b8600668aa963"
 
 [metadata.files]
 acme = [
@@ -1455,8 +1455,8 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 coloredlogs = [
-    {file = "coloredlogs-14.3-py2.py3-none-any.whl", hash = "sha256:e244a892f9d97ffd2c60f15bf1d2582ef7f9ac0f848d132249004184785702b3"},
-    {file = "coloredlogs-14.3.tar.gz", hash = "sha256:7ef1a7219870c7f02c218a2f2877ce68f2f8e087bb3a55bd6fbaa2a4362b4d52"},
+    {file = "coloredlogs-15.0.1-py2.py3-none-any.whl", hash = "sha256:612ee75c546f53e92e70049c9dbfcc18c935a2b9a53b66085ce9ef6a6e5c0934"},
+    {file = "coloredlogs-15.0.1.tar.gz", hash = "sha256:7c991aa71a4577af2f82600d8f8f3a89f936baeaf9b50a9c197da014e5bf16b0"},
 ]
 configargparse = [
     {file = "ConfigArgParse-1.5-py3-none-any.whl", hash = "sha256:afbd2823d29ed30cbd53513ea8290938e3dc3136ad9cfffdc684c9225c19adc5"},
