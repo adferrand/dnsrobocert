@@ -1,8 +1,13 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Update Certbot to 1.16.0
+* Update Lexicon to 3.6.0 (add DynDNS)
 
 ## 3.9.1 - 02/05/2021
+### Modified
+* Use the recommended SafeLoader to parse YAML configuration files
 
 ## 3.9.0 - 21/03/2021
 ### Modified
