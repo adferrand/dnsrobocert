@@ -75,7 +75,7 @@ pygments = "*"
 twine = "*"
 tox = "*"
 types-PyYAML = "^5.4.3"
-types-pyOpenSSL = "^20.0.3"
+types-pyOpenSSL = "^20.0.4"
 types-requests = "^2.25.0"
 types-setuptools = "^57.0.0"
 

@@ -1142,7 +1142,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-pyopenssl"
-version = "20.0.3"
+version = "20.0.4"
 description = "Typing stubs for pyOpenSSL"
 category = "dev"
 optional = false
@@ -1340,7 +1340,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "9d05c71a8ab7e8a0e86a3a060cf14de008ad9bae5b50c4f9307b8600668aa963"
+content-hash = "3d570d8207266a3fd5ddbaca298461b741de61ab9d7ce8d44de666a1e327f63f"
 
 [metadata.files]
 acme = [
@@ -1999,8 +1999,8 @@ types-ipaddress = [
     {file = "types_ipaddress-0.1.5-py3-none-any.whl", hash = "sha256:137ab8a5a895a48157438c8f3eea738e2c22e82c1114ab20ffd78c8637bbc008"},
 ]
 types-pyopenssl = [
-    {file = "types-pyOpenSSL-20.0.3.tar.gz", hash = "sha256:177e102b9e68986ca7b2b6aea11f6ee5b9c5e0f9c89dcaa8d28b31527571f625"},
-    {file = "types_pyOpenSSL-20.0.3-py3-none-any.whl", hash = "sha256:c51286c23e26e4c67d1e9d1e1ce2efd2d5386c32c15dc90a977290b79e16532a"},
+    {file = "types-pyOpenSSL-20.0.4.tar.gz", hash = "sha256:6b1a672e135ba3b68e55132545aac7f77b2a4db08413b89b84b20987ca0d77e9"},
+    {file = "types_pyOpenSSL-20.0.4-py3-none-any.whl", hash = "sha256:cfc49ca96450f842b055c97fd3f19383509c4740d22dc5637c1f77c2d2583905"},
 ]
 types-pyyaml = [
     {file = "types-PyYAML-5.4.3.tar.gz", hash = "sha256:2e7b81b2b7af751634425107b986086c6ba7cb61270a43a5c290c58be8cdbc3a"},
