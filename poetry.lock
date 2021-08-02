@@ -139,14 +139,14 @@ python-versions = "*"
 
 [[package]]
 name = "certbot"
-version = "1.16.0"
+version = "1.17.0"
 description = "ACME client"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-acme = ">=1.8.0"
+acme = ">=1.17.0"
 ConfigArgParse = ">=0.9.3"
 configobj = ">=5.0.6"
 cryptography = ">=2.1.4"
@@ -160,8 +160,10 @@ pywin32 = {version = ">=300", markers = "sys_platform == \"win32\""}
 "zope.interface" = "*"
 
 [package.extras]
-dev = ["astroid", "azure-devops", "coverage", "ipdb", "mypy", "pygithub", "poetry (>=1.1.0)", "pylint", "pytest", "pytest-cov", "pytest-xdist", "typing-extensions", "tox", "twine", "wheel"]
+all = ["azure-devops", "ipdb", "pygithub", "pip", "poetry (>=1.2.0a1)", "tox", "twine", "wheel", "repoze.sphinx.autointerface", "Sphinx (>=1.2)", "sphinx-rtd-theme", "coverage", "mypy", "pylint", "pytest", "pytest-cov", "pytest-xdist", "typing-extensions"]
+dev = ["azure-devops", "ipdb", "pygithub", "pip", "poetry (>=1.2.0a1)", "tox", "twine", "wheel"]
 docs = ["repoze.sphinx.autointerface", "Sphinx (>=1.2)", "sphinx-rtd-theme"]
+test = ["coverage", "mypy", "pylint", "pytest", "pytest-cov", "pytest-xdist", "typing-extensions"]
 
 [[package]]
 name = "certifi"
@@ -1387,8 +1389,8 @@ cached-property = [
     {file = "cached_property-1.5.2-py2.py3-none-any.whl", hash = "sha256:df4f613cf7ad9a588cc381aaf4a512d26265ecebd5eb9e1ba12f1319eb85a6a0"},
 ]
 certbot = [
-    {file = "certbot-1.16.0-py2.py3-none-any.whl", hash = "sha256:4283e7382344191250e4035aa18b4a3fc6ad8053d6014751b0747be6025532de"},
-    {file = "certbot-1.16.0.tar.gz", hash = "sha256:04e80e987ca4837169127e1951325a4bcdcaf0b4a51ee2847148cfd52cbb207d"},
+    {file = "certbot-1.17.0-py2.py3-none-any.whl", hash = "sha256:c17b15a1667ba3f337c410c9828393cd0833735f778b99ab5bfa3de21fb5ed30"},
+    {file = "certbot-1.17.0.tar.gz", hash = "sha256:ef410a1018f4f1ee775961527c00c4f2e2003428cfc4e09eddd5a1834dbfd173"},
 ]
 certifi = [
     {file = "certifi-2021.5.30-py2.py3-none-any.whl", hash = "sha256:50b1e4f8446b06f41be7dd6338db18e0990601dce795c2b1686458aa7e8fa7d8"},
