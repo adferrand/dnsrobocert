@@ -52,9 +52,9 @@ jobs:
           docker buildx create --use
           version=`poetry version | awk '{print $2}'`
           echo "Docker tag is: $version"
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le --tag adferrand/dnsrobocert --tag adferrand/dnsrobocert:$version --push .
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 --tag adferrand/dnsrobocert --tag adferrand/dnsrobocert:$version --push .
           # LEGACY DEPLOY
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le --tag adferrand/letsencrypt-dns --tag adferrand/letsencrypt-dns:$version --push .
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 --tag adferrand/letsencrypt-dns --tag adferrand/letsencrypt-dns:$version --push .
         displayName: Build and deploy multi-arch Docker image to DockerHub
       - script: |
           set -e
