@@ -4,6 +4,7 @@
 ### Modified
 * Update Certbot to 1.16.0
 * Update Lexicon to 3.6.0 (add DynDNS)
+* Fix scheduled job run a midnight
 
 ## 3.9.1 - 02/05/2021
 ### Modified

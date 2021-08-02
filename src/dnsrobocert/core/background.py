@@ -29,6 +29,7 @@ def worker(config_path: str, directory_path: str, lock: threading.Lock):
         config_path=config_path,
         directory_path=directory_path,
         lock=lock,
+        stop_thread=stop_thread,
     )
 
     _launch_background_jobs(stop_thread)
