@@ -65,11 +65,7 @@ jobs:
         lfs: true
       - script: |
           set -e
-          curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
-          export DOCKER_CLI_EXPERIMENTAL=enabled
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          docker buildx create --use
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 --tag adferrand/dnsrobocert:temp .
+          docker build --tag adferrand/dnsrobocert:temp .
         displayName: Build Docker image
       - script: |
           set -e
