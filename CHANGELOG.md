@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Update Certbot to 1.17.0
+* Update Lexicon to 3.6.1
+* Fix docker builds
 
 ## 3.10.0 - 02/08/2021
 ### Modified
