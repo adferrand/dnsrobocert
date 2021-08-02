@@ -8,21 +8,30 @@ RUN python3 -m pip install --user poetry --no-warn-script-location \
  && python3 -m poetry export --format requirements.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
  && python3 -m poetry build -f wheel
 
-FROM docker.io/python:3.9.2-alpine3.13
+FROM docker.io/python:3.9.6-slim
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
-COPY wheels /tmp/dnsrobocert/precompiled-wheels
 
 ENV CONFIG_PATH /etc/dnsrobocert/config.yml
 ENV CERTS_PATH /etc/letsencrypt
 
-RUN apk add --no-cache docker-cli bash \
+RUN apt-get update -y \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg \
+        lsb-release \
+        bash \
+        libxslt1.1 \
+ && curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
+ && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null \
+ && apt-get update -y \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends docker-ce-cli \
  && python -m pip install --upgrade pip wheel \
- # Under i686 arch emulated with QEMU, uname -m still returns x86_64. Workaround by retrying explicitly with i686 wheels.
- && (pip install --no-deps /tmp/dnsrobocert/precompiled-wheels/*_$(uname -m).whl || pip install --no-deps /tmp/dnsrobocert/precompiled-wheels/*_i686.whl) \
- && pip install -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
+ && PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple pip install -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
  && mkdir -p /etc/dnsrobocert /etc/letsencrypt \
- && rm -rf /tmp/dnsrobocert
+ && rm -rf /tmp/dnsrobocert /var/lib/apt/lists/*
 
 COPY docker/run.sh /run.sh
 RUN chmod +x run.sh
