@@ -58,9 +58,9 @@ jobs:
         displayName: Build and deploy multi-arch Docker image to DockerHub
       - script: |
           set -e
-          curl -X POST $(microbadger.dnsrobocert.trigger)
+          curl -X POST $(microbadger.dnsrobocert.trigger) || true
           # LEGACY DEPLOY
-          curl -X POST $(microbadger.letsencrypt-dns.trigger)
+          curl -X POST $(microbadger.letsencrypt-dns.trigger) || true
         displayName: Trigger Microbadger inspection
 
   - job: github_release
