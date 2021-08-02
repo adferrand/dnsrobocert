@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.10.2 - 02/08/2021
 ### Modified
 * Avoid pipelines failures with MicroBadger
 
