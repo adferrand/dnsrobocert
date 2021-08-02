@@ -1164,7 +1164,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.25.1"
+version = "2.25.2"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
@@ -1343,7 +1343,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "5bdb044382a24044422ff77f5f8ef5a76b50349276485e8c126d8b7ae8888dd1"
+content-hash = "ed546912bc5fcb7baadf33181743ba6b373a0e6cba340a6126936d43f82182e6"
 
 [metadata.files]
 acme = [
@@ -2010,8 +2010,8 @@ types-pyyaml = [
     {file = "types_PyYAML-5.4.3-py2.py3-none-any.whl", hash = "sha256:bca83cbfc0be48600a8abf1e3d87fb762a91e6d35d724029a3321dd2dce2ceb1"},
 ]
 types-requests = [
-    {file = "types-requests-2.25.1.tar.gz", hash = "sha256:2d514ee172088a8fc0d554537d6424bd261c18e63195cfe47c410df0de0ed96f"},
-    {file = "types_requests-2.25.1-py3-none-any.whl", hash = "sha256:6e9534281fe5d06ba8116807a8de930b90b6f92dff179f8cbfa2dfdd3bd2c465"},
+    {file = "types-requests-2.25.2.tar.gz", hash = "sha256:03122b582f5300ec35ac6692f2634207c467e602dc9ba46b5811a9f6ce0b0bc2"},
+    {file = "types_requests-2.25.2-py3-none-any.whl", hash = "sha256:a4c03c654527957a70002079ca48669b53d82eac4811abf140ea93847b65529b"},
 ]
 types-setuptools = [
     {file = "types-setuptools-57.0.0.tar.gz", hash = "sha256:b3ada82b21dcb8e0cafd7658d8a16018a000e55bdb7f6f3cec033223360563ce"},
