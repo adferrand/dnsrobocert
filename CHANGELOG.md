@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.10.0 - 02/08/2021
 ### Modified
 * Update Certbot to 1.16.0
 * Update Lexicon to 3.6.0 (add DynDNS)
