@@ -1,6 +1,6 @@
 [[package]]
 name = "acme"
-version = "1.16.0"
+version = "1.17.0"
 description = "ACME protocol implementation in Python"
 category = "main"
 optional = false
@@ -16,8 +16,8 @@ requests = ">=2.6.0"
 requests-toolbelt = ">=0.3.0"
 
 [package.extras]
-dev = ["pytest", "pytest-xdist", "tox"]
 docs = ["Sphinx (>=1.0)", "sphinx-rtd-theme"]
+test = ["pytest", "pytest-xdist"]
 
 [[package]]
 name = "appdirs"
@@ -1344,8 +1344,8 @@ content-hash = "9d05c71a8ab7e8a0e86a3a060cf14de008ad9bae5b50c4f9307b8600668aa963
 
 [metadata.files]
 acme = [
-    {file = "acme-1.16.0-py2.py3-none-any.whl", hash = "sha256:e125e404e68876e15c90223b7ee036ea5993dd2ddebdf5f286f246dd9d159334"},
-    {file = "acme-1.16.0.tar.gz", hash = "sha256:a1f8018820d87fd3f9f264c359e8b6cd6a736a1ed18f4b6ac8af6b303e627857"},
+    {file = "acme-1.17.0-py2.py3-none-any.whl", hash = "sha256:2a22fe9b7c5c60df413aeb58b7b102d2acdae7bceba8dd817aca615179de5fad"},
+    {file = "acme-1.17.0.tar.gz", hash = "sha256:2af48e40679103212532cb3d220df444207e5e7b532e0ccebe7773792e0f320e"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
