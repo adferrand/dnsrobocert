@@ -310,7 +310,7 @@ python-versions = "*"
 
 [[package]]
 name = "dns-lexicon"
-version = "3.6.0"
+version = "3.6.1"
 description = "Manipulate DNS records on various DNS providers in a standardized/agnostic way"
 category = "main"
 optional = false
@@ -1550,8 +1550,8 @@ distro = [
     {file = "distro-1.5.0.tar.gz", hash = "sha256:0e58756ae38fbd8fc3020d54badb8eae17c5b9dcbed388b17bb55b8a5928df92"},
 ]
 dns-lexicon = [
-    {file = "dns-lexicon-3.6.0.tar.gz", hash = "sha256:3f76eb266381dabee6e1c594d3a52700bd66811648328e0090a67a807cb68fd9"},
-    {file = "dns_lexicon-3.6.0-py3-none-any.whl", hash = "sha256:234302261eb2fccabcbd7aa55654d50ce10359c233b5fede6d088cae52635705"},
+    {file = "dns-lexicon-3.6.1.tar.gz", hash = "sha256:2ebc3dae622f1f4566c1409165cc6ce8c783cbfd92f0609faa3e1bca447fbc77"},
+    {file = "dns_lexicon-3.6.1-py3-none-any.whl", hash = "sha256:92976757753ceb37cced5daf4cb325c9442338709b143f10e0575d21b155306e"},
 ]
 dnspython = [
     {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
