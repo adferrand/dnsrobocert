@@ -1,18 +1,19 @@
 [[package]]
 name = "acme"
-version = "1.17.0"
+version = "1.18.0"
 description = "ACME protocol implementation in Python"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
+chardet = "*"
 cryptography = ">=2.1.4"
 josepy = ">=1.1.0"
 PyOpenSSL = ">=17.3.0"
 pyrfc3339 = "*"
 pytz = "*"
-requests = ">=2.6.0"
+requests = ">=2.14.2"
 requests-toolbelt = ">=0.3.0"
 
 [package.extras]
@@ -181,6 +182,14 @@ python-versions = "*"
 
 [package.dependencies]
 pycparser = "*"
+
+[[package]]
+name = "chardet"
+version = "4.0.0"
+description = "Universal encoding detector for Python 2 and 3"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "charset-normalizer"
@@ -1347,8 +1356,8 @@ content-hash = "5bdb044382a24044422ff77f5f8ef5a76b50349276485e8c126d8b7ae8888dd1
 
 [metadata.files]
 acme = [
-    {file = "acme-1.17.0-py2.py3-none-any.whl", hash = "sha256:2a22fe9b7c5c60df413aeb58b7b102d2acdae7bceba8dd817aca615179de5fad"},
-    {file = "acme-1.17.0.tar.gz", hash = "sha256:2af48e40679103212532cb3d220df444207e5e7b532e0ccebe7773792e0f320e"},
+    {file = "acme-1.18.0-py2.py3-none-any.whl", hash = "sha256:693a0fce0784f9e765fe493223165d1eecd2bf128ef44c46cfe2799b460a8cc8"},
+    {file = "acme-1.18.0.tar.gz", hash = "sha256:9ae06031bbcc492d4ea20aec36bb2ead08b40ccb70d980ade8ecfe8a15d762af"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -1444,6 +1453,10 @@ cffi = [
     {file = "cffi-1.14.5-cp39-cp39-win32.whl", hash = "sha256:afb29c1ba2e5a3736f1c301d9d0abe3ec8b86957d04ddfa9d7a6a42b9367e396"},
     {file = "cffi-1.14.5-cp39-cp39-win_amd64.whl", hash = "sha256:f2d45f97ab6bb54753eab54fffe75aaf3de4ff2341c9daee1987ee1837636f1d"},
     {file = "cffi-1.14.5.tar.gz", hash = "sha256:fd78e5fee591709f32ef6edb9a015b4aa1a5022598e36227500c8f4e02328d9c"},
+]
+chardet = [
+    {file = "chardet-4.0.0-py2.py3-none-any.whl", hash = "sha256:f864054d66fd9118f2e67044ac8981a54775ec5b67aed0441892edb553d21da5"},
+    {file = "chardet-4.0.0.tar.gz", hash = "sha256:0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa"},
 ]
 charset-normalizer = [
     {file = "charset-normalizer-2.0.1.tar.gz", hash = "sha256:ad0da505736fc7e716a8da15bf19a985db21ac6415c26b34d2fafd3beb3d927e"},
