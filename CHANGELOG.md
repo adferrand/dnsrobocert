@@ -6,6 +6,8 @@
   to get better DNS support on Kubernetes, and benefit from pre-compile wheels
   for cffi, lxml and cryptography
 * Update Certbot to 1.18.0
+* Add the `reuse_key` boolean parameter in certificate section: if `true`, the
+  existing private key will be reused for the target certificate when renewed
 
 ### Removed
 * Drop Docker support on `ppc64le` architecture
