@@ -1,6 +1,7 @@
 # Changelog
 
 ## master - CURRENT
+* Use Debian Buster as base image
 
 ## 3.10.2 - 02/08/2021
 ### Modified

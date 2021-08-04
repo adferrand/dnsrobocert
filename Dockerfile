@@ -8,21 +8,24 @@ RUN python3 -m pip install --user poetry --no-warn-script-location \
  && python3 -m poetry export --format requirements.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
  && python3 -m poetry build -f wheel
 
-FROM docker.io/python:3.9.2-alpine3.13
+FROM docker.io/python:3.9.6-slim
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
-COPY wheels /tmp/dnsrobocert/precompiled-wheels
 
 ENV CONFIG_PATH /etc/dnsrobocert/config.yml
 ENV CERTS_PATH /etc/letsencrypt
 
-RUN apk add --no-cache docker-cli bash \
- && python -m pip install --upgrade pip wheel \
- # Under i686 arch emulated with QEMU, uname -m still returns x86_64. Workaround by retrying explicitly with i686 wheels.
- && (pip install --no-deps /tmp/dnsrobocert/precompiled-wheels/*_$(uname -m).whl || pip install --no-deps /tmp/dnsrobocert/precompiled-wheels/*_i686.whl) \
- && pip install -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
+RUN apt-get update -y \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        curl \
+        bash \
+        libxslt1.1 \
+ && curl -fsSL get.docker.com && sh \
+ && python -m venv /opt/dnsrobocert \
+ && PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple /opt/dnsrobocert/bin/pip install -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
  && mkdir -p /etc/dnsrobocert /etc/letsencrypt \
- && rm -rf /tmp/dnsrobocert
+ && ln -s /opt/dnsrobocert/bin/dnsrobocert /usr/local/bin/dnsrobocert \
+ && rm -rf /tmp/dnsrobocert /var/lib/apt/lists/*
 
 COPY docker/run.sh /run.sh
 RUN chmod +x run.sh

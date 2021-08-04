@@ -6,12 +6,19 @@ file:
     group: root
     filetype: file
     contains: []
-  /usr/local/bin/dnsrobocert:
+  /opt/dnsrobocert/bin/dnsrobocert:
     exists: true
     mode: "0755"
     owner: root
     group: root
     filetype: file
+    contains: []
+  /usr/local/bin/dnsrobocert:
+    exists: true
+    mode: "0777"
+    owner: root
+    group: root
+    filetype: symlink
     contains: []
 process:
   dnsrobocert:
