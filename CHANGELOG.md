@@ -1,7 +1,13 @@
 # Changelog
 
 ## master - CURRENT
-* Use Debian Buster as base image
+### Modified
+* Migrate the docker image from the Alpine base to the Debian base, in order
+  to get better DNS support on Kubernetes, and benefit from pre-compile wheels
+  for cffi, lxml and cryptography
+
+### Removed
+* Drop Docker support on `ppc64le` architecture
 
 ## 3.10.2 - 02/08/2021
 ### Modified
