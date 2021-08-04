@@ -5,6 +5,7 @@
 * Migrate the docker image from the Alpine base to the Debian base, in order
   to get better DNS support on Kubernetes, and benefit from pre-compile wheels
   for cffi, lxml and cryptography
+* Update Certbot to 1.18.0
 
 ### Removed
 * Drop Docker support on `ppc64le` architecture
