@@ -121,6 +121,8 @@ properties:
           type: boolean
         follow_cnames:
           type: boolean
+        reuse_key:
+          type: boolean
       required: [domains, profile]
       additionalProperties: false
 additionalProperties: false
