@@ -280,6 +280,18 @@ python-versions = "*"
 six = "*"
 
 [[package]]
+name = "configparser"
+version = "5.0.2"
+description = "Updated configparser from Python 3.8 for Python 2.6+."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
+testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "pytest-enabler", "pytest-black (>=0.3.7)", "pytest-mypy"]
+
+[[package]]
 name = "coverage"
 version = "5.5"
 description = "Code coverage measurement for Python"
@@ -343,7 +355,7 @@ python-versions = "*"
 
 [[package]]
 name = "dns-lexicon"
-version = "3.6.1"
+version = "3.7.0"
 description = "Manipulate DNS records on various DNS providers in a standardized/agnostic way"
 category = "main"
 optional = false
@@ -354,6 +366,7 @@ beautifulsoup4 = ">=4,<5"
 boto3 = {version = ">=1,<2", optional = true, markers = "extra == \"route53\" or extra == \"full\""}
 cryptography = ">=2,<4"
 localzone = {version = ">=0.9.8,<1", optional = true, markers = "extra == \"localzone\" or extra == \"full\""}
+oci = {version = ">=2,<3", optional = true, markers = "extra == \"oci\" or extra == \"full\""}
 pyyaml = ">=3,<6"
 requests = ">=2,<3"
 softlayer = {version = ">=5,<6", optional = true, markers = "extra == \"softlayer\" or extra == \"full\""}
@@ -363,9 +376,10 @@ zeep = {version = ">=3,<5", optional = true, markers = "extra == \"gransy\" or e
 
 [package.extras]
 route53 = ["boto3 (>=1,<2)"]
-full = ["boto3 (>=1,<2)", "localzone (>=0.9.8,<1)", "softlayer (>=5,<6)", "transip (>=2,<3)", "zeep (>=3,<5)"]
+full = ["boto3 (>=1,<2)", "localzone (>=0.9.8,<1)", "oci (>=2,<3)", "softlayer (>=5,<6)", "transip (>=2,<3)", "zeep (>=3,<5)"]
 ddns = ["dnspython (>=2,<3)"]
 localzone = ["localzone (>=0.9.8,<1)"]
+oci = ["oci (>=2,<3)"]
 softlayer = ["softlayer (>=5,<6)"]
 transip = ["transip (>=2,<3)"]
 gransy = ["zeep (>=3,<5)"]
@@ -629,6 +643,22 @@ description = "Experimental type system extensions for programs checked with the
 category = "dev"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "oci"
+version = "2.9.0"
+description = "Oracle Cloud Infrastructure Python SDK"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+certifi = "*"
+configparser = ">=3.5.0b1"
+cryptography = ">=2.1.4"
+pyOpenSSL = ">=17.5.0"
+python-dateutil = ">=2.5.3,<3.0.0"
+pytz = ">=2016.10"
 
 [[package]]
 name = "packaging"
@@ -1519,6 +1549,10 @@ configargparse = [
 configobj = [
     {file = "configobj-5.0.6.tar.gz", hash = "sha256:a2f5650770e1c87fb335af19a9b7eb73fc05ccf22144eb68db7d00cd2bcb0902"},
 ]
+configparser = [
+    {file = "configparser-5.0.2-py3-none-any.whl", hash = "sha256:af59f2cdd7efbdd5d111c1976ecd0b82db9066653362f0962d7bf1d3ab89a1fa"},
+    {file = "configparser-5.0.2.tar.gz", hash = "sha256:85d5de102cfe6d14a5172676f09d19c465ce63d6019cf0a4ef13385fc535e828"},
+]
 coverage = [
     {file = "coverage-5.5-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:b6d534e4b2ab35c9f93f46229363e17f63c53ad01330df9f2d6bd1187e5eaacf"},
     {file = "coverage-5.5-cp27-cp27m-manylinux1_i686.whl", hash = "sha256:b7895207b4c843c76a25ab8c1e866261bcfe27bfaa20c192de5190121770672b"},
@@ -1583,8 +1617,10 @@ cryptography = [
     {file = "cryptography-3.4.7-cp36-abi3-win_amd64.whl", hash = "sha256:de4e5f7f68220d92b7637fc99847475b59154b7a1b3868fb7385337af54ac9ca"},
     {file = "cryptography-3.4.7-pp36-pypy36_pp73-manylinux2010_x86_64.whl", hash = "sha256:26965837447f9c82f1855e0bc8bc4fb910240b6e0d16a664bb722df3b5b06873"},
     {file = "cryptography-3.4.7-pp36-pypy36_pp73-manylinux2014_x86_64.whl", hash = "sha256:eb8cc2afe8b05acbd84a43905832ec78e7b3873fb124ca190f574dca7389a87d"},
+    {file = "cryptography-3.4.7-pp37-pypy37_pp73-macosx_10_10_x86_64.whl", hash = "sha256:b01fd6f2737816cb1e08ed4807ae194404790eac7ad030b34f2ce72b332f5586"},
     {file = "cryptography-3.4.7-pp37-pypy37_pp73-manylinux2010_x86_64.whl", hash = "sha256:7ec5d3b029f5fa2b179325908b9cd93db28ab7b85bb6c1db56b10e0b54235177"},
     {file = "cryptography-3.4.7-pp37-pypy37_pp73-manylinux2014_x86_64.whl", hash = "sha256:ee77aa129f481be46f8d92a1a7db57269a2f23052d5f2433b4621bb457081cc9"},
+    {file = "cryptography-3.4.7-pp37-pypy37_pp73-win_amd64.whl", hash = "sha256:bf40af59ca2465b24e54f671b2de2c59257ddc4f7e5706dbd6930e26823668d3"},
     {file = "cryptography-3.4.7.tar.gz", hash = "sha256:3d10de8116d25649631977cb37da6cbdd2d6fa0e0281d014a5b7d337255ca713"},
 ]
 dataclasses = [
@@ -1604,8 +1640,8 @@ distro = [
     {file = "distro-1.6.0.tar.gz", hash = "sha256:83f5e5a09f9c5f68f60173de572930effbcc0287bb84fdc4426cb4168c088424"},
 ]
 dns-lexicon = [
-    {file = "dns-lexicon-3.6.1.tar.gz", hash = "sha256:2ebc3dae622f1f4566c1409165cc6ce8c783cbfd92f0609faa3e1bca447fbc77"},
-    {file = "dns_lexicon-3.6.1-py3-none-any.whl", hash = "sha256:92976757753ceb37cced5daf4cb325c9442338709b143f10e0575d21b155306e"},
+    {file = "dns-lexicon-3.7.0.tar.gz", hash = "sha256:bc173c50c6a17aeb7ee97d7811e4612408f85598b39c1a27821dc62b6e1e5e2d"},
+    {file = "dns_lexicon-3.7.0-py3-none-any.whl", hash = "sha256:52b53528ad768a4cf30f549aa4e72b40136dd5763549176eb2094db2a3be6b19"},
 ]
 dnspython = [
     {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
@@ -1755,6 +1791,10 @@ mypy = [
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
+]
+oci = [
+    {file = "oci-2.9.0-py2.py3-none-any.whl", hash = "sha256:4fead2296d18679b52c5d6b5e0081772281e482b425990e38322c7fc65db6e64"},
+    {file = "oci-2.9.0.tar.gz", hash = "sha256:82be4b64456de3b0f7f8051e52d48c0c8b6c499c9c22661b454df459ab7a5632"},
 ]
 packaging = [
     {file = "packaging-21.0-py3-none-any.whl", hash = "sha256:c86254f9220d55e31cc94d69bade760f0847da8000def4dfe1c6b872fd14ff14"},
