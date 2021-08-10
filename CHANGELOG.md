@@ -6,6 +6,7 @@
   to get better DNS support on Kubernetes, and benefit from pre-compile wheels
   for cffi, lxml and cryptography
 * Update Certbot to 1.18.0
+* Update Lexicon to 3.7.0 (add `oci` and `vercel` providers)
 
 ### Removed
 * Drop Docker support on `ppc64le` architecture
