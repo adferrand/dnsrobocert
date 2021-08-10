@@ -421,4 +421,4 @@ Non-existent variables declared in the configuration file will raise an error.
     syntax by prepending a second dollar sign like so: ``$${NOT_A_VARIABLE}``.
 
 .. _GitHub: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/src/dnsrobocert/schema.yml
-.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/en/latest/lexicon_providers_config.html
+.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/en/latest/providers_options.html
