@@ -32,17 +32,17 @@ The following Lexicon providers are supported by DNSroboCert.
 +----------------+----------------+----------------+----------------+
 |namecheap_      |namesilo_       |netcup_         |nfsn_           |
 +----------------+----------------+----------------+----------------+
-|njalla_         |nsone_          |onapp_          |online_         |
+|njalla_         |nsone_          |oci_            |onapp_          |
 +----------------+----------------+----------------+----------------+
-|ovh_            |plesk_          |pointhq_        |powerdns_       |
+|online_         |ovh_            |plesk_          |pointhq_        |
 +----------------+----------------+----------------+----------------+
-|rackspace_      |rage4_          |rcodezero_      |route53_        |
+|powerdns_       |rackspace_      |rage4_          |rcodezero_      |
 +----------------+----------------+----------------+----------------+
-|safedns_        |sakuracloud_    |softlayer_      |transip_        |
+|route53_        |safedns_        |sakuracloud_    |softlayer_      |
 +----------------+----------------+----------------+----------------+
-|ultradns_       |vultr_          |yandex_         |zeit_           |
+|transip_        |ultradns_       |vercel_         |vultr_          |
 +----------------+----------------+----------------+----------------+
-|zilore_         |zonomi_         |                |                |
+|yandex_         |zeit_           |zilore_         |zonomi_         |
 +----------------+----------------+----------------+----------------+
 
 Providers options
@@ -357,6 +357,18 @@ njalla
 nsone
     * ``auth_token`` Specify token for authentication
 
+.. _oci:
+
+oci
+    * ``auth_config_file`` The full path including filename to an oci configuration file.
+    * ``auth_user`` The ocid of the user calling the api.
+    * ``auth_tenancy`` The ocid of your tenancy.
+    * ``auth_fingerprint`` The fingerprint for the public key that was added to the calling user.
+    * ``auth_key_content`` The full content of the calling user's private signing key in pem format.
+    * ``auth_pass_phrase`` If the private key is encrypted, the pass phrase must be provided.
+    * ``auth_region`` The home region of your tenancy.
+    * ``auth_type`` Valid options are 'api_key' (default) or 'instance_principal'.
+
 .. _onapp:
 
 onapp
@@ -456,6 +468,11 @@ ultradns
     * ``auth_token`` Specify token for authentication; if not set --auth-token, --auth-password are used
     * ``auth_username`` Specify username for authentication
     * ``auth_password`` Specify password for authentication
+
+.. _vercel:
+
+vercel
+    * ``auth_token`` Specify your api token
 
 .. _vultr:
 
