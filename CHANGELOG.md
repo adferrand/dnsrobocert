@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Add the `reuse_key` boolean parameter in certificate section: if `true`, the
+  existing private key will be reused for the target certificate when renewed
+
 ### Modified
 * Migrate the docker image from the Alpine base to the Debian base, in order
   to get better DNS support on Kubernetes, and benefit from pre-compiled wheels

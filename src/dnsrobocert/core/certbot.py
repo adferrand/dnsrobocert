@@ -66,6 +66,7 @@ def certonly(
     lock: threading.Lock,
     domains: Optional[List[str]] = None,
     force_renew: bool = False,
+    reuse_key: bool = False,
 ):
     if not domains:
         return
@@ -75,6 +76,8 @@ def certonly(
     additional_params = []
     if force_renew:
         additional_params.append("--force-renew")
+    if reuse_key:
+        additional_params.append("--reuse-key")
 
     for domain in domains:
         additional_params.append("-d")

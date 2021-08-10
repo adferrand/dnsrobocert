@@ -13,3 +13,4 @@ dist
 test/assets/pebble*
 test-results.xml
 coverage.xml
+docs/_build

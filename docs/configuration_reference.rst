@@ -233,6 +233,8 @@ be defined in each relevant certificate configuration.
       profile: my_profile2_delegated
       deploy_hook: python /home/user/local_deploy.py
       force_renew: false
+      follow_cnames: false
+      reuse_key: false
 
 ``certificate`` properties
 --------------------------
@@ -288,6 +290,14 @@ be defined in each relevant certificate configuration.
       DNS names ``_acme-challenge.DOMAIN`` (where ``DOMAIN`` is the domain to validate and integrate
       in the certificate). This allows to delegate the validation to another DNS zone for security
       purpose. See this link_ for more details.
+    * *type*: ``boolean``
+    * *default*: ``false`` (CNAME chain is not followed)
+
+``reuse_key``
+    * If ``true``, the existing private key will be reused during certificate renewal instead of
+      creating a new one each time the certificate is renewed.
+    * *type*: ``boolean``
+    * *default*: ``false`` (the private key is never reused for certificate renewal)
 
 
 .. _link: https://letsencrypt.org/2019/10/09/onboarding-your-customers-with-lets-encrypt-and-acme.html#the-advantages-of-a-cname
