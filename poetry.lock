@@ -118,14 +118,14 @@ webencodings = "*"
 
 [[package]]
 name = "boto3"
-version = "1.18.14"
+version = "1.18.17"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.21.14,<1.22.0"
+botocore = ">=1.21.17,<1.22.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -134,7 +134,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.21.14"
+version = "1.21.17"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -258,7 +258,7 @@ cron = ["capturer (>=2.4)"]
 
 [[package]]
 name = "configargparse"
-version = "1.5.1"
+version = "1.5.2"
 description = "A drop-in replacement for argparse that allows options to also be set via config files and/or environment variables."
 category = "main"
 optional = false
@@ -278,6 +278,18 @@ python-versions = "*"
 
 [package.dependencies]
 six = "*"
+
+[[package]]
+name = "configparser"
+version = "5.0.2"
+description = "Updated configparser from Python 3.8 for Python 2.6+."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
+testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "pytest-enabler", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [[package]]
 name = "coverage"
@@ -343,7 +355,7 @@ python-versions = "*"
 
 [[package]]
 name = "dns-lexicon"
-version = "3.6.1"
+version = "3.7.0"
 description = "Manipulate DNS records on various DNS providers in a standardized/agnostic way"
 category = "main"
 optional = false
@@ -354,6 +366,7 @@ beautifulsoup4 = ">=4,<5"
 boto3 = {version = ">=1,<2", optional = true, markers = "extra == \"route53\" or extra == \"full\""}
 cryptography = ">=2,<4"
 localzone = {version = ">=0.9.8,<1", optional = true, markers = "extra == \"localzone\" or extra == \"full\""}
+oci = {version = ">=2,<3", optional = true, markers = "extra == \"oci\" or extra == \"full\""}
 pyyaml = ">=3,<6"
 requests = ">=2,<3"
 softlayer = {version = ">=5,<6", optional = true, markers = "extra == \"softlayer\" or extra == \"full\""}
@@ -363,9 +376,10 @@ zeep = {version = ">=3,<5", optional = true, markers = "extra == \"gransy\" or e
 
 [package.extras]
 route53 = ["boto3 (>=1,<2)"]
-full = ["boto3 (>=1,<2)", "localzone (>=0.9.8,<1)", "softlayer (>=5,<6)", "transip (>=2,<3)", "zeep (>=3,<5)"]
+full = ["boto3 (>=1,<2)", "localzone (>=0.9.8,<1)", "oci (>=2,<3)", "softlayer (>=5,<6)", "transip (>=2,<3)", "zeep (>=3,<5)"]
 ddns = ["dnspython (>=2,<3)"]
 localzone = ["localzone (>=0.9.8,<1)"]
+oci = ["oci (>=2,<3)"]
 softlayer = ["softlayer (>=5,<6)"]
 transip = ["transip (>=2,<3)"]
 gransy = ["zeep (>=3,<5)"]
@@ -629,6 +643,22 @@ description = "Experimental type system extensions for programs checked with the
 category = "dev"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "oci"
+version = "2.9.0"
+description = "Oracle Cloud Infrastructure Python SDK"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+certifi = "*"
+configparser = ">=3.5.0b1"
+cryptography = ">=2.1.4"
+pyOpenSSL = ">=17.5.0"
+python-dateutil = ">=2.5.3,<3.0.0"
+pytz = ">=2016.10"
 
 [[package]]
 name = "packaging"
@@ -1030,7 +1060,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "softlayer"
-version = "5.9.6"
+version = "5.9.7"
 description = "A library for SoftLayer's API"
 category = "main"
 optional = false
@@ -1163,7 +1193,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-cryptography"
-version = "3.3.3"
+version = "3.3.5"
 description = "Typing stubs for cryptography"
 category = "dev"
 optional = false
@@ -1191,7 +1221,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-pyopenssl"
-version = "20.0.4"
+version = "20.0.5"
 description = "Typing stubs for pyOpenSSL"
 category = "dev"
 optional = false
@@ -1202,7 +1232,7 @@ types-cryptography = "*"
 
 [[package]]
 name = "types-pyyaml"
-version = "5.4.3"
+version = "5.4.6"
 description = "Typing stubs for PyYAML"
 category = "dev"
 optional = false
@@ -1210,7 +1240,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.25.2"
+version = "2.25.6"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
@@ -1218,7 +1248,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-setuptools"
-version = "57.0.0"
+version = "57.0.2"
 description = "Typing stubs for setuptools"
 category = "dev"
 optional = false
@@ -1247,7 +1277,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "virtualenv"
-version = "20.7.0"
+version = "20.7.1"
 description = "Virtual Python Environment builder"
 category = "dev"
 optional = false
@@ -1426,12 +1456,12 @@ bleach = [
     {file = "bleach-4.0.0.tar.gz", hash = "sha256:ffa9221c6ac29399cc50fcc33473366edd0cf8d5e2cbbbb63296dc327fb67cc8"},
 ]
 boto3 = [
-    {file = "boto3-1.18.14-py3-none-any.whl", hash = "sha256:611037785a35517d2a65339ad7531d7a223ce41a5c9a3968e2c14e64f6224f65"},
-    {file = "boto3-1.18.14.tar.gz", hash = "sha256:20516c8d0cb13d3d99496828d4b5dce82c254ce4c0163254c89d825ba9c65d30"},
+    {file = "boto3-1.18.17-py3-none-any.whl", hash = "sha256:69a5ebbd5fda6742d20fd536cd9b2927f2eaa8dde84ad529fe816231afcf9c68"},
+    {file = "boto3-1.18.17.tar.gz", hash = "sha256:5e5f60ece9b73d48f668bef56ddcde716f013b48a62fdf9c5eac9512a5981136"},
 ]
 botocore = [
-    {file = "botocore-1.21.14-py3-none-any.whl", hash = "sha256:7f64424def270f3bb8e29da8c9120153a7f3ff5a32a517cc64a66f53d70ecec5"},
-    {file = "botocore-1.21.14.tar.gz", hash = "sha256:45656938d7fb043f06cc1a013f276caa0193ab7cc4d71874a32c18910c1f8f8d"},
+    {file = "botocore-1.21.17-py3-none-any.whl", hash = "sha256:5b665142bdb2c30fc86b15bc48dd8b74c9cac69dc3e20b6d8f79cb60ff368797"},
+    {file = "botocore-1.21.17.tar.gz", hash = "sha256:a0d64369857d86b3a6d01b0c5933671c2394584311ce3af702271ba221b09afa"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1513,11 +1543,15 @@ coloredlogs = [
     {file = "coloredlogs-15.0.1.tar.gz", hash = "sha256:7c991aa71a4577af2f82600d8f8f3a89f936baeaf9b50a9c197da014e5bf16b0"},
 ]
 configargparse = [
-    {file = "ConfigArgParse-1.5.1-py3-none-any.whl", hash = "sha256:ebef7b5379600fa34c276debf36e72ac8b37e7e42e6f0cfaed49c61e206eb604"},
-    {file = "ConfigArgParse-1.5.1.tar.gz", hash = "sha256:371f46577e76ec71a183b88378f36dd09f4b946f60fe60712f411b020f26b812"},
+    {file = "ConfigArgParse-1.5.2-py3-none-any.whl", hash = "sha256:f75b235a13dba6692ee9e019470e7bce41861d09606c39c41facb347c24ca3cf"},
+    {file = "ConfigArgParse-1.5.2.tar.gz", hash = "sha256:c39540eb4843883d526beeed912dc80c92481b0c13c9787c91e614a624de3666"},
 ]
 configobj = [
     {file = "configobj-5.0.6.tar.gz", hash = "sha256:a2f5650770e1c87fb335af19a9b7eb73fc05ccf22144eb68db7d00cd2bcb0902"},
+]
+configparser = [
+    {file = "configparser-5.0.2-py3-none-any.whl", hash = "sha256:af59f2cdd7efbdd5d111c1976ecd0b82db9066653362f0962d7bf1d3ab89a1fa"},
+    {file = "configparser-5.0.2.tar.gz", hash = "sha256:85d5de102cfe6d14a5172676f09d19c465ce63d6019cf0a4ef13385fc535e828"},
 ]
 coverage = [
     {file = "coverage-5.5-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:b6d534e4b2ab35c9f93f46229363e17f63c53ad01330df9f2d6bd1187e5eaacf"},
@@ -1604,8 +1638,8 @@ distro = [
     {file = "distro-1.6.0.tar.gz", hash = "sha256:83f5e5a09f9c5f68f60173de572930effbcc0287bb84fdc4426cb4168c088424"},
 ]
 dns-lexicon = [
-    {file = "dns-lexicon-3.6.1.tar.gz", hash = "sha256:2ebc3dae622f1f4566c1409165cc6ce8c783cbfd92f0609faa3e1bca447fbc77"},
-    {file = "dns_lexicon-3.6.1-py3-none-any.whl", hash = "sha256:92976757753ceb37cced5daf4cb325c9442338709b143f10e0575d21b155306e"},
+    {file = "dns-lexicon-3.7.0.tar.gz", hash = "sha256:bc173c50c6a17aeb7ee97d7811e4612408f85598b39c1a27821dc62b6e1e5e2d"},
+    {file = "dns_lexicon-3.7.0-py3-none-any.whl", hash = "sha256:52b53528ad768a4cf30f549aa4e72b40136dd5763549176eb2094db2a3be6b19"},
 ]
 dnspython = [
     {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
@@ -1755,6 +1789,10 @@ mypy = [
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
+]
+oci = [
+    {file = "oci-2.9.0-py2.py3-none-any.whl", hash = "sha256:4fead2296d18679b52c5d6b5e0081772281e482b425990e38322c7fc65db6e64"},
+    {file = "oci-2.9.0.tar.gz", hash = "sha256:82be4b64456de3b0f7f8051e52d48c0c8b6c499c9c22661b454df459ab7a5632"},
 ]
 packaging = [
     {file = "packaging-21.0-py3-none-any.whl", hash = "sha256:c86254f9220d55e31cc94d69bade760f0847da8000def4dfe1c6b872fd14ff14"},
@@ -1989,8 +2027,8 @@ six = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 softlayer = [
-    {file = "SoftLayer-5.9.6-py2.py3-none-any.whl", hash = "sha256:b49d466940f6bc219e7cb17e2b04fb3ad463cb19bd5e3f1ce3de3584a06e7cff"},
-    {file = "SoftLayer-5.9.6.tar.gz", hash = "sha256:8aff5ea921c1849694bb97d82923bacec0d7d67b04d1f3d8d36b107175da781f"},
+    {file = "SoftLayer-5.9.7-py2.py3-none-any.whl", hash = "sha256:05b9d0c9a5b94f3b18f1dc0516968fc3f3515da38abbc3db4b18ec1a270427e8"},
+    {file = "SoftLayer-5.9.7.tar.gz", hash = "sha256:2ecc1cba43a2ca043ac8cded776a46801756085fd540808bab9881c3a119b4bf"},
 ]
 soupsieve = [
     {file = "soupsieve-2.2.1-py3-none-any.whl", hash = "sha256:c2c1c2d44f158cdbddab7824a9af8c4f83c76b1e23e049479aa432feb6c4c23b"},
@@ -2057,8 +2095,8 @@ typed-ast = [
     {file = "typed_ast-1.4.3.tar.gz", hash = "sha256:fb1bbeac803adea29cedd70781399c99138358c26d05fcbd23c13016b7f5ec65"},
 ]
 types-cryptography = [
-    {file = "types-cryptography-3.3.3.tar.gz", hash = "sha256:de2b12e971023b25bd96b7da251dc747ea5b4670a998f9160153d96e4f918f0b"},
-    {file = "types_cryptography-3.3.3-py2.py3-none-any.whl", hash = "sha256:524afedb2e7f3fa4b22bd164efb82809a75ff960cc5d40a2fa9b7c2cda228fab"},
+    {file = "types-cryptography-3.3.5.tar.gz", hash = "sha256:65f51b899499a97efa155b2882eafca003b404af3c67a0ff492d3b7f140f6468"},
+    {file = "types_cryptography-3.3.5-py3-none-any.whl", hash = "sha256:1526811a0d5f2971b2d8719fce76790800eca6ca9c817b1552c8cacdc6e0cac3"},
 ]
 types-enum34 = [
     {file = "types-enum34-0.1.8.tar.gz", hash = "sha256:9e91a94f1f42c73bd7aa43f19a157d722522d29097f301748a034e08693a423d"},
@@ -2069,20 +2107,20 @@ types-ipaddress = [
     {file = "types_ipaddress-0.1.5-py3-none-any.whl", hash = "sha256:137ab8a5a895a48157438c8f3eea738e2c22e82c1114ab20ffd78c8637bbc008"},
 ]
 types-pyopenssl = [
-    {file = "types-pyOpenSSL-20.0.4.tar.gz", hash = "sha256:6b1a672e135ba3b68e55132545aac7f77b2a4db08413b89b84b20987ca0d77e9"},
-    {file = "types_pyOpenSSL-20.0.4-py3-none-any.whl", hash = "sha256:cfc49ca96450f842b055c97fd3f19383509c4740d22dc5637c1f77c2d2583905"},
+    {file = "types-pyOpenSSL-20.0.5.tar.gz", hash = "sha256:e9abf9c1ac91e0f3f18122820d7f25b68373620b061aa23be8769fd52c588197"},
+    {file = "types_pyOpenSSL-20.0.5-py3-none-any.whl", hash = "sha256:acd4f6c4d58822d79e6c8c84983da43607c5d094e817788acda68c34ac3348d9"},
 ]
 types-pyyaml = [
-    {file = "types-PyYAML-5.4.3.tar.gz", hash = "sha256:2e7b81b2b7af751634425107b986086c6ba7cb61270a43a5c290c58be8cdbc3a"},
-    {file = "types_PyYAML-5.4.3-py2.py3-none-any.whl", hash = "sha256:bca83cbfc0be48600a8abf1e3d87fb762a91e6d35d724029a3321dd2dce2ceb1"},
+    {file = "types-PyYAML-5.4.6.tar.gz", hash = "sha256:745dcb4b1522423026bcc83abb9925fba747f1e8602d902f71a4058f9e7fb662"},
+    {file = "types_PyYAML-5.4.6-py3-none-any.whl", hash = "sha256:96f8d3d96aa1a18a465e8f6a220e02cff2f52632314845a364ecbacb0aea6e30"},
 ]
 types-requests = [
-    {file = "types-requests-2.25.2.tar.gz", hash = "sha256:03122b582f5300ec35ac6692f2634207c467e602dc9ba46b5811a9f6ce0b0bc2"},
-    {file = "types_requests-2.25.2-py3-none-any.whl", hash = "sha256:a4c03c654527957a70002079ca48669b53d82eac4811abf140ea93847b65529b"},
+    {file = "types-requests-2.25.6.tar.gz", hash = "sha256:e21541c0f55c066c491a639309159556dd8c5833e49fcde929c4c47bdb0002ee"},
+    {file = "types_requests-2.25.6-py3-none-any.whl", hash = "sha256:a5a305b43ea57bf64d6731f89816946a405b591eff6de28d4c0fd58422cee779"},
 ]
 types-setuptools = [
-    {file = "types-setuptools-57.0.0.tar.gz", hash = "sha256:b3ada82b21dcb8e0cafd7658d8a16018a000e55bdb7f6f3cec033223360563ce"},
-    {file = "types_setuptools-57.0.0-py3-none-any.whl", hash = "sha256:71ed0f4c71d8fb5f3026a90ae82d163c13749b110e157d82126725ac8f714360"},
+    {file = "types-setuptools-57.0.2.tar.gz", hash = "sha256:4ead432cc394b8de5ee94a312494f3c730d21dbfef37f300a6ac5e742271d735"},
+    {file = "types_setuptools-57.0.2-py3-none-any.whl", hash = "sha256:62c8dc465f29eeaad6b9025645138738d3df1cafc70cb0b14aea700946f2cbb7"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.10.0.0-py2-none-any.whl", hash = "sha256:0ac0f89795dd19de6b97debb0c6af1c70987fd80a2d62d1958f7e56fcc31b497"},
@@ -2094,8 +2132,8 @@ urllib3 = [
     {file = "urllib3-1.26.6.tar.gz", hash = "sha256:f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.7.0-py2.py3-none-any.whl", hash = "sha256:fdfdaaf0979ac03ae7f76d5224a05b58165f3c804f8aa633f3dd6f22fbd435d5"},
-    {file = "virtualenv-20.7.0.tar.gz", hash = "sha256:97066a978431ec096d163e72771df5357c5c898ffdd587048f45e0aecc228094"},
+    {file = "virtualenv-20.7.1-py2.py3-none-any.whl", hash = "sha256:73863dc3be1efe6ee638e77495c0c195a6384ae7b15c561f3ceb2698ae7267c1"},
+    {file = "virtualenv-20.7.1.tar.gz", hash = "sha256:57bcb59c5898818bd555b1e0cfcf668bd6204bc2b53ad0e70a52413bd790f9e4"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
