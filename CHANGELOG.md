@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.11.0 - 11/08/2021
 ### Added
 * Add the `reuse_key` boolean parameter in certificate section: if `true`, the
   existing private key will be reused for the target certificate when renewed
