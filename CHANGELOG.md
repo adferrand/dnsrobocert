@@ -3,7 +3,7 @@
 ## master - CURRENT
 ### Modified
 * Migrate the docker image from the Alpine base to the Debian base, in order
-  to get better DNS support on Kubernetes, and benefit from pre-compile wheels
+  to get better DNS support on Kubernetes, and benefit from pre-compiled wheels
   for cffi, lxml and cryptography
 * Update Certbot to 1.18.0
 * Update Lexicon to 3.7.0 (add `oci` and `vercel` providers)
