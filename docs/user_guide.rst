@@ -294,12 +294,12 @@ to all renewals if needed (this happens typically one month before the expiratio
 Daemonize DNSroboCert
 ---------------------
 
-Because of this regular renewal requirement, DNSroboCert needs to run constantly on your machine as a daemon.
+Because of this regular renewal requirement, DNSroboCert should run constantly on your machine as a daemon.
 The tool does not provide a specific daemon technology: the CLI will just constantly run on the foreground,
 and reacts properly to the relevant exit signal codes like ``SIGTERM``. From that it is your reponsability
 to daemonize DNSroboCert.
 
-Here are some relevant ways depending of the context.
+Here are some relevant ways depending on the context.
 
 Systemd unit
 ````````````
@@ -335,6 +335,26 @@ Then run it:
 
 At this point, your Docker container of DNSroboCert will be started and the Docker daemon will ensure it
 continues to run upon your machine restart.
+
+Run DNSroboCert in "one-shot" mode
+----------------------------------
+
+If the approach of DNSroboCert process running constantly does not fit your needs, you can also use the "one-shot" mode.
+
+In this mode, DNSroboCert will process only once the provided configuration upon execution, then:
+* create or update certificates if needed
+* renew expired certificates
+* delete certificates that do not match the current configuration
+
+At the end it will exit immediately without setting up any config watch or automated renewal process:
+it will be up to you to execute DNSroboCert on a regular basis (preferably twice a day as recommended by Let's Encrypt).
+
+To use the "one-shot" mode, simply set the `--one-shot` flag to the command line. For instance:
+
+.. code-block:: console
+
+    dnsrobocert --config /path/to/config.yml --directory /path/to/letsencrypt --one-shot
+
 
 .. _Pipx: https://github.com/pipxproject/pipx
 .. _Pip: https://docs.python.org/fr/3.6/installing/index.html

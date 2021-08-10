@@ -4,6 +4,10 @@
 ### Added
 * Add the `reuse_key` boolean parameter in certificate section: if `true`, the
   existing private key will be reused for the target certificate when renewed
+* Add the "one-shot" mode: using the `--one-shot` flag, DNSroboCert will process
+  only once the provided configuration, create/update/renew/delete certificates,
+  then return immediately without setting up an automated renewal process or a
+  configuration file watch.
 
 ### Modified
 * Migrate the docker image from the Alpine base to the Debian base, in order

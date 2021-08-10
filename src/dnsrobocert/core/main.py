@@ -127,6 +127,26 @@ def _watch_config(config_path: str, directory_path: str):
     LOGGER.info("Exiting DNSroboCert.")
 
 
+def _run_config(config_path: str, directory_path: str):
+    LOGGER.info("Running DNSroboCert...")
+
+    with tempfile.TemporaryDirectory() as workspace:
+        runtime_config_path = os.path.join(workspace, "dnsrobocert-runtime.yml")
+        certbot_lock = threading.Lock()
+
+        generated_config_path = legacy.migrate(config_path)
+        effective_config_path = (
+            generated_config_path if generated_config_path else config_path
+        )
+
+        _process_config(
+            effective_config_path,
+            directory_path,
+            runtime_config_path,
+            certbot_lock,
+        )
+
+
 def main(args: Optional[List[str]] = None):
     if not args:
         args = sys.argv[1:]
@@ -146,14 +166,25 @@ def main(args: Optional[List[str]] = None):
         default=defaults["directory"],
         help=f"set the directory path where certificates are stored (default: {defaults['directoryDesc']})",
     )
+    parser.add_argument(
+        "--one-shot",
+        "-o",
+        action="store_true",
+        help="if set, DNSroboCert will process only once certificates (creation, renewal, deletion) then return immediately",
+    )
 
     parsed_args = parser.parse_args(args)
 
     utils.validate_snap_environment(parsed_args)
 
-    _watch_config(
-        os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)
-    )
+    if parsed_args.one_shot:
+        _run_config(
+            os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)
+        )
+    else:
+        _watch_config(
+            os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)
+        )
 
 
 if __name__ == "__main__":
