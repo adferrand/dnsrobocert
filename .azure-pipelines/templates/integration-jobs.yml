@@ -71,7 +71,7 @@ jobs:
           docker buildx create --use
           version=test
           echo "Docker tag is: $version"
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/dnsrobocert --tag adferrand/dnsrobocert:$version .
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 --tag adferrand/dnsrobocert --tag adferrand/dnsrobocert:$version .
         displayName: Build Docker image
 
   - job: quality
