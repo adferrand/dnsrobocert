@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Fix docker installation in the docker image
 
 ## 3.11.0 - 11/08/2021
 ### Added

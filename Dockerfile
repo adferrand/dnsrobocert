@@ -20,7 +20,7 @@ RUN apt-get update -y \
         curl \
         bash \
         libxslt1.1 \
- && curl -fsSL get.docker.com && sh \
+ && curl -fsSL get.docker.com | sh \
  && python -m venv /opt/dnsrobocert \
  && PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple /opt/dnsrobocert/bin/pip install -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
  && mkdir -p /etc/dnsrobocert /etc/letsencrypt \
