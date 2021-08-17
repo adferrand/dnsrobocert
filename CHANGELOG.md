@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.12.0 - 18/08/2021
 ### Removed
 * Drop Docker support on `armel` architecture
 
