@@ -65,14 +65,14 @@ jobs:
         lfs: true
       - script: |
           set -e
-          docker build --tag adferrand/dnsrobocert:temp .
+          curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+          export DOCKER_CLI_EXPERIMENTAL=enabled
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          docker buildx create --use
+          version=test
+          echo "Docker tag is: $version"
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --tag adferrand/dnsrobocert --tag adferrand/dnsrobocert:$version .
         displayName: Build Docker image
-      - script: |
-          set -e
-          mkdir -p ./bin
-          curl -fsSL https://goss.rocks/install | GOSS_DST=./bin sh
-          GOSS_PATH=./bin/goss GOSS_SLEEP=5 GOSS_FILES_PATH=./test/goss ./bin/dgoss run adferrand/dnsrobocert:temp
-        displayName: Check Docker container runtime
 
   - job: quality
     strategy:
