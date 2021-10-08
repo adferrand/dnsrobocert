@@ -19,6 +19,8 @@ _DEFAULT_FLAGS = [
     "-n",
     "--user-agent-comment",
     "DNSroboCert/{0}".format(dnsrobocert.__version__),
+    "--preferred-chain",
+    "ISRG Root X1",
 ]
 
 
