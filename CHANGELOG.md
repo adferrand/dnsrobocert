@@ -1,6 +1,14 @@
 # Changelog
 
-## master - CURRENT
+## master - CURRENTù
+### Added
+* Set the preferred chain to `ISRG Root X1` when issuing or renewing a certificate
+
+### Modified
+* Update Certbot to 1.20.0
+* Update Lexicon to 3.8.0
+* Fix docker build
+* Fix docker python environment
 
 ## 3.12.0 - 18/08/2021
 ### Removed
