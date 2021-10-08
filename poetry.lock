@@ -1079,14 +1079,6 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
-name = "suds-jurko"
-version = "0.6"
-description = "Lightweight SOAP client (Jurko's fork)"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "tldextract"
 version = "3.1.2"
 description = "Accurately separate the TLD from the registered domain and subdomains of a URL, using the Public Suffix List. By default, this includes the public ICANN TLDs and their exceptions. You can optionally support the Public Suffix List's private domains as well."
@@ -1154,19 +1146,6 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 dev = ["py-make (>=0.1.0)", "twine", "wheel"]
 notebook = ["ipywidgets (>=6)"]
 telegram = ["requests"]
-
-[[package]]
-name = "transip"
-version = "2.1.2"
-description = "TransIP API Connector"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-cryptography = "*"
-requests = "*"
-suds-jurko = "*"
 
 [[package]]
 name = "twine"
@@ -1423,7 +1402,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "9da34fe029a0e94572c5bb1ca0462ba59160e0a7693d428808b0923b86235a05"
+content-hash = "9180e0dc358e138d1bb874b9fd45a8f892d410da9b7b65d32d3f1f45f24b0c3e"
 
 [metadata.files]
 acme = [
@@ -2031,10 +2010,6 @@ soupsieve = [
     {file = "soupsieve-2.2.1-py3-none-any.whl", hash = "sha256:c2c1c2d44f158cdbddab7824a9af8c4f83c76b1e23e049479aa432feb6c4c23b"},
     {file = "soupsieve-2.2.1.tar.gz", hash = "sha256:052774848f448cf19c7e959adf5566904d525f33a3f8b6ba6f6f8f26ec7de0cc"},
 ]
-suds-jurko = [
-    {file = "suds-jurko-0.6.tar.bz2", hash = "sha256:29edb72fd21e3044093d86f33c66cf847c5aaab26d64cb90e69e528ef014e57f"},
-    {file = "suds-jurko-0.6.zip", hash = "sha256:1cb7252cb13018fc32887c3a834ed7c6648a5b5c4c159be5806da2e1785399e8"},
-]
 tldextract = [
     {file = "tldextract-3.1.2-py2.py3-none-any.whl", hash = "sha256:f55e05f6bf4cc952a87d13594386d32ad2dd265630a8bdfc3df03bd60425c6b0"},
     {file = "tldextract-3.1.2.tar.gz", hash = "sha256:d2034c3558651f7d8fdadea83fb681050b2d662dc67a00d950326dc902029444"},
@@ -2054,10 +2029,6 @@ tox = [
 tqdm = [
     {file = "tqdm-4.62.3-py2.py3-none-any.whl", hash = "sha256:8dd278a422499cd6b727e6ae4061c40b48fce8b76d1ccbf5d34fca9b7f925b0c"},
     {file = "tqdm-4.62.3.tar.gz", hash = "sha256:d359de7217506c9851b7869f3708d8ee53ed70a1b8edbba4dbcb47442592920d"},
-]
-transip = [
-    {file = "transip-2.1.2-py2.py3-none-any.whl", hash = "sha256:ad49b41316105d1b6cb091a49b6c49421a874ecd4a147f289e07c8fa42028501"},
-    {file = "transip-2.1.2.tar.gz", hash = "sha256:e8c66ae9803fbdc4555e5b4a7373cd9053017a5952b2890e6e3ca6563775f7b3"},
 ]
 twine = [
     {file = "twine-3.4.2-py3-none-any.whl", hash = "sha256:087328e9bb405e7ce18527a2dca4042a84c7918658f951110b38bc135acab218"},
