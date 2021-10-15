@@ -25,8 +25,8 @@ ENV CERTS_PATH /etc/letsencrypt
 
 RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-       podman \
-       fuse-overlayfs
+       fuse-overlayfs \
+       podman
 
 RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
