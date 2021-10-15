@@ -171,26 +171,33 @@ def _fix_permissions(certificate_permissions: Dict[str, str], lineage_path: str)
 def _autorestart(certificate: Dict[str, Any]):
     autorestart = certificate.get("autorestart")
     if autorestart:
-        if not os.path.exists("/var/run/docker.sock"):
-            raise RuntimeError("Error, /var/run/docker.sock socket is missing.")
+        if not os.path.exists("/var/run/docker.sock") and not os.path.exists("/run/podman/podman.sock"):
+            raise RuntimeError("Error, /var/run/docker.sock and /run/podman/podman.sock sockets are missing.")
 
-        for onerestart in autorestart:
-            containers = onerestart.get("containers", [])
-            for container in containers:
-                utils.execute(["docker", "restart", container])
+        if os.path.exists("/var/run/docker.sock"):
+            for onerestart in autorestart:
+                containers = onerestart.get("containers", [])
+                for container in containers:
+                    utils.execute(["docker", "restart", container])
 
-            swarm_services = onerestart.get("swarm_services", [])
-            for service in swarm_services:
-                utils.execute(
-                    [
-                        "docker",
-                        "service",
-                        "update",
-                        "--detach=false",
-                        "--force",
-                        service,
-                    ]
-                )
+                swarm_services = onerestart.get("swarm_services", [])
+                for service in swarm_services:
+                    utils.execute(
+                        [
+                            "docker",
+                            "service",
+                            "update",
+                            "--detach=false",
+                            "--force",
+                            service,
+                        ]
+                    )
+
+        if os.path.exists("/run/podman/podman.sock"):
+            for onerestart in autorestart:
+                containers = onerestart.get("podman_containers", [])
+                for container in containers:
+                    utils.execute(["docker", "restart", container])
 
 
 def _autocmd(certificate: Dict[str, Any]):
