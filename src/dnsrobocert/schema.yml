@@ -97,6 +97,10 @@ properties:
                 type: array
                 items:
                   type: string
+              podman_containers:
+                type: array
+                items:
+                  type: string
           additionalProperties: false
         autocmd:
           type: array
