@@ -197,7 +197,7 @@ def _autorestart(certificate: Dict[str, Any]):
             for onerestart in autorestart:
                 containers = onerestart.get("podman_containers", [])
                 for container in containers:
-                    utils.execute(["docker", "restart", container])
+                    utils.execute(["podman", "restart", container])
 
 
 def _autocmd(certificate: Dict[str, Any]):
