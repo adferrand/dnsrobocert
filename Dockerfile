@@ -25,6 +25,10 @@ ENV CERTS_PATH /etc/letsencrypt
 
 RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+       podman
+
+RUN apt-get update -y \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
        curl \
        bash \
        libxslt1.1 \
