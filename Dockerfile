@@ -28,6 +28,9 @@ RUN apt-get update -y \
        fuse-overlayfs \
        podman
 
+VOLUME /var/lib/containers
+VOLUME /home/podman/.local/share/containers
+
 RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
        curl \
