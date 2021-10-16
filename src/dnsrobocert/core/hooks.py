@@ -171,8 +171,12 @@ def _fix_permissions(certificate_permissions: Dict[str, str], lineage_path: str)
 def _autorestart(certificate: Dict[str, Any]):
     autorestart = certificate.get("autorestart")
     if autorestart:
-        if not os.path.exists("/var/run/docker.sock") and not os.path.exists("/run/podman/podman.sock"):
-            raise RuntimeError("Error, /var/run/docker.sock and /run/podman/podman.sock sockets are missing.")
+        if not os.path.exists("/var/run/docker.sock") and not os.path.exists(
+            "/run/podman/podman.sock"
+        ):
+            raise RuntimeError(
+                "Error, /var/run/docker.sock and /run/podman/podman.sock sockets are missing."
+            )
 
         if os.path.exists("/var/run/docker.sock"):
             for onerestart in autorestart:
