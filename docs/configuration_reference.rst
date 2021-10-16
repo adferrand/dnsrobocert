@@ -341,7 +341,7 @@ be defined in each relevant certificate configuration.
     .. code-block:: yaml
 
         autorestart:
-        - container:
+        - containers:
           - container1
           - container2
           swarm_services:
