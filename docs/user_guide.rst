@@ -104,6 +104,10 @@ Finally you can run this typical command for the desired version (eg. 3.0.0):
 
 The Docker container will continue to run in the foreground. To stop it, press CTRL+C.
 
+.. note::
+
+    DNSroboCert also work on Podman
+
 Configuration
 =============
 

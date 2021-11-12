@@ -224,6 +224,8 @@ be defined in each relevant certificate configuration.
         - container1
       - swarm_services:
         - service1
+      podman_containers:
+        - podman1
       autocmd:
       - cmd: /usr/bin/remote_deploy.sh
         containers:
@@ -305,7 +307,7 @@ be defined in each relevant certificate configuration.
 .. warning::
 
     The following paragraphs describe the ``autorestart`` and ``autocmd`` features. To allow them to work properly,
-    DNSroboCert must have access to the Docker client socket file (usually at path `/var/run/docker.sock`).
+    DNSroboCert must have access to the Docker client socket file or the Podman socket (usually at path `/var/run/docker.sock` for Docker or /run/podman/podman.sock for rootful podman or /run/user/$UID/podman/podman.sock where $UID is your user id fo rootless podman).
 
     If DNSroboCert is run directly on the host, this usually requires to use a user with administrative privileges,
     or member of the `docker` group.
@@ -318,6 +320,25 @@ be defined in each relevant certificate configuration.
         $ docker run --rm --name dnsrobocert
             --mount /var/run/docker.sock:/var/run/docker.sock
             adferrand/dnsrobocert
+
+    If DNSroboCert is run as a Podman, you will need to mount the podman socket into the container.
+    As an example the following command does that:
+
+    For rootless Podman:
+
+    .. code-block:: console
+
+        $ podman run --rm --name dnsrobocert
+            --volume /run/user/$UID/podman/:/run/podman
+            docker.io/adferrand/dnsrobocert
+
+    For rootful Podman:
+
+    .. code-block:: console
+
+        $ sudo podman run --rm --name dnsrobocert
+            --volume /run/podman/:/run/podman
+            docker.io/adferrand/dnsrobocert
 
 ``autorestart``
     * Configure an automated restart of target containers when the certificate is created/renewed. This
