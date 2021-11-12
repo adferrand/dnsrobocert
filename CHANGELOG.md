@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+###
+* Makes DNSroboCert capable to restart Podman containers with the `autorestart` feature (#551)
+
+### Modified
 * Update Certbot to 1.21.0
 * Update Lexicon to 3.8.3
 
