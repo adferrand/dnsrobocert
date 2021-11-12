@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.14.0 - 12/11/2021
 ### Added
 * Makes DNSroboCert capable to restart Podman containers with the `autorestart` feature (#551)
 
