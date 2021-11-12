@@ -1,6 +1,10 @@
 # Changelog
 
-## master - CURRENTù
+## master - CURRENT
+* Update Certbot to 1.21.0
+* Update Lexicon to 3.8.3
+
+## 3.13.0 - 09/10/2021
 ### Added
 * Set the preferred chain to `ISRG Root X1` when issuing or renewing a certificate
 
