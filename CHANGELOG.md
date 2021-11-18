@@ -1,6 +1,19 @@
 # Changelog
 
 ## master - CURRENT
+## Added
+* Support ECDSA keys when creating new certificates with the `key_type` string parameter
+  in the certificate section: set to `rsa` to use RSA keys (default if not set) or `ecdsa`
+  to use ECDSA keys. Example:
+  ```yaml
+  profiles:
+  - name: dummy
+    ...
+  certificates:
+  - domains: [example.org]
+    profile: dummy
+    key_type: ecdsa
+  ```
 
 ## 3.14.0 - 12/11/2021
 ### Added

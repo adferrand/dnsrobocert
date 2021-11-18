@@ -127,6 +127,9 @@ properties:
           type: boolean
         reuse_key:
           type: boolean
+        key_type:
+          type: string
+          enum: [rsa, ecdsa]
       required: [domains, profile]
       additionalProperties: false
 additionalProperties: false
