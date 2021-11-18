@@ -237,6 +237,7 @@ be defined in each relevant certificate configuration.
       force_renew: false
       follow_cnames: false
       reuse_key: false
+      key_type: ecdsa
 
 ``certificate`` properties
 --------------------------
