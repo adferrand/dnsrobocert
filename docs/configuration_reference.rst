@@ -301,6 +301,11 @@ be defined in each relevant certificate configuration.
     * *type*: ``boolean``
     * *default*: ``false`` (the private key is never reused for certificate renewal)
 
+``key_type``
+    * Type of key to use when the certificate is generated. Must be ``rsa`` or ``ecdsa``.
+    * *type*: ``string``
+    * *default*: ``rsa`` (a RSA-type key will be used)
+
 
 .. _link: https://letsencrypt.org/2019/10/09/onboarding-your-customers-with-lets-encrypt-and-acme.html#the-advantages-of-a-cname
 

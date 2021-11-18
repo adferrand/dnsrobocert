@@ -69,6 +69,7 @@ def certonly(
     domains: Optional[List[str]] = None,
     force_renew: bool = False,
     reuse_key: bool = False,
+    key_type: str = "rsa",
 ):
     if not domains:
         return
@@ -80,6 +81,8 @@ def certonly(
         additional_params.append("--force-renew")
     if reuse_key:
         additional_params.append("--reuse-key")
+    if key_type:
+        additional_params.extend(["--key-type", key_type])
 
     for domain in domains:
         additional_params.append("-d")

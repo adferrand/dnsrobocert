@@ -52,6 +52,7 @@ def _process_config(
             domains = certificate["domains"]
             force_renew = certificate.get("force_renew", False)
             reuse_key = certificate.get("reuse_key", False)
+            key_type = certificate.get("key_type", "rsa")
             LOGGER.info(f"Handling the certificate for domain(s): {', '.join(domains)}")
             certbot.certonly(
                 runtime_config_path,
@@ -61,6 +62,7 @@ def _process_config(
                 domains,
                 force_renew=force_renew,
                 reuse_key=reuse_key,
+                key_type=key_type,
             )
         except BaseException as error:
             LOGGER.error(

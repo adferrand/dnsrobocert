@@ -165,6 +165,9 @@ certificates:
   - test1.example.net
   - test2.example.net
   profile: dummy
+  follow_cnames: true
+  reuse_key: true
+  key_type: ecdsa
 """
             )
 
