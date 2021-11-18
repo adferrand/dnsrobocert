@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.15.0 - 18/11/2021
 ## Added
 * Support ECDSA keys when creating new certificates with the `key_type` string parameter
   in the certificate section: set to `rsa` to use RSA keys (default if not set) or `ecdsa`
