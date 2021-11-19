@@ -363,6 +363,11 @@ be defined in each relevant certificate configuration.
         * *type*: ``list[string]``
         * *default*: ``null`` (no swarm services to restart)
 
+    ''podman_containers''
+        * A list of Podman containers to restart.
+        * *type*: ''list[string]''
+        * *default*: ''null'' (no containers to restart)
+
     **Property configuration example**
 
     .. code-block:: yaml
