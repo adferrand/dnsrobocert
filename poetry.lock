@@ -1206,7 +1206,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-pyopenssl"
-version = "21.0.0"
+version = "21.0.1"
 description = "Typing stubs for pyOpenSSL"
 category = "dev"
 optional = false
@@ -2124,8 +2124,8 @@ types-ipaddress = [
     {file = "types_ipaddress-1.0.1-py3-none-any.whl", hash = "sha256:9d0a642526c4a1f87ee9ae29d91b93f708508b891d038db2e1c9f06219383516"},
 ]
 types-pyopenssl = [
-    {file = "types-pyOpenSSL-21.0.0.tar.gz", hash = "sha256:5e90537575e6e7eacd8eea5389bd55402c8a636330e83e384be036b2394e31d9"},
-    {file = "types_pyOpenSSL-21.0.0-py3-none-any.whl", hash = "sha256:70217c7b611409d96803150f1e50eae83514c715e913c5f02c657fd9d9c0fb6a"},
+    {file = "types-pyOpenSSL-21.0.1.tar.gz", hash = "sha256:462971847a3a2192a93eeaf7648b1e9fdae32e3bdeb931a1ee333113c302dc7e"},
+    {file = "types_pyOpenSSL-21.0.1-py3-none-any.whl", hash = "sha256:7454811bd244e955fbcb717fc3d5f72ea5e9ac6b30d184aeaeea08773505dc4a"},
 ]
 types-pyyaml = [
     {file = "types-PyYAML-6.0.1.tar.gz", hash = "sha256:2e27b0118ca4248a646101c5c318dc02e4ca2866d6bc42e84045dbb851555a76"},
