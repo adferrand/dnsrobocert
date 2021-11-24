@@ -45,7 +45,6 @@ dns-lexicon = { version = "^3", extras = [ "full" ] }
 zeep = "*"
 xmltodict = "*"
 softlayer = "*"
-pynamecheap = "*"
 localzone = "*"
 boto3 = "*"
 # --
