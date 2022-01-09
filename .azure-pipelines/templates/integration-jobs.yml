@@ -50,7 +50,7 @@ jobs:
           testRunTitle: 'Publish test results for Python $(PYTHON_VERSION) on $(IMAGE_NAME)'
         displayName: Publish tests reports
       - task: PublishCodeCoverageResults@1
-        condition: eq(variables['TOXENV'], 'py38-cover')
+        condition: endsWith(variables['TOXENV'], '-cover')
         inputs:
           codeCoverageTool: Cobertura
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
