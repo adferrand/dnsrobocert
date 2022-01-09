@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.16.0 - 09/01/2022
 ### Modified
 * Update Certbot to 1.22.0
 * Update Lexicon to 3.8.5 (add ValueDomain provider)
