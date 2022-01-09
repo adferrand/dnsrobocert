@@ -159,7 +159,8 @@ def _pfx_export(certificate: Dict[str, Any], lineage_path: str):
         p12.set_ca_certificates(ca_certs)
 
         with open(os.path.join(lineage_path, "cert.pfx"), "wb") as f:
-            f.write(p12.export(pfx.get("passphrase")))
+            passphrase: str = pfx.get("passphrase")
+            f.write(p12.export(passphrase.encode() if passphrase else None))
 
 
 def _fix_permissions(certificate_permissions: Dict[str, str], lineage_path: str):
