@@ -40,9 +40,11 @@ The following Lexicon providers are supported by DNSroboCert.
 +----------------+----------------+----------------+----------------+
 |route53_        |safedns_        |sakuracloud_    |softlayer_      |
 +----------------+----------------+----------------+----------------+
-|transip_        |ultradns_       |vercel_         |vultr_          |
+|transip_        |ultradns_       |valuedomain_    |vercel_         |
 +----------------+----------------+----------------+----------------+
-|yandex_         |zeit_           |zilore_         |zonomi_         |
+|vultr_          |yandex_         |zeit_           |zilore_         |
++----------------+----------------+----------------+----------------+
+|zonomi_         |                |                |                |
 +----------------+----------------+----------------+----------------+
 
 Providers options
@@ -468,6 +470,11 @@ ultradns
     * ``auth_token`` Specify token for authentication; if not set --auth-token, --auth-password are used
     * ``auth_username`` Specify username for authentication
     * ``auth_password`` Specify password for authentication
+
+.. _valuedomain:
+
+valuedomain
+    * ``auth_token`` Specify youyr api token
 
 .. _vercel:
 
