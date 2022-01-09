@@ -365,8 +365,8 @@ be defined in each relevant certificate configuration.
 
     ''podman_containers''
         * A list of Podman containers to restart.
-        * *type*: ''list[string]''
-        * *default*: ''null'' (no containers to restart)
+        * *type*: ``list[string]``
+        * *default*: ``null`` (no containers to restart)
 
     **Property configuration example**
 
