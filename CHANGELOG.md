@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.17.0 - 17/01/2022
 ### Added
 * Add support for Python 3.10
 
