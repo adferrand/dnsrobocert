@@ -17,5 +17,5 @@ extensions = [
 
 lexicon_version = [package for package in poetry_lock["package"] if package["name"] == "dns-lexicon"][0]["version"]
 intersphinx_mapping = {
-    'lexicon': (f'https://dns-lexicon.readthedocs.io/en/{lexicon_version}/', None),
+    'lexicon': (f'https://dns-lexicon.readthedocs.io/en/latest/', None),
 }
