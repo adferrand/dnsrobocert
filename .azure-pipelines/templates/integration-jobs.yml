@@ -2,30 +2,30 @@ jobs:
   - job: test
     strategy:
       matrix:
-        macos-py36:
+        macos-py37:
           IMAGE_NAME: macOS-1015
-          PYTHON_VERSION: 3.6
-          TOXENV: py36
-        macos-py39:
+          PYTHON_VERSION: 3.7
+          TOXENV: py37
+        macos-py310:
           IMAGE_NAME: macOS-1015
-          PYTHON_VERSION: 3.9
-          TOXENV: py39
-        windows-py36:
+          PYTHON_VERSION: 3.10
+          TOXENV: py310
+        windows-py37:
           IMAGE_NAME: windows-2019
-          PYTHON_VERSION: 3.6
-          TOXENV: py36
-        windows-py39:
+          PYTHON_VERSION: 3.7
+          TOXENV: py37
+        windows-py310:
           IMAGE_NAME: windows-2019
-          PYTHON_VERSION: 3.9
-          TOXENV: py39
-        linux-py36:
+          PYTHON_VERSION: 3.10
+          TOXENV: py310
+        linux-py37:
           IMAGE_NAME: ubuntu-18.04
-          PYTHON_VERSION: 3.6
-          TOXENV: py36
-        linux-py39-cover:
+          PYTHON_VERSION: 3.7
+          TOXENV: py37
+        linux-py310-cover:
           IMAGE_NAME: ubuntu-18.04
-          PYTHON_VERSION: 3.9
-          TOXENV: py39-cover
+          PYTHON_VERSION: 3.10
+          TOXENV: py310-cover
     pool:
       vmImage: $(IMAGE_NAME)
     steps:
@@ -86,7 +86,7 @@ jobs:
     steps:
       - task: UsePythonVersion@0
         inputs:
-          versionSpec: 3.8
+          versionSpec: 3.10
           addToPath: true
         displayName: Install Python
       - script: |
