@@ -1,6 +1,15 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Add support for Python 3.10
+
+### Modified
+* Link dynamically to Lexicon documentation for providers options
+* Update Lexicon to 3.9.2 (fix `transip` provider)
+
+### Removed
+* Drop support for Python 3.6
 
 ## 3.16.0 - 09/01/2022
 ### Modified
