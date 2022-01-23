@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Fix Docker builds by downgrading Python 3.10 to Python 3.9
 
 ## 3.17.0 - 17/01/2022
 ### Added
