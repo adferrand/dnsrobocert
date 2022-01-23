@@ -16,7 +16,7 @@ RUN cd /tmp/dnsrobocert \
  && /root/.local/bin/poetry export --format requirements.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
  && /root/.local/bin/poetry build -f wheel
 
-FROM docker.io/python:3.10.1-slim
+FROM docker.io/python:3.9.10-slim
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
 
