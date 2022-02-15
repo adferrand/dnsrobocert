@@ -224,11 +224,17 @@ def _autocmd(certificate: Dict[str, Any]):
 
 def _deploy_hook(certificate: Dict[str, Any]):
     deploy_hook = certificate.get("deploy_hook")
+    env = os.environ.copy()
+    env.update({
+        "DNSROBOCERT_CERTIFICATE_NAME": certificate.get("name"),
+        "DNSROBOCERT_CERTIFICATE_PROFILE": certificate.get("profile"),
+        "DNSROBOCERT_CERTIFICATE_DOMAINS": ",".join(certificate.get("domains", [])),
+    })
     if deploy_hook:
         if os.name == "nt":
-            subprocess.check_call(["powershell.exe", "-Command", deploy_hook])
+            subprocess.check_call(["powershell.exe", "-Command", deploy_hook], env=env)
         else:
-            subprocess.check_call(deploy_hook, shell=True)
+            subprocess.check_call(deploy_hook, shell=True, env=env)
 
 
 if __name__ == "__main__":

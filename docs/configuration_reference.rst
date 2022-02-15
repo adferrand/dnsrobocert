@@ -282,6 +282,15 @@ be defined in each relevant certificate configuration.
     * *type*: ``string``
     * *default*: ``null`` (no deploy hook is configured)
 
+  .. note::
+
+    Several additional environment variables are injected by DNSrobocCert in the command
+    runs by ``deploy_hook``:
+    
+    * ``DNSROBOCERT_CERTIFICATE_NAME``: name of the current certificate in the configuration file,
+    * ``DNSROBOCERT_CERTIFICATE_DOMAINS``: comma-separated list of the domains for the current certificate,
+    * ``DNSROBOCERT_CERTIFICATE_PROFILE``: DNSroboCert profile associated with the current certificate.
+
 ``force_renew``
     * If ``true``, the certificate will be force renewed when DNSroboCert configuration changes. Useful
       for debugging purposes.
