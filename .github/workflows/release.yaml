@@ -5,8 +5,11 @@ on:
     tags: ["v3.*"]
 
 jobs:
+  main:
+    uses: adferrand/dnsrobocert/.github/workflows/main.yml
   pypi:
     runs-on: ubuntu-20.04
+    needs: [main]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -21,6 +24,7 @@ jobs:
           PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
   docker:
     runs-on: ubuntu-20.04
+    needs: [main]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -41,8 +45,7 @@ jobs:
         with:
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          tags: adferrand/dnsrobocert:latest,adferrand/dnsrobocert:${{ steps.version.outputs.version }}
-
+          tags: adferrand/letsencrypt-dns:latest,adferrand/letsencrypt-dns:${{ steps.version.outputs.version }},adferrand/dnsrobocert:latest,adferrand/dnsrobocert:${{ steps.version.outputs.version }}
   github-release:
     runs-on: ubuntu-20.04
     needs: [pypi, docker]
