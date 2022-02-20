@@ -17,8 +17,16 @@ jobs:
       matrix:
         os: [ubuntu-20.04, macos-11, windows-2022]
         python: ["3.7", "3.10"]
-        toxenv: [py]
+        toxenv: [py3]
       fail-fast: false
+      exclude:
+        - os: ubuntu-20.04
+          python: "3.10"
+          toxenv: py3
+      include:
+        - os: ubuntu-20.04
+          python: "3.10"
+          toxenv: cover
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -58,3 +66,8 @@ jobs:
       - run: tox
         env:
           TOXENV: ${{ matrix.toxenv }}
+      - run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov
+        if: ${{ matrix.toxenv == 'cover' }}
