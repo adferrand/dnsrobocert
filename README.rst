@@ -14,8 +14,8 @@
     :target: https://microbadger.com/images/adferrand/dnsrobocert
 .. |ci| image:: https://img.shields.io/github/workflow/status/adferrand/dnsrobocert/main/master
     :target: https://github.com/adferrand/dnsrobocert/actions/workflows/main.yml
-.. |coverage| image:: https://img.shields.io/azure-devops/coverage/adferrand/338d4cba-ab35-4cf9-a9c6-1d2601554b32/21
-    :target: https://dev.azure.com/adferrand/dnsrobocert/_build?definitionId=21&view=ms.vss-pipelineanalytics-web.new-build-definition-pipeline-analytics-view-cardmetrics
+.. |coverage| image:: https://img.shields.io/codecov/c/github/adferrand/dnsrobocert/master
+    :target: https://app.codecov.io/gh/adferrand/dnsrobocert/branch/master
 
 .. tag:intro-begin
 
