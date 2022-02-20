@@ -58,7 +58,7 @@ def txt_challenge(
 
 
 def check_one_challenge(challenge: str, token: Optional[str]) -> bool:
-    resolver = dns.resolver.get_default_resolver()
+    resolver = dns.resolver.get_default_resolver()  # type: ignore[attr-defined]
 
     try:
         answers = resolver.query(challenge, "TXT")
@@ -89,7 +89,7 @@ def check_one_challenge(challenge: str, token: Optional[str]) -> bool:
 
 
 def resolve_canonical_challenge_name(name: str) -> str:
-    resolver = dns.resolver.get_default_resolver()
+    resolver = dns.resolver.get_default_resolver()  # type: ignore[attr-defined]
     current_name = name
     visited = [current_name]
 

@@ -226,8 +226,8 @@ def _deploy_hook(certificate: Dict[str, Any]):
     deploy_hook = certificate.get("deploy_hook")
     env = os.environ.copy()
     env.update({
-        "DNSROBOCERT_CERTIFICATE_NAME": certificate.get("name"),
-        "DNSROBOCERT_CERTIFICATE_PROFILE": certificate.get("profile"),
+        "DNSROBOCERT_CERTIFICATE_NAME": certificate.get("name", ""),
+        "DNSROBOCERT_CERTIFICATE_PROFILE": certificate.get("profile", ""),
         "DNSROBOCERT_CERTIFICATE_DOMAINS": ",".join(certificate.get("domains", [])),
     })
     if deploy_hook:
