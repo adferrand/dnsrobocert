@@ -18,15 +18,15 @@ jobs:
         os: [ubuntu-20.04, macos-11, windows-2022]
         python: ["3.7", "3.10"]
         toxenv: [py3]
+        exclude:
+          - os: ubuntu-20.04
+            python: "3.10"
+            toxenv: py3
+        include:
+          - os: ubuntu-20.04
+            python: "3.10"
+            toxenv: cover
       fail-fast: false
-      exclude:
-        - os: ubuntu-20.04
-          python: "3.10"
-          toxenv: py3
-      include:
-        - os: ubuntu-20.04
-          python: "3.10"
-          toxenv: cover
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
