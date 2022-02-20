@@ -1,6 +1,18 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Inject environment variables `DNSROBOCERT_CERTIFICATE_NAME`, `DNSROBOCERT_CERTIFICATE_PROFILE`
+  and `DNSROBOCERT_CERTIFICATE_DOMAINS` in hook scripts
+* Setup CI/CD with GitHub Actions
+
+### Modified
+* Upgrade to Lexicon 3.9.4
+* Upgrade to Certbot 1.23.0
+* Fix error in Docker entrypoint timezone setting when `TIMEZONE` is defined
+
+### Removed
+* Remove Azure Pipelines
 
 ## 3.17.1 - 23/01/2022
 ### Modified
