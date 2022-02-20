@@ -12,6 +12,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04, macos-11, windows-2022]
         python: ["3.7", "3.10"]
+      fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -38,6 +39,7 @@ jobs:
     strategy:
       matrix:
         toxenv: [flake8, mypy]
+      fail-fast: false
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
