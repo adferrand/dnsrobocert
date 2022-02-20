@@ -10,8 +10,8 @@
     :target: https://pypi.org/project/dnsrobocert/
 .. |python_support| image:: https://img.shields.io/pypi/pyversions/dnsrobocert
     :target: https://pypi.org/project/dnsrobocert/
-.. |docker| image:: https://img.shields.io/docker/image-size/adferrand/dnsrobocert
-    :target: https://microbadger.com/images/adferrand/dnsrobocert
+.. |docker| image:: https://img.shields.io/docker/pulls/adferrand/dnsrobocert
+    :target: https://hub.docker.com/r/adferrand/dnsrobocert
 .. |ci| image:: https://img.shields.io/github/workflow/status/adferrand/dnsrobocert/main/master
     :target: https://github.com/adferrand/dnsrobocert/actions/workflows/main.yml
 .. |coverage| image:: https://img.shields.io/codecov/c/github/adferrand/dnsrobocert/master
