@@ -17,6 +17,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04, macos-11, windows-2022]
         python: ["3.7", "3.10"]
+        toxenv: [py]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -29,7 +30,7 @@ jobs:
           pip install poetry tox
       - run: tox
         env:
-          TOXENV: py
+          TOXENV: ${{ matrix.toxenv }}
   docker:
     runs-on: ubuntu-20.04
     steps:
