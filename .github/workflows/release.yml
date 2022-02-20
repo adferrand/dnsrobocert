@@ -6,7 +6,7 @@ on:
 
 jobs:
   main:
-    uses: adferrand/dnsrobocert/.github/workflows/main.yml
+    uses: adferrand/dnsrobocert/.github/workflows/main.yml@master
   pypi:
     runs-on: ubuntu-20.04
     needs: [main]
