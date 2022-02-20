@@ -14,7 +14,7 @@ stages:
       - template: templates/integration-jobs.yml
   - stage: package
     jobs:
-      - template: templates/delivery-jobs.yml
-  - stage: deploy
+      - template: templates/packaging-jobs.yml
+  - stage: release
     jobs:
-      - template: templates/deploy-jobs.yml
+      - template: templates/releasing-jobs.yml

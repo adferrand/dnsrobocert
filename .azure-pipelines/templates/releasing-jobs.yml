@@ -16,11 +16,11 @@ jobs:
       - script: |
           set -e
           python -m pip install -U pip
-          pip install twine
+          pip install poetry
         displayName: Prepare environment
       - script: |
           set -e
-          twine upload dist/* -u "$(twine.username)" -p "$(twine.password)"
+          poetry publish -u "$(twine.username)" -p "$(twine.password)"
         displayName: Upload Python dist to PyPI
 
   - job: docker
