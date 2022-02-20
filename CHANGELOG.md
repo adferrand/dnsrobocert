@@ -1,8 +1,6 @@
 # Changelog
 
 ## master - CURRENT
-
-## 3.18.0 - 20/02/2022
 ### Added
 * Inject environment variables `DNSROBOCERT_CERTIFICATE_NAME`, `DNSROBOCERT_CERTIFICATE_PROFILE`
   and `DNSROBOCERT_CERTIFICATE_DOMAINS` in hook scripts
