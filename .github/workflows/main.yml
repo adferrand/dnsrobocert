@@ -39,6 +39,11 @@ jobs:
       - run: tox
         env:
           TOXENV: ${{ matrix.toxenv }}
+      - run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov
+        if: ${{ matrix.toxenv == 'cover' }}
   docker:
     runs-on: ubuntu-20.04
     steps:
@@ -66,8 +71,3 @@ jobs:
       - run: tox
         env:
           TOXENV: ${{ matrix.toxenv }}
-      - run: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov
-        if: ${{ matrix.toxenv == 'cover' }}
