@@ -43,6 +43,13 @@ jobs:
         run: tox
         env:
           TOXENV: ${{ matrix.toxenv }}
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit-test-results-${{ matrix.os }}-${{ matrix.python }}
+          path: |
+            test-results/*.xml
       - name: Publish coverage
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
@@ -82,3 +89,11 @@ jobs:
         run: tox
         env:
           TOXENV: ${{ matrix.toxenv }}
+  event-file:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Upload event file
+        uses: actions/upload-artifact@v2
+        with:
+          name: event-file
+          path: ${{ github.event_path }}
