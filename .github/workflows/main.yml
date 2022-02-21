@@ -32,7 +32,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup dev environment
-        uses: ./.github/actions/setup-python-dev.yml
+        uses: ./.github/actions/setup-python-dev
         with:
           python-version: ${{ matrix.python }}
       - name: Run tox
@@ -71,7 +71,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup dev environment
-        uses: ./.github/actions/setup-python-dev.yml
+        uses: ./.github/actions/setup-python-dev
       - name: Run tox
         run: tox
         env:
