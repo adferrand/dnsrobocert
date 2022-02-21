@@ -23,5 +23,8 @@ runs:
       shell: bash
     - id: project-version
       name: Extract Poetry project version
-      run: echo "::set-output name=version::$(poetry version | awk '{print $2}')"
+      run: |
+        VERSION=$(poetry version | awk '{print $2}')
+        echo "Project version is: ${VERSION}"
+        echo "::set-output name=version::${VERSION}"
       shell: bash
