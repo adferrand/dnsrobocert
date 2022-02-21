@@ -15,15 +15,15 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-20.04, macos-11, windows-2022]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python: ["3.7", "3.10"]
         toxenv: [py3]
         exclude:
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             python: "3.10"
             toxenv: py3
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             python: "3.10"
             toxenv: cover
       fail-fast: false
@@ -57,7 +57,7 @@ jobs:
           ./codecov
         if: ${{ matrix.toxenv == 'cover' }}
   docker:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -73,7 +73,7 @@ jobs:
       matrix:
         toxenv: [flake8, mypy]
       fail-fast: false
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -90,7 +90,7 @@ jobs:
         env:
           TOXENV: ${{ matrix.toxenv }}
   event-file:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Upload event file
         uses: actions/upload-artifact@v2
