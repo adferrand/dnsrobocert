@@ -51,10 +51,7 @@ jobs:
           path: |
             junit/*.xml
       - name: Publish coverage
-        run: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov
+        uses: codecov/codecov-action@v2
         if: ${{ matrix.toxenv == 'cover' }}
   docker:
     runs-on: ubuntu-latest
