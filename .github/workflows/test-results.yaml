@@ -35,3 +35,5 @@ jobs:
           event_file: artifacts/event-file/event.json
           event_name: ${{ github.event.workflow_run.event }}
           files: "artifacts/**/*.xml"
+          check_name: unit-test-results
+          comment_title: Unit Test Results
