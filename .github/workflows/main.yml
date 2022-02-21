@@ -31,7 +31,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Setup dev environment
+      - id: setup-dev
+        name: Setup dev environment
         uses: ./.github/actions/setup-python-dev
         with:
           python-version: ${{ matrix.python }}
@@ -49,6 +50,10 @@ jobs:
       - name: Publish coverage
         uses: codecov/codecov-action@v2
         if: ${{ matrix.toxenv == 'cover' }}
+      - run: |
+          echo "Test version is ${VERSION}"
+        env:
+          VERSION: ${{ steps.setup-dev.outputs.project-version }}
   docker:
     runs-on: ubuntu-latest
     steps:
