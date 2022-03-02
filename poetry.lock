@@ -1,18 +1,18 @@
 [[package]]
 name = "acme"
-version = "1.23.0"
+version = "1.24.0"
 description = "ACME protocol implementation in Python"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 cryptography = ">=2.5.0"
 josepy = ">=1.10.0"
 PyOpenSSL = ">=17.3.0"
 pyrfc3339 = "*"
-pytz = "*"
-requests = ">=2.14.2"
+pytz = ">=2019.3"
+requests = ">=2.20.0"
 requests-toolbelt = ">=0.3.0"
 
 [package.extras]
@@ -1217,8 +1217,8 @@ content-hash = "8c132003396fcc416f4de296ed9428fcd0eed8708bf5ce5e8f86953dfbd34e77
 
 [metadata.files]
 acme = [
-    {file = "acme-1.23.0-py2.py3-none-any.whl", hash = "sha256:b54dd78819ce5e0e32ad59d7777afc2fe4019263dcf49b2ac4b189bde603387b"},
-    {file = "acme-1.23.0.tar.gz", hash = "sha256:f34bd792eb8394a972b4b5292fd74693fc8451b071f3cdc6201f1bed4f48ab2f"},
+    {file = "acme-1.24.0-py3-none-any.whl", hash = "sha256:ae095f1dbf28f9b831cff33480d3149aa80c724c7bdc4da0530bf38028fd099a"},
+    {file = "acme-1.24.0.tar.gz", hash = "sha256:63161f442d7c995313305663ad2eef6b3f770899c3f635e1c1f1d0141696b298"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
