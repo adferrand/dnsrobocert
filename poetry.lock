@@ -1,18 +1,18 @@
 [[package]]
 name = "acme"
-version = "1.23.0"
+version = "1.25.0"
 description = "ACME protocol implementation in Python"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 cryptography = ">=2.5.0"
-josepy = ">=1.10.0"
+josepy = ">=1.13.0"
 PyOpenSSL = ">=17.3.0"
 pyrfc3339 = "*"
-pytz = "*"
-requests = ">=2.14.2"
+pytz = ">=2019.3"
+requests = ">=2.20.0"
 requests-toolbelt = ">=0.3.0"
 
 [package.extras]
@@ -460,7 +460,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "josepy"
-version = "1.12.0"
+version = "1.13.0"
 description = "JOSE protocol implementation in Python"
 category = "main"
 optional = false
@@ -473,7 +473,7 @@ PyOpenSSL = ">=0.13"
 [package.extras]
 dev = ["pytest", "tox"]
 docs = ["Sphinx (>=1.0)", "sphinx-rtd-theme (>=1.0)"]
-tests = ["coverage (>=4.0)", "flake8 (<4)", "mypy", "pytest-cov", "pytest-flake8 (>=0.5)", "pytest (>=2.8.0)", "types-pyopenssl", "types-pyrfc3339", "types-requests", "types-setuptools"]
+tests = ["coverage (>=4.0)", "flake8 (<4)", "isort", "mypy", "pytest-cov", "pytest-flake8 (>=0.5)", "pytest (>=2.8.0)", "types-pyopenssl", "types-pyrfc3339", "types-requests", "types-setuptools"]
 
 [[package]]
 name = "jsonschema"
@@ -1217,8 +1217,8 @@ content-hash = "8c132003396fcc416f4de296ed9428fcd0eed8708bf5ce5e8f86953dfbd34e77
 
 [metadata.files]
 acme = [
-    {file = "acme-1.23.0-py2.py3-none-any.whl", hash = "sha256:b54dd78819ce5e0e32ad59d7777afc2fe4019263dcf49b2ac4b189bde603387b"},
-    {file = "acme-1.23.0.tar.gz", hash = "sha256:f34bd792eb8394a972b4b5292fd74693fc8451b071f3cdc6201f1bed4f48ab2f"},
+    {file = "acme-1.25.0-py3-none-any.whl", hash = "sha256:1dfa3c0ba17a49334be4072bfd77ed520bf0d2eafa2f38d2657a2b7015d75268"},
+    {file = "acme-1.25.0.tar.gz", hash = "sha256:e3fbe36fcfa27ec46f450369498f3486370ab53a0fd7db91557a23d58b3969fa"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
@@ -1478,8 +1478,8 @@ jmespath = [
     {file = "jmespath-0.10.0.tar.gz", hash = "sha256:b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9"},
 ]
 josepy = [
-    {file = "josepy-1.12.0-py2.py3-none-any.whl", hash = "sha256:5b1805df50d0be5b06fd892d7192fedbf0e5f5191473ccf002ba429a3eb55db8"},
-    {file = "josepy-1.12.0.tar.gz", hash = "sha256:267004a64f08c016cd54b7aaf7c323fa3ef3679fb62f4b086cd56448d0fecb25"},
+    {file = "josepy-1.13.0-py2.py3-none-any.whl", hash = "sha256:6f64eb35186aaa1776b7a1768651b1c616cab7f9685f9660bffc6491074a5390"},
+    {file = "josepy-1.13.0.tar.gz", hash = "sha256:8931daf38f8a4c85274a0e8b7cb25addfd8d1f28f9fb8fbed053dd51aec75dc9"},
 ]
 jsonschema = [
     {file = "jsonschema-4.4.0-py3-none-any.whl", hash = "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"},
