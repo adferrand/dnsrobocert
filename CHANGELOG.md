@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Upgrade to Certbot 1.26.0
 
 ## 3.18.0 - 20/02/2022
 ### Added
