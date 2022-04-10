@@ -346,6 +346,7 @@ Run DNSroboCert in "one-shot" mode
 If the approach of DNSroboCert process running constantly does not fit your needs, you can also use the "one-shot" mode.
 
 In this mode, DNSroboCert will process only once the provided configuration upon execution, then:
+
 * create or update certificates if needed
 * renew expired certificates
 * delete certificates that do not match the current configuration
