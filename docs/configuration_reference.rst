@@ -322,7 +322,11 @@ be defined in each relevant certificate configuration.
 .. warning::
 
     The following paragraphs describe the ``autorestart`` and ``autocmd`` features. To allow them to work properly,
-    DNSroboCert must have access to the Docker client socket file or the Podman socket (usually at path `/var/run/docker.sock` for Docker or /run/podman/podman.sock for rootful podman or /run/user/$UID/podman/podman.sock where $UID is your user id for rootless podman).
+    DNSroboCert must have access to the Docker client socket file or the Podman socket. Usually at path:
+    
+    * `/var/run/docker.sock` for Docker,
+    * `/run/podman/podman.sock` for rootful Podman,
+    * `/run/user/$UID/podman/podman.sock` where $UID is your user id for rootless podman.
 
     If DNSroboCert is run directly on the host, this usually requires to use a user with administrative privileges,
     or member of the `docker` group.
