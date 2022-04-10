@@ -213,8 +213,6 @@ profile is referred by its name, and **must** exist in the ``profiles`` Section.
 In parallel several actions can be defined when a certificate is created or renewed. These actions have to
 be defined in each relevant certificate configuration.
 
-**Section reference**
-
 .. code-block:: yaml
 
     certificates:
@@ -334,6 +332,8 @@ be defined in each relevant certificate configuration.
 
 
 .. _link: https://letsencrypt.org/2019/10/09/onboarding-your-customers-with-lets-encrypt-and-acme.html#the-advantages-of-a-cname
+
+.. _warning-container-config:
 
 .. warning::
 
