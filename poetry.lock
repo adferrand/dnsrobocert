@@ -1013,7 +1013,7 @@ types-cryptography = "*"
 
 [[package]]
 name = "types-pyyaml"
-version = "6.0.5"
+version = "6.0.6"
 description = "Typing stubs for PyYAML"
 category = "dev"
 optional = false
@@ -1821,8 +1821,8 @@ types-pyopenssl = [
     {file = "types_pyOpenSSL-22.0.1-py3-none-any.whl", hash = "sha256:8b80041f9948f6093f31f9647f0ece5f2a7836f06cbc0e7b65f19fe2e3f9401a"},
 ]
 types-pyyaml = [
-    {file = "types-PyYAML-6.0.5.tar.gz", hash = "sha256:464e050914f3d1d83a8c038e1cf46da5cb96b7cd02eaa096bcaa03675edd8a2e"},
-    {file = "types_PyYAML-6.0.5-py3-none-any.whl", hash = "sha256:2fd21310870addfd51db621ad9f3b373f33ee3cbb81681d70ef578760bd22d35"},
+    {file = "types-PyYAML-6.0.6.tar.gz", hash = "sha256:53c4379c7c8199d4fc5098060c51d58d38283e93d7f27bb80c8abe663456317d"},
+    {file = "types_PyYAML-6.0.6-py3-none-any.whl", hash = "sha256:d3d99e0a37a2fd37f35a9e4b4f794034192dac2aea2efc84c1bcde00ed66e150"},
 ]
 types-requests = [
     {file = "types-requests-2.27.16.tar.gz", hash = "sha256:c8010c18b291a7efb60b1452dbe12530bc25693dd657e70c62803fcdc4bffe9b"},
