@@ -3,6 +3,7 @@
 ## master - CURRENT
 ### Modified
 * Upgrade to Certbot 1.26.0
+* Upgrade to Lexicon 3.10.0 (new providers: `misaka`, `yandexcloud` + various fixes)
 
 ## 3.18.0 - 20/02/2022
 ### Added
