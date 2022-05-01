@@ -1,8 +1,9 @@
 from typing import Any, Dict, Optional
 
-import dns.rdatatype
-import dns.resolver
 import tldextract
+from dns.exception import Timeout
+from dns.rdatatype import RdataType
+from dns.resolver import get_default_resolver, NXDOMAIN, NoAnswer
 from lexicon.client import Client
 from lexicon.config import ConfigResolver
 
@@ -58,14 +59,14 @@ def txt_challenge(
 
 
 def check_one_challenge(challenge: str, token: Optional[str]) -> bool:
-    resolver = dns.resolver.get_default_resolver()  # type: ignore[attr-defined]
+    resolver = get_default_resolver()
 
     try:
         answers = resolver.query(challenge, "TXT")
-    except (resolver.NXDOMAIN, resolver.NoAnswer):
+    except (NXDOMAIN, NoAnswer):
         print(f"TXT {challenge} does not exist.")
         return False
-    except dns.exception.Timeout as e:
+    except Timeout as e:
         print(f"Timeout while trying to check TXT {challenge}: {e}")
         return False
     else:
@@ -89,14 +90,14 @@ def check_one_challenge(challenge: str, token: Optional[str]) -> bool:
 
 
 def resolve_canonical_challenge_name(name: str) -> str:
-    resolver = dns.resolver.get_default_resolver()  # type: ignore[attr-defined]
+    resolver = get_default_resolver()
     current_name = name
     visited = [current_name]
 
     while True:
         try:
             answer = resolver.resolve(
-                current_name, rdtype=dns.rdatatype.RdataType.CNAME
+                current_name, rdtype=RdataType.CNAME
             )
             current_name = str(answer[0].target)
             if current_name in visited:
@@ -106,6 +107,6 @@ def resolve_canonical_challenge_name(name: str) -> str:
                     f"{resolution_map}"
                 )
             visited.append(current_name)
-        except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
+        except (NXDOMAIN, NoAnswer):
             # No more CNAME in the chain, we have the final canonical_name
             return current_name
