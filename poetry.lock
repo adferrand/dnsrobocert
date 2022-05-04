@@ -1,6 +1,6 @@
 [[package]]
 name = "acme"
-version = "1.26.0"
+version = "1.27.0"
 description = "ACME protocol implementation in Python"
 category = "main"
 optional = false
@@ -1205,8 +1205,8 @@ content-hash = "8c132003396fcc416f4de296ed9428fcd0eed8708bf5ce5e8f86953dfbd34e77
 
 [metadata.files]
 acme = [
-    {file = "acme-1.26.0-py3-none-any.whl", hash = "sha256:538e114b7555fa9619e7e917719e31ef3b3dcd565aaac495521ed64ce6ae1a88"},
-    {file = "acme-1.26.0.tar.gz", hash = "sha256:7269209192189c5b0bd5bc69388229737e23e52e8422315e2fcd3aff4c8e13c8"},
+    {file = "acme-1.27.0-py3-none-any.whl", hash = "sha256:94123a7bf8f0c566fa79fa9aef0c6abe9b0674de9f397d5ea2d6805a6f87ae0d"},
+    {file = "acme-1.27.0.tar.gz", hash = "sha256:abf17115005bcd286f74498c92526a282f531178271fc5b635c9563d51559121"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
