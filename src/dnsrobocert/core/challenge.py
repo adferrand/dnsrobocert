@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional
 import tldextract
 from dns.exception import Timeout
 from dns.rdatatype import RdataType
-from dns.resolver import get_default_resolver, NXDOMAIN, NoAnswer
+from dns.resolver import NXDOMAIN, NoAnswer, get_default_resolver
 from lexicon.client import Client
 from lexicon.config import ConfigResolver
 
@@ -96,9 +96,7 @@ def resolve_canonical_challenge_name(name: str) -> str:
 
     while True:
         try:
-            answer = resolver.resolve(
-                current_name, rdtype=RdataType.CNAME
-            )
+            answer = resolver.resolve(current_name, rdtype=RdataType.CNAME)
             current_name = str(answer[0].target)
             if current_name in visited:
                 resolution_map = " -> ".join([*visited, current_name])

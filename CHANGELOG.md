@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.20.0 - 07/05/2022
 ### Modified
 * Upgrade to Certbot 1.27.0
 * Upgrade to Lexicon 3.11.0 (new providers: `namecom` + various fixes)
