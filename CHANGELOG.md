@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Upgrade to Lexicon 3.11.2 (various fixes)
 
 ## 3.20.0 - 07/05/2022
 ### Modified
