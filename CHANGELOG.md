@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.21.0 - 13/08/2022
 ### Modified
 * Upgrade to Lexicon 3.11.4 (new provider: `porkbun` + various fixes)
 * Upgrade to Certbot 1.29.0
