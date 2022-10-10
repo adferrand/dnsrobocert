@@ -13,7 +13,7 @@ RUN apt-get update -y \
  && rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp/dnsrobocert \
- && /root/.local/bin/poetry export --format requirements.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
+ && /root/.local/bin/poetry export --format constraints.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
  && /root/.local/bin/poetry build -f wheel
 
 FROM docker.io/python:3.9.10-slim

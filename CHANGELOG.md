@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Fix docker build
+* Upgrade to Certbot 1.31.0
+* Upgrade to Lexicon 3.11.5 (fix `yandex` provider)
 
 ## 3.21.0 - 13/08/2022
 ### Modified
