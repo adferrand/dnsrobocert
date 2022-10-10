@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.22.0 - 10/10/2022
 ### Modified
 * Fix docker build
 * Upgrade to Certbot 1.31.0
