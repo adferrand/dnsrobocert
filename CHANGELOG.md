@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Upgrade to Lexicon 3.11.6 (fix `hetzner` provider)
 
 ## 3.22.0 - 10/10/2022
 ### Modified
