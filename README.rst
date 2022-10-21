@@ -109,4 +109,4 @@ Please have a look at the `Developer guide`_ page to know how to start.
 .. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
 .. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/latest/providers_options.html
 .. _Developer guide: https://dnsrobocert.readthedocs.io/en/latest/developer_guide.html
-.. _DNSroboCert community on Spectrum: https://spectrum.chat/dnsrobocert
+.. _DNSroboCert community on Github Discussions: https://github.com/adferrand/dnsrobocert/discussions
