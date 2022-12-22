@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 import threading
+import re
 from typing import List, Optional
 
 import coloredlogs
@@ -119,30 +120,45 @@ def certonly(
         lock=lock,
     )
 
-
-def renew(config_path: str, directory_path: str, lock: threading.Lock):
+def _issue(config_path: str, directory_path: str, lock: threading.Lock):
     dnsrobocert_config = config.load(config_path)
 
     if dnsrobocert_config:
-        utils.execute(
-            [
-                sys.executable,
-                "-m",
-                "dnsrobocert.core.certbot",
-                "renew",
-                *_DEFAULT_FLAGS,
-                "--config-dir",
-                directory_path,
-                "--deploy-hook",
-                _hook_cmd("deploy", config_path),
-                "--work-dir",
-                os.path.join(directory_path, "workdir"),
-                "--logs-dir",
-                os.path.join(directory_path, "logs"),
-            ],
-            lock=lock,
-        )
+        certificates = dnsrobocert_config.get("certificates", {})
+        for certificate in certificates:
+            try:
+                lineage = config.get_lineage(certificate)
+                domains = certificate["domains"]
+                force_renew = certificate.get("force_renew", False)
+                reuse_key = certificate.get("reuse_key", False)
+                key_type = certificate.get("key_type", "rsa")
+                LOGGER.info(f"Handling the certificate for domain(s): {', '.join(domains)}")
+                certonly(
+                    config_path,
+                    directory_path,
+                    lineage,
+                    lock,
+                    domains,
+                    force_renew=force_renew,
+                    reuse_key=reuse_key,
+                    key_type=key_type,
+                )
+            except BaseException as error:
+                LOGGER.error(
+                    f"An error occurred while processing certificate config `{certificate}`:\n{error}"
+                )
 
+        LOGGER.info("Revoke and delete certificates if needed")
+        lineages = {config.get_lineage(certificate) for certificate in certificates}
+        for domain in os.listdir(os.path.join(directory_path, "live")):
+            if domain != "README":
+                domain = re.sub(r"^\*\.", "", domain)
+                if domain not in lineages:
+                    LOGGER.info(f"Removing the certificate {domain}")
+                    revoke(config_path, directory_path, domain, lock)
+
+def renew(config_path: str, directory_path: str, lock: threading.Lock):
+    _issue(config_path, directory_path, lock)
 
 def revoke(config_path: str, directory_path: str, lineage: str, lock: threading.Lock):
     url = config.get_acme_url(config.load(config_path))
