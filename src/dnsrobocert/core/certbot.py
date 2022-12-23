@@ -2,9 +2,9 @@
 # -*- encoding: utf-8 -*-
 import logging
 import os
+import re
 import sys
 import threading
-import re
 from typing import List, Optional
 
 import coloredlogs
@@ -120,6 +120,7 @@ def certonly(
         lock=lock,
     )
 
+
 def _issue(config_path: str, directory_path: str, lock: threading.Lock):
     dnsrobocert_config = config.load(config_path)
 
@@ -132,7 +133,9 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock):
                 force_renew = certificate.get("force_renew", False)
                 reuse_key = certificate.get("reuse_key", False)
                 key_type = certificate.get("key_type", "rsa")
-                LOGGER.info(f"Handling the certificate for domain(s): {', '.join(domains)}")
+                LOGGER.info(
+                    f"Handling the certificate for domain(s): {', '.join(domains)}"
+                )
                 certonly(
                     config_path,
                     directory_path,
@@ -157,8 +160,10 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock):
                     LOGGER.info(f"Removing the certificate {domain}")
                     revoke(config_path, directory_path, domain, lock)
 
+
 def renew(config_path: str, directory_path: str, lock: threading.Lock):
     _issue(config_path, directory_path, lock)
+
 
 def revoke(config_path: str, directory_path: str, lineage: str, lock: threading.Lock):
     url = config.get_acme_url(config.load(config_path))

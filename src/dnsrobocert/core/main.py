@@ -3,7 +3,6 @@
 import argparse
 import logging
 import os
-import re
 import signal
 import sys
 import tempfile
@@ -46,6 +45,7 @@ def _process_config(
 
     LOGGER.info("Creating missing certificates if needed (~1min for each)")
     certbot._issue(runtime_config_path, directory_path, lock)
+
 
 class _Daemon:
     _do_shutdown = False
