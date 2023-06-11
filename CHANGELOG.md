@@ -6,6 +6,10 @@
 * Upgrade to Lexicon 3.12.0 (new providers: `duckdns`, `dnsservices`, `flexibleengine`)
 * Official support for Python 3.11
 
+## 3.22.1 - 12/10/2022
+### Modified
+* Upgrade to Lexicon 3.11.6 (fix `hetzner` provider)
+
 ## 3.22.0 - 10/10/2022
 ### Modified
 * Fix docker build
