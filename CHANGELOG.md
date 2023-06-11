@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Upgrade to Certbot 2.6.0
+* Upgrade to Lexicon 3.12.0 (new providers: `duckdns`, `dnsservices`, `flexibleengine`)
+* Official support for Python 3.11
 
 ## 3.22.0 - 10/10/2022
 ### Modified
