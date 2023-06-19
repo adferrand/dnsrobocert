@@ -5,6 +5,8 @@
 * Upgrade to Certbot 2.6.0
 * Upgrade to Lexicon 3.12.0 (new providers: `duckdns`, `dnsservices`, `flexibleengine`)
 * Official support for Python 3.11
+* Fix community URL (#871)
+* Fix various issues regarding dynamic configuration by calling `certbot certonly` for all certbot actions (#970)
 
 ## 3.22.1 - 12/10/2022
 ### Modified
