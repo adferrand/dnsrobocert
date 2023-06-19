@@ -21,6 +21,9 @@ COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*
 ENV CONFIG_PATH /etc/dnsrobocert/config.yml
 ENV CERTS_PATH /etc/letsencrypt
 
+# Pin cryptography on armv7l arch to latest available and compatible version from pipwheels: 39.0.2
+RUN [ "$(uname -m)" = "armv7l" ] && sed -i 's/cryptography==.*/cryptography==39.0.2/' /tmp/dnsrobocert/constraints.txt || true
+
 RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
        curl \
