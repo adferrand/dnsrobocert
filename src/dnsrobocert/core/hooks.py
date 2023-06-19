@@ -6,7 +6,7 @@ import subprocess
 import sys
 import time
 import traceback
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import OpenSSL
 import pem
@@ -15,7 +15,7 @@ from dnsrobocert.core import config, utils
 from dnsrobocert.core.challenge import check_one_challenge, txt_challenge
 
 
-def main(args: List[str] = None) -> int:
+def main(args: Optional[List[str]] = None) -> int:
     if not args:
         args = sys.argv[1:]
 

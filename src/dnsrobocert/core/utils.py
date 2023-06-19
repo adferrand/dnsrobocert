@@ -27,7 +27,7 @@ def execute(
     command: Union[List[str], str],
     check: bool = True,
     shell: bool = False,
-    env: Dict[str, str] = None,
+    env: Optional[Dict[str, str]] = None,
     lock: Optional[threading.Lock] = None,
 ):
     if not env:

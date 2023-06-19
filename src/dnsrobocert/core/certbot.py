@@ -190,7 +190,7 @@ def revoke(config_path: str, directory_path: str, lineage: str, lock: threading.
     )
 
 
-def _hook_cmd(hook_type: str, config_path: str, lineage: str = None) -> str:
+def _hook_cmd(hook_type: str, config_path: str, lineage: Optional[str] = None) -> str:
     command = (
         f'{sys.executable} -m dnsrobocert.core.hooks -t {hook_type} -c "{config_path}"'
     )
