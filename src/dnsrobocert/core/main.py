@@ -3,7 +3,6 @@
 import argparse
 import logging
 import os
-import re
 import signal
 import sys
 import tempfile
@@ -45,38 +44,7 @@ def _process_config(
     certbot.account(runtime_config_path, directory_path, lock)
 
     LOGGER.info("Creating missing certificates if needed (~1min for each)")
-    certificates = dnsrobocert_config.get("certificates", {})
-    for certificate in certificates:
-        try:
-            lineage = config.get_lineage(certificate)
-            domains = certificate["domains"]
-            force_renew = certificate.get("force_renew", False)
-            reuse_key = certificate.get("reuse_key", False)
-            key_type = certificate.get("key_type", "rsa")
-            LOGGER.info(f"Handling the certificate for domain(s): {', '.join(domains)}")
-            certbot.certonly(
-                runtime_config_path,
-                directory_path,
-                lineage,
-                lock,
-                domains,
-                force_renew=force_renew,
-                reuse_key=reuse_key,
-                key_type=key_type,
-            )
-        except BaseException as error:
-            LOGGER.error(
-                f"An error occurred while processing certificate config `{certificate}`:\n{error}"
-            )
-
-    LOGGER.info("Revoke and delete certificates if needed")
-    lineages = {config.get_lineage(certificate) for certificate in certificates}
-    for domain in os.listdir(os.path.join(directory_path, "live")):
-        if domain != "README":
-            domain = re.sub(r"^\*\.", "", domain)
-            if domain not in lineages:
-                LOGGER.info(f"Removing the certificate {domain}")
-                certbot.revoke(runtime_config_path, directory_path, domain, lock)
+    certbot._issue(runtime_config_path, directory_path, lock)
 
 
 class _Daemon:
