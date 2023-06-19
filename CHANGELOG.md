@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.23.1 - 19/06/2023
 ### Modified
 * Fix docker armv7l build
 
