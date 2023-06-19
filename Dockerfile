@@ -5,16 +5,14 @@ COPY src poetry.lock poetry.toml pyproject.toml README.rst /tmp/dnsrobocert/
 
 RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-       curl \
-       gcc \
-       python3-dev \
        libffi-dev \
- && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - \
  && rm -rf /var/lib/apt/lists/*
 
+RUN pip install --break-system-packages "poetry==1.5.1"
+
 RUN cd /tmp/dnsrobocert \
- && /root/.local/bin/poetry export --format constraints.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
- && /root/.local/bin/poetry build -f wheel
+ && poetry export --format constraints.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
+ && poetry build -f wheel
 
 FROM docker.io/python:3.11.4-slim
 
