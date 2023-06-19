@@ -97,7 +97,7 @@ For a quick start, please have a look in particular at the `User guide`_ and the
 Support
 =======
 
-Do not hesitate to join the `DNSroboCert community on Spectrum`_ if you need help to use or develop DNSroboCert!
+Do not hesitate to join the `DNSroboCert community on Github Discussions`_ if you need help to use or develop DNSroboCert!
 
 Contributing
 ============
