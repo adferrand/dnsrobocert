@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.23.0 - 19/06/2023
 ### Modified
 * Upgrade to Certbot 2.6.0
 * Upgrade to Lexicon 3.12.0 (new providers: `duckdns`, `dnsservices`, `flexibleengine`)
