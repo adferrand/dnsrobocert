@@ -19,7 +19,6 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -38,7 +37,7 @@ repository = "https://github.com/adferrand/dnsrobocert"
 homepage = "https://dnsrobocert.readthedocs.io"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 acme = "^2"
 certbot = "^2"
 dns-lexicon = { version = "^3", extras = [ "full" ] }
@@ -47,7 +46,7 @@ zeep = "*"
 xmltodict = "*"
 softlayer = "*"
 localzone = "*"
-boto3 = ">=1.26"
+boto3 = ">=1.28"
 # --
 cryptography = ">=2"
 cffi = ">=1"
