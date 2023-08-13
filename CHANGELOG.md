@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.24.0 - 13/08/2023
 ### Modified
 * Upgrade to Lexicon 3.14.0 (new provider: `wedos`, new functions to call Lexicon client)
 
