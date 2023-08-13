@@ -11,8 +11,12 @@ from typing import Any
 import coloredlogs
 import yaml
 from lexicon._private.parser import generate_cli_main_parser
-from lexicon.config import (ArgsConfigSource, ConfigResolver,
-                            EnvironmentConfigSource, FileConfigSource)
+from lexicon.config import (
+    ArgsConfigSource,
+    ConfigResolver,
+    EnvironmentConfigSource,
+    FileConfigSource,
+)
 
 from dnsrobocert.core import utils
 
@@ -25,15 +29,15 @@ LEXICON_ARGPARSER = generate_cli_main_parser()
 
 def migrate(config_path: str) -> str | None:
     if os.path.exists(config_path):  # pragma: nocover
-        return
+        return None
 
     if not os.path.exists(LEGACY_CONFIGURATION_PATH):  # pragma: nocover
-        return
+        return None
 
     provider = os.environ.get("LEXICON_PROVIDER")
     if not provider:  # pragma: nocover
         LOGGER.error("Error, LEXICON_PROVIDER environment variable is not set!")
-        return
+        return None
 
     envs, configs, args = _gather_parameters(provider)
 
@@ -270,7 +274,7 @@ def _extract_certificates(envs: dict[str, str], profile: str) -> list[dict[str, 
     return certificates
 
 
-def _deep_merge(*dicts: tuple[dict[str, Any]]) -> dict[str, Any]:
+def _deep_merge(*dicts: dict[str, Any]) -> dict[str, Any]:
     def merge_into(d1, d2):
         for key in d2:
             if key not in d1 or not isinstance(d1[key], dict):

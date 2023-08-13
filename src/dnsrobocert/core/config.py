@@ -1,11 +1,11 @@
 import logging
 import os
 import re
+from importlib.resources import as_file, files
 from typing import Any, Dict, Optional, Set
 
 import coloredlogs
 import jsonschema
-import pkg_resources
 import yaml
 
 from dnsrobocert.core import utils
@@ -34,9 +34,9 @@ Configuration file is not a valid YAML file.\
         LOGGER.error(message)
         return None
 
-    schema_path = pkg_resources.resource_filename("dnsrobocert", "schema.yml")
-    with open(schema_path) as file_h:
-        schema = yaml.load(file_h.read(), yaml.SafeLoader)
+    with as_file(files("dnsrobocert") / "schema.yml") as schema_path:
+        with open(schema_path) as file_h:
+            schema = yaml.load(file_h.read(), yaml.SafeLoader)
 
     if not config:
         message = """

@@ -64,6 +64,7 @@ tldextract = ">=3"
 [tool.poetry.dev-dependencies]
 black = "*"
 flake8 = "*"
+flake8-pyproject = "*"
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
@@ -76,3 +77,18 @@ types-setuptools = "*"
 
 [tool.poetry.scripts]
 dnsrobocert = "dnsrobocert.core.main:main"
+
+[tool.pytest.ini_options]
+junit_family = "xunit2"
+
+[tool.mypy]
+show_error_codes = true
+ignore_missing_imports = true
+check_untyped_defs = true
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "E501"]

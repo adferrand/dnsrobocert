@@ -1,13 +1,13 @@
-import pkg_resources
+from importlib.metadata import PackageNotFoundError, metadata
 
 
 def get_version():
     try:
-        distribution = pkg_resources.get_distribution(__name__)
-    except pkg_resources.DistributionNotFound:
+        distribution = metadata(__name__)
+    except PackageNotFoundError:
         return "dev"
     else:
-        return distribution.version
+        return distribution["Version"]
 
 
 __version__ = get_version()

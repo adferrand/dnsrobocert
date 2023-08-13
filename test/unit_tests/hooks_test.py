@@ -1,7 +1,7 @@
 import contextlib
 import datetime
 import os
-from unittest.mock import call, patch
+from unittest.mock import MagicMock, call, patch
 
 import pytest
 from cryptography import x509
@@ -80,35 +80,41 @@ certificates:
 
 @patch("dnsrobocert.core.challenge.Client")
 def test_auth_cli(client, fake_config):
+    operations = MagicMock()
+    client.return_value.__enter__.return_value = operations
+
     hooks.main(["-t", "auth", "-c", str(fake_config), "-l", LINEAGE])
 
     assert len(client.call_args[0]) == 1
     resolver = client.call_args[0][0]
 
-    assert resolver.resolve("lexicon:action") == "create"
     assert resolver.resolve("lexicon:domain") == LINEAGE
-    assert resolver.resolve("lexicon:type") == "TXT"
-    assert resolver.resolve("lexicon:name") == f"_acme-challenge.{LINEAGE}."
-    assert resolver.resolve("lexicon:content") == "VALIDATION"
     assert resolver.resolve("lexicon:provider_name") == "dummy"
     assert resolver.resolve("lexicon:ttl") == 42
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
 
+    operations.create_record.assert_called_with(
+        "TXT", f"_acme-challenge.{LINEAGE}.", "VALIDATION"
+    )
+
 
 @patch("dnsrobocert.core.challenge.Client")
 def test_cleanup_cli(client, fake_config):
+    operations = MagicMock()
+    client.return_value.__enter__.return_value = operations
+
     hooks.main(["-t", "cleanup", "-c", str(fake_config), "-l", LINEAGE])
 
     assert len(client.call_args[0]) == 1
     resolver = client.call_args[0][0]
 
-    assert resolver.resolve("lexicon:action") == "delete"
     assert resolver.resolve("lexicon:domain") == LINEAGE
-    assert resolver.resolve("lexicon:type") == "TXT"
-    assert resolver.resolve("lexicon:name") == f"_acme-challenge.{LINEAGE}."
-    assert resolver.resolve("lexicon:content") == "VALIDATION"
     assert resolver.resolve("lexicon:provider_name") == "dummy"
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
+
+    operations.delete_record.assert_called_with(
+        "TXT", f"_acme-challenge.{LINEAGE}.", "VALIDATION"
+    )
 
 
 @patch("dnsrobocert.core.hooks.deploy")
