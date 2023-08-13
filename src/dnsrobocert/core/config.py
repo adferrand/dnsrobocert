@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from importlib.resources import as_file, files
+from importlib_resources import as_file, files
 from typing import Any, Dict, Optional, Set
 
 import coloredlogs

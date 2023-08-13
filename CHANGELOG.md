@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Fix compatibility issue with Python 3.8
 
 ## 3.24.0 - 13/08/2023
 ### Modified
