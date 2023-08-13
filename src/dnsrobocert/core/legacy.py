@@ -1,14 +1,18 @@
+from __future__ import annotations
+
 import logging
 import os
 import re
 import shlex
 from copy import deepcopy
 from functools import reduce
-from typing import Any, Dict, List
+from typing import Any
 
 import coloredlogs
 import yaml
-from lexicon import config, parser
+from lexicon._private.parser import generate_cli_main_parser
+from lexicon.config import (ArgsConfigSource, ConfigResolver,
+                            EnvironmentConfigSource, FileConfigSource)
 
 from dnsrobocert.core import utils
 
@@ -16,10 +20,10 @@ LEGACY_CONFIGURATION_PATH = "/etc/letsencrypt/domains.conf"
 LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
-LEXICON_ARGPARSER = parser.generate_cli_main_parser()
+LEXICON_ARGPARSER = generate_cli_main_parser()
 
 
-def migrate(config_path):
+def migrate(config_path: str) -> str | None:
     if os.path.exists(config_path):  # pragma: nocover
         return
 
@@ -90,8 +94,8 @@ def migrate(config_path):
 
 
 def _handle_specific_envs_variables(
-    envs: Dict[str, str], migrated_config: Dict[str, Any]
-):
+    envs: dict[str, str], migrated_config: dict[str, Any]
+) -> None:
     if envs.get("LETSENCRYPT_USER_MAIL"):
         migrated_config.setdefault("acme", {})["email_account"] = envs.get(
             "LETSENCRYPT_USER_MAIL"
@@ -172,19 +176,19 @@ def _gather_parameters(provider):
     except SystemExit:  # pragma: nocover
         args = None
 
-    resolver = config.ConfigResolver()
+    resolver = ConfigResolver()
     if args:
         resolver.with_args(args)
     resolver.with_env()
     resolver.with_config_dir(os.path.dirname(LEGACY_CONFIGURATION_PATH))
 
-    lexicon_files_config: Dict[str, Any] = {}
+    lexicon_files_config: dict[str, Any] = {}
     for source in resolver._config_sources:
-        if isinstance(source, config.FileConfigSource):
+        if isinstance(source, FileConfigSource):
             _deep_merge(lexicon_files_config, source._parameters)
-        elif isinstance(source, config.EnvironmentConfigSource):
+        elif isinstance(source, EnvironmentConfigSource):
             env_variables_of_interest.update(source._parameters)
-        elif isinstance(source, config.ArgsConfigSource):
+        elif isinstance(source, ArgsConfigSource):
             command_line_params = {
                 provider: {
                     key: value
@@ -214,8 +218,8 @@ def _gather_parameters(provider):
     return env_variables_of_interest, lexicon_files_config, command_line_params
 
 
-def _extract_certificates(envs: Dict[str, str], profile: str) -> List[Dict[str, Any]]:
-    certificates: List[Dict[str, Any]] = []
+def _extract_certificates(envs: dict[str, str], profile: str) -> list[dict[str, Any]]:
+    certificates: list[dict[str, Any]] = []
 
     with open(os.path.join(LEGACY_CONFIGURATION_PATH)) as f:
         lines = f.read().splitlines()
@@ -251,7 +255,7 @@ def _extract_certificates(envs: Dict[str, str], profile: str) -> List[Dict[str, 
                 domains.append(item)
 
             if domains:
-                certificate: Dict[str, Any] = {
+                certificate: dict[str, Any] = {
                     "name": utils.normalize_lineage(domains[0]),
                     "domains": domains,
                     "profile": profile,
@@ -266,7 +270,7 @@ def _extract_certificates(envs: Dict[str, str], profile: str) -> List[Dict[str, 
     return certificates
 
 
-def _deep_merge(*dicts):
+def _deep_merge(*dicts: tuple[dict[str, Any]]) -> dict[str, Any]:
     def merge_into(d1, d2):
         for key in d2:
             if key not in d1 or not isinstance(d1[key], dict):

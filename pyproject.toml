@@ -27,7 +27,7 @@ classifiers = [
     "Topic :: Utilities"
 ]
 authors = [
-    "Adrien Ferrand"
+    "Adrien Ferrand <ferrand.ad@gmail.com>"
 ]
 readme = "README.rst"
 include = [
@@ -40,7 +40,7 @@ homepage = "https://dnsrobocert.readthedocs.io"
 python = "^3.8"
 acme = "^2"
 certbot = "^2"
-dns-lexicon = { version = "^3", extras = [ "full" ] }
+dns-lexicon = { version = "^3.14.0", extras = [ "full" ] }
 # Optional deps on dns-lexicon
 zeep = "*"
 xmltodict = "*"
@@ -62,7 +62,7 @@ colorama = ">=0"
 tldextract = ">=3"
 
 [tool.poetry.dev-dependencies]
-black = { version = "*", allow-prereleases = true }
+black = "*"
 flake8 = "*"
 mypy = "*"
 pytest = "*"

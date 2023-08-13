@@ -1,4 +1,6 @@
-from typing import Any, Dict, Optional
+from __future__ import annotations
+
+from typing import Any
 
 import tldextract
 from dns.exception import Timeout
@@ -9,12 +11,12 @@ from lexicon.config import ConfigResolver
 
 
 def txt_challenge(
-    certificate: Dict[str, Any],
-    profile: Dict[str, Any],
+    certificate: dict[str, Any],
+    profile: dict[str, Any],
     token: str,
     domain: str,
     action: str = "create",
-):
+) -> None:
     profile_name = profile["name"]
     provider_name = profile["provider"]
     provider_options = profile.get("provider_options", {})
@@ -38,11 +40,7 @@ def txt_challenge(
         domain = ".".join([extracted.domain, extracted.suffix])
 
     config_dict = {
-        "action": action,
         "domain": domain,
-        "type": "TXT",
-        "name": challenge_name,
-        "content": token,
         "delegated": profile.get("delegated_subdomain"),
         "provider_name": provider_name,
         provider_name: provider_options,
@@ -52,13 +50,14 @@ def txt_challenge(
     if ttl:
         config_dict["ttl"] = ttl
 
-    lexicon_config = ConfigResolver()
-    lexicon_config.with_dict(config_dict)
+    with Client(ConfigResolver().with_dict(config_dict)) as operations:
+        if action == "create":
+            operations.create_record("TXT", challenge_name, token)
+        elif action == "delete":
+            operations.delete_record("TXT", challenge_name, token)
 
-    Client(lexicon_config).execute()
 
-
-def check_one_challenge(challenge: str, token: Optional[str]) -> bool:
+def check_one_challenge(challenge: str, token: str | None = None) -> bool:
     resolver = get_default_resolver()
 
     try:
