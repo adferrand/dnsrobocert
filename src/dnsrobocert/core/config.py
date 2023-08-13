@@ -1,12 +1,12 @@
 import logging
 import os
 import re
-from importlib_resources import as_file, files
 from typing import Any, Dict, Optional, Set
 
 import coloredlogs
 import jsonschema
 import yaml
+from importlib_resources import as_file, files
 
 from dnsrobocert.core import utils
 
