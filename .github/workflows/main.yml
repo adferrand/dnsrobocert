@@ -41,7 +41,7 @@ jobs:
           TOXENV: ${{ matrix.toxenv }}
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: unit-test-results-${{ matrix.os }}-${{ matrix.python }}
           path: |
