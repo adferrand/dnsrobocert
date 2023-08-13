@@ -1,6 +1,11 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Upgrade to Lexicon 3.14.0 (new provider: `wedos`, new functions to call Lexicon client)
+
+### Removed
+* Drop Python 3.7 support
 
 ## 3.23.1 - 19/06/2023
 ### Modified
