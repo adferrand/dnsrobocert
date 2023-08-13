@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [main]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup dev environment
         uses: ./.github/actions/setup-python-dev
       - run: poetry publish --build --username "${PYPI_USERNAME}" --password "${PYPI_PASSWORD}"
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [main]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: setup-dev
         name: Setup dev environment
         uses: ./.github/actions/setup-python-dev
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [pypi, docker]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: setup-dev
         name: Setup dev environment
         uses: ./.github/actions/setup-python-dev

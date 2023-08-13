@@ -13,7 +13,7 @@ runs:
   using: composite
   steps:
     - name: Install python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ inputs.python-version }}
     - name: Install poetry & tox
