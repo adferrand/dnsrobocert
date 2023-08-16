@@ -12,7 +12,7 @@
     :target: https://pypi.org/project/dnsrobocert/
 .. |docker| image:: https://img.shields.io/docker/pulls/adferrand/dnsrobocert
     :target: https://hub.docker.com/r/adferrand/dnsrobocert
-.. |ci| image:: https://img.shields.io/github/workflow/status/adferrand/dnsrobocert/main/master
+.. |ci| image:: https://img.shields.io/github/actions/workflow/status/adferrand/dnsrobocert/main.yml?branch=master
     :target: https://github.com/adferrand/dnsrobocert/actions/workflows/main.yml
 .. |coverage| image:: https://img.shields.io/codecov/c/github/adferrand/dnsrobocert/master
     :target: https://app.codecov.io/gh/adferrand/dnsrobocert/branch/master
