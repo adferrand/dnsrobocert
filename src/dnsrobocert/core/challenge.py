@@ -54,7 +54,7 @@ def txt_challenge(
         if action == "create":
             operations.create_record("TXT", challenge_name, token)
         elif action == "delete":
-            operations.delete_record("TXT", challenge_name, token)
+            operations.delete_record(None, "TXT", challenge_name, token)
 
 
 def check_one_challenge(challenge: str, token: str | None = None) -> bool:
