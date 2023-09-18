@@ -94,7 +94,7 @@ def test_auth_cli(client, fake_config):
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
 
     operations.create_record.assert_called_with(
-        "TXT", f"_acme-challenge.{LINEAGE}.", "VALIDATION"
+        rtype="TXT", name=f"_acme-challenge.{LINEAGE}.", content="VALIDATION"
     )
 
 
@@ -113,7 +113,7 @@ def test_cleanup_cli(client, fake_config):
     assert resolver.resolve("lexicon:dummy:auth_token") == "TOKEN"
 
     operations.delete_record.assert_called_with(
-        "TXT", f"_acme-challenge.{LINEAGE}.", "VALIDATION"
+        rtype="TXT", name=f"_acme-challenge.{LINEAGE}.", content="VALIDATION"
     )
 
 
