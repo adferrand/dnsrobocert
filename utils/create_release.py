@@ -22,11 +22,14 @@ def main():
     print("Please insert new version:")
     new_version = str(input())
 
-    if version.parse(new_version) <= version.parse(current_version):
+    try:
+        parsed_new_version = version.parse(new_version)
+    except version.InvalidVersion:
+        raise RuntimeError(f"Error, invalid version provided: {new_version}")
+
+    if parsed_new_version <= version.parse(current_version):
         raise RuntimeError(
-            "Error new version is below current version: {0} < {1}".format(
-                new_version, current_version
-            )
+            f"Error new version is below current version: {new_version} < {current_version}"
         )
 
     try:
