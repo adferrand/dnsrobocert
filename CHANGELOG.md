@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.24.2 - 18/09/2023
 ### Modified
 * Fix TXT record cleanup actions
 
