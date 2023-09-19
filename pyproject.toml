@@ -78,6 +78,7 @@ types-requests = "*"
 types-setuptools = "*"
 
 [tool.poetry.group.docs.dependencies]
+sphinx = "*"
 sphinx_rtd_theme = "*"
 
 [tool.poetry.scripts]
