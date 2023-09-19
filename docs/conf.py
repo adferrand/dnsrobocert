@@ -1,9 +1,10 @@
 from os.path import abspath, dirname, join
+import tomllib
 
-import toml
+root_path = dirname(dirname(abspath(__file__)))
 
-pyproject_toml = toml.load(join(dirname(dirname(abspath(__file__))), "pyproject.toml"))
-poetry_lock = toml.load(join(dirname(dirname(abspath(__file__))), "poetry.lock"))
+with open(join(root_path, "pyproject.toml"), "rb") as f:
+    pyproject_toml = tomllib.load(f)
 
 master_doc = "index"
 project = "DNSroboCert"
