@@ -1,10 +1,9 @@
 from os.path import abspath, dirname, join
-import tomllib
+
+import toml
 
 root_path = dirname(dirname(abspath(__file__)))
-
-with open(join(root_path, "pyproject.toml"), "rb") as f:
-    pyproject_toml = tomllib.load(f)
+pyproject_toml = toml.load(root_path)
 
 master_doc = "index"
 project = "DNSroboCert"
