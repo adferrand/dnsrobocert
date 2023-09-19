@@ -14,8 +14,11 @@ copyright = "2022, Adrien Ferrand"
 
 extensions = [
     "sphinx.ext.intersphinx",
+    "sphinx_rtd_theme",
 ]
 
 intersphinx_mapping = {
-    'lexicon': ('https://dns-lexicon.readthedocs.io/en/latest', None),
+    "lexicon": ("https://dns-lexicon.readthedocs.io/en/latest", None),
 }
+
+html_theme = "sphinx_rtd_theme"
