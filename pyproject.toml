@@ -62,7 +62,7 @@ coloredlogs = ">=14"
 colorama = ">=0"
 tldextract = ">=3"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "*"
 flake8 = "*"
 flake8-pyproject = "*"
@@ -76,6 +76,9 @@ types-PyYAML = "*"
 types-pyOpenSSL = "*"
 types-requests = "*"
 types-setuptools = "*"
+
+[tool.poetry.group.docs.dependencies]
+sphinx_rtd_theme = "*"
 
 [tool.poetry.scripts]
 dnsrobocert = "dnsrobocert.core.main:main"
