@@ -3,7 +3,7 @@ from os.path import abspath, dirname, join
 import toml
 
 root_path = dirname(dirname(abspath(__file__)))
-pyproject_toml = toml.load(root_path)
+pyproject_toml = toml.load(join(root_path, "pyproject.toml"))
 
 master_doc = "index"
 project = "DNSroboCert"
