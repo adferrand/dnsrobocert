@@ -79,7 +79,7 @@ types-setuptools = "*"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
-sphinx_rtd_theme = "*"
+sphinx-immaterial = "*"
 toml = "*"
 
 [tool.poetry.scripts]
