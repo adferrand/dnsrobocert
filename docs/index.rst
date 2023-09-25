@@ -1,6 +1,10 @@
-======
+:hero: An automation tool to manage Let's Encrypt TLS certificates with DNS validation
+
+===========
+DNSroboCert
+===========
+
 |logo|
-======
 
 .. |logo| image:: images/dnsrobocert.svg
     :alt: DNSroboCert
