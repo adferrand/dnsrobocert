@@ -34,7 +34,7 @@ html_theme_options = {
     "globaltoc_collapse": True,
     "features": [
         "navigation.expand",
-        "navigation.tabs",
+        # "navigation.tabs",
         # "toc.integrate",
         "navigation.sections",
         # "navigation.instant",
