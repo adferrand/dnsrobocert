@@ -5,12 +5,13 @@
 .. |logo| image:: images/dnsrobocert.svg
     :alt: DNSroboCert
 
-.. toctree::
-   :caption: Table of Contents
-   :name: mastertoc
-   :maxdepth: 2
+.. include:: ../README.rst
+    :start-after: tag:intro-begin
+    :end-before: tag:intro-end
 
-   introduction
+.. toctree::
+   :hidden:
+
    user_guide
    configuration_reference
    providers_options
