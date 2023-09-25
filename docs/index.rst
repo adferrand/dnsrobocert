@@ -12,7 +12,6 @@
 .. toctree::
    :hidden:
 
-   index
    user_guide
    configuration_reference
    providers_options
