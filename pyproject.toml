@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "dnsrobocert"
-version = "3.24.1"
+version = "3.24.2"
 description = "A tool to manage your DNS-challenged TLS certificates"
 license = "MIT"
 keywords = [
@@ -62,11 +62,12 @@ coloredlogs = ">=14"
 colorama = ">=0"
 tldextract = ">=3"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "*"
 flake8 = "*"
 flake8-pyproject = "*"
 mypy = "*"
+packaging= "*"
 pytest = "*"
 pytest-cov = "*"
 isort = "*"
@@ -75,6 +76,11 @@ types-PyYAML = "*"
 types-pyOpenSSL = "*"
 types-requests = "*"
 types-setuptools = "*"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "*"
+sphinx_rtd_theme = "*"
+toml = "*"
 
 [tool.poetry.scripts]
 dnsrobocert = "dnsrobocert.core.main:main"

@@ -2,6 +2,10 @@
 
 ## master - CURRENT
 
+## 3.24.2 - 18/09/2023
+### Modified
+* Fix TXT record cleanup actions
+
 ## 3.24.1 - 13/08/2023
 ### Modified
 * Fix compatibility issue with Python 3.8

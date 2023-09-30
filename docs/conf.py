@@ -2,8 +2,8 @@ from os.path import abspath, dirname, join
 
 import toml
 
-pyproject_toml = toml.load(join(dirname(dirname(abspath(__file__))), "pyproject.toml"))
-poetry_lock = toml.load(join(dirname(dirname(abspath(__file__))), "poetry.lock"))
+root_path = dirname(dirname(abspath(__file__)))
+pyproject_toml = toml.load(join(root_path, "pyproject.toml"))
 
 master_doc = "index"
 project = "DNSroboCert"
@@ -13,8 +13,11 @@ copyright = "2022, Adrien Ferrand"
 
 extensions = [
     "sphinx.ext.intersphinx",
+    "sphinx_rtd_theme",
 ]
 
 intersphinx_mapping = {
-    'lexicon': ('https://dns-lexicon.readthedocs.io/en/latest', None),
+    "lexicon": ("https://dns-lexicon.readthedocs.io/en/latest", None),
 }
+
+html_theme = "sphinx_rtd_theme"

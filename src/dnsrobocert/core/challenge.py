@@ -52,9 +52,9 @@ def txt_challenge(
 
     with Client(ConfigResolver().with_dict(config_dict)) as operations:
         if action == "create":
-            operations.create_record("TXT", challenge_name, token)
+            operations.create_record(rtype="TXT", name=challenge_name, content=token)
         elif action == "delete":
-            operations.delete_record("TXT", challenge_name, token)
+            operations.delete_record(rtype="TXT", name=challenge_name, content=token)
 
 
 def check_one_challenge(challenge: str, token: str | None = None) -> bool:
