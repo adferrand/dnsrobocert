@@ -2,13 +2,13 @@
 
 [[package]]
 name = "acme"
-version = "2.6.0"
+version = "2.7.1"
 description = "ACME protocol implementation in Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "acme-2.6.0-py3-none-any.whl", hash = "sha256:261e8655034f3afe099e68a9c5061304f5ba0c1625ec1b8288fc228315bacbdf"},
-    {file = "acme-2.6.0.tar.gz", hash = "sha256:607360db73e458150ab63825a82b220bdf04badbd81c6d3218e5d993c6be491c"},
+    {file = "acme-2.7.1-py3-none-any.whl", hash = "sha256:669167c5d855a9d60dbe9b98681ddb376ba1c2a17a35be3291489b8b0eaef4ff"},
+    {file = "acme-2.7.1.tar.gz", hash = "sha256:47aea91999434cb01a3530c7c76866f387fdb818097808704d6cfa98dbe4e966"},
 ]
 
 [package.dependencies]
@@ -22,7 +22,7 @@ setuptools = ">=41.6.0"
 
 [package.extras]
 docs = ["Sphinx (>=1.0)", "sphinx-rtd-theme"]
-test = ["pytest", "pytest-xdist", "typing-extensions"]
+test = ["importlib-resources (>=1.3.1)", "pytest", "pytest-xdist", "typing-extensions"]
 
 [[package]]
 name = "alabaster"
