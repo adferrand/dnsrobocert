@@ -130,12 +130,12 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
     certificate = get_certificate(config, lineage)
     if not certificate:
         raise RuntimeError(
-            f"Error, certificate named `{lineage}` could not be found in configuration."
+            f"Error, certificate named {lineage} could not be found in configuration."
         )
     profile_name = certificate.get("profile")
     if not profile_name:
         raise RuntimeError(
-            f"Error, profile named `{lineage}` could not be found in configuration."
+            f"Error, profile named {lineage} could not be found in configuration."
         )
 
     return get_profile(config, profile_name)
@@ -179,11 +179,11 @@ def _business_check(config: Dict[str, Any]):
         if lineage:
             if profile_name not in profile_names:
                 raise ValueError(
-                    f"Profile `{profile_name}` used by certificate `{lineage}` does not exist."
+                    f"Profile {profile_name} used by certificate {lineage} does not exist."
                 )
 
             if lineage in lineages:
-                raise ValueError(f"Certificate with name `{lineage}` is duplicated.")
+                raise ValueError(f"Certificate with name {lineage} is duplicated.")
             lineages.add(lineage)
 
     # Emit warning for deprecated delegated_subdomain field in profile section
@@ -198,7 +198,7 @@ def _business_check(config: Dict[str, Any]):
     # Check that each files_mode and dirs_mode is a valid POSIX mode
     files_mode = config.get("acme", {}).get("certs_permissions", {}).get("files_mode")
     if files_mode and files_mode > 511:
-        raise ValueError("Invalid files_mode `{0}` provided.".format(oct(files_mode)))
+        raise ValueError("Invalid files_mode {0} provided.".format(oct(files_mode)))
     dirs_mode = config.get("acme", {}).get("certs_permissions", {}).get("dirs_mode")
     if dirs_mode and dirs_mode > 511:
-        raise ValueError("Invalid dirs_mode `{0}` provided.".format(oct(files_mode)))
+        raise ValueError("Invalid dirs_mode {0} provided.".format(oct(files_mode)))

@@ -148,7 +148,7 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock):
                 )
             except BaseException as error:
                 LOGGER.error(
-                    f"An error occurred while processing certificate config `{certificate}`:\n{error}"
+                    f"An error occurred while processing certificate config {certificate}:\n{error}"
                 )
 
         LOGGER.info("Revoke and delete certificates if needed")

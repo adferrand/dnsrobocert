@@ -81,11 +81,11 @@ def migrate(config_path: str) -> str | None:
             "for more details. "
         )
         LOGGER.warning(
-            f"New configuration file is available at `{example_config_path}`"
+            f"New configuration file is available at {example_config_path}"
         )
         LOGGER.warning(
-            f"Quick fix (if directory `{os.path.dirname(config_path)}` is persisted): "
-            f"rename this file to `{os.path.basename(config_path)}`"
+            f"Quick fix (if directory {os.path.dirname(config_path)} is persisted): "
+            f"rename this file to {os.path.basename(config_path)}"
         )
 
         os.makedirs(os.path.dirname(example_config_path), exist_ok=True)
