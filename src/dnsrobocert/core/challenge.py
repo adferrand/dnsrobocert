@@ -29,7 +29,7 @@ def txt_challenge(
     challenge_name = f"_acme-challenge.{domain}."
     if certificate.get("follow_cnames"):
         print(f"Trying to resolve the canonical challenge name for {challenge_name}")
-        canonical_challenge_name = dns.resolver.canonical_name(challenge_name)
+        canonical_challenge_name = str(dns.resolver.canonical_name(challenge_name))
         print(
             f"Canonical challenge name found for {challenge_name}: {canonical_challenge_name}"
         )
