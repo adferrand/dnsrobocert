@@ -3,9 +3,8 @@ from __future__ import annotations
 from typing import Any
 
 import tldextract
-from dns.exception import Timeout
-from dns.rdatatype import RdataType
-from dns.resolver import NXDOMAIN, NoAnswer, get_default_resolver
+import dns.exception
+import dns.resolver
 from lexicon.client import Client
 from lexicon.config import ConfigResolver
 
@@ -30,7 +29,7 @@ def txt_challenge(
     challenge_name = f"_acme-challenge.{domain}."
     if certificate.get("follow_cnames"):
         print(f"Trying to resolve the canonical challenge name for {challenge_name}")
-        canonical_challenge_name = resolve_canonical_challenge_name(challenge_name)
+        canonical_challenge_name = dns.resolver.canonical_name(challenge_name)
         print(
             f"Canonical challenge name found for {challenge_name}: {canonical_challenge_name}"
         )
@@ -58,15 +57,16 @@ def txt_challenge(
 
 
 def check_one_challenge(challenge: str, token: str | None = None) -> bool:
-    resolver = get_default_resolver()
-
     try:
-        answers = resolver.query(challenge, "TXT")
-    except (NXDOMAIN, NoAnswer):
+        answers = dns.resolver.resolve(challenge, "TXT")
+    except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
         print(f"TXT {challenge} does not exist.")
         return False
-    except Timeout as e:
+    except dns.exception.Timeout as e:
         print(f"Timeout while trying to check TXT {challenge}: {e}")
+        return False
+    except Exception as e:
+        print(f"Unexpected exception while trying to check TXT {challenge}: {e}")
         return False
     else:
         print(f"TXT {challenge} exists.")
@@ -86,24 +86,3 @@ def check_one_challenge(challenge: str, token: str | None = None) -> bool:
         print(f"TXT {challenge} has the expected token value.")
 
     return True
-
-
-def resolve_canonical_challenge_name(name: str) -> str:
-    resolver = get_default_resolver()
-    current_name = name
-    visited = [current_name]
-
-    while True:
-        try:
-            answer = resolver.resolve(current_name, rdtype=RdataType.CNAME)
-            current_name = str(answer[0].target)
-            if current_name in visited:
-                resolution_map = " -> ".join([*visited, current_name])
-                raise ValueError(
-                    f"Error, CNAME resolution for {current_name} ended in an infinite loop!\n"
-                    f"{resolution_map}"
-                )
-            visited.append(current_name)
-        except (NXDOMAIN, NoAnswer):
-            # No more CNAME in the chain, we have the final canonical_name
-            return current_name
