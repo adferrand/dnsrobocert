@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-import tldextract
 import dns.exception
 import dns.resolver
+import tldextract
 from lexicon.client import Client
 from lexicon.config import ConfigResolver
 

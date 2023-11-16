@@ -132,12 +132,11 @@ Each profile is referenced by its ``name``, which can be used in one or more cer
           auth_token: TOKEN
         sleep_time: 45
         max_checks: 5
-      - name: my_profile2_delegated
+      - name: my_profile2
         provider: henet
         provider_options:
           auth_username: USER
           auth_password: PASSWORD
-        delegated_subdomain: sub.example.net
 
 ``profile`` properties
 ----------------------
@@ -186,16 +185,6 @@ Each profile is referenced by its ``name``, which can be used in one or more cer
     * *type*: integer
     * *default*: ``0`` (no check is done)
 
-``delegated_subdomain``
-~~~~~~~~~~~~~~~~~~~~~~~
-    * If the zone that should contain the TXT entries for the DNS-01 challenges is not a SLD (Second-Level Domain), for
-      instance because a SLD delegated your subdomain to a specific zone, this options tells to DNSroboCert that your
-      subdomain is actually the zone to modify, and not the SLD.
-    * For instance: the zone is ``sub.example.net``, certificate is for ``www.sub.example.net``, then
-      ``delegated_subdomain`` should be equal to ``sub.example.net``.
-    * *type*: ``string``
-    * *default*: ``null`` (there is no subdomain delegation)
-
 ``ttl``
 ~~~~~~~
     * Time to live in seconds for the TXT entries inserted in the DNS zone during a DNS-01 challenge.
@@ -237,7 +226,7 @@ be defined in each relevant certificate configuration.
         - container2
     - domains:
       - www.sub.example.net
-      profile: my_profile2_delegated
+      profile: my_profile2
       deploy_hook: python /home/user/local_deploy.py
       force_renew: false
       follow_cnames: false

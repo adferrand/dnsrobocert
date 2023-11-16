@@ -61,8 +61,6 @@ def migrate(config_path: str) -> str | None:
 
     for key, value in args.get(provider, {}).items():
         provider_config.setdefault("provider_options", {})[key] = value  # type: ignore
-    if args.get("delegated"):
-        provider_config["delegated_subdomain"] = args.get("delegated")
 
     example_config_path = os.path.join(
         os.path.dirname(config_path), "config-generated.yml"
@@ -200,6 +198,7 @@ def _gather_parameters(provider):
                     if key
                     not in (
                         "delegated",
+                        "resolve_zone_name",
                         "config_dir",
                         "provider_name",
                         "action",

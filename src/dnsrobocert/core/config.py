@@ -1,8 +1,8 @@
 import logging
 import os
 import re
-from typing import Any, Dict, Optional, Set
 import warnings
+from typing import Any, Dict, Optional, Set
 
 import coloredlogs
 import jsonschema
@@ -170,16 +170,16 @@ def _values_conversion(config: Dict[str, Any]):
 
 
 def _business_check(config: Dict[str, Any]):
-    profiles = [profile["name"] for profile in config.get("profiles", [])]
+    profile_names = [profile["name"] for profile in config.get("profiles", [])]
     lineages: Set[str] = set()
     for certificate_config in config.get("certificates", []):
         # Check that every certificate is associated to an existing profile
-        profile = certificate_config.get("profile")
+        profile_name = certificate_config.get("profile")
         lineage = get_lineage(certificate_config)
         if lineage:
-            if profile not in profiles:
+            if profile_name not in profile_names:
                 raise ValueError(
-                    f"Profile `{profile}` used by certificate `{lineage}` does not exist."
+                    f"Profile `{profile_name}` used by certificate `{lineage}` does not exist."
                 )
 
             if lineage in lineages:
@@ -187,11 +187,13 @@ def _business_check(config: Dict[str, Any]):
             lineages.add(lineage)
 
     # Emit warning for deprecated delegated_subdomain field in profile section
+    profiles = config.get("profiles", [])
     if [profile for profile in profiles if profile.get("delegated_subdomain")]:
         warnings.warn(
-            f"Property delegated_subdomain from profile section is not used anymore and 
-            is deprecated. Please remove it as it will become invalid in a future section",
-            DeprecationWarning)
+            "Property delegated_subdomain from profile section is not used anymore and is deprecated. "
+            "Please remove it as it will become invalid in a future section",
+            DeprecationWarning,
+        )
 
     # Check that each files_mode and dirs_mode is a valid POSIX mode
     files_mode = config.get("acme", {}).get("certs_permissions", {}).get("files_mode")

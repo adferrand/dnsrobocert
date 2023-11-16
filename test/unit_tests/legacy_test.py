@@ -40,7 +40,6 @@ test1.sub.example.com test2.sub.example.com autorestart-containers=container1,co
 
     monkeypatch.setenv("LEXICON_PROVIDER", "ovh")
     monkeypatch.setenv("LEXICON_OVH_AUTH_APPLICATION_KEY", "KEY")
-    monkeypatch.setenv("LEXICON_OPTIONS", "--delegated=sub.example.com")
     monkeypatch.setenv(
         "LEXICON_PROVIDER_OPTIONS",
         "--auth-entrypoint ovh-eu --auth-application-secret=SECRET-OVERRIDE",
@@ -112,8 +111,7 @@ certificates:
     passphrase: PASSPHRASE
   profile: ovh
 profiles:
-- delegated_subdomain: sub.example.com
-  max_checks: 3
+- max_checks: 3
   name: ovh
   provider: ovh
   provider_options:
