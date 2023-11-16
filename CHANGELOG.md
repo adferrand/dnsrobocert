@@ -1,6 +1,15 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* DNSroboCert now leverages the new DNS zone name resolution introduced by Lexicon 3.17.0.
+  As a consequence, the `delegated_subdomain` field of the `profile` section is not used
+  anymore, and will be removed in a future version.
+### Modified
+* Upgrade to Lexicon 3.17.0
+* Upgrade to Certbot 2.7.4
+* Official support for Python 3.12
+* Resolve CNAMEs using dedicated method provided by `dnspython`
 
 ## 3.24.2 - 18/09/2023
 ### Modified
