@@ -40,7 +40,7 @@ def txt_challenge(
 
     config_dict = {
         "domain": domain,
-        "delegated": profile.get("delegated_subdomain"),
+        "resolve_zone_name": True,
         "provider_name": provider_name,
         provider_name: provider_options,
     }

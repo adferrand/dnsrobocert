@@ -2,6 +2,7 @@ import logging
 import os
 import re
 from typing import Any, Dict, Optional, Set
+import warnings
 
 import coloredlogs
 import jsonschema
@@ -184,6 +185,13 @@ def _business_check(config: Dict[str, Any]):
             if lineage in lineages:
                 raise ValueError(f"Certificate with name `{lineage}` is duplicated.")
             lineages.add(lineage)
+
+    # Emit warning for deprecated delegated_subdomain field in profile section
+    if [profile for profile in profiles if profile.get("delegated_subdomain")]:
+        warnings.warn(
+            f"Property delegated_subdomain from profile section is not used anymore and 
+            is deprecated. Please remove it as it will become invalid in a future section",
+            DeprecationWarning)
 
     # Check that each files_mode and dirs_mode is a valid POSIX mode
     files_mode = config.get("acme", {}).get("certs_permissions", {}).get("files_mode")
