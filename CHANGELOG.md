@@ -1,8 +1,6 @@
 # Changelog
 
 ## master - CURRENT
-
-## 3.25.0 - 16/11/2023
 ### Added
 * DNSroboCert now leverages the new DNS zone name resolution introduced by Lexicon 3.17.0.
   As a consequence, the `delegated_subdomain` field of the `profile` section is not used
