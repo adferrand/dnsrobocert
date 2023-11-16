@@ -80,9 +80,7 @@ def migrate(config_path: str) -> str | None:
             "Please visit https://dnsrobocert.readthedocs.io/en/latest/miscellaneous.html#migration-from-docker-letsencrypt-dns "
             "for more details. "
         )
-        LOGGER.warning(
-            f"New configuration file is available at {example_config_path}"
-        )
+        LOGGER.warning(f"New configuration file is available at {example_config_path}")
         LOGGER.warning(
             f"Quick fix (if directory {os.path.dirname(config_path)} is persisted): "
             f"rename this file to {os.path.basename(config_path)}"
