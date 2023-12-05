@@ -7,7 +7,10 @@ from typing import Any, Dict, Optional, Set
 import coloredlogs
 import jsonschema
 import yaml
-from importlib_resources import as_file, files
+if sys.version_info >= (3, 9):
+    from importlib.resources import as_file, files
+else:
+    from importlib_resources import as_file, files
 
 from dnsrobocert.core import utils
 

@@ -42,7 +42,7 @@ python = "^3.8"
 acme = "^2"
 certbot = "^2"
 dns-lexicon = { version = "^3.14.0", extras = [ "full" ] }
-importlib-resources = "^6"
+importlib-resources = {version = "^6", python = "<3.9" }
 # Workaround for: https://github.com/python-poetry/poetry-plugin-export/issues/183
 urllib3 = ">=1.25.4,<1.27"
 # Optional deps on dns-lexicon
