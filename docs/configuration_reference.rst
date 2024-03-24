@@ -395,7 +395,7 @@ be defined in each relevant certificate configuration.
         - containers:
           - container1
           - container2
-          swarm_services:
+        - swarm_services:
           - service1
 
 ``autocmd``
