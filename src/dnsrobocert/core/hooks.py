@@ -10,8 +10,10 @@ from typing import Any, Dict, List, Optional, cast
 
 from cryptography import x509
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.types import (
+    CertificateIssuerPrivateKeyTypes,
+)
 from cryptography.hazmat.primitives.serialization import pkcs12
-from cryptography.hazmat.primitives.asymmetric.types import CertificateIssuerPrivateKeyTypes
 
 from dnsrobocert.core import config, utils
 from dnsrobocert.core.challenge import check_one_challenge, txt_challenge
@@ -148,14 +150,20 @@ def _pfx_export(certificate: Dict[str, Any], lineage_path: str, lineage: str):
             cert = x509.load_pem_x509_certificate(f.read())
         with open(os.path.join(lineage_path, "chain.pem"), "rb") as f:
             ca_certs = x509.load_pem_x509_certificates(f.read())
-            
+
         passphrase: str = pfx.get("passphrase")
         p12 = pkcs12.serialize_key_and_certificates(
-            lineage.encode('utf-8'),
-            cast(CertificateIssuerPrivateKeyTypes, key),  # By construction, Certbot will generate only RSA/ECDSA private keys.
+            lineage.encode("utf-8"),
+            cast(
+                CertificateIssuerPrivateKeyTypes, key
+            ),  # By construction, Certbot will generate only RSA/ECDSA private keys.
             cert,
             ca_certs,
-            serialization.BestAvailableEncryption(passphrase.encode('utf-8')) if passphrase else serialization.NoEncryption(),
+            (
+                serialization.BestAvailableEncryption(passphrase.encode("utf-8"))
+                if passphrase
+                else serialization.NoEncryption()
+            ),
         )
 
         with open(os.path.join(lineage_path, "cert.pfx"), "wb") as f:

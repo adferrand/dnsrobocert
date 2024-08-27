@@ -238,9 +238,11 @@ def _extract_certificates(envs: dict[str, str], profile: str) -> list[dict[str, 
                     containers = [container.strip() for container in containers]
                     autorestart.append(
                         {
-                            "swarm_services"
-                            if envs.get("DOCKER_CLUSTER_PROVIDER") == "swarm"
-                            else "containers": containers,
+                            (
+                                "swarm_services"
+                                if envs.get("DOCKER_CLUSTER_PROVIDER") == "swarm"
+                                else "containers"
+                            ): containers,
                         }
                     )
                     continue

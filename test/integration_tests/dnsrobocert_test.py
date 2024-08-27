@@ -168,6 +168,9 @@ certificates:
   follow_cnames: true
   reuse_key: true
   key_type: ecdsa
+  pfx:
+    export: true
+    passphrase: test
 """
             )
 
@@ -178,6 +181,11 @@ certificates:
             ):
                 main.main(["-c", str(config_path), "-d", str(directory_path)])
 
-        assert os.path.exists(
-            str(directory_path / "live" / "test1.example.net" / "cert.pem")
-        )
+        assert os.listdir(directory_path / "live" / "test1.example.net") == [
+            "privkey.pem",
+            "cert.pfx",
+            "fullchain.pem",
+            "README",
+            "cert.pem",
+            "chain.pem",
+        ]
