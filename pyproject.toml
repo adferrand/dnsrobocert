@@ -90,11 +90,13 @@ dnsrobocert = "dnsrobocert.core.main:main"
 
 [tool.pytest.ini_options]
 junit_family = "xunit2"
+addopts = "-p no:legacypath"
 
 [tool.mypy]
 show_error_codes = true
 ignore_missing_imports = true
 check_untyped_defs = true
+disallow_untyped_defs = true
 
 [tool.isort]
 profile = "black"

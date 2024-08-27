@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 import hashlib
 import logging
@@ -7,7 +9,7 @@ import subprocess
 import sys
 import threading
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import coloredlogs
 from certbot.compat import misc
@@ -24,12 +26,12 @@ coloredlogs.install(logger=LOGGER)
 
 
 def execute(
-    command: Union[List[str], str],
+    command: list[str] | str,
     check: bool = True,
     shell: bool = False,
-    env: Optional[Dict[str, str]] = None,
-    lock: Optional[threading.Lock] = None,
-):
+    env: dict[str, str] | None = None,
+    lock: threading.Lock | None = None,
+) -> None:
     if not env:
         env = os.environ.copy()
     env = env.copy()
@@ -60,7 +62,7 @@ def execute(
         raise error
 
 
-def fix_permissions(certificate_permissions: Dict[str, Any], target_path: str):
+def fix_permissions(certificate_permissions: dict[str, Any], target_path: str) -> None:
     files_mode = certificate_permissions.get("files_mode", 0o640)
     dirs_mode = certificate_permissions.get("dirs_mode", 0o750)
 
@@ -100,8 +102,8 @@ def fix_permissions(certificate_permissions: Dict[str, Any], target_path: str):
 
 
 def configure_certbot_workspace(
-    dnsrobocert_config: Dict[str, Any], directory_path: str
-):
+    dnsrobocert_config: dict[str, Any], directory_path: str
+) -> None:
     live_path = os.path.join(directory_path, "archive")
     archive_path = os.path.join(directory_path, "live")
 
@@ -117,7 +119,7 @@ def configure_certbot_workspace(
     fix_permissions(certificate_permissions, archive_path)
 
 
-def digest(path: str):
+def digest(path: str) -> bytes | None:
     if not os.path.exists(path):
         return None
 
@@ -129,11 +131,11 @@ def digest(path: str):
     return md5.digest()
 
 
-def normalize_lineage(domain: str):
+def normalize_lineage(domain: str) -> str:
     return re.sub(r"^\*\.", "", domain)
 
 
-def validate_snap_environment(args: argparse.Namespace):
+def validate_snap_environment(args: argparse.Namespace) -> None:
     """
     Verify that the provided CLI flags are compatible with an execution of
     DNSroboCert inside snap. No-op if we are not in a snap.
@@ -165,7 +167,7 @@ def validate_snap_environment(args: argparse.Namespace):
         sys.exit(1)
 
 
-def get_default_args() -> Dict[str, str]:
+def get_default_args() -> dict[str, str]:
     """
     Retrieve the default values of CLI flags depending on the execution context.
     """
@@ -186,7 +188,7 @@ def get_default_args() -> Dict[str, str]:
     }
 
 
-def _is_valid_path_for_snap(path: str):
+def _is_valid_path_for_snap(path: str) -> bool:
     """
     Check that the given path:
     * is relative to home_path and it is not composed of hidden parts (folder/files starting with "."),
@@ -207,12 +209,12 @@ def _is_valid_path_for_snap(path: str):
     ) or (system_files_interface and os.path.abspath(path).startswith("/etc/"))
 
 
-def _split_path(path: str) -> List[str]:
+def _split_path(path: str) -> list[str]:
     """
     Split the given path into an array containing each part composing the path.
     For instance: /etc/to/my/config.yml => ["/", "etc", "to", "my", "config.yml"].
     """
-    all_parts: List[str] = []
+    all_parts: list[str] = []
     while 1:
         parts = os.path.split(path)
         if parts[0] == path:  # sentinel for absolute paths
@@ -224,4 +226,5 @@ def _split_path(path: str) -> List[str]:
         else:
             path = parts[0]
             all_parts.insert(0, parts[1])
+
     return all_parts

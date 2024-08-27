@@ -1,5 +1,6 @@
 import os
-from unittest.mock import patch
+from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 from dnsrobocert.core import main
 
@@ -9,7 +10,14 @@ from dnsrobocert.core import main
 @patch("dnsrobocert.core.main.certbot.revoke")
 @patch("dnsrobocert.core.main.background")
 @patch.object(main._Daemon, "do_shutdown")
-def test_main_loop(shutdown, background, revoke, certonly, account, tmp_path):
+def test_main_loop(
+    shutdown: MagicMock,
+    background: MagicMock,
+    revoke: MagicMock,
+    certonly: MagicMock,
+    account: MagicMock,
+    tmp_path: Path,
+) -> None:
     directory_path = tmp_path / "letsencrypt"
     os.mkdir(directory_path)
 

@@ -1,11 +1,12 @@
 import os
+from pathlib import Path
 
 import pytest
 
 from dnsrobocert.core import config
 
 
-def test_good_config_minimal(tmp_path):
+def test_good_config_minimal(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
         f.write(
@@ -18,7 +19,7 @@ draft: true
     assert parsed
 
 
-def test_bad_config_wrong_schema(tmp_path):
+def test_bad_config_wrong_schema(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
         f.write(
@@ -32,7 +33,7 @@ wrong_property: bad
     assert not parsed
 
 
-def test_bad_config_non_existent_profile(tmp_path):
+def test_bad_config_non_existent_profile(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
         f.write(
@@ -51,7 +52,7 @@ certificates:
     assert not parsed
 
 
-def test_bad_config_wrong_posix_mode(tmp_path):
+def test_bad_config_wrong_posix_mode(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
         f.write(
@@ -67,7 +68,7 @@ acme:
     assert not parsed
 
 
-def test_bad_config_duplicated_cert_name(tmp_path):
+def test_bad_config_duplicated_cert_name(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
         f.write(
@@ -89,13 +90,13 @@ certificates:
     assert not parsed
 
 
-def test_wildcard_lineage():
+def test_wildcard_lineage() -> None:
     certificate = {"domains": ["*.example.com", "example.com"], "profile": "dummy"}
 
     assert config.get_lineage(certificate) == "example.com"
 
 
-def test_environment_variable_injection(tmp_path):
+def test_environment_variable_injection(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
         f.write(

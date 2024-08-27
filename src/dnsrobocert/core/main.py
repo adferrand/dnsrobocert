@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
+from __future__ import annotations
+
 import argparse
 import logging
 import os
@@ -9,7 +11,7 @@ import tempfile
 import threading
 import time
 import traceback
-from typing import List, Optional
+from typing import Any
 
 import coloredlogs
 import yaml
@@ -25,7 +27,7 @@ def _process_config(
     directory_path: str,
     runtime_config_path: str,
     lock: threading.Lock,
-):
+) -> None:
     dnsrobocert_config = config.load(config_path)
 
     if not dnsrobocert_config:
@@ -50,18 +52,18 @@ def _process_config(
 class _Daemon:
     _do_shutdown = False
 
-    def __init__(self):
+    def __init__(self) -> None:
         signal.signal(signal.SIGINT, self.shutdown)
         signal.signal(signal.SIGTERM, self.shutdown)
 
-    def shutdown(self, _signum, _frame):
+    def shutdown(self, _signum: Any, _frame: Any) -> None:
         self._do_shutdown = True
 
-    def do_shutdown(self):
+    def do_shutdown(self) -> bool:
         return self._do_shutdown
 
 
-def _watch_config(config_path: str, directory_path: str):
+def _watch_config(config_path: str, directory_path: str) -> None:
     LOGGER.info("Starting DNSroboCert.")
 
     with tempfile.TemporaryDirectory() as workspace:
@@ -97,7 +99,7 @@ def _watch_config(config_path: str, directory_path: str):
     LOGGER.info("Exiting DNSroboCert.")
 
 
-def _run_config(config_path: str, directory_path: str):
+def _run_config(config_path: str, directory_path: str) -> None:
     LOGGER.info("Running DNSroboCert...")
 
     with tempfile.TemporaryDirectory() as workspace:
@@ -117,7 +119,7 @@ def _run_config(config_path: str, directory_path: str):
         )
 
 
-def main(args: Optional[List[str]] = None):
+def main(args: list[str] | None = None) -> None:
     if not args:
         args = sys.argv[1:]
 

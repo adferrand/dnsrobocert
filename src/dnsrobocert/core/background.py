@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import logging
 import threading
 import time
+from collections.abc import Iterator
 from contextlib import contextmanager
 from random import random
 
@@ -14,7 +17,9 @@ coloredlogs.install(logger=LOGGER)
 
 
 @contextmanager
-def worker(config_path: str, directory_path: str, lock: threading.Lock):
+def worker(
+    config_path: str, directory_path: str, lock: threading.Lock
+) -> Iterator[None]:
     stop_thread = threading.Event()
 
     schedule.every().day.at("12:00").do(
@@ -40,10 +45,10 @@ def worker(config_path: str, directory_path: str, lock: threading.Lock):
         stop_thread.set()
 
 
-def _launch_background_jobs(stop_thread: threading.Event, interval: int = 1):
+def _launch_background_jobs(stop_thread: threading.Event, interval: int = 1) -> None:
     class ScheduleThread(threading.Thread):
         @classmethod
-        def run(cls):
+        def run(cls) -> None:
             while not stop_thread.is_set():
                 schedule.run_pending()
                 time.sleep(interval)
@@ -57,7 +62,7 @@ def _renew_job(
     directory_path: str,
     lock: threading.Lock,
     stop_thread: threading.Event,
-):
+) -> None:
     random_delay_seconds = 21600  # Random delay up to 12 hours
     wait_time = int(random() * random_delay_seconds)
 
