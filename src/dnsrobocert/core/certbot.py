@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
+from __future__ import annotations
+
 import logging
 import os
 import re
 import sys
 import threading
-from typing import List, Optional
 
 import coloredlogs
 from certbot import main
@@ -25,7 +26,7 @@ _DEFAULT_FLAGS = [
 ]
 
 
-def account(config_path: str, directory_path: str, lock: threading.Lock):
+def account(config_path: str, directory_path: str, lock: threading.Lock) -> None:
     dnsrobocert_config = config.load(config_path)
     acme = dnsrobocert_config.get("acme", {})
     email = acme.get("email_account")
@@ -67,11 +68,11 @@ def certonly(
     directory_path: str,
     lineage: str,
     lock: threading.Lock,
-    domains: Optional[List[str]] = None,
+    domains: list[str] | None = None,
     force_renew: bool = False,
     reuse_key: bool = False,
     key_type: str = "rsa",
-):
+) -> None:
     if not domains:
         return
 
@@ -121,7 +122,7 @@ def certonly(
     )
 
 
-def _issue(config_path: str, directory_path: str, lock: threading.Lock):
+def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
     dnsrobocert_config = config.load(config_path)
 
     if dnsrobocert_config:
@@ -161,11 +162,13 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock):
                     revoke(config_path, directory_path, domain, lock)
 
 
-def renew(config_path: str, directory_path: str, lock: threading.Lock):
+def renew(config_path: str, directory_path: str, lock: threading.Lock) -> None:
     _issue(config_path, directory_path, lock)
 
 
-def revoke(config_path: str, directory_path: str, lineage: str, lock: threading.Lock):
+def revoke(
+    config_path: str, directory_path: str, lineage: str, lock: threading.Lock
+) -> None:
     url = config.get_acme_url(config.load(config_path))
 
     utils.execute(
@@ -190,7 +193,7 @@ def revoke(config_path: str, directory_path: str, lineage: str, lock: threading.
     )
 
 
-def _hook_cmd(hook_type: str, config_path: str, lineage: Optional[str] = None) -> str:
+def _hook_cmd(hook_type: str, config_path: str, lineage: str | None = None) -> str:
     command = (
         f'{sys.executable} -m dnsrobocert.core.hooks -t {hook_type} -c "{config_path}"'
     )

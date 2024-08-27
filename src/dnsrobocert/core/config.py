@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import logging
 import os
 import re
 import warnings
-from typing import Any, Dict, Optional, Set
+from typing import Any
 
 import coloredlogs
 import jsonschema
@@ -15,7 +17,7 @@ LOGGER = logging.getLogger(__name__)
 coloredlogs.install(logger=LOGGER)
 
 
-def load(config_path: str) -> Optional[Dict[str, Any]]:
+def load(config_path: str) -> dict[str, Any] | None:
     if not os.path.exists(config_path):
         LOGGER.error(f"Configuration file {config_path} does not exist.")
         return None
@@ -76,7 +78,7 @@ Error while validating dnsrobocert configuration:
     return config
 
 
-def get_profile(config: Dict[str, Any], profile_name: str) -> Dict[str, Any]:
+def get_profile(config: dict[str, Any], profile_name: str) -> dict[str, Any]:
     profiles = [
         profile
         for profile in config.get("profiles", {})
@@ -85,7 +87,7 @@ def get_profile(config: Dict[str, Any], profile_name: str) -> Dict[str, Any]:
     return profiles[0] if profiles else None
 
 
-def get_certificate(config: Dict[str, Any], lineage: str) -> Optional[Dict[str, Any]]:
+def get_certificate(config: dict[str, Any], lineage: str) -> dict[str, Any] | None:
     certificates = [
         certificate
         for certificate in config.get("certificates", [])
@@ -94,7 +96,7 @@ def get_certificate(config: Dict[str, Any], lineage: str) -> Optional[Dict[str, 
     return certificates[0] if certificates else None
 
 
-def get_lineage(certificate_config: Dict[str, Any]) -> str:
+def get_lineage(certificate_config: dict[str, Any]) -> str:
     lineage = (
         certificate_config.get("name")
         if certificate_config.get("name")
@@ -108,7 +110,7 @@ def get_lineage(certificate_config: Dict[str, Any]) -> str:
     return lineage
 
 
-def get_acme_url(config: Dict[str, Any]) -> str:
+def get_acme_url(config: dict[str, Any]) -> str:
     acme = config.get("acme", {})
 
     directory_url = acme.get("directory_url")
@@ -126,7 +128,7 @@ def get_acme_url(config: Dict[str, Any]) -> str:
     return f"https://{domain}.api.letsencrypt.org/directory"
 
 
-def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, Any]:
+def find_profile_for_lineage(config: dict[str, Any], lineage: str) -> dict[str, Any]:
     certificate = get_certificate(config, lineage)
     if not certificate:
         raise RuntimeError(
@@ -141,8 +143,8 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
     return get_profile(config, profile_name)
 
 
-def _inject_env_variables(raw_config: str):
-    def replace(match):
+def _inject_env_variables(raw_config: str) -> str:
+    def replace(match: re.Match[str]) -> str:
         entry = match.group(0)
 
         if "$${" in entry:
@@ -159,7 +161,7 @@ def _inject_env_variables(raw_config: str):
     return re.sub(r"\${1,2}{(\S+)}", replace, raw_config)
 
 
-def _values_conversion(config: Dict[str, Any]):
+def _values_conversion(config: dict[str, Any]) -> None:
     certs_permissions = config.get("acme", {}).get("certs_permissions", {})
     files_mode = certs_permissions.get("files_mode")
     if isinstance(files_mode, str):
@@ -169,9 +171,9 @@ def _values_conversion(config: Dict[str, Any]):
         certs_permissions["dirs_mode"] = int(dirs_mode, 8)
 
 
-def _business_check(config: Dict[str, Any]):
+def _business_check(config: dict[str, Any]) -> None:
     profile_names = [profile["name"] for profile in config.get("profiles", [])]
-    lineages: Set[str] = set()
+    lineages: set[str] = set()
     for certificate_config in config.get("certificates", []):
         # Check that every certificate is associated to an existing profile
         profile_name = certificate_config.get("profile")

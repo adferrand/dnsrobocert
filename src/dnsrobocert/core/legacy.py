@@ -152,7 +152,9 @@ def _handle_specific_envs_variables(
                 value["pfx"]["passphrase"] = envs["PFX_EXPORT_PASSPHRASE"]
 
 
-def _gather_parameters(provider):
+def _gather_parameters(
+    provider: str,
+) -> tuple[dict[str, str], dict[str, Any], dict[str, dict[str, Any]]]:
     env_variables_of_interest = {
         name: value
         for name, value in os.environ.items()
@@ -274,7 +276,7 @@ def _extract_certificates(envs: dict[str, str], profile: str) -> list[dict[str, 
 
 
 def _deep_merge(*dicts: dict[str, Any]) -> dict[str, Any]:
-    def merge_into(d1, d2):
+    def merge_into(d1: dict[str, Any], d2: dict[str, Any]) -> dict[str, Any]:
         for key in d2:
             if key not in d1 or not isinstance(d1[key], dict):
                 d1[key] = deepcopy(d2[key])

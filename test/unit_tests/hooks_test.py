@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 import contextlib
 import datetime
 import os
-from unittest.mock import MagicMock, call, patch
+from collections.abc import Iterator
+from pathlib import Path
+from unittest.mock import AsyncMock, MagicMock, call, patch
 
 import pytest
 from cryptography import x509
@@ -24,7 +28,9 @@ LINEAGE = "test.example.com"
 
 
 @pytest.fixture(autouse=True)
-def fake_env(tmp_path, monkeypatch):
+def fake_env(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> Iterator[dict[str, Path]]:
     live_path = tmp_path / "live" / LINEAGE
     archive_path = tmp_path / "archive" / LINEAGE
     os.makedirs(str(tmp_path / "live"))
@@ -42,7 +48,7 @@ def fake_env(tmp_path, monkeypatch):
 
 
 @pytest.fixture
-def fake_config(tmp_path):
+def fake_config(tmp_path: Path) -> Iterator[Path]:
     config_path = tmp_path / "config.yml"
     config_data = f"""\
 acme:
@@ -79,7 +85,7 @@ certificates:
 
 
 @patch("dnsrobocert.core.challenge.Client")
-def test_auth_cli(client, fake_config):
+def test_auth_cli(client: MagicMock, fake_config: Path) -> None:
     operations = MagicMock()
     client.return_value.__enter__.return_value = operations
 
@@ -99,7 +105,7 @@ def test_auth_cli(client, fake_config):
 
 
 @patch("dnsrobocert.core.challenge.Client")
-def test_cleanup_cli(client, fake_config):
+def test_cleanup_cli(client: MagicMock, fake_config: Path) -> None:
     operations = MagicMock()
     client.return_value.__enter__.return_value = operations
 
@@ -118,7 +124,7 @@ def test_cleanup_cli(client, fake_config):
 
 
 @patch("dnsrobocert.core.hooks.deploy")
-def test_deploy_cli(deploy, fake_config):
+def test_deploy_cli(deploy: MagicMock, fake_config: Path) -> None:
     hooks.main(["-t", "deploy", "-c", str(fake_config), "-l", LINEAGE])
     deploy.assert_called_with(config.load(fake_config), LINEAGE)
 
@@ -126,7 +132,13 @@ def test_deploy_cli(deploy, fake_config):
 @patch("dnsrobocert.core.hooks._fix_permissions")
 @patch("dnsrobocert.core.hooks._autocmd")
 @patch("dnsrobocert.core.hooks._autorestart")
-def test_pfx(_autorestart, _autocmd, _fix_permissions, fake_env, fake_config):
+def test_pfx(
+    _autorestart: MagicMock,
+    _autocmd: MagicMock,
+    _fix_permissions: MagicMock,
+    fake_env: dict[str, Path],
+    fake_config: Path,
+) -> None:
     archive_path = fake_env["archive"]
     key = rsa.generate_private_key(
         public_exponent=65537, key_size=2048, backend=default_backend()
@@ -171,14 +183,19 @@ def test_pfx(_autorestart, _autocmd, _fix_permissions, fake_env, fake_config):
 @patch("dnsrobocert.core.hooks.os.path.exists")
 @patch("dnsrobocert.core.hooks.utils.execute")
 def test_autocmd(
-    check_call, _exists, _autorestart, _pfx_export, _fix_permissions, fake_config
-):
+    execute: MagicMock,
+    _exists: MagicMock,
+    _autorestart: MagicMock,
+    _pfx_export: MagicMock,
+    _fix_permissions: MagicMock,
+    fake_config: Path,
+) -> None:
     hooks.deploy(config.load(fake_config), LINEAGE)
 
     call_foo = call(["docker", "exec", "foo", "echo", "Hello World!"])
     call_bar = call(["docker", "exec", "bar", "echo", "Hello World!"])
     call_dummy = call("docker exec dummy echo test", shell=True)
-    check_call.assert_has_calls([call_foo, call_bar, call_dummy])
+    execute.assert_has_calls([call_foo, call_bar, call_dummy])
 
 
 @patch("dnsrobocert.core.hooks._fix_permissions")
@@ -187,8 +204,13 @@ def test_autocmd(
 @patch("dnsrobocert.core.hooks.os.path.exists")
 @patch("dnsrobocert.core.hooks.utils.execute")
 def test_autorestart(
-    check_call, _exists, _autocmd, _pfx_export, _fix_permissions, fake_config
-):
+    execute: MagicMock,
+    _exists: MagicMock,
+    _autocmd: MagicMock,
+    _pfx_export: MagicMock,
+    _fix_permissions: MagicMock,
+    fake_config: Path,
+) -> None:
     hooks.deploy(config.load(fake_config), LINEAGE)
 
     call_container1 = call(["docker", "restart", "container1"])
@@ -199,7 +221,7 @@ def test_autorestart(
     call_service2 = call(
         ["docker", "service", "update", "--detach=false", "--force", "service2"]
     )
-    check_call.assert_has_calls(
+    execute.assert_has_calls(
         [call_container1, call_container2, call_service1, call_service2]
     )
 
@@ -207,7 +229,13 @@ def test_autorestart(
 @patch("dnsrobocert.core.hooks._pfx_export")
 @patch("dnsrobocert.core.hooks._autocmd")
 @patch("dnsrobocert.core.hooks._autorestart")
-def test_fix_permissions(_autorestart, _autocmd, _pfx_export, fake_config, fake_env):
+def test_fix_permissions(
+    _autorestart: MagicMock,
+    _autocmd: MagicMock,
+    _pfx_export: MagicMock,
+    fake_config: dict[str, str],
+    fake_env: dict[str, Path],
+) -> None:
     archive_path = str(fake_env["archive"])
     live_path = str(fake_env["live"])
 
@@ -240,11 +268,12 @@ def test_fix_permissions(_autorestart, _autocmd, _pfx_export, fake_config, fake_
                 call(probe_live_dir, uid, gid),
             ]
 
-            assert chown.call_args_list == calls
+            if chown:
+                assert chown.call_args_list == calls
 
 
 @contextlib.contextmanager
-def _mock_os_chown():
+def _mock_os_chown() -> Iterator[MagicMock | AsyncMock | None]:
     if POSIX_MODE:
         with patch("dnsrobocert.core.utils.os.chown") as chown:
             yield chown

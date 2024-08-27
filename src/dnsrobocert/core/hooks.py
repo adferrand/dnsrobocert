@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
+from __future__ import annotations
+
 import argparse
 import os
 import subprocess
 import sys
 import time
 import traceback
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, cast
 
 from cryptography import x509
 from cryptography.hazmat.primitives import serialization
@@ -19,7 +21,7 @@ from dnsrobocert.core import config, utils
 from dnsrobocert.core.challenge import check_one_challenge, txt_challenge
 
 
-def main(args: Optional[List[str]] = None) -> int:
+def main(args: list[str] | None = None) -> int:
     if not args:
         args = sys.argv[1:]
 
@@ -54,7 +56,7 @@ def main(args: Optional[List[str]] = None) -> int:
     return 0
 
 
-def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
+def auth(dnsrobocert_config: dict[str, Any], lineage: str) -> None:
     certificate = config.get_certificate(dnsrobocert_config, lineage)
     profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
@@ -116,7 +118,7 @@ def auth(dnsrobocert_config: Dict[str, Any], lineage: str):
         time.sleep(sleep_time)
 
 
-def cleanup(dnsrobocert_config: Dict[str, str], lineage: str):
+def cleanup(dnsrobocert_config: dict[str, str], lineage: str) -> None:
     certificate = config.get_certificate(dnsrobocert_config, lineage)
     profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
@@ -127,7 +129,7 @@ def cleanup(dnsrobocert_config: Dict[str, str], lineage: str):
     txt_challenge(certificate, profile, token, domain, action="delete")
 
 
-def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
+def deploy(dnsrobocert_config: dict[str, Any], _no_lineage: Any) -> None:
     lineage_path = os.environ["RENEWED_LINEAGE"]
     lineage = os.path.basename(lineage_path)
     certificate = config.get_certificate(dnsrobocert_config, lineage)
@@ -141,7 +143,7 @@ def deploy(dnsrobocert_config: Dict[str, Any], _no_lineage: Any):
     _deploy_hook(certificate)
 
 
-def _pfx_export(certificate: Dict[str, Any], lineage_path: str, lineage: str):
+def _pfx_export(certificate: dict[str, Any], lineage_path: str, lineage: str) -> None:
     pfx = certificate.get("pfx", {})
     if pfx.get("export"):
         with open(os.path.join(lineage_path, "privkey.pem"), "rb") as f:
@@ -170,13 +172,15 @@ def _pfx_export(certificate: Dict[str, Any], lineage_path: str, lineage: str):
             f.write(p12)
 
 
-def _fix_permissions(certificate_permissions: Dict[str, str], lineage_path: str):
+def _fix_permissions(
+    certificate_permissions: dict[str, str], lineage_path: str
+) -> None:
     archive_path = lineage_path.replace(os.path.sep + "live", os.path.sep + "archive")
     utils.fix_permissions(certificate_permissions, archive_path)
     utils.fix_permissions(certificate_permissions, lineage_path)
 
 
-def _autorestart(certificate: Dict[str, Any]):
+def _autorestart(certificate: dict[str, Any]) -> None:
     autorestart = certificate.get("autorestart")
     if autorestart:
         if not os.path.exists("/var/run/docker.sock") and not os.path.exists(
@@ -212,7 +216,7 @@ def _autorestart(certificate: Dict[str, Any]):
                     utils.execute(["podman", "--remote", "restart", container])
 
 
-def _autocmd(certificate: Dict[str, Any]):
+def _autocmd(certificate: dict[str, Any]) -> None:
     autocmd = certificate.get("autocmd")
     if autocmd:
         if not os.path.exists("/var/run/docker.sock"):
@@ -229,7 +233,7 @@ def _autocmd(certificate: Dict[str, Any]):
                     utils.execute(f"docker exec {container} {command}", shell=True)
 
 
-def _deploy_hook(certificate: Dict[str, Any]):
+def _deploy_hook(certificate: dict[str, Any]) -> None:
     deploy_hook = certificate.get("deploy_hook")
     env = os.environ.copy()
     env.update(

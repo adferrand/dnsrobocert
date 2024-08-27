@@ -1,10 +1,13 @@
 import os
+from pathlib import Path
 from unittest import mock
+
+from pytest import MonkeyPatch
 
 from dnsrobocert.core import config, legacy
 
 
-def test_legacy_migration(tmp_path, monkeypatch):
+def test_legacy_migration(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
     config_path = tmp_path / "dnsrobocert" / "config.yml"
     legacy_config_domain_file = tmp_path / "old_config" / "domains.conf"
     generated_config_path = tmp_path / "dnsrobocert" / "config-generated.yml"

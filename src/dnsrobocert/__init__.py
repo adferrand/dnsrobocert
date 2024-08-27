@@ -1,7 +1,7 @@
 from importlib.metadata import PackageNotFoundError, metadata
 
 
-def get_version():
+def get_version() -> str:
     try:
         distribution = metadata(__name__)
     except PackageNotFoundError:
