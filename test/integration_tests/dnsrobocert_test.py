@@ -11,13 +11,16 @@ from collections.abc import Iterator
 from pathlib import Path
 from unittest import skipIf
 from unittest.mock import patch
+import tempfile
+import tarfile
+import shutil
 
 import requests
 import urllib3
 
 from dnsrobocert.core import main
 
-_PEBBLE_VERSION = "v2.3.0"
+_PEBBLE_VERSION = "v2.6.0"
 _ASSETS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
 _CHALLTESTSRV_PORT = 8000
 
@@ -25,28 +28,37 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def _fetch(workspace: str) -> tuple[str, str, str]:
-    if platform.system() == "Windows":
-        suffix = "windows-amd64.exe"
-    elif platform.system() == "Linux":
-        suffix = "linux-amd64"
+    arch = "amd64"
+    os_kind = platform.system().lower()
+    if os_kind == "windows":
+        suffix = ".exe"
+    elif os_kind == "linux":
+        suffix = ""
     else:
         raise RuntimeError("Unsupported platform: {0}".format(platform.system()))
 
-    pebble_path = _fetch_asset("pebble", suffix)
-    challtestsrv_path = _fetch_asset("pebble-challtestsrv", suffix)
+    pebble_path = _fetch_asset("pebble", os_kind, arch, suffix)
+    challtestsrv_path = _fetch_asset("pebble-challtestsrv", os_kind, arch, suffix)
     pebble_config_path = _build_pebble_config(workspace)
 
     return pebble_path, challtestsrv_path, pebble_config_path
 
 
-def _fetch_asset(asset: str, suffix: str) -> str:
-    asset_path = os.path.join(_ASSETS_PATH, f"{asset}_{_PEBBLE_VERSION}_{suffix}")
+def _fetch_asset(asset: str, os_kind: str, arch: str, suffix: str) -> str:
+    asset_path = os.path.join(_ASSETS_PATH, f"{asset}-{_PEBBLE_VERSION}-{os_kind}-{arch}{suffix}")
     if not os.path.exists(asset_path):
-        asset_url = f"https://github.com/letsencrypt/pebble/releases/download/{_PEBBLE_VERSION}/{asset}_{suffix}"
-        response = requests.get(asset_url)
-        response.raise_for_status()
-        with open(asset_path, "wb") as file_h:
-            file_h.write(response.content)
+        with tempfile.TemporaryDirectory() as workdir:
+            archive_path = os.path.join(workdir, "archive.tar.gz")
+            asset_url = f"https://github.com/letsencrypt/pebble/releases/download/{_PEBBLE_VERSION}/{asset}-{os_kind}-{arch}.tar.gz"
+            response = requests.get(asset_url)
+            response.raise_for_status()
+            with open(archive_path, "wb") as file_h:
+                file_h.write(response.content)
+                
+            archive = tarfile.open(archive_path)
+            archive.extractall(workdir)
+            shutil.copyfile(os.path.join(workdir, f"{asset}-{os_kind}-{arch}", os_kind, arch, asset), asset_path)
+            
     os.chmod(asset_path, os.stat(asset_path).st_mode | stat.S_IEXEC)
 
     return asset_path

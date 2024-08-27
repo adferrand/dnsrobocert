@@ -73,6 +73,7 @@ mypy = "*"
 packaging= "*"
 pytest = "*"
 pytest-cov = "*"
+pytest-sugar = "*"
 isort = "*"
 tox = "*"
 types-PyYAML = "*"
@@ -91,6 +92,11 @@ dnsrobocert = "dnsrobocert.core.main:main"
 [tool.pytest.ini_options]
 junit_family = "xunit2"
 addopts = "-p no:legacypath"
+filterwarnings = [
+    "ignore:Unverified HTTPS request is being made:urllib3.exceptions.InsecureRequestWarning",
+    "ignore:X509Extension support in pyOpenSSL is deprecated:DeprecationWarning",
+    "ignore:CSR support in pyOpenSSL is deprecated:DeprecationWarning",
+]
 
 [tool.mypy]
 show_error_codes = true
