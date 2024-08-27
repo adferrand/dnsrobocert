@@ -4,16 +4,16 @@ import contextlib
 import json
 import os
 import platform
+import shutil
 import stat
 import subprocess
+import tarfile
+import tempfile
 import time
 from collections.abc import Iterator
 from pathlib import Path
 from unittest import skipIf
 from unittest.mock import patch
-import tempfile
-import tarfile
-import shutil
 
 import requests
 import urllib3
@@ -45,7 +45,9 @@ def _fetch(workspace: str) -> tuple[str, str, str]:
 
 
 def _fetch_asset(asset: str, os_kind: str, arch: str, suffix: str) -> str:
-    asset_path = os.path.join(_ASSETS_PATH, f"{asset}-{_PEBBLE_VERSION}-{os_kind}-{arch}{suffix}")
+    asset_path = os.path.join(
+        _ASSETS_PATH, f"{asset}-{_PEBBLE_VERSION}-{os_kind}-{arch}{suffix}"
+    )
     if not os.path.exists(asset_path):
         with tempfile.TemporaryDirectory() as workdir:
             archive_path = os.path.join(workdir, "archive.tar.gz")
@@ -54,11 +56,16 @@ def _fetch_asset(asset: str, os_kind: str, arch: str, suffix: str) -> str:
             response.raise_for_status()
             with open(archive_path, "wb") as file_h:
                 file_h.write(response.content)
-                
+
             archive = tarfile.open(archive_path)
             archive.extractall(workdir)
-            shutil.copyfile(os.path.join(workdir, f"{asset}-{os_kind}-{arch}", os_kind, arch, asset), asset_path)
-            
+            shutil.copyfile(
+                os.path.join(
+                    workdir, f"{asset}-{os_kind}-{arch}", os_kind, arch, asset
+                ),
+                asset_path,
+            )
+
     os.chmod(asset_path, os.stat(asset_path).st_mode | stat.S_IEXEC)
 
     return asset_path
