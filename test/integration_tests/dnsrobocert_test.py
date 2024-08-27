@@ -184,11 +184,11 @@ certificates:
             ):
                 main.main(["-c", str(config_path), "-d", str(directory_path)])
 
-        assert os.listdir(directory_path / "live" / "test1.example.net") == [
+        assert set(os.listdir(directory_path / "live" / "test1.example.net")) == {
             "privkey.pem",
             "cert.pfx",
             "fullchain.pem",
             "README",
             "cert.pem",
             "chain.pem",
-        ]
+        }
