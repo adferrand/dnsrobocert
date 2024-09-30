@@ -41,7 +41,7 @@ jobs:
           TOXENV: ${{ matrix.toxenv }}
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: unit-test-results-${{ matrix.os }}-${{ matrix.python }}
           path: |
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Upload event file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: event-file
           path: ${{ github.event_path }}
