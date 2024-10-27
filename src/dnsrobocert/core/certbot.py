@@ -87,7 +87,7 @@ def certonly(
     if key_type:
         additional_params.extend(["--key-type", key_type])
     if key_size:
-        additional_params.extend(["--key-size", key_size])
+        additional_params.extend(["--rsa-key-size", key_size])
 
     for domain in domains:
         additional_params.append("-d")
