@@ -130,6 +130,9 @@ properties:
         key_type:
           type: string
           enum: [rsa, ecdsa]
+        key_size:
+          type: number
+          enum: [2048, 3072, 4096]
       required: [domains, profile]
       additionalProperties: false
 additionalProperties: false

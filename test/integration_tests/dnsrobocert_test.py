@@ -190,6 +190,7 @@ certificates:
   follow_cnames: true
   reuse_key: true
   key_type: ecdsa
+  key_size: 2048
   pfx:
     export: true
     passphrase: test
