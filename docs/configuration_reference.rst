@@ -232,6 +232,7 @@ be defined in each relevant certificate configuration.
       follow_cnames: false
       reuse_key: false
       key_type: ecdsa
+      key_size: 2048
 
 ``certificate`` properties
 --------------------------
@@ -318,6 +319,12 @@ be defined in each relevant certificate configuration.
     * Type of key to use when the certificate is generated. Must be ``rsa`` or ``ecdsa``.
     * *type*: ``string``
     * *default*: ``rsa`` (a RSA-type key will be used)
+
+``key_size``
+~~~~~~~~~~~~
+    * Size of key to use when the certificate is generated. Must be ``2048`` or ``3072`` or ``4096``.
+    * *type*: ``integer``
+    * *default*: ``2048`` (a 2048-bit key will be used)
 
 
 .. _link: https://letsencrypt.org/2019/10/09/onboarding-your-customers-with-lets-encrypt-and-acme.html#the-advantages-of-a-cname
