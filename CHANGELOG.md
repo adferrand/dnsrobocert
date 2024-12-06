@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* Migrate from Poetry to UV to manage the project
 
 ## 3.25.0 - 16/11/2023
 ### Added

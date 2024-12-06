@@ -33,15 +33,15 @@ It sits on top of Certbot_ and Lexicon_. Here are the repartition of the roles:
 Setting up a development environment
 ====================================
 
-DNSroboCert uses Poetry_ to configure an environment development, build the project, and push wheel/sdist to PyPI.
+DNSroboCert uses UV_ to manage the development environment & dependencies, build the project, and push wheel/sdist to PyPI.
 
-1. First, install Poetry_, following this guide: `Poetry installation`_.
+1. First, install UV_, following this guide: `UV installation`_.
 
-2. Now Poetry should be available in your command line. Check that the following command is displaying Poetry version:
+2. Now UV should be available in your command line. Check that the following command is displaying UV version:
 
 .. code-block:: console
 
-    poetry --version
+    uv --version
 
 3. Fork the upstream `GitHub project`_ and clone your fork locally:
 
@@ -56,12 +56,12 @@ DNSroboCert uses Poetry_ to configure an environment development, build the proj
     | It allows in particular to have a separated set of dependencies for the project that will not interfere with
       the OS Python packages installed globally.
 
-4. Setup the virtual environment for DNSroboCert using Poetry:
+4. Setup the virtual environment for DNSroboCert using UV:
 
 .. code-block:: console
 
     cd dnsrobocert
-    poetry env use python3
+    uv sync
 
 5. Activate the virtual environment:
 
@@ -77,20 +77,14 @@ DNSroboCert uses Poetry_ to configure an environment development, build the proj
 
     .\.venv\Scripts\activate
 
-6. Install development dependencies.
-
-.. code-block:: console
-
-    poetry install
-
 At this point, you are ready to develop on the project. You can run the CLI that will use the local source code:
 
 .. code-block:: console
 
     dnsrobocert --help
 
-.. _Poetry: https://python-poetry.org/
-.. _Poetry installation: https://python-poetry.org/docs/#installation
+.. _UV: https://docs.astral.sh/uv/
+.. _UV installation: https://docs.astral.sh/uv/getting-started/installation/
 .. _GitHub project: https://github.com/adferrand/docker-letsencrypt-dns
 
 Code quality
