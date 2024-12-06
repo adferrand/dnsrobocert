@@ -78,7 +78,7 @@ Error while validating dnsrobocert configuration:
     return config
 
 
-def get_profile(config: dict[str, Any], profile_name: str) -> dict[str, Any]:
+def get_profile(config: dict[str, Any], profile_name: str) -> dict[str, Any] | None:
     profiles = [
         profile
         for profile in config.get("profiles", {})
@@ -128,7 +128,7 @@ def get_acme_url(config: dict[str, Any]) -> str:
     return f"https://{domain}.api.letsencrypt.org/directory"
 
 
-def find_profile_for_lineage(config: dict[str, Any], lineage: str) -> dict[str, Any]:
+def find_profile_for_lineage(config: dict[str, Any], lineage: str) -> dict[str, Any] | None:
     certificate = get_certificate(config, lineage)
     if not certificate:
         raise RuntimeError(

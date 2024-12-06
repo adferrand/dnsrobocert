@@ -61,6 +61,12 @@ def auth(dnsrobocert_config: dict[str, Any], lineage: str) -> None:
     profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
+    
+    if certificate is None:
+        raise RuntimeError(f"Error while executing the auth hook: certificate config for lineage {lineage} coud not be found.")
+    
+    if profile is None:
+        raise RuntimeError(f"Error while executing the auth hook: profile for lineage {lineage} coud not be found.")
 
     print(f"Executing auth hook for domain {domain}, lineage {lineage}.")
 
