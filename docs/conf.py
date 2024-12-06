@@ -7,7 +7,7 @@ pyproject_toml = toml.load(join(root_path, "pyproject.toml"))
 
 master_doc = "index"
 project = "DNSroboCert"
-version = release = pyproject_toml["tool"]["poetry"]["version"]
+version = release = pyproject_toml["project"]["version"]
 author = "Adrien Ferrand"
 copyright = "2022, Adrien Ferrand"
 

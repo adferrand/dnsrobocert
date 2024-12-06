@@ -1,18 +1,12 @@
-ARG BUILDER_ARCH=amd64
-FROM docker.io/${BUILDER_ARCH}/python:3-slim AS constraints
+FROM docker.io/ubuntu:24.04 AS constraints
 
-COPY src poetry.lock poetry.toml pyproject.toml README.rst /tmp/dnsrobocert/
-
-RUN apt-get update -y \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-       libffi-dev \
- && rm -rf /var/lib/apt/lists/*
-
-RUN pip install --break-system-packages "poetry==1.7.1"
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 
 RUN cd /tmp/dnsrobocert \
- && poetry export --format constraints.txt --without-hashes > /tmp/dnsrobocert/constraints.txt \
- && poetry build -f wheel
+ && uv python install \
+ && uv export --no-emit-project --no-hashes > /tmp/dnsrobocert/constraints.txt \
+ && uv build
 
 FROM docker.io/python:3.11.4-slim
 

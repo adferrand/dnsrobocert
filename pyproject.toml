@@ -1,8 +1,8 @@
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "dnsrobocert"
 version = "3.25.0"
 description = "A tool to manage your DNS-challenged TLS certificates"
@@ -19,75 +19,66 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities"
 ]
 authors = [
-    "Adrien Ferrand <ferrand.ad@gmail.com>"
+    { name = "Adrien Ferrand", email = "ferrand.ad@gmail.com" },
 ]
 readme = "README.rst"
-include = [
-    "src/dnsrobocert/schema.yml"
+
+requires-python = ">=3.9"
+dependencies = [
+    "acme >= 2",
+    "certbot >= 2",
+    "dns-lexicon[full] >= 3.14.0",
+    "cryptography >= 2",
+    "cffi >= 1",
+    "lxml >= 4",
+    "dnspython >= 2.1.0",
+    "jsonschema >= 3",
+    "pem >= 20",
+    "pyopenssl >= 19",
+    "pyyaml >= 5",
+    "schedule >= 0",
+    "coloredlogs >= 14",
+    "colorama >= 0",
+    "tldextract >= 3",
 ]
+
+[project.urls]
 repository = "https://github.com/adferrand/dnsrobocert"
 homepage = "https://dnsrobocert.readthedocs.io"
 
-[tool.poetry.dependencies]
-python = "^3.8"
-acme = "^2"
-certbot = "^2"
-dns-lexicon = { version = "^3.14.0", extras = [ "full" ] }
-importlib-resources = "^6"
-# Workaround for: https://github.com/python-poetry/poetry-plugin-export/issues/183
-urllib3 = ">=1.25.4,<1.27"
-# Optional deps on dns-lexicon
-zeep = "*"
-xmltodict = "*"
-softlayer = "*"
-localzone = "*"
-boto3 = ">=1.28"
-# --
-cryptography = ">=2"
-cffi = ">=1"
-lxml = ">=4"
-dnspython = ">=2.1.0"
-jsonschema = ">=3"
-pem = ">=20"
-pyopenssl = ">=19"
-pyyaml = ">=5"
-schedule = ">=0"
-coloredlogs = ">=14"
-colorama = ">=0"
-tldextract = ">=3"
-
-[tool.poetry.group.dev.dependencies]
-black = "*"
-flake8 = "*"
-flake8-pyproject = "*"
-mypy = "*"
-packaging= "*"
-pytest = "*"
-pytest-cov = "*"
-pytest-sugar = "*"
-isort = "*"
-tox = "*"
-types-PyYAML = "*"
-types-pyOpenSSL = "*"
-types-requests = "*"
-types-setuptools = "*"
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "*"
-sphinx_rtd_theme = "*"
-toml = "*"
-
-[tool.poetry.scripts]
+[project.scripts]
 dnsrobocert = "dnsrobocert.core.main:main"
+
+[dependency-groups]
+dev = [
+    "black",
+    "flake8",
+    "flake8-pyproject",
+    "mypy",
+    "packaging",
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "isort",
+    "types-PyYAML",
+    "types-pyOpenSSL",
+    "types-requests",
+    "types-setuptools",
+]
+docs = [
+    "sphinx",
+    "sphinx_rtd_theme",
+    "toml"
+]
 
 [tool.pytest.ini_options]
 junit_family = "xunit2"
@@ -110,3 +101,27 @@ profile = "black"
 [tool.flake8]
 max-line-length = 88
 extend-ignore = ["E203", "E501", "E231", "E221"]
+
+[tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
+with_dev = true
+uv_sync_flags =  [ "--python={env_python}" ]  # Fix until https://github.com/tox-dev/tox-uv/issues/110 is fixed
+commands = [[
+    "pytest", "test", "--doctest-modules", "--junitxml=junit/test-results.xml",
+]]
+
+[tool.tox.env.cover]
+commands = [[
+    "pytest", "test", "--doctest-modules", "--junitxml=junit/test-results.xml",
+    "--cov=dnsrobocert", "--cov-report=term-missing", "--cov-report=xml",
+]]
+
+[tool.tox.env.flake8]
+commands = [[
+    "flake8", "src", "test", "utils",
+]]
+
+[tool.tox.env.mypy]
+commands = [[
+    "mypy", "src",
+]]

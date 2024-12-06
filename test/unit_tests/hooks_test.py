@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import contextlib
-import datetime
+from datetime import datetime, timezone, timedelta
 import os
 from collections.abc import Iterator
 from pathlib import Path
@@ -161,8 +161,8 @@ def test_pfx(
         .issuer_name(issuer)
         .public_key(key.public_key())
         .serial_number(x509.random_serial_number())
-        .not_valid_before(datetime.datetime.utcnow())
-        .not_valid_after(datetime.datetime.utcnow() + datetime.timedelta(days=10))
+        .not_valid_before(datetime.now(timezone.utc))
+        .not_valid_after(datetime.now(timezone.utc) + timedelta(days=10))
         .sign(key, hashes.SHA256(), default_backend())
     )
 

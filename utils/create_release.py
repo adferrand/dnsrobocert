@@ -15,8 +15,10 @@ def main():
         raise RuntimeError("Error, git workspace is not clean: \n{0}".format(git_clean))
 
     current_version = subprocess.check_output(
-        "poetry version", shell=True, universal_newlines=True
-    ).replace("dnsrobocert ", "")
+        "uvx --from=toml-cli toml get --toml-path=pyproject.toml project.version",
+        shell=True,
+        universal_newlines=True,
+    )
 
     print("Current version is: {0}".format(current_version))
     print("Please insert new version:")
@@ -51,9 +53,14 @@ def main():
         with open("CHANGELOG.md", "w") as f:
             f.write(changelog)
 
-        subprocess.check_call("poetry version {0}".format(new_version), shell=True)
-        subprocess.check_call("poetry run isort src test utils", shell=True)
-        subprocess.check_call("poetry run black src test utils", shell=True)
+        subprocess.check_call(
+            "uvx --from=toml-cli toml set --toml-path=pyproject.toml project.version {0}".format(
+                new_version
+            ),
+            shell=True,
+        )
+        subprocess.check_call("uv run isort src test utils", shell=True)
+        subprocess.check_call("uv run black src test utils", shell=True)
 
         subprocess.check_call(
             'git commit -a -m "Version {0}"'.format(new_version), shell=True

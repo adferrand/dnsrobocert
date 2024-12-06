@@ -57,14 +57,14 @@ def _fetch_asset(asset: str, os_kind: str, arch: str, suffix: str) -> str:
             with open(archive_path, "wb") as file_h:
                 file_h.write(response.content)
 
-            archive = tarfile.open(archive_path)
-            archive.extractall(workdir)
-            shutil.copyfile(
-                os.path.join(
-                    workdir, f"{asset}-{os_kind}-{arch}", os_kind, arch, asset
-                ),
-                asset_path,
-            )
+            with tarfile.open(archive_path) as archive:
+                archive.extractall(workdir)
+                shutil.copyfile(
+                    os.path.join(
+                        workdir, f"{asset}-{os_kind}-{arch}", os_kind, arch, f"{asset}{suffix}"
+                    ),
+                    asset_path,
+                )
 
     os.chmod(asset_path, os.stat(asset_path).st_mode | stat.S_IEXEC)
 

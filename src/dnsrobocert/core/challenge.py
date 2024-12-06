@@ -75,7 +75,7 @@ def check_one_challenge(challenge: str, token: str | None = None) -> bool:
         validation_answers = [
             rdata
             for rdata in answers
-            for txt_string in rdata.strings
+            for txt_string in rdata.strings  # type: ignore[attr-defined]
             if txt_string.decode("utf-8") == token
         ]
 
