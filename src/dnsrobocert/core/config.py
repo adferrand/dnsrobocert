@@ -9,7 +9,7 @@ from typing import Any
 import coloredlogs
 import jsonschema
 import yaml
-from importlib_resources import as_file, files
+from importlib.resources import as_file, files
 
 from dnsrobocert.core import utils
 

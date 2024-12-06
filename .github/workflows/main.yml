@@ -16,29 +16,29 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.8", "3.12"]
+        python: ["3.9", "3.13"]
         toxenv: [py3]
         exclude:
           - os: ubuntu-latest
-            python: "3.12"
+            python: "3.13"
             toxenv: py3
         include:
           - os: ubuntu-latest
-            python: "3.12"
+            python: "3.13"
             toxenv: cover
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup dev environment
-        uses: ./.github/actions/setup-python-dev
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Configure Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
       - name: Run tox
-        run: tox
-        env:
-          TOXENV: ${{ matrix.toxenv }}
+        run: uvx --with tox-uv tox -e ${{ matrix.toxenv }}
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
@@ -70,12 +70,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup dev environment
-        uses: ./.github/actions/setup-python-dev
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Configure Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
       - name: Run tox
-        run: tox
-        env:
-          TOXENV: ${{ matrix.toxenv }}
+        run: uvx --with tox-uv tox -e ${{ matrix.toxenv }}
   event-file:
     runs-on: ubuntu-latest
     steps:
