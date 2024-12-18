@@ -34,21 +34,21 @@ readme = "README.rst"
 
 requires-python = ">=3.9"
 dependencies = [
-    "acme >= 2",
-    "certbot >= 2",
-    "dns-lexicon[full] >= 3.14.0",
-    "cryptography >= 2",
-    "cffi >= 1",
-    "lxml >= 4",
-    "dnspython >= 2.1.0",
-    "jsonschema >= 3",
-    "pem >= 20",
-    "pyopenssl >= 19",
-    "pyyaml >= 5",
-    "schedule >= 0",
-    "coloredlogs >= 14",
-    "colorama >= 0",
-    "tldextract >= 3",
+    "acme>=2",
+    "certbot>=2",
+    "dns-lexicon[full]>=3.14.0",
+    "cryptography>=2",
+    "cffi>=1",
+    "lxml>=4",
+    "dnspython>=2.1.0",
+    "jsonschema>=3",
+    "pem>=20",
+    "pyopenssl>=19",
+    "pyyaml>=5",
+    "schedule>=0",
+    "coloredlogs>=14",
+    "colorama>=0",
+    "tldextract>=3",
 ]
 
 [project.urls]
