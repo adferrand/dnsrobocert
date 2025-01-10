@@ -17,10 +17,10 @@
 .. |coverage| image:: https://img.shields.io/codecov/c/github/adferrand/dnsrobocert/master
     :target: https://app.codecov.io/gh/adferrand/dnsrobocert/branch/master
 
-.. tag:intro-begin
-
 .. contents:: Table of Contents
    :local:
+
+.. tag:intro-begin
 
 Features
 ========

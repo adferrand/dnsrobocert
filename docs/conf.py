@@ -1,23 +1,25 @@
 from os.path import abspath, dirname, join
 
-import toml
+import tomllib
 
-root_path = dirname(dirname(abspath(__file__)))
-pyproject_toml = toml.load(join(root_path, "pyproject.toml"))
+with open(join(dirname(dirname(abspath(__file__))), "pyproject.toml"), "rb") as file_h:
+    metadata = tomllib.load(file_h)
 
 master_doc = "index"
 project = "DNSroboCert"
-version = release = pyproject_toml["project"]["version"]
+version = release = metadata["project"]["version"]
 author = "Adrien Ferrand"
 copyright = "2022, Adrien Ferrand"
 
 extensions = [
     "sphinx.ext.intersphinx",
-    "sphinx_rtd_theme",
 ]
 
 intersphinx_mapping = {
     "lexicon": ("https://dns-lexicon.readthedocs.io/en/latest", None),
 }
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "piccolo_theme"
+html_theme_options = {
+    "source_url": 'https://github.com/dns-lexicon/dns-lexicon/'
+}

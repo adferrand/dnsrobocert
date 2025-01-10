@@ -10,6 +10,7 @@
     :end-before: tag:intro-end
 
 .. toctree::
+   :caption: Table of Contents
    :hidden:
 
    user_guide

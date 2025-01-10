@@ -74,9 +74,9 @@ dev = [
     "types-requests",
     "types-setuptools",
 ]
-docs = [
+doc = [
     "sphinx",
-    "sphinx_rtd_theme",
+    "piccolo-theme",
     "toml"
 ]
 
