@@ -77,7 +77,7 @@ def migrate(config_path: str) -> str | None:
             "Legacy configuration detected. Support for legacy configurations will be dropped soon."
         )
         LOGGER.warning(
-            "Please visit https://dnsrobocert.readthedocs.io/en/latest/miscellaneous.html#migration-from-docker-letsencrypt-dns "
+            "Please visit https://adferrand.github.io/dnsrobocert/miscellaneous.html#migration-from-docker-letsencrypt-dns "
             "for more details. "
         )
         LOGGER.warning(f"New configuration file is available at {example_config_path}")

@@ -142,7 +142,7 @@ But beyond promises you will get immediate advantages that I already implemented
 Stay tuned for the new features!
 
 
-.. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
-.. _Configuration reference: https://dnsrobocert.readthedocs.io/en/latest/configuration_reference.html
+.. _User guide: https://adferrand.github.io/dnsrobocert/user_guide.html
+.. _Configuration reference: https://adferrand.github.io/dnsrobocert/configuration_reference.html
 .. _Project V3 specifications: https://github.com/adferrand/docker-letsencrypt-dns/wiki/Project-V3-specifications,-aka-DNSroboCert
 .. _GiHub: https://github.com/adferrand/dnsrobocert/blob/legacy/README.md

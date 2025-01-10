@@ -16,7 +16,7 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "lexicon": ("https://dns-lexicon.readthedocs.io/en/latest", None),
+    "lexicon": ("https://dns-lexicon.github.io/dns-lexicon/", None),
 }
 
 html_theme = "piccolo_theme"

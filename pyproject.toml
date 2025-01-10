@@ -53,7 +53,7 @@ dependencies = [
 
 [project.urls]
 repository = "https://github.com/adferrand/dnsrobocert"
-homepage = "https://dnsrobocert.readthedocs.io"
+homepage = "https://adferrand.github.io/dnsrobocert/"
 
 [project.scripts]
 dnsrobocert = "dnsrobocert.core.main:main"

@@ -472,5 +472,5 @@ Non-existent variables declared in the configuration file will raise an error.
     If you want to write a literal ``${NOT_A_VARIABLE}`` that should not be resolved, you can escape the ``${}``
     syntax by prepending a second dollar sign like so: ``$${NOT_A_VARIABLE}``.
 
-.. _GitHub: https://raw.githubusercontent.com/adferrand/docker-letsencrypt-dns/master/src/dnsrobocert/schema.yml
-.. _Lexicon Providers configuration reference: https://dnsrobocert.readthedocs.io/en/latest/providers_options.html
+.. _GitHub: https://raw.githubusercontent.com/adferrand/dnsrobocert/main/src/dnsrobocert/schema.yml
+.. _Lexicon Providers configuration reference: https://dns-lexicon.github.io/dns-lexicon/providers_options.html
