@@ -8,7 +8,7 @@ RUN cd /tmp/dnsrobocert \
  && uv export --no-emit-project --no-hashes > /tmp/dnsrobocert/constraints.txt \
  && uv build
 
-FROM docker.io/python:3.11.4-slim
+FROM docker.io/python:3.13.3-slim
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
 
