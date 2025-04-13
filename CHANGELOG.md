@@ -2,6 +2,9 @@
 
 ## master - CURRENT
 ### Modified
+* Upgrade to Lexicon 3.21.0
+* Upgrade to Certbot 3.1.0
+* Official support for Python 3.13
 * Migrate from Poetry to UV to manage the project
 
 ## 3.25.0 - 16/11/2023
@@ -9,6 +12,7 @@
 * DNSroboCert now leverages the new DNS zone name resolution introduced by Lexicon 3.17.0.
   As a consequence, the `delegated_subdomain` field of the `profile` section is not used
   anymore, and will be removed in a future version.
+
 ### Modified
 * Upgrade to Lexicon 3.17.0
 * Upgrade to Certbot 2.7.4
