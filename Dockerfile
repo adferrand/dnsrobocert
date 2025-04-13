@@ -1,4 +1,4 @@
-FROM docker.io/ubuntu:24.04 AS constraints
+FROM --platform=linux/amd64 docker.io/ubuntu:24.04 AS constraints
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
