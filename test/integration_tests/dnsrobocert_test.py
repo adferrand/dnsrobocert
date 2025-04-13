@@ -28,12 +28,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def _fetch(workspace: str) -> tuple[str, str, str]:
-    arch = "amd64"
-    os_kind = platform.system().lower()
-    if os_kind == "windows":
-        suffix = ".exe"
-    elif os_kind == "linux":
-        suffix = ""
+    if platform.system() == "Windows":
+        suffix = "windows-amd64.exe"
+    elif platform.system() == "Linux":
+        suffix = "linux-amd64"
     else:
         raise RuntimeError("Unsupported platform: {0}".format(platform.system()))
 
@@ -44,10 +42,8 @@ def _fetch(workspace: str) -> tuple[str, str, str]:
     return pebble_path, challtestsrv_path, pebble_config_path
 
 
-def _fetch_asset(asset: str, os_kind: str, arch: str, suffix: str) -> str:
-    asset_path = os.path.join(
-        _ASSETS_PATH, f"{asset}-{_PEBBLE_VERSION}-{os_kind}-{arch}{suffix}"
-    )
+def _fetch_asset(asset: str, suffix: str) -> str:
+    asset_path = os.path.join(_ASSETS_PATH, f"{asset}_{_PEBBLE_VERSION}_{suffix}")
     if not os.path.exists(asset_path):
         with tempfile.TemporaryDirectory() as workdir:
             archive_path = os.path.join(workdir, "archive.tar.gz")
