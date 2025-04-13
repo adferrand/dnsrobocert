@@ -57,6 +57,8 @@ properties:
         delegated_subdomain:
           type: string
           pattern: ^(([a-zA-Z0-9*]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.){1,}([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]){1,}$
+        dynamic_zone_resolution:
+          type: boolean
         ttl:
           type: number
       required: [name, provider]

@@ -40,7 +40,8 @@ def txt_challenge(
 
     config_dict = {
         "domain": domain,
-        "resolve_zone_name": True,
+        "resolve_zone_name": profile.get("dynamic_zone_resolution", True),
+        "delegated": profile.get("delegated_subdomain"),
         "provider_name": provider_name,
         provider_name: provider_options,
     }

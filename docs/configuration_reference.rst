@@ -191,6 +191,26 @@ Each profile is referenced by its ``name``, which can be used in one or more cer
     * *type*: ``integer``
     * *default*: ``null`` (use any default TTL value specific to the DNS provider associated to this profile)
 
+``dynamic_zone_resolution``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    * Switch on/off the dynamic resolution of the actual zone for a given domain using live DNS requests. This is
+      particularly useful for zones that concerns non second-level domains (eg. ``sub.domain.net``).
+      If set to ``False``, DNSRoboCert will rely on a static list of top level domains to guess second level domains:
+      you would need the option ``delegated_subdomain`` to work with a third (or more) level domain. Disabling the
+      dynamic zone resolution can be useful on environments where DNS responses are unreliable (eg. slow requests
+      or timeouts).
+    * *type*: ``boolean``
+    * *default*: ``True`` (dynamic zone resolution is enabled by default)
+
+``delegated_subdomain``
+~~~~~~~~~~~~~~~~~~~~~~~
+    * If ``dynamic_zone_resolution`` is set to ``False`` and you are working on a subdomain which has been
+      delegated to a specific zone (eg. ``sub.domain.net`` delegated from ``domain.net``), this option allows
+      to explicitly set the actual domain of that zone (otherwise DNSRoboCert may assume the zone is ``domain.net``
+      instead of ``sub.domain.net`` when dynamic zone resolution is not set).
+    * *type*: ``boolean``
+    * *default*: ``null``
+
 ``certificates`` Section
 ========================
 
