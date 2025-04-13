@@ -2,7 +2,7 @@
 
 ## master - CURRENT
 ### Modified
-* Upgrade to Lexicon 3.21.0
+* Upgrade to Lexicon 3.21.0 (new providers: `devnomads`, `ionos`, `qcloud`, `regfish`, `scaleway`, `timeweb`)
 * Upgrade to Certbot 3.1.0
 * Official support for Python 3.13
 * Migrate from Poetry to UV to manage the project
