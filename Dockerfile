@@ -5,17 +5,17 @@ COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 RUN pip install uv \
  && cd /tmp/dnsrobocert \
  && uv export --no-emit-project --no-hashes > /tmp/dnsrobocert/constraints.txt \
+ # Pin some packages on armv7l arch to latest available and compatible versions from pipwheels.
+ && [ "$(uname -m)" != "armv7l" ] || sed -i 's/cryptography==.*/cryptography==42.0.8/' /tmp/dnsrobocert/constraints.txt \
+ && [ "$(uname -m)" != "armv7l" ] || sed -i 's/lxml==.*/lxml==5.3.1/' /tmp/dnsrobocert/constraints.txt \
  && uv build
 
 FROM docker.io/python:3.11.12-slim
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
 
-ENV CONFIG_PATH /etc/dnsrobocert/config.yml
-ENV CERTS_PATH /etc/letsencrypt
-
-# Pin cryptography on armv7l arch to latest available and compatible version from pipwheels: 41.0.5
-RUN [ "$(uname -m)" = "armv7l" ] && sed -i 's/cryptography==.*/cryptography==41.0.5/' /tmp/dnsrobocert/constraints.txt || true
+ENV CONFIG_PATH=/etc/dnsrobocert/config.yml
+ENV CERTS_PATH=/etc/letsencrypt
 
 RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
