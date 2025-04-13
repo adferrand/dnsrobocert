@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* New parameter named `dynamic_zone_resolution` in the `profile` section: this boolean flag can disable
+  the dynamic zone resolution introduced by DNSRoboCert 3.25.0 for certificates that use that profile
+  if issues are encountered.
 
 ## 3.26.0 - 13/04/2025
 ### Modified
