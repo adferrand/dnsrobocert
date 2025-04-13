@@ -1,4 +1,4 @@
-FROM docker.io/python:3.13.3-slim AS constraints
+FROM docker.io/python:3.11.12-slim AS constraints
 
 COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 
@@ -7,7 +7,7 @@ RUN pip install uv \
  && uv export --no-emit-project --no-hashes > /tmp/dnsrobocert/constraints.txt \
  && uv build
 
-FROM docker.io/python:3.13.3-slim
+FROM docker.io/python:3.11.12-slim
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
 
