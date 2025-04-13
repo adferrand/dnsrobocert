@@ -1,8 +1,6 @@
 # Changelog
 
 ## master - CURRENT
-
-## 3.26.0 - 13/04/2025
 ### Modified
 * Upgrade to Lexicon 3.21.0 (new providers: `devnomads`, `ionos`, `qcloud`, `regfish`, `scaleway`, `timeweb`)
 * Upgrade to Certbot 3.1.0
