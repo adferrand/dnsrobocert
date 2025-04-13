@@ -1,10 +1,9 @@
-FROM --platform=linux/amd64 docker.io/ubuntu:24.04 AS constraints
+FROM docker.io/python:3.13.3-slim AS constraints
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 
-RUN cd /tmp/dnsrobocert \
- && uv python install \
+RUN pip install uv \
+ && cd /tmp/dnsrobocert \
  && uv export --no-emit-project --no-hashes > /tmp/dnsrobocert/constraints.txt \
  && uv build
 
