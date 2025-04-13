@@ -4,12 +4,12 @@ import logging
 import os
 import re
 import warnings
+from importlib.resources import as_file, files
 from typing import Any
 
 import coloredlogs
 import jsonschema
 import yaml
-from importlib.resources import as_file, files
 
 from dnsrobocert.core import utils
 
@@ -128,7 +128,9 @@ def get_acme_url(config: dict[str, Any]) -> str:
     return f"https://{domain}.api.letsencrypt.org/directory"
 
 
-def find_profile_for_lineage(config: dict[str, Any], lineage: str) -> dict[str, Any] | None:
+def find_profile_for_lineage(
+    config: dict[str, Any], lineage: str
+) -> dict[str, Any] | None:
     certificate = get_certificate(config, lineage)
     if not certificate:
         raise RuntimeError(
