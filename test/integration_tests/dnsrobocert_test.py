@@ -60,7 +60,11 @@ def _fetch_asset(asset: str, os_kind: str, arch: str, suffix: str) -> str:
                 archive.extractall(workdir)
                 shutil.copyfile(
                     os.path.join(
-                        workdir, f"{asset}-{os_kind}-{arch}", os_kind, arch, f"{asset}{suffix}"
+                        workdir,
+                        f"{asset}-{os_kind}-{arch}",
+                        os_kind,
+                        arch,
+                        f"{asset}{suffix}",
                     ),
                     asset_path,
                 )
