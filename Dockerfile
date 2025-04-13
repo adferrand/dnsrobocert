@@ -6,7 +6,7 @@ RUN pip install uv \
  && cd /tmp/dnsrobocert \
  && uv export --no-emit-project --no-hashes > /tmp/dnsrobocert/constraints.txt \
  # Pin some packages on armv7l arch to latest available and compatible versions from pipwheels.
- && [ "$(uname -m)" != "armv7l" ] || sed -i 's/cryptography==.*/cryptography==42.0.8/' /tmp/dnsrobocert/constraints.txt \
+ && [ "$(uname -m)" != "armv7l" ] || sed -i 's/cryptography==.*/cryptography==44.0.2/' /tmp/dnsrobocert/constraints.txt \
  && [ "$(uname -m)" != "armv7l" ] || sed -i 's/lxml==.*/lxml==5.3.1/' /tmp/dnsrobocert/constraints.txt \
  && uv build
 
