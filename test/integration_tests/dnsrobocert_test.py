@@ -40,7 +40,6 @@ def _fetch(workspace: str) -> tuple[str, str, str]:
     pebble_path = _fetch_asset("pebble", os_kind, arch, suffix)
     challtestsrv_path = _fetch_asset("pebble-challtestsrv", os_kind, arch, suffix)
     pebble_config_path = _build_pebble_config(workspace)
-
     return pebble_path, challtestsrv_path, pebble_config_path
 
 

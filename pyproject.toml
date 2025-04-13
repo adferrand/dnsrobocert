@@ -83,11 +83,6 @@ doc = [
 [tool.pytest.ini_options]
 junit_family = "xunit2"
 addopts = "-p no:legacypath"
-filterwarnings = [
-    "ignore:Unverified HTTPS request is being made:urllib3.exceptions.InsecureRequestWarning",
-    "ignore:X509Extension support in pyOpenSSL is deprecated:DeprecationWarning",
-    "ignore:CSR support in pyOpenSSL is deprecated:DeprecationWarning",
-]
 
 [tool.mypy]
 show_error_codes = true
@@ -105,7 +100,6 @@ extend-ignore = ["E203", "E501", "E231", "E221"]
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
 with_dev = true
-uv_sync_flags =  [ "--python={env_python}" ]  # Fix until https://github.com/tox-dev/tox-uv/issues/110 is fixed
 commands = [[
     "pytest", "test", "--doctest-modules", "--junitxml=junit/test-results.xml",
 ]]
