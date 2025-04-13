@@ -51,7 +51,7 @@ jobs:
         uses: actions/setup-python@v5
       - run: |
           python utils/extract_changelog.py ${VERSION} > release_${VERSION}.md
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           name: DNSroboCert ${{ env.VERSION }}
           body_path: release_${{ env.VERSION }}.md
