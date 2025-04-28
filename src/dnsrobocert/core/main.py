@@ -16,6 +16,7 @@ from typing import Any
 import coloredlogs
 import yaml
 
+from dnsrobocert import get_version
 from dnsrobocert.core import background, certbot, config, legacy, utils
 
 LOGGER = logging.getLogger(__name__)
@@ -64,7 +65,7 @@ class _Daemon:
 
 
 def _watch_config(config_path: str, directory_path: str) -> None:
-    LOGGER.info("Starting DNSroboCert.")
+    LOGGER.info(f"Starting DNSroboCert {get_version()}.")
 
     with tempfile.TemporaryDirectory() as workspace:
         runtime_config_path = os.path.join(workspace, "dnsrobocert-runtime.yml")
