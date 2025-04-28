@@ -73,6 +73,7 @@ dev = [
     "types-pyOpenSSL",
     "types-requests",
     "types-setuptools",
+    "tox",
 ]
 doc = [
     "sphinx",
