@@ -35,7 +35,6 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python }}
-          activate-environment: true
       - name: Run tox
         run: uv run tox -e ${{ matrix.toxenv }}
       - name: Upload test results
