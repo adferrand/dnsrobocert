@@ -48,7 +48,7 @@ jobs:
         run: |
           echo "VERSION=$(cat pyproject.toml | grep '^version = .*' | sed -E 's/version = "(.*)"/\1/g')" >> $GITHUB_ENV
       - name: Configure Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
       - run: |
           python utils/extract_changelog.py ${VERSION} > release_${VERSION}.md
       - uses: softprops/action-gh-release@v2
