@@ -72,6 +72,7 @@ def certonly(
     force_renew: bool = False,
     reuse_key: bool = False,
     key_type: str = "rsa",
+    acme_profile: str | None = None,
 ) -> None:
     if not domains:
         return
@@ -85,6 +86,8 @@ def certonly(
         additional_params.append("--reuse-key")
     if key_type:
         additional_params.extend(["--key-type", key_type])
+    if acme_profile:
+        additional_params.extend(["--preferred-profile", acme_profile])
 
     for domain in domains:
         additional_params.append("-d")
@@ -134,6 +137,7 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
                 force_renew = certificate.get("force_renew", False)
                 reuse_key = certificate.get("reuse_key", False)
                 key_type = certificate.get("key_type", "rsa")
+                acme_profile = certificate.get("acme_profile")
                 LOGGER.info(
                     f"Handling the certificate for domain(s): {', '.join(domains)}"
                 )
@@ -146,6 +150,7 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
                     force_renew=force_renew,
                     reuse_key=reuse_key,
                     key_type=key_type,
+                    acme_profile=acme_profile,
                 )
             except BaseException as error:
                 LOGGER.error(
