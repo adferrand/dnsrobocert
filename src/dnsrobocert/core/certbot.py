@@ -136,8 +136,8 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
                 domains = certificate["domains"]
                 force_renew = certificate.get("force_renew", False)
                 reuse_key = certificate.get("reuse_key", False)
-                key_type = certificate.get("key_type", "rsa")
-                acme_profile = certificate.get("acme_profile")
+                key_type: str = certificate.get("key_type", "rsa")
+                acme_profile: str | None = certificate.get("acme_profile")
                 LOGGER.info(
                     f"Handling the certificate for domain(s): {', '.join(domains)}"
                 )

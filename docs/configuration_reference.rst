@@ -347,6 +347,8 @@ be defined in each relevant certificate configuration.
       renewal (every 2-3 days). See `Let's Encrypt ACME Profiles`_ for more information.
     * *type*: ``string``
     * *default*: not set (uses the CA's default profile, typically ``tlsserver``)
+    * *note*: When using ``shortlived``, ensure DNSroboCert runs frequently (e.g., hourly via
+      ``crontab_renew``) to handle the tighter renewal window. Requires certbot >= 2.11.0.
 
 .. _Let's Encrypt ACME Profiles: https://letsencrypt.org/2025/01/09/acme-profiles
 
