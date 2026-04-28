@@ -45,9 +45,7 @@ def main():
 ## master - CURRENT
 
 ## {0} - {1}
-""".format(
-                new_version, today.strftime("%d/%m/%Y")
-            ),
+""".format(new_version, today.strftime("%d/%m/%Y")),
         )
 
         with open("CHANGELOG.md", "w") as f:

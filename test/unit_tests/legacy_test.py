@@ -16,30 +16,24 @@ def test_legacy_migration(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
     with open(
         os.path.join(os.path.dirname(legacy_config_domain_file), "lexicon.yml"), "w"
     ) as f:
-        f.write(
-            """\
+        f.write("""\
 ovh:
   auth_application_secret: SECRET
   additional_config: ADDITIONAL
-"""
-        )
+""")
 
     with open(
         os.path.join(os.path.dirname(legacy_config_domain_file), "lexicon_ovh.yml"), "w"
     ) as f:
-        f.write(
-            """\
+        f.write("""\
 auth_consumer_key: CONSUMER_KEY
-"""
-        )
+""")
 
     with open(str(legacy_config_domain_file), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 test1.sub.example.com test2.sub.example.com autorestart-containers=container1,container2 autocmd-containers=container3:cmd3 arg3,container4:cmd4 arg4a arg4b
 *.sub.example.com sub.example.com
-"""
-        )
+""")
 
     monkeypatch.setenv("LEXICON_PROVIDER", "ovh")
     monkeypatch.setenv("LEXICON_OVH_AUTH_APPLICATION_KEY", "KEY")
@@ -71,9 +65,7 @@ test1.sub.example.com test2.sub.example.com autorestart-containers=container1,co
     with open(generated_config_path) as f:
         generated_data = f.read()
 
-    assert (
-        generated_data
-        == """\
+    assert generated_data == """\
 acme:
   api_version: 1
   certs_permissions:
@@ -126,4 +118,3 @@ profiles:
   sleep_time: 60
   ttl: 42
 """
-    )

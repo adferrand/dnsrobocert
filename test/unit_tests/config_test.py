@@ -9,11 +9,9 @@ from dnsrobocert.core import config
 def test_good_config_minimal(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: true
-"""
-        )
+""")
 
     parsed = config.load(str(config_path))
     assert parsed
@@ -22,12 +20,10 @@ draft: true
 def test_bad_config_wrong_schema(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: true
 wrong_property: bad
-"""
-        )
+""")
 
     parsed = config.load(str(config_path))
     assert not parsed
@@ -36,8 +32,7 @@ wrong_property: bad
 def test_bad_config_non_existent_profile(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: true
 profiles:
 - name: one
@@ -45,8 +40,7 @@ profiles:
 certificates:
 - domains: [test.example.com]
   profile: two
-"""
-        )
+""")
 
     parsed = config.load(str(config_path))
     assert not parsed
@@ -55,14 +49,12 @@ certificates:
 def test_bad_config_wrong_posix_mode(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: true
 acme:
   certs_permissions:
     files_mode: 9999
-"""
-        )
+""")
 
     parsed = config.load(str(config_path))
     assert not parsed
@@ -71,8 +63,7 @@ acme:
 def test_bad_config_duplicated_cert_name(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: true
 profiles:
 - name: one
@@ -83,8 +74,7 @@ certificates:
 - name: test.example.com
   domains: [test1.example.com, test2.example.com]
   profile: one
-"""
-        )
+""")
 
     parsed = config.load(str(config_path))
     assert not parsed
@@ -99,8 +89,7 @@ def test_wildcard_lineage() -> None:
 def test_environment_variable_injection(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: ${DRAFT_VALUE}
 acme:
   certs_root_path: $${NOT_PARSED}
@@ -111,8 +100,7 @@ certificates:
 - name: test.example.com
   domains: [test1.example.com, test2.example.com, '${ADDITIONAL_CERT}']
   profile: one
-"""
-        )
+""")
 
     environ = os.environ.copy()
     try:

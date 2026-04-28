@@ -174,8 +174,7 @@ def test_it(tmp_path: Path) -> None:
 
         config_path = tmp_path / "config.yml"
         with open(str(config_path), "w") as f:
-            f.write(
-                """\
+            f.write("""\
 draft: false
 acme:
   email_account: john.doe@example.net
@@ -196,8 +195,7 @@ certificates:
   pfx:
     export: true
     passphrase: test
-"""
-            )
+""")
 
         with patch.object(main._Daemon, "do_shutdown") as shutdown:
             shutdown.side_effect = [False, True]

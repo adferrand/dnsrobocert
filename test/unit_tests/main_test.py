@@ -23,8 +23,7 @@ def test_main_loop(
 
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: false
 acme:
   email_account: john.doe@example.net
@@ -38,8 +37,7 @@ certificates:
   - test1.example.net
   - test2.example.net
   profile: dummy
-"""
-        )
+""")
 
     shutdown.side_effect = [False, True]
     main.main(["-c", str(config_path), "-d", str(directory_path)])

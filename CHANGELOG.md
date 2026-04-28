@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.27.0 - 28/04/2026
 ### Added
 * Add Python 3.14 support
 
