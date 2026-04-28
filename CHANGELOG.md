@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+### Modified
+* PFX certificate is now a symlink in live folder pointing to the archive folder
 
 ## 3.27.0 - 28/04/2026
 ### Added

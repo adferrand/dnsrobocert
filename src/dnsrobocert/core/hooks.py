@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import os.path
 import subprocess
 import sys
 import time
@@ -178,8 +179,14 @@ def _pfx_export(certificate: dict[str, Any], lineage_path: str, lineage: str) ->
             ),
         )
 
-        with open(os.path.join(lineage_path, "cert.pfx"), "wb") as f:
+        cert_path = os.readlink(os.path.join(lineage_path, "cert.pem"))
+        pfx_cert_name = os.path.basename(cert_path).replace(".pem", ".pfx")
+        archive_path = os.path.dirname(cert_path)
+        archive_path_abs = os.path.normpath(os.path.join(lineage_path, archive_path))
+
+        with open(os.path.join(archive_path_abs, pfx_cert_name), "wb") as f:
             f.write(p12)
+        os.symlink(os.path.join(archive_path, pfx_cert_name), os.path.join(lineage_path, "cert.pfx"))
 
 
 def _fix_permissions(
