@@ -41,7 +41,8 @@ jobs:
           tags: adferrand/letsencrypt-dns:latest,adferrand/letsencrypt-dns:${{ env.VERSION }},adferrand/dnsrobocert:latest,adferrand/dnsrobocert:${{ env.VERSION }}
   github-release:
     runs-on: ubuntu-latest
-    needs: [pypi, docker]
+    # needs: [pypi, docker]
+    needs: [docker]
     steps:
       - uses: actions/checkout@v5
       - name: Get project version
