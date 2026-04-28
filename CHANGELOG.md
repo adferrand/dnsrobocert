@@ -1,6 +1,15 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* Add Python 3.14 support
+
+### Modified
+* Upgrade to Lexicon 3.25.1 (new providers: `desec`, `hetzner` on cloud API, `httpnet`)
+* Upgrade to Certbot 5.5.0
+
+### Removed
+* Drop Python 3.9 support
 
 ## 3.26.1 - 13/04/2025
 ### Added
