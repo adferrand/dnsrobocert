@@ -34,7 +34,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6
       - name: Configure Python ${{ matrix.python }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Run tox
@@ -73,7 +73,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6
       - name: Configure Python ${{ matrix.python }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Run tox
