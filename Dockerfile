@@ -1,6 +1,5 @@
 FROM docker.io/python:3.13.13-slim AS constraints
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 
 RUN pip install uv \
