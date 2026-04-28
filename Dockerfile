@@ -1,5 +1,6 @@
-FROM ghcr.io/astral-sh/uv:alpine AS constraints
+FROM docker.io/alpine:latest AS constraints
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 
 RUN cd /tmp/dnsrobocert \
