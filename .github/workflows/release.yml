@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [main]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install uv
         uses: astral-sh/setup-uv@v7
       - run: |
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [main]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Get project version
         run: |
           echo "VERSION=$(cat pyproject.toml | grep '^version = .*' | sed -E 's/version = "(.*)"/\1/g')" >> $GITHUB_ENV
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [pypi, docker]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Get project version
         run: |
           echo "VERSION=$(cat pyproject.toml | grep '^version = .*' | sed -E 's/version = "(.*)"/\1/g')" >> $GITHUB_ENV
