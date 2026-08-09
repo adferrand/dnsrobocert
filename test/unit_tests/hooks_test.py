@@ -30,7 +30,7 @@ LINEAGE = "test.example.com"
 @pytest.fixture(autouse=True)
 def fake_env(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> Iterator[tuple[str, str]]:
+) -> Iterator[dict[str, Path]]:
     live_path = tmp_path / "live" / LINEAGE
     archive_path = tmp_path / "archive" / LINEAGE
     os.makedirs(live_path)
