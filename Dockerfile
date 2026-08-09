@@ -5,9 +5,9 @@ COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 RUN pip install uv \
  && cd /tmp/dnsrobocert \
  && uv export --no-emit-project --no-hashes > /tmp/dnsrobocert/constraints.txt \
- # Pin some packages on armv7l arch to latest available and compatible versions from pipwheels.
- && [ "$(uname -m)" != "armv7l" ] || sed -i 's/cryptography==.*/cryptography==46.0.7/' /tmp/dnsrobocert/constraints.txt \
- && [ "$(uname -m)" != "armv7l" ] || sed -i 's/lxml==.*/lxml==6.1.0/' /tmp/dnsrobocert/constraints.txt \
+ # Pin some packages on armv7l arch to latest available and compatible versions from piwheels.
+ && [ "$(uname -m)" != "armv7l" ] || sed -i 's/cryptography==.*/cryptography==50.0.0/' /tmp/dnsrobocert/constraints.txt \
+ && [ "$(uname -m)" != "armv7l" ] || sed -i 's/lxml==.*/lxml==6.1.1/' /tmp/dnsrobocert/constraints.txt \
  && uv build
 
 FROM docker.io/python:3.13.13-slim
