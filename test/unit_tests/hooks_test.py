@@ -30,12 +30,11 @@ LINEAGE = "test.example.com"
 @pytest.fixture(autouse=True)
 def fake_env(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> Iterator[dict[str, Path]]:
+) -> Iterator[tuple[str, str]]:
     live_path = tmp_path / "live" / LINEAGE
     archive_path = tmp_path / "archive" / LINEAGE
-    os.makedirs(str(tmp_path / "live"))
-    os.makedirs(str(archive_path))
-    os.symlink(str(archive_path), str(live_path), target_is_directory=True)
+    os.makedirs(live_path)
+    os.makedirs(archive_path)
 
     monkeypatch.setenv("CERTBOT_VALIDATION", "VALIDATION")
     monkeypatch.setenv("CERTBOT_DOMAIN", LINEAGE)
@@ -140,6 +139,7 @@ def test_pfx(
     fake_config: Path,
 ) -> None:
     archive_path = fake_env["archive"]
+    live_path = fake_env["live"]
     key = rsa.generate_private_key(
         public_exponent=65537, key_size=2048, backend=default_backend()
     )
@@ -171,10 +171,14 @@ def test_pfx(
     with open(archive_path / "chain.pem", "wb") as f:
         f.write(cert.public_bytes(serialization.Encoding.PEM))
 
+    os.symlink(archive_path / "privkey.pem", live_path / "privkey.pem")
+    os.symlink(archive_path / "cert.pem", live_path / "cert.pem")
+    os.symlink(archive_path / "chain.pem", live_path / "chain.pem")
+
     hooks.deploy(config.load(fake_config), LINEAGE)
 
-    assert os.path.exists(archive_path / "cert.pfx")
-    assert os.stat(archive_path / "cert.pfx").st_size != 0
+    assert os.path.exists(live_path / "cert.pfx")
+    assert os.stat(live_path / "cert.pfx").st_size != 0
 
 
 @patch("dnsrobocert.core.hooks._fix_permissions")
@@ -236,17 +240,20 @@ def test_fix_permissions(
     fake_config: dict[str, str],
     fake_env: dict[str, Path],
 ) -> None:
-    archive_path = str(fake_env["archive"])
-    live_path = str(fake_env["live"])
+    archive_path = fake_env["archive"]
+    live_path = fake_env["live"]
 
-    probe_file = os.path.join(archive_path, "dummy.txt")
-    probe_dir = os.path.join(archive_path, "dummy_dir")
+    probe_file = archive_path / "dummy.txt"
+    probe_dir = archive_path / "dummy_dir"
 
-    probe_live_file = os.path.join(live_path, "dummy.txt")
-    probe_live_dir = os.path.join(live_path, "dummy_dir")
+    probe_live_file = live_path / "dummy.txt"
+    probe_live_dir = live_path / "dummy_dir"
 
     open(probe_file, "w").close()
     os.mkdir(probe_dir)
+
+    os.symlink(probe_file, probe_live_file)
+    os.symlink(probe_dir, probe_live_dir)
 
     with _mock_os_chown() as chown:
         hooks.deploy(config.load(fake_config), LINEAGE)
@@ -263,12 +270,12 @@ def test_fix_permissions(
                 gid = -1
 
             calls = [
-                call(archive_path, uid, gid),
-                call(probe_file, uid, gid),
-                call(probe_dir, uid, gid),
-                call(live_path, uid, gid),
-                call(probe_live_file, uid, gid),
-                call(probe_live_dir, uid, gid),
+                call(str(archive_path), uid, gid),
+                call(str(probe_file), uid, gid),
+                call(str(probe_dir), uid, gid),
+                call(str(live_path), uid, gid),
+                call(str(probe_live_file), uid, gid),
+                call(str(probe_live_dir), uid, gid),
             ]
 
             if chown:
