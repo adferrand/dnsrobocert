@@ -13,9 +13,6 @@ from typing import Any, cast
 
 from cryptography import x509
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric.types import (
-    CertificateIssuerPrivateKeyTypes,
-)
 from cryptography.hazmat.primitives.serialization import pkcs12
 
 from dnsrobocert.core import config, utils
@@ -168,7 +165,7 @@ def _pfx_export(certificate: dict[str, Any], lineage_path: str, lineage: str) ->
         p12 = pkcs12.serialize_key_and_certificates(
             lineage.encode("utf-8"),
             cast(
-                CertificateIssuerPrivateKeyTypes, key
+                pkcs12.PKCS12PrivateKeyTypes, key
             ),  # By construction, Certbot will generate only RSA/ECDSA private keys.
             cert,
             ca_certs,
