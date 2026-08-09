@@ -1,6 +1,8 @@
 # Changelog
 
 ## master - CURRENT
+
+## 3.27.1 - 10/08/2026
 ### Modified
 * PFX certificate is now a symlink in live folder pointing to the archive folder
 * Upgrade to Certbot 5.7.0
