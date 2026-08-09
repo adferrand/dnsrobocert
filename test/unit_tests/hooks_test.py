@@ -177,8 +177,8 @@ def test_pfx(
 
     hooks.deploy(config.load(fake_config), LINEAGE)
 
-    assert os.path.exists(live_path / "cert.pfx")
-    assert os.stat(live_path / "cert.pfx").st_size != 0
+    assert os.path.exists(archive_path / "cert.pfx")
+    assert os.stat(archive_path / "cert.pfx").st_size != 0
 
 
 @patch("dnsrobocert.core.hooks._fix_permissions")
