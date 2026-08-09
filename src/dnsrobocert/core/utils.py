@@ -87,7 +87,11 @@ def fix_permissions(certificate_permissions: dict[str, Any], target_path: str) -
         if isinstance(group, int):
             gid = group
         elif isinstance(group, str):
-            gid = grp.getgrnam(group)[2]
+            try:
+                gid = grp.getgrnam(group)[2]
+            except KeyError:
+                # Group could not be resolved (eg. `nogroup`): gid stays at -1 and will not be modified by os.chown.
+                pass
 
         os.chown(target_path, uid, gid)  # type: ignore
 

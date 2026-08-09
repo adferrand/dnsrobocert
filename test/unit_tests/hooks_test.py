@@ -257,7 +257,10 @@ def test_fix_permissions(
 
         if POSIX_MODE:
             uid = pwd.getpwnam("nobody")[2]
-            gid = grp.getgrnam("nogroup")[2]
+            try:
+                gid = grp.getgrnam("nogroup")[2]
+            except KeyError:
+                gid = -1
 
             calls = [
                 call(archive_path, uid, gid),
