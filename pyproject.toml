@@ -31,8 +31,8 @@ readme = "README.rst"
 
 requires-python = ">=3.10"
 dependencies = [
-    "acme>=2",
-    "certbot>=2",
+    "acme>=4",
+    "certbot>=4",
     "dns-lexicon[full]>=3.14.0",
     "cryptography>=2",
     "cffi>=1",
