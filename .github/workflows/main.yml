@@ -64,7 +64,7 @@ jobs:
   quality:
     strategy:
       matrix:
-        toxenv: [flake8, mypy]
+        toxenv: [lint, mypy]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:

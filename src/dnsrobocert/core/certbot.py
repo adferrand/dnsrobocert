@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
 from __future__ import annotations
 
 import logging
@@ -20,7 +18,7 @@ coloredlogs.install(logger=LOGGER)
 _DEFAULT_FLAGS = [
     "-n",
     "--user-agent-comment",
-    "DNSroboCert/{0}".format(dnsrobocert.__version__),
+    f"DNSroboCert/{dnsrobocert.__version__}",
     "--preferred-chain",
     "ISRG Root X1",
 ]
@@ -152,7 +150,7 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
                     key_type=key_type,
                     acme_profile=acme_profile,
                 )
-            except BaseException as error:
+            except Exception as error:  # noqa
                 LOGGER.error(
                     f"An error occurred while processing certificate config {certificate}:\n{error}"
                 )

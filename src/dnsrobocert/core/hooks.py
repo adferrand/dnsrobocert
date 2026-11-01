@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
 from __future__ import annotations
 
 import argparse
@@ -42,7 +40,7 @@ def main(args: list[str] | None = None) -> int:
 
     try:
         globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
-    except BaseException as e:
+    except Exception as e:  # noqa
         print(
             f"Error while executing the {parsed_args.type} hook:",
             file=sys.stderr,

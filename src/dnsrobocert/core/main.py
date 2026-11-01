@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
 from __future__ import annotations
 
 import argparse
@@ -90,7 +88,7 @@ def _watch_config(config_path: str, directory_path: str) -> None:
                             runtime_config_path,
                             certbot_lock,
                         )
-                except BaseException as error:
+                except Exception as error:  # noqa
                     LOGGER.error("An error occurred during DNSroboCert watch:")
                     LOGGER.error(error)
                     traceback.print_exc(file=sys.stderr)

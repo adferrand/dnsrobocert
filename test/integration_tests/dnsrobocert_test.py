@@ -35,7 +35,7 @@ def _fetch(workspace: str) -> tuple[str, str, str]:
     elif os_kind == "linux":
         suffix = ""
     else:
-        raise RuntimeError("Unsupported platform: {0}".format(platform.system()))
+        raise RuntimeError(f"Unsupported platform: {platform.system()}")
 
     pebble_path = _fetch_asset("pebble", os_kind, arch, suffix)
     challtestsrv_path = _fetch_asset("pebble-challtestsrv", os_kind, arch, suffix)
@@ -138,7 +138,7 @@ def _start_pebble(tmp_path: Path) -> Iterator[None]:
             [
                 challtestsrv_path,
                 "-management",
-                ":{0}".format(_CHALLTESTSRV_PORT),
+                f":{_CHALLTESTSRV_PORT}",
                 "-defaultIPv6",
                 '""',
                 "-defaultIPv4",

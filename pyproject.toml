@@ -57,15 +57,12 @@ dnsrobocert = "dnsrobocert.core.main:main"
 
 [dependency-groups]
 dev = [
-    "black",
-    "flake8",
-    "flake8-pyproject",
     "mypy",
     "packaging",
     "pytest",
     "pytest-cov",
     "pytest-sugar",
-    "isort",
+    "ruff",
     "types-PyYAML",
     "types-pyOpenSSL",
     "types-requests",
@@ -82,13 +79,6 @@ show_error_codes = true
 ignore_missing_imports = true
 check_untyped_defs = true
 disallow_untyped_defs = true
-
-[tool.isort]
-profile = "black"
-
-[tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203", "E501", "E231", "E221"]
 
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
@@ -115,8 +105,8 @@ commands = [
     ],
 ]
 
-[tool.tox.env.flake8]
-commands = [["flake8", "src", "test", "utils"]]
+[tool.tox.env.lint]
+commands = [["ruff", "check", "src", "test"]]
 
 [tool.tox.env.mypy]
 commands = [["mypy", "src"]]
