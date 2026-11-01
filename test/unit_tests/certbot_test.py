@@ -65,3 +65,27 @@ certificates:
         mock_execute.assert_called_once()
         call_args = mock_execute.call_args[0][0]
         assert "--preferred-profile" not in call_args
+
+
+def test_issue_forwards_acme_profile(tmp_path):
+    """Test that _issue reads acme_profile from the certificate config and forwards it."""
+    config_path = tmp_path / "config.yml"
+    config_path.write_text(
+        """\
+draft: true
+profiles:
+- name: test
+  provider: test
+certificates:
+- domains: [test.example.com]
+  profile: test
+  acme_profile: shortlived
+"""
+    )
+    (tmp_path / "live").mkdir()
+
+    with mock.patch("dnsrobocert.core.certbot.certonly") as mock_certonly:
+        certbot._issue(str(config_path), str(tmp_path), mock.MagicMock())
+
+        mock_certonly.assert_called_once()
+        assert mock_certonly.call_args.kwargs["acme_profile"] == "shortlived"
