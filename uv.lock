@@ -847,8 +847,8 @@ doc = [
 
 [package.metadata]
 requires-dist = [
-    { name = "acme", specifier = ">=2" },
-    { name = "certbot", specifier = ">=2" },
+    { name = "acme", specifier = ">=4" },
+    { name = "certbot", specifier = ">=4" },
     { name = "cffi", specifier = ">=1" },
     { name = "colorama", specifier = ">=0" },
     { name = "coloredlogs", specifier = ">=14" },
