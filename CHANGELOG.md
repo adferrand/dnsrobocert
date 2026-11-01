@@ -1,6 +1,10 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* New parameter `acme_profile` in the `certificates` section to select an ACME profile (`tlsserver`, `shortlived`),
+  passed to Certbot as `--preferred-profile`. It requires Certbot 4 or above, so the minimum `certbot` and `acme`
+  versions are now `>=4`.
 
 ## 3.27.1 - 10/08/2026
 ### Modified
