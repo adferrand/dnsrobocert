@@ -89,8 +89,7 @@ def test_wildcard_lineage() -> None:
 def test_good_config_with_acme_profile(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: true
 profiles:
 - name: one
@@ -99,8 +98,7 @@ certificates:
 - domains: [test.example.com]
   profile: one
   acme_profile: shortlived
-"""
-        )
+""")
 
     parsed = config.load(str(config_path))
     assert parsed
@@ -110,8 +108,7 @@ certificates:
 def test_bad_config_invalid_acme_profile(tmp_path: Path) -> None:
     config_path = tmp_path / "config.yml"
     with open(str(config_path), "w") as f:
-        f.write(
-            """\
+        f.write("""\
 draft: true
 profiles:
 - name: one
@@ -120,8 +117,7 @@ certificates:
 - domains: [test.example.com]
   profile: one
   acme_profile: invalid_profile
-"""
-        )
+""")
 
     parsed = config.load(str(config_path))
     assert not parsed
