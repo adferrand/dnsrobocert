@@ -18,18 +18,18 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities",
 ]
 authors = [{ name = "Adrien Ferrand", email = "ferrand.ad@gmail.com" }]
 readme = "README.rst"
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "acme>=4",
     "certbot>=4",
