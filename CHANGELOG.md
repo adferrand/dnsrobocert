@@ -6,6 +6,10 @@
   passed to Certbot as `--preferred-profile`. It requires Certbot 4 or above, so the minimum `certbot` and `acme`
   versions are now `>=4`.
 
+### Modified
+* Upgrade to Certbot 5.9.0, minimal version is 4 to instrumentate ACME profiles
+* Upgrade to Lexicon 3.26.0, with a lot of improvments on various DNS providers
+
 ## 3.27.1 - 10/08/2026
 ### Modified
 * PFX certificate is now a symlink in live folder pointing to the archive folder
