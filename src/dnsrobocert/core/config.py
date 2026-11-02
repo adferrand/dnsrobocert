@@ -10,7 +10,7 @@ from typing import Any
 import coloredlogs
 import jsonschema
 import yaml
-from yaml.loader import ParserError
+from yaml.loader import ParserError  # type: ignore[attr-defined]
 
 from dnsrobocert.core import utils
 
