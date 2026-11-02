@@ -80,6 +80,9 @@ ignore_missing_imports = true
 check_untyped_defs = true
 disallow_untyped_defs = true
 
+[tool.tox]
+envlist = ["cover", "lint", "mypy"]
+
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
 with_dev = true
