@@ -1,9 +1,8 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
 from __future__ import annotations
 
 import argparse
 import os
+import os.path
 import subprocess
 import sys
 import time
@@ -12,9 +11,6 @@ from typing import Any, cast
 
 from cryptography import x509
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric.types import (
-    CertificateIssuerPrivateKeyTypes,
-)
 from cryptography.hazmat.primitives.serialization import pkcs12
 
 from dnsrobocert.core import config, utils
@@ -44,7 +40,7 @@ def main(args: list[str] | None = None) -> int:
 
     try:
         globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
-    except BaseException as e:
+    except Exception as e:  # noqa
         print(
             f"Error while executing the {parsed_args.type} hook:",
             file=sys.stderr,
@@ -134,6 +130,11 @@ def cleanup(dnsrobocert_config: dict[str, str], lineage: str) -> None:
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
+    if certificate is None:
+        raise RuntimeError(f"Could not find a certificate entry for {lineage}.")
+    if profile is None:
+        raise RuntimeError(f"Could not find a profile for {lineage}.")
+
     print(f"Executing cleanup hook for domain {domain}, lineage {lineage}.")
 
     txt_challenge(certificate, profile, token, domain, action="delete")
@@ -143,6 +144,9 @@ def deploy(dnsrobocert_config: dict[str, Any], _no_lineage: Any) -> None:
     lineage_path = os.environ["RENEWED_LINEAGE"]
     lineage = os.path.basename(lineage_path)
     certificate = config.get_certificate(dnsrobocert_config, lineage)
+
+    if certificate is None:
+        raise RuntimeError(f"Could not find a certificate for {lineage}")
 
     _pfx_export(certificate, lineage_path, lineage)
     _fix_permissions(
@@ -167,7 +171,7 @@ def _pfx_export(certificate: dict[str, Any], lineage_path: str, lineage: str) ->
         p12 = pkcs12.serialize_key_and_certificates(
             lineage.encode("utf-8"),
             cast(
-                CertificateIssuerPrivateKeyTypes, key
+                pkcs12.PKCS12PrivateKeyTypes, key
             ),  # By construction, Certbot will generate only RSA/ECDSA private keys.
             cert,
             ca_certs,
@@ -178,8 +182,17 @@ def _pfx_export(certificate: dict[str, Any], lineage_path: str, lineage: str) ->
             ),
         )
 
-        with open(os.path.join(lineage_path, "cert.pfx"), "wb") as f:
+        cert_path = os.readlink(os.path.join(lineage_path, "cert.pem"))
+        pfx_cert_name = os.path.basename(cert_path).replace(".pem", ".pfx")
+        archive_path = os.path.dirname(cert_path)
+        archive_path_abs = os.path.normpath(os.path.join(lineage_path, archive_path))
+
+        with open(os.path.join(archive_path_abs, pfx_cert_name), "wb") as f:
             f.write(p12)
+        os.symlink(
+            os.path.join(archive_path, pfx_cert_name),
+            os.path.join(lineage_path, "cert.pfx"),
+        )
 
 
 def _fix_permissions(

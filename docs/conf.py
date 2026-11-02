@@ -1,6 +1,5 @@
-from os.path import abspath, dirname, join
-
 import tomllib
+from os.path import abspath, dirname, join
 
 with open(join(dirname(dirname(abspath(__file__))), "pyproject.toml"), "rb") as file_h:
     metadata = tomllib.load(file_h)

@@ -36,7 +36,7 @@ def txt_challenge(
         challenge_name = canonical_challenge_name
 
         extracted = tldextract.extract(challenge_name)
-        domain = ".".join([extracted.domain, extracted.suffix])
+        domain = f"{extracted.domain}.{extracted.suffix}"
 
     config_dict = {
         "domain": domain,
@@ -66,7 +66,7 @@ def check_one_challenge(challenge: str, token: str | None = None) -> bool:
     except dns.exception.Timeout as e:
         print(f"Timeout while trying to check TXT {challenge}: {e}")
         return False
-    except Exception as e:
+    except Exception as e:  # noqa
         print(f"Unexpected exception while trying to check TXT {challenge}: {e}")
         return False
     else:

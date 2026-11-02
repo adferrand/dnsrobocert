@@ -10,6 +10,7 @@ from typing import Any
 import coloredlogs
 import jsonschema
 import yaml
+from yaml.loader import ParserError  # type: ignore[attr-defined]
 
 from dnsrobocert.core import utils
 
@@ -29,7 +30,7 @@ def load(config_path: str) -> dict[str, Any] | None:
 
     try:
         config = yaml.load(raw_config, Loader=yaml.SafeLoader)
-    except BaseException:
+    except ParserError:
         message = """
 Error while validating dnsrobocert configuration:
 Configuration file is not a valid YAML file.\
@@ -37,9 +38,8 @@ Configuration file is not a valid YAML file.\
         LOGGER.error(message)
         return None
 
-    with as_file(files("dnsrobocert") / "schema.yml") as schema_path:
-        with open(schema_path) as file_h:
-            schema = yaml.load(file_h.read(), yaml.SafeLoader)
+    with as_file(files("dnsrobocert") / "schema.yml") as schema_path, open(schema_path) as file_h:
+        schema = yaml.load(file_h.read(), yaml.SafeLoader)
 
     if not config:
         message = """
@@ -68,7 +68,7 @@ Error while validating dnsrobocert configuration for node path {node}:
     except ValueError as e:
         message = f"""\
 Error while validating dnsrobocert configuration:
-{str(e)}
+{e!s}
 -----
 {raw_config}\
 """
@@ -202,7 +202,7 @@ def _business_check(config: dict[str, Any]) -> None:
     # Check that each files_mode and dirs_mode is a valid POSIX mode
     files_mode = config.get("acme", {}).get("certs_permissions", {}).get("files_mode")
     if files_mode and files_mode > 511:
-        raise ValueError("Invalid files_mode {0} provided.".format(oct(files_mode)))
+        raise ValueError(f"Invalid files_mode {oct(files_mode)} provided.")
     dirs_mode = config.get("acme", {}).get("certs_permissions", {}).get("dirs_mode")
     if dirs_mode and dirs_mode > 511:
-        raise ValueError("Invalid dirs_mode {0} provided.".format(oct(files_mode)))
+        raise ValueError(f"Invalid dirs_mode {oct(files_mode)} provided.")

@@ -132,6 +132,9 @@ properties:
         key_type:
           type: string
           enum: [rsa, ecdsa]
+        acme_profile:
+          type: string
+          enum: [tlsserver, shortlived]
       required: [domains, profile]
       additionalProperties: false
 additionalProperties: false

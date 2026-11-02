@@ -2,6 +2,33 @@
 
 ## master - CURRENT
 
+## 3.28.0 - 01/11/2026
+### Added
+* New parameter `acme_profile` in the `certificates` section to select an ACME profile (`tlsserver`, `shortlived`),
+  passed to Certbot as `--preferred-profile`. It requires Certbot 4 or above, so the minimum `certbot` and `acme`
+  versions are now `>=4`.
+
+### Modified
+* Upgrade to Certbot 5.9.0, minimal version is 4 to instrumentate ACME profiles
+* Upgrade to Lexicon 3.26.0, with a lot of improvments on various DNS providers
+
+## 3.27.1 - 10/08/2026
+### Modified
+* PFX certificate is now a symlink in live folder pointing to the archive folder
+* Upgrade to Certbot 5.7.0
+* Upgrade to Lexicon 3.25.2
+
+## 3.27.0 - 28/04/2026
+### Added
+* Add Python 3.14 support
+
+### Modified
+* Upgrade to Lexicon 3.25.1 (new providers: `desec`, `hetzner` on cloud API, `httpnet`)
+* Upgrade to Certbot 5.5.0
+
+### Removed
+* Drop Python 3.9 support
+
 ## 3.26.1 - 13/04/2025
 ### Added
 * New parameter named `dynamic_zone_resolution` in the `profile` section: this boolean flag can disable

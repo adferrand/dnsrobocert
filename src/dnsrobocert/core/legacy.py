@@ -50,7 +50,7 @@ def migrate(config_path: str) -> str | None:
     for key, value in configs.get(provider, {}).items():
         provider_config.setdefault("provider_options", {})[key] = value  # type: ignore
 
-    env_key_prefix = "LEXICON_{0}_".format(provider.upper())
+    env_key_prefix = f"LEXICON_{provider.upper()}_"
     for key, value in envs.items():
         if key.startswith(env_key_prefix):
             provider_config.setdefault("provider_options", {})[  # type: ignore
@@ -158,10 +158,7 @@ def _gather_parameters(
     env_variables_of_interest = {
         name: value
         for name, value in os.environ.items()
-        if name.startswith("LETSENCRYPT_")
-        or name.startswith("PFX_")
-        or name.startswith("CERTS_")
-        or name in ["CRON_TIME_STRING", "DOCKER_CLUSTER_PROVIDER", "DEPLOY_HOOK"]
+        if name.startswith(("LETSENCRYPT_", "PFX_", "CERTS_")) or name in ["CRON_TIME_STRING", "DOCKER_CLUSTER_PROVIDER", "DEPLOY_HOOK"]
     }
 
     command_line_params = {}
@@ -277,11 +274,11 @@ def _extract_certificates(envs: dict[str, str], profile: str) -> list[dict[str, 
 
 def _deep_merge(*dicts: dict[str, Any]) -> dict[str, Any]:
     def merge_into(d1: dict[str, Any], d2: dict[str, Any]) -> dict[str, Any]:
-        for key in d2:
+        for (key, value) in d2.items():
             if key not in d1 or not isinstance(d1[key], dict):
-                d1[key] = deepcopy(d2[key])
+                d1[key] = deepcopy(value)
             else:
-                d1[key] = merge_into(d1[key], d2[key])
+                d1[key] = merge_into(d1[key], value)
         return d1
 
     return reduce(merge_into, dicts[1:], dicts[0])

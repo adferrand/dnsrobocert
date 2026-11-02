@@ -339,6 +339,19 @@ be defined in each relevant certificate configuration.
     * *type*: ``string``
     * *default*: ``rsa`` (a RSA-type key will be used)
 
+``acme_profile``
+~~~~~~~~~~~~~~~~
+    * ACME certificate profile to use. Must be ``tlsserver`` (standard certificate) or
+      ``shortlived`` (6-day certificate). Short-lived certificates reduce the exposure window if
+      a private key is compromised, but need to be renewed much more often.
+      See `Let's Encrypt ACME Profiles`_ for more information.
+    * *type*: ``string``
+    * *default*: not set (uses the CA's default profile)
+    * *note*: DNSroboCert only checks for renewal when ``crontab_renew`` triggers, and certbot decides
+      whether a renewal is due. When using ``shortlived``, set ``crontab_renew`` to run frequently
+      (e.g. hourly) so that renewal is not missed.
+
+.. _Let's Encrypt ACME Profiles: https://letsencrypt.org/2025/01/09/acme-profiles
 
 .. _link: https://letsencrypt.org/2019/10/09/onboarding-your-customers-with-lets-encrypt-and-acme.html#the-advantages-of-a-cname
 

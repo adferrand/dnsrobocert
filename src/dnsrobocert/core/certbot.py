@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
 from __future__ import annotations
 
 import logging
@@ -20,7 +18,7 @@ coloredlogs.install(logger=LOGGER)
 _DEFAULT_FLAGS = [
     "-n",
     "--user-agent-comment",
-    "DNSroboCert/{0}".format(dnsrobocert.__version__),
+    f"DNSroboCert/{dnsrobocert.__version__}",
     "--preferred-chain",
     "ISRG Root X1",
 ]
@@ -28,6 +26,9 @@ _DEFAULT_FLAGS = [
 
 def account(config_path: str, directory_path: str, lock: threading.Lock) -> None:
     dnsrobocert_config = config.load(config_path)
+    if dnsrobocert_config is None:
+        LOGGER.error("Config is not valid.")
+        return
     acme = dnsrobocert_config.get("acme", {})
     email = acme.get("email_account")
 
@@ -72,11 +73,16 @@ def certonly(
     force_renew: bool = False,
     reuse_key: bool = False,
     key_type: str = "rsa",
+    acme_profile: str | None = None,
 ) -> None:
     if not domains:
         return
 
-    url = config.get_acme_url(config.load(config_path))
+    dnsrobocert_config = config.load(config_path)
+    if dnsrobocert_config is None:
+        LOGGER.error("Config is not valid.")
+        return
+    url = config.get_acme_url(dnsrobocert_config)
 
     additional_params = []
     if force_renew:
@@ -85,6 +91,8 @@ def certonly(
         additional_params.append("--reuse-key")
     if key_type:
         additional_params.extend(["--key-type", key_type])
+    if acme_profile:
+        additional_params.extend(["--preferred-profile", acme_profile])
 
     for domain in domains:
         additional_params.append("-d")
@@ -133,7 +141,8 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
                 domains = certificate["domains"]
                 force_renew = certificate.get("force_renew", False)
                 reuse_key = certificate.get("reuse_key", False)
-                key_type = certificate.get("key_type", "rsa")
+                key_type: str = certificate.get("key_type", "rsa")
+                acme_profile: str | None = certificate.get("acme_profile")
                 LOGGER.info(
                     f"Handling the certificate for domain(s): {', '.join(domains)}"
                 )
@@ -146,8 +155,9 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
                     force_renew=force_renew,
                     reuse_key=reuse_key,
                     key_type=key_type,
+                    acme_profile=acme_profile,
                 )
-            except BaseException as error:
+            except Exception as error:  # noqa
                 LOGGER.error(
                     f"An error occurred while processing certificate config {certificate}:\n{error}"
                 )
@@ -169,7 +179,11 @@ def renew(config_path: str, directory_path: str, lock: threading.Lock) -> None:
 def revoke(
     config_path: str, directory_path: str, lineage: str, lock: threading.Lock
 ) -> None:
-    url = config.get_acme_url(config.load(config_path))
+    dnsrobocert_config = config.load(config_path)
+    if dnsrobocert_config is None:
+        LOGGER.error("Config is not valid.")
+        return
+    url = config.get_acme_url(dnsrobocert_config)
 
     utils.execute(
         [

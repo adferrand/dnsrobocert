@@ -3,7 +3,7 @@ from __future__ import annotations
 import contextlib
 import os
 from collections.abc import Iterator
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, call, patch
 
@@ -33,9 +33,8 @@ def fake_env(
 ) -> Iterator[dict[str, Path]]:
     live_path = tmp_path / "live" / LINEAGE
     archive_path = tmp_path / "archive" / LINEAGE
-    os.makedirs(str(tmp_path / "live"))
-    os.makedirs(str(archive_path))
-    os.symlink(str(archive_path), str(live_path), target_is_directory=True)
+    os.makedirs(live_path)
+    os.makedirs(archive_path)
 
     monkeypatch.setenv("CERTBOT_VALIDATION", "VALIDATION")
     monkeypatch.setenv("CERTBOT_DOMAIN", LINEAGE)
@@ -140,6 +139,7 @@ def test_pfx(
     fake_config: Path,
 ) -> None:
     archive_path = fake_env["archive"]
+    live_path = fake_env["live"]
     key = rsa.generate_private_key(
         public_exponent=65537, key_size=2048, backend=default_backend()
     )
@@ -161,8 +161,8 @@ def test_pfx(
         .issuer_name(issuer)
         .public_key(key.public_key())
         .serial_number(x509.random_serial_number())
-        .not_valid_before(datetime.now(timezone.utc))
-        .not_valid_after(datetime.now(timezone.utc) + timedelta(days=10))
+        .not_valid_before(datetime.now(UTC))
+        .not_valid_after(datetime.now(UTC) + timedelta(days=10))
         .sign(key, hashes.SHA256(), default_backend())
     )
 
@@ -170,6 +170,10 @@ def test_pfx(
         f.write(cert.public_bytes(serialization.Encoding.PEM))
     with open(archive_path / "chain.pem", "wb") as f:
         f.write(cert.public_bytes(serialization.Encoding.PEM))
+
+    os.symlink(archive_path / "privkey.pem", live_path / "privkey.pem")
+    os.symlink(archive_path / "cert.pem", live_path / "cert.pem")
+    os.symlink(archive_path / "chain.pem", live_path / "chain.pem")
 
     hooks.deploy(config.load(fake_config), LINEAGE)
 
@@ -236,17 +240,20 @@ def test_fix_permissions(
     fake_config: dict[str, str],
     fake_env: dict[str, Path],
 ) -> None:
-    archive_path = str(fake_env["archive"])
-    live_path = str(fake_env["live"])
+    archive_path = fake_env["archive"]
+    live_path = fake_env["live"]
 
-    probe_file = os.path.join(archive_path, "dummy.txt")
-    probe_dir = os.path.join(archive_path, "dummy_dir")
+    probe_file = archive_path / "dummy.txt"
+    probe_dir = archive_path / "dummy_dir"
 
-    probe_live_file = os.path.join(live_path, "dummy.txt")
-    probe_live_dir = os.path.join(live_path, "dummy_dir")
+    probe_live_file = live_path / "dummy.txt"
+    probe_live_dir = live_path / "dummy_dir"
 
     open(probe_file, "w").close()
     os.mkdir(probe_dir)
+
+    os.symlink(probe_file, probe_live_file)
+    os.symlink(probe_dir, probe_live_dir)
 
     with _mock_os_chown() as chown:
         hooks.deploy(config.load(fake_config), LINEAGE)
@@ -257,15 +264,18 @@ def test_fix_permissions(
 
         if POSIX_MODE:
             uid = pwd.getpwnam("nobody")[2]
-            gid = grp.getgrnam("nogroup")[2]
+            try:
+                gid = grp.getgrnam("nogroup")[2]
+            except KeyError:
+                gid = -1
 
             calls = [
-                call(archive_path, uid, gid),
-                call(probe_file, uid, gid),
-                call(probe_dir, uid, gid),
-                call(live_path, uid, gid),
-                call(probe_live_file, uid, gid),
-                call(probe_live_dir, uid, gid),
+                call(str(archive_path), uid, gid),
+                call(str(probe_file), uid, gid),
+                call(str(probe_dir), uid, gid),
+                call(str(live_path), uid, gid),
+                call(str(probe_live_file), uid, gid),
+                call(str(probe_live_dir), uid, gid),
             ]
 
             if chown:

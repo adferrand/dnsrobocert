@@ -7,7 +7,7 @@ on:
     branches: [main]
   workflow_call:
 
-concurrency: 
+concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
@@ -16,44 +16,44 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.9", "3.13"]
+        python: ["3.11", "3.15"]
         toxenv: [py3]
         exclude:
           - os: ubuntu-latest
-            python: "3.13"
+            python: "3.15"
             toxenv: py3
         include:
           - os: ubuntu-latest
-            python: "3.13"
+            python: "3.15"
             toxenv: cover
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
       - name: Configure Python ${{ matrix.python }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python }}
       - name: Run tox
         run: uvx --with tox-uv tox -e ${{ matrix.toxenv }}
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: unit-test-results-${{ matrix.os }}-${{ matrix.python }}
           path: |
             junit/*.xml
       - name: Publish coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         if: ${{ matrix.toxenv == 'cover' }}
   docker:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Build docker image
         run: docker build --tag adferrand/dnsrobocert:temp .
       - name: Run docker unit tests
@@ -64,16 +64,16 @@ jobs:
   quality:
     strategy:
       matrix:
-        toxenv: [flake8, mypy]
+        toxenv: [lint, mypy]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
       - name: Configure Python ${{ matrix.python }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python }}
       - name: Run tox
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Upload event file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: event-file
           path: ${{ github.event_path }}

@@ -4,38 +4,35 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dnsrobocert"
-version = "3.26.1"
+version = "3.28.0"
 description = "A tool to manage your DNS-challenged TLS certificates"
 license = "MIT"
-keywords = [
-    "dnsrobocert"
-]
+keywords = ["dnsrobocert"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: System Administrators",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: Unix", "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Programming Language :: Python :: Implementation :: CPython",
-    "Topic :: Utilities"
+    "Topic :: Utilities",
 ]
-authors = [
-    { name = "Adrien Ferrand", email = "ferrand.ad@gmail.com" },
-]
+authors = [{ name = "Adrien Ferrand", email = "ferrand.ad@gmail.com" }]
 readme = "README.rst"
 
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
-    "acme>=2",
-    "certbot>=2",
+    "acme>=4",
+    "certbot>=4",
     "dns-lexicon[full]>=3.14.0",
     "cryptography>=2",
     "cffi>=1",
@@ -60,25 +57,18 @@ dnsrobocert = "dnsrobocert.core.main:main"
 
 [dependency-groups]
 dev = [
-    "black",
-    "flake8",
-    "flake8-pyproject",
     "mypy",
     "packaging",
     "pytest",
     "pytest-cov",
     "pytest-sugar",
-    "isort",
+    "ruff",
     "types-PyYAML",
     "types-pyOpenSSL",
     "types-requests",
     "types-setuptools",
 ]
-doc = [
-    "sphinx",
-    "piccolo-theme",
-    "toml"
-]
+doc = ["sphinx", "piccolo-theme", "toml"]
 
 [tool.pytest.ini_options]
 junit_family = "xunit2"
@@ -90,32 +80,36 @@ ignore_missing_imports = true
 check_untyped_defs = true
 disallow_untyped_defs = true
 
-[tool.isort]
-profile = "black"
-
-[tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203", "E501", "E231", "E221"]
+[tool.tox]
+envlist = ["cover", "lint", "mypy"]
 
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
 with_dev = true
-commands = [[
-    "pytest", "test", "--doctest-modules", "--junitxml=junit/test-results.xml",
-]]
+commands = [
+    [
+        "pytest",
+        "test",
+        "--doctest-modules",
+        "--junitxml=junit/test-results.xml",
+    ],
+]
 
 [tool.tox.env.cover]
-commands = [[
-    "pytest", "test", "--doctest-modules", "--junitxml=junit/test-results.xml",
-    "--cov=dnsrobocert", "--cov-report=term-missing", "--cov-report=xml",
-]]
+commands = [
+    [
+        "pytest",
+        "test",
+        "--doctest-modules",
+        "--junitxml=junit/test-results.xml",
+        "--cov=dnsrobocert",
+        "--cov-report=term-missing",
+        "--cov-report=xml",
+    ],
+]
 
-[tool.tox.env.flake8]
-commands = [[
-    "flake8", "src", "test", "utils",
-]]
+[tool.tox.env.lint]
+commands = [["ruff", "check", "src", "test"]]
 
 [tool.tox.env.mypy]
-commands = [[
-    "mypy", "src",
-]]
+commands = [["mypy", "src"]]
