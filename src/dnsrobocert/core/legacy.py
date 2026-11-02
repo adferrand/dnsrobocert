@@ -274,11 +274,11 @@ def _extract_certificates(envs: dict[str, str], profile: str) -> list[dict[str, 
 
 def _deep_merge(*dicts: dict[str, Any]) -> dict[str, Any]:
     def merge_into(d1: dict[str, Any], d2: dict[str, Any]) -> dict[str, Any]:
-        for key in d2.items():
+        for (key, value) in d2.items():
             if key not in d1 or not isinstance(d1[key], dict):
-                d1[key] = deepcopy(d2[key])
+                d1[key] = deepcopy(value)
             else:
-                d1[key] = merge_into(d1[key], d2[key])
+                d1[key] = merge_into(d1[key], value)
         return d1
 
     return reduce(merge_into, dicts[1:], dicts[0])
