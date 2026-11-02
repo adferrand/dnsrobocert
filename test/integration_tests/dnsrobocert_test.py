@@ -10,7 +10,7 @@ import subprocess
 import tarfile
 import tempfile
 import time
-from collections.abc import Iterator
+from collections.abc import Generator
 from pathlib import Path
 from unittest import skipIf
 from unittest.mock import patch
@@ -108,7 +108,7 @@ def _check_until_timeout(url: str, attempts: int = 30) -> None:
 
 
 @contextlib.contextmanager
-def _start_pebble(tmp_path: Path) -> Iterator[None]:
+def _start_pebble(tmp_path: Path) -> Generator[None]:
     workspace = tmp_path / "workspace"
     os.mkdir(str(workspace))
 

@@ -14,3 +14,4 @@ test/assets/pebble*
 test-results.xml
 coverage.xml
 docs/_build
+test/integration_tests/interactive-workspace
