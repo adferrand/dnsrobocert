@@ -130,6 +130,11 @@ def cleanup(dnsrobocert_config: dict[str, str], lineage: str) -> None:
     domain = os.environ["CERTBOT_DOMAIN"]
     token = os.environ["CERTBOT_VALIDATION"]
 
+    if certificate is None:
+        raise RuntimeError(f"Could not find a certificate entry for {lineage}.")
+    if profile is None:
+        raise RuntimeError(f"Could not find a profile for {lineage}.")
+
     print(f"Executing cleanup hook for domain {domain}, lineage {lineage}.")
 
     txt_challenge(certificate, profile, token, domain, action="delete")
@@ -139,6 +144,9 @@ def deploy(dnsrobocert_config: dict[str, Any], _no_lineage: Any) -> None:
     lineage_path = os.environ["RENEWED_LINEAGE"]
     lineage = os.path.basename(lineage_path)
     certificate = config.get_certificate(dnsrobocert_config, lineage)
+
+    if certificate is None:
+        raise RuntimeError(f"Could not find a certificate for {lineage}")
 
     _pfx_export(certificate, lineage_path, lineage)
     _fix_permissions(

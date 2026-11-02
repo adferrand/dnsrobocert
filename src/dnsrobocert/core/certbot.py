@@ -26,6 +26,9 @@ _DEFAULT_FLAGS = [
 
 def account(config_path: str, directory_path: str, lock: threading.Lock) -> None:
     dnsrobocert_config = config.load(config_path)
+    if dnsrobocert_config is None:
+        LOGGER.error("Config is not valid.")
+        return
     acme = dnsrobocert_config.get("acme", {})
     email = acme.get("email_account")
 
@@ -75,7 +78,11 @@ def certonly(
     if not domains:
         return
 
-    url = config.get_acme_url(config.load(config_path))
+    dnsrobocert_config = config.load(config_path)
+    if dnsrobocert_config is None:
+        LOGGER.error("Config is not valid.")
+        return
+    url = config.get_acme_url(dnsrobocert_config)
 
     additional_params = []
     if force_renew:
@@ -172,7 +179,11 @@ def renew(config_path: str, directory_path: str, lock: threading.Lock) -> None:
 def revoke(
     config_path: str, directory_path: str, lineage: str, lock: threading.Lock
 ) -> None:
-    url = config.get_acme_url(config.load(config_path))
+    dnsrobocert_config = config.load(config_path)
+    if dnsrobocert_config is None:
+        LOGGER.error("Config is not valid.")
+        return
+    url = config.get_acme_url(dnsrobocert_config)
 
     utils.execute(
         [
