@@ -63,7 +63,7 @@ def _renew_job(
     lock: threading.Lock,
     stop_thread: threading.Event,
 ) -> None:
-    random_delay_seconds = 21600  # Random delay up to 12 hours
+    random_delay_seconds = 21600  # Random delay up to 6 hours
     wait_time = int(random() * random_delay_seconds)
 
     LOGGER.info("Automated execution: renew certificates if needed.")

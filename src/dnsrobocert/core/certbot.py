@@ -130,8 +130,10 @@ def certonly(
     )
 
 
-def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
+def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> bool:
+    """Process all certificates. Return False if any of them failed."""
     dnsrobocert_config = config.load(config_path)
+    success = True
 
     if dnsrobocert_config:
         certificates = dnsrobocert_config.get("certificates", {})
@@ -158,6 +160,7 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
                     acme_profile=acme_profile,
                 )
             except Exception as error:  # noqa
+                success = False
                 LOGGER.error(
                     f"An error occurred while processing certificate config {certificate}:\n{error}"
                 )
@@ -170,6 +173,10 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> None:
                 if domain not in lineages:
                     LOGGER.info(f"Removing the certificate {domain}")
                     revoke(config_path, directory_path, domain, lock)
+    else:
+        success = False
+
+    return success
 
 
 def renew(config_path: str, directory_path: str, lock: threading.Lock) -> None:

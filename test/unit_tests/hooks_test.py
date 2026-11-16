@@ -289,3 +289,29 @@ def _mock_os_chown() -> Iterator[MagicMock | AsyncMock | None]:
             yield chown
     else:
         yield None
+
+
+def test_auth_checks_token_for_current_domain(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The propagation check must verify the TXT value of the challenge being handled."""
+    monkeypatch.setenv("CERTBOT_ALL_DOMAINS", f"{LINEAGE},other.example.com")
+    monkeypatch.setenv("CERTBOT_REMAINING_CHALLENGES", "0")
+
+    dnsrobocert_config = {
+        "profiles": [{"name": "p", "provider": "dummy", "max_checks": 1, "sleep_time": 0}],
+        "certificates": [{"name": LINEAGE, "domains": [LINEAGE], "profile": "p"}],
+    }
+
+    with (
+        patch("dnsrobocert.core.hooks.txt_challenge"),
+        patch("dnsrobocert.core.hooks.check_one_challenge", return_value=True) as check,
+    ):
+        hooks.auth(dnsrobocert_config, LINEAGE)
+
+    check.assert_has_calls(
+        [
+            call(f"_acme-challenge.{LINEAGE}", "VALIDATION"),
+            call("_acme-challenge.other.example.com", None),
+        ],
+        any_order=True,
+    )
+    assert check.call_count == 2
