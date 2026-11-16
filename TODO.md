@@ -123,3 +123,69 @@ they need a decision or because they could not be verified locally.
   deprecation notice.
 - `snapcraft.yaml` is still on `base: core20` (end of life) and needs a snap
   build and store check.
+
+## Quality and testing follow-ups
+
+Items that came out of the test and refactoring work.
+
+### 14. Typed configuration
+- **Problem:** configuration is passed around as `dict[str, Any]` in every
+  module, so key typos and wrong value types are only caught at runtime, and
+  `# type: ignore` is needed in several places.
+- **To decide:** TypedDict or dataclasses (or pydantic) built after validation,
+  and whether the JSON schema should be generated from them or stay the source of
+  truth. This touches every module, so it needs to be done in one pass.
+- **Touches:** `config.py`, then all callers; `schema.yml`.
+
+### 15. Logging in the hook subprocesses
+- **Problem:** logging is now configured once in `main`, but `hooks.py` and
+  `challenge.py` run inside certbot subprocesses, so they use `print` and the
+  `--log-level` flag does not reach them. Warnings from shared modules
+  (`config`, `utils`) fall back to Python's last-resort handler there.
+- **To decide:** pass the level to the hook command line, and replace `print`
+  with `logging` configured by the hook entry point. Keep the output readable in
+  certbot's logs.
+- **Touches:** `hooks.py`, `challenge.py`, `certbot._hook_cmd`.
+
+### 16. Integration test coverage
+- **Problem:** the Pebble test covers one scenario. The token check is not
+  exercised because no profile sets `max_checks`, and `autorestart`, `autocmd`,
+  `deploy_hook`, ECDSA keys with `reuse_key`, CNAME following and wildcard
+  certificates are not covered. Coverage is also low in the `main.py` watch loop
+  and error paths, and in `hooks.py` autorestart and autocmd. Pebble binaries
+  are only available for linux and windows amd64.
+- **To decide:** parameterise the scenario, check whether the challenge test
+  server DNS is reachable from the resolver used by the hook, and decide whether
+  macOS and arm runners matter.
+- **Touches:** `test/integration_tests/`, `test/unit_tests/main_test.py`,
+  `test/unit_tests/hooks_test.py`.
+
+### 17. Stricter CI checks
+- **Problem:** the `lint` tox environment only runs `ruff check`, so formatting
+  is not enforced in CI (the new pre-commit config only helps contributors who
+  install it). mypy checks `src` only and reports errors in `test`.
+  `--doctest-modules` runs on `test`, not `src`. The lower bounds set in
+  `pyproject.toml` (for example `cryptography>=39`) are not tested.
+- **To decide:** add `ruff format --check` and mypy on `test` after fixing the
+  existing errors, and a CI job that installs the lowest supported versions
+  (`uv sync --resolution lowest-direct`).
+- **Touches:** `pyproject.toml` (tox), `.github/workflows/main.yml`, `test/`.
+
+### 18. Process-level robustness
+- **Problem:** certbot calls are serialised by an in-process lock only. Two
+  DNSroboCert instances on the same directory can collide, and a `SIGTERM` waits
+  for the running certbot child instead of stopping it. The configuration digest
+  uses MD5, which FIPS builds can reject.
+- **To decide:** an inter-process lock on the certificate directory, the shutdown
+  behaviour for an in-progress issuance, and a switch to SHA-256.
+- **Touches:** `main.py`, `utils.py`, `certbot.py`.
+
+### 19. Small API cleanups
+- **Problem:** several leftovers remain: `hooks.deploy` takes an unused
+  `_no_lineage` argument to fit the dispatch, `--lineage` defaults to the string
+  `"None"`, `main()` falls back to `sys.argv` when given an empty argument list,
+  and `legacy.py` migration is still shipped although the log says it will be
+  dropped.
+- **To decide:** a removal date and release for the legacy migration, then the
+  rest can be done together with the typed configuration (item 14).
+- **Touches:** `hooks.py`, `main.py`, `legacy.py`.
