@@ -58,6 +58,8 @@ dev = [
     "pytest",
     "pytest-cov",
     "pytest-sugar",
+    "requests",
+    "urllib3",
     "ruff",
     "types-PyYAML",
     "types-requests",
@@ -99,6 +101,7 @@ commands = [
         "--cov=dnsrobocert",
         "--cov-report=term-missing",
         "--cov-report=xml",
+        "--cov-fail-under=85",
     ],
 ]
 
