@@ -8,7 +8,6 @@ from copy import deepcopy
 from functools import reduce
 from typing import Any
 
-import coloredlogs
 import yaml
 from lexicon._private.parser import generate_cli_main_parser
 from lexicon.config import (
@@ -22,7 +21,6 @@ from dnsrobocert.core import utils
 
 LEGACY_CONFIGURATION_PATH = "/etc/letsencrypt/domains.conf"
 LOGGER = logging.getLogger(__name__)
-coloredlogs.install(logger=LOGGER)
 
 LEXICON_ARGPARSER = generate_cli_main_parser()
 
@@ -158,7 +156,8 @@ def _gather_parameters(
     env_variables_of_interest = {
         name: value
         for name, value in os.environ.items()
-        if name.startswith(("LETSENCRYPT_", "PFX_", "CERTS_")) or name in ["CRON_TIME_STRING", "DOCKER_CLUSTER_PROVIDER", "DEPLOY_HOOK"]
+        if name.startswith(("LETSENCRYPT_", "PFX_", "CERTS_"))
+        or name in ["CRON_TIME_STRING", "DOCKER_CLUSTER_PROVIDER", "DEPLOY_HOOK"]
     }
 
     command_line_params = {}
@@ -274,7 +273,7 @@ def _extract_certificates(envs: dict[str, str], profile: str) -> list[dict[str, 
 
 def _deep_merge(*dicts: dict[str, Any]) -> dict[str, Any]:
     def merge_into(d1: dict[str, Any], d2: dict[str, Any]) -> dict[str, Any]:
-        for (key, value) in d2.items():
+        for key, value in d2.items():
             if key not in d1 or not isinstance(d1[key], dict):
                 d1[key] = deepcopy(value)
             else:

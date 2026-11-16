@@ -64,7 +64,7 @@ certificates:
 
 
 def test_issue_forwards_acme_profile(tmp_path):
-    """Test that _issue reads acme_profile from the certificate config and forwards it."""
+    """Test that issue reads acme_profile from the certificate config and forwards it."""
     config_path = tmp_path / "config.yml"
     config_path.write_text("""\
 draft: true
@@ -79,7 +79,7 @@ certificates:
     (tmp_path / "live").mkdir()
 
     with mock.patch("dnsrobocert.core.certbot.certonly") as mock_certonly:
-        certbot._issue(str(config_path), str(tmp_path), mock.MagicMock())
+        certbot.issue(str(config_path), str(tmp_path), mock.MagicMock())
 
         mock_certonly.assert_called_once()
         assert mock_certonly.call_args.kwargs["acme_profile"] == "shortlived"
@@ -122,7 +122,7 @@ def test_issue_revokes_certificates_removed_from_config(tmp_path):
         mock.patch("dnsrobocert.core.certbot.certonly"),
         mock.patch("dnsrobocert.core.certbot.revoke") as revoke,
     ):
-        assert certbot._issue(str(config_path), str(tmp_path), mock.MagicMock())
+        assert certbot.issue(str(config_path), str(tmp_path), mock.MagicMock())
 
     revoke.assert_called_once()
     assert revoke.call_args.args[2] == "old.example.com"
@@ -132,11 +132,11 @@ def test_issue_returns_false_when_a_certificate_fails(tmp_path):
     config_path = _issue_workspace(tmp_path, ["keep.example.com"])
 
     with mock.patch("dnsrobocert.core.certbot.certonly", side_effect=RuntimeError):
-        assert not certbot._issue(str(config_path), str(tmp_path), mock.MagicMock())
+        assert not certbot.issue(str(config_path), str(tmp_path), mock.MagicMock())
 
 
 def test_issue_returns_false_on_invalid_config(tmp_path):
-    assert not certbot._issue(
+    assert not certbot.issue(
         str(tmp_path / "missing.yml"), str(tmp_path), mock.MagicMock()
     )
 

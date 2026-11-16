@@ -297,7 +297,9 @@ def test_auth_checks_token_for_current_domain(monkeypatch: pytest.MonkeyPatch) -
     monkeypatch.setenv("CERTBOT_REMAINING_CHALLENGES", "0")
 
     dnsrobocert_config = {
-        "profiles": [{"name": "p", "provider": "dummy", "max_checks": 1, "sleep_time": 0}],
+        "profiles": [
+            {"name": "p", "provider": "dummy", "max_checks": 1, "sleep_time": 0}
+        ],
         "certificates": [{"name": LINEAGE, "domains": [LINEAGE], "profile": "p"}],
     }
 

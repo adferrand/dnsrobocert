@@ -65,7 +65,9 @@ test1.sub.example.com test2.sub.example.com autorestart-containers=container1,co
     with open(generated_config_path) as f:
         generated_data = f.read()
 
-    assert generated_data == """\
+    assert (
+        generated_data
+        == """\
 acme:
   api_version: 1
   certs_permissions:
@@ -118,3 +120,4 @@ profiles:
   sleep_time: 60
   ttl: 42
 """
+    )

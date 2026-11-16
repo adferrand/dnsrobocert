@@ -40,7 +40,9 @@ def main(args: list[str] | None = None) -> int:
         return 1
 
     try:
-        globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
+        # Resolved at call time, so that each hook can be patched independently.
+        hooks = {"auth": auth, "cleanup": cleanup, "deploy": deploy}
+        hooks[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
     except Exception as e:  # noqa
         print(
             f"Error while executing the {parsed_args.type} hook:",
@@ -125,7 +127,7 @@ def auth(dnsrobocert_config: dict[str, Any], lineage: str) -> None:
         time.sleep(sleep_time)
 
 
-def cleanup(dnsrobocert_config: dict[str, str], lineage: str) -> None:
+def cleanup(dnsrobocert_config: dict[str, Any], lineage: str) -> None:
     certificate = config.get_certificate(dnsrobocert_config, lineage)
     profile = config.find_profile_for_lineage(dnsrobocert_config, lineage)
     domain = os.environ["CERTBOT_DOMAIN"]

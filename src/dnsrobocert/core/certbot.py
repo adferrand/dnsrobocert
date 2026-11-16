@@ -8,14 +8,12 @@ import subprocess
 import sys
 import threading
 
-import coloredlogs
 from certbot import main
 
 import dnsrobocert
 from dnsrobocert.core import config, utils
 
 LOGGER = logging.getLogger(__name__)
-coloredlogs.install(logger=LOGGER)
 
 _DEFAULT_FLAGS = [
     "-n",
@@ -24,6 +22,25 @@ _DEFAULT_FLAGS = [
     "--preferred-chain",
     "ISRG Root X1",
 ]
+
+
+def _certbot_cmd(
+    subcommand: str, directory_path: str, flags: list[str] | None = None
+) -> list[str]:
+    """Build the start of a Certbot command line, shared by all subcommands."""
+    return [
+        sys.executable,
+        "-m",
+        "dnsrobocert.core.certbot",
+        subcommand,
+        *(_DEFAULT_FLAGS if flags is None else flags),
+        "--config-dir",
+        directory_path,
+        "--work-dir",
+        os.path.join(directory_path, "workdir"),
+        "--logs-dir",
+        os.path.join(directory_path, "logs"),
+    ]
 
 
 def account(config_path: str, directory_path: str, lock: threading.Lock) -> None:
@@ -44,17 +61,7 @@ def account(config_path: str, directory_path: str, lock: threading.Lock) -> None
 
     utils.execute(
         [
-            sys.executable,
-            "-m",
-            "dnsrobocert.core.certbot",
-            "register",
-            *_DEFAULT_FLAGS,
-            "--config-dir",
-            directory_path,
-            "--work-dir",
-            os.path.join(directory_path, "workdir"),
-            "--logs-dir",
-            os.path.join(directory_path, "logs"),
+            *_certbot_cmd("register", directory_path),
             "-m",
             email,
             "--agree-tos",
@@ -102,17 +109,7 @@ def certonly(
 
     utils.execute(
         [
-            sys.executable,
-            "-m",
-            "dnsrobocert.core.certbot",
-            "certonly",
-            *_DEFAULT_FLAGS,
-            "--config-dir",
-            directory_path,
-            "--work-dir",
-            os.path.join(directory_path, "workdir"),
-            "--logs-dir",
-            os.path.join(directory_path, "logs"),
+            *_certbot_cmd("certonly", directory_path),
             "--manual",
             "--preferred-challenges=dns",
             "--manual-auth-hook",
@@ -132,7 +129,7 @@ def certonly(
     )
 
 
-def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> bool:
+def issue(config_path: str, directory_path: str, lock: threading.Lock) -> bool:
     """Process all certificates. Return False if any of them failed."""
     dnsrobocert_config = config.load(config_path)
     success = True
@@ -182,7 +179,7 @@ def _issue(config_path: str, directory_path: str, lock: threading.Lock) -> bool:
 
 
 def renew(config_path: str, directory_path: str, lock: threading.Lock) -> None:
-    _issue(config_path, directory_path, lock)
+    issue(config_path, directory_path, lock)
 
 
 def revoke(
@@ -196,17 +193,7 @@ def revoke(
 
     utils.execute(
         [
-            sys.executable,
-            "-m",
-            "dnsrobocert.core.certbot",
-            "revoke",
-            "-n",
-            "--config-dir",
-            directory_path,
-            "--work-dir",
-            os.path.join(directory_path, "workdir"),
-            "--logs-dir",
-            os.path.join(directory_path, "logs"),
+            *_certbot_cmd("revoke", directory_path, flags=["-n"]),
             "--server",
             url,
             "--cert-path",
