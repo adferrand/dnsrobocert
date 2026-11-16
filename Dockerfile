@@ -1,4 +1,4 @@
-FROM docker.io/python:3.13.13-slim AS constraints
+FROM docker.io/python:3.13.18-slim AS constraints
 
 COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 
@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir uv==0.13.6 \
  && [ "$(uname -m)" != "armv7l" ] || sed -i 's/lxml==.*/lxml==6.1.1/' /tmp/dnsrobocert/constraints.txt \
  && uv build
 
-FROM docker.io/python:3.13.13-slim
+FROM docker.io/python:3.13.18-slim
 
 COPY --from=constraints /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/dist/*.whl /tmp/dnsrobocert/
 
