@@ -26,15 +26,15 @@ def _process_config(
     directory_path: str,
     runtime_config_path: str,
     lock: threading.Lock,
-) -> None:
+) -> bool:
     dnsrobocert_config = config.load(config_path)
 
     if not dnsrobocert_config:
-        return
+        return False
 
     if dnsrobocert_config.get("draft"):
         LOGGER.info("Configuration file is in draft mode: no action will be done.")
-        return
+        return True
 
     with open(runtime_config_path, "w") as f:
         f.write(yaml.dump(dnsrobocert_config))
@@ -45,7 +45,7 @@ def _process_config(
     certbot.account(runtime_config_path, directory_path, lock)
 
     LOGGER.info("Creating missing certificates if needed (~1min for each)")
-    certbot._issue(runtime_config_path, directory_path, lock)
+    return certbot._issue(runtime_config_path, directory_path, lock)
 
 
 class _Daemon:
@@ -98,7 +98,7 @@ def _watch_config(config_path: str, directory_path: str) -> None:
     LOGGER.info("Exiting DNSroboCert.")
 
 
-def _run_config(config_path: str, directory_path: str) -> None:
+def _run_config(config_path: str, directory_path: str) -> bool:
     LOGGER.info("Running DNSroboCert...")
 
     with tempfile.TemporaryDirectory() as workspace:
@@ -110,7 +110,7 @@ def _run_config(config_path: str, directory_path: str) -> None:
             generated_config_path if generated_config_path else config_path
         )
 
-        _process_config(
+        return _process_config(
             effective_config_path,
             directory_path,
             runtime_config_path,
@@ -149,9 +149,10 @@ def main(args: list[str] | None = None) -> None:
     utils.validate_snap_environment(parsed_args)
 
     if parsed_args.one_shot:
-        _run_config(
+        if not _run_config(
             os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)
-        )
+        ):
+            sys.exit(1)
     else:
         _watch_config(
             os.path.abspath(parsed_args.config), os.path.abspath(parsed_args.directory)

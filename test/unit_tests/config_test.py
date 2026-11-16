@@ -158,10 +158,12 @@ certificates:
     assert parsed["profiles"][0]["provider"] == "one"
     assert "test3.example.com" in parsed["certificates"][0]["domains"]
 
-    with pytest.raises(ValueError) as raised:
-        config.load(str(config_path))
+    # A missing environment variable must be reported, not crash the caller.
+    assert config.load(str(config_path)) is None
 
-    assert (
-        str(raised.value)
-        == "Error while parsing config: environment variable DRAFT_VALUE does not exist."
-    )
+
+def test_dirs_mode_error_message() -> None:
+    with pytest.raises(ValueError, match="Invalid dirs_mode 0o1000"):
+        config._business_check(
+            {"acme": {"certs_permissions": {"files_mode": 0o640, "dirs_mode": 0o1000}}}
+        )

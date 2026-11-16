@@ -10,7 +10,7 @@ from typing import Any
 import coloredlogs
 import jsonschema
 import yaml
-from yaml.loader import ParserError  # type: ignore[attr-defined]
+from yaml import YAMLError
 
 from dnsrobocert.core import utils
 
@@ -26,11 +26,15 @@ def load(config_path: str) -> dict[str, Any] | None:
     with open(config_path) as file_h:
         raw_config = file_h.read()
 
-    raw_config = _inject_env_variables(raw_config)
+    try:
+        raw_config = _inject_env_variables(raw_config)
+    except ValueError as e:
+        LOGGER.error(f"Error while validating dnsrobocert configuration:\n{e}")
+        return None
 
     try:
         config = yaml.load(raw_config, Loader=yaml.SafeLoader)
-    except ParserError:
+    except YAMLError:
         message = """
 Error while validating dnsrobocert configuration:
 Configuration file is not a valid YAML file.\
@@ -205,4 +209,4 @@ def _business_check(config: dict[str, Any]) -> None:
         raise ValueError(f"Invalid files_mode {oct(files_mode)} provided.")
     dirs_mode = config.get("acme", {}).get("certs_permissions", {}).get("dirs_mode")
     if dirs_mode and dirs_mode > 511:
-        raise ValueError(f"Invalid dirs_mode {oct(files_mode)} provided.")
+        raise ValueError(f"Invalid dirs_mode {oct(dirs_mode)} provided.")

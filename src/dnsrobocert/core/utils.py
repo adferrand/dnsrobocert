@@ -35,7 +35,7 @@ def execute(
     if not env:
         env = os.environ.copy()
     env = env.copy()
-    env["PYTHONUNBUFFERED "] = "1"
+    env["PYTHONUNBUFFERED"] = "1"
 
     call = subprocess.check_call if check else subprocess.call
 
@@ -108,8 +108,8 @@ def fix_permissions(certificate_permissions: dict[str, Any], target_path: str) -
 def configure_certbot_workspace(
     dnsrobocert_config: dict[str, Any], directory_path: str
 ) -> None:
-    live_path = os.path.join(directory_path, "archive")
-    archive_path = os.path.join(directory_path, "live")
+    archive_path = os.path.join(directory_path, "archive")
+    live_path = os.path.join(directory_path, "live")
 
     if not os.path.exists(live_path):
         os.makedirs(live_path)

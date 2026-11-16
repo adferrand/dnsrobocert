@@ -108,7 +108,7 @@ def auth(dnsrobocert_config: dict[str, Any], lineage: str) -> None:
                 for challenge in challenges_to_check
                 if not check_one_challenge(
                     challenge,
-                    token if challenge == "_acme-challenge.{domain}" else None,
+                    token if challenge == f"_acme-challenge.{domain}" else None,
                 )
             ]
 
@@ -189,10 +189,10 @@ def _pfx_export(certificate: dict[str, Any], lineage_path: str, lineage: str) ->
 
         with open(os.path.join(archive_path_abs, pfx_cert_name), "wb") as f:
             f.write(p12)
-        os.symlink(
-            os.path.join(archive_path, pfx_cert_name),
-            os.path.join(lineage_path, "cert.pfx"),
-        )
+        pfx_link_path = os.path.join(lineage_path, "cert.pfx")
+        if os.path.lexists(pfx_link_path):
+            os.remove(pfx_link_path)
+        os.symlink(os.path.join(archive_path, pfx_cert_name), pfx_link_path)
 
 
 def _fix_permissions(
