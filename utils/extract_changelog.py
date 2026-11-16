@@ -6,7 +6,9 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-NEW_SECTION_PATTERN = re.compile(r"^\s*##\s*[\d.]+\s*-\s*[\d/]+\s*$")
+# Dates are written as dd/mm/yyyy in the historical entries, and as yyyy-mm-dd by towncrier.
+DATE_PATTERN = r"[\d/-]+"
+NEW_SECTION_PATTERN = re.compile(rf"^\s*##\s*[\d.]+\s*-\s*{DATE_PATTERN}\s*$")
 
 
 def main():
@@ -16,7 +18,7 @@ def main():
         section_pattern = NEW_SECTION_PATTERN
     else:
         section_pattern = re.compile(
-            r"^\s*##\s*{}\s*-\s*[\d/]+\s*$".format(version.replace(".", "\\."))
+            rf"^\s*##\s*{re.escape(version)}\s*-\s*{DATE_PATTERN}\s*$"
         )
 
     with open(os.path.join(ROOT, "CHANGELOG.md")) as file_h:
