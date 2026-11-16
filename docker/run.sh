@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if [ -n "$TIMEZONE" ]; then
   if [ -f /usr/share/zoneinfo/"$TIMEZONE" ]; then
     echo "Setting timezone to $TIMEZONE"

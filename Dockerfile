@@ -2,7 +2,7 @@ FROM docker.io/python:3.13.13-slim AS constraints
 
 COPY src uv.lock pyproject.toml README.rst /tmp/dnsrobocert/
 
-RUN pip install uv \
+RUN pip install --no-cache-dir uv==0.13.6 \
  && cd /tmp/dnsrobocert \
  && uv export --no-emit-project --no-hashes > /tmp/dnsrobocert/constraints.txt \
  # Pin some packages on armv7l arch to latest available and compatible versions from piwheels.
@@ -19,12 +19,12 @@ ENV CERTS_PATH=/etc/letsencrypt
 
 RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-       curl \
        bash \
        libxslt1.1 \
        podman \
- && curl -fsSL get.docker.com | sh \
- && PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple python3 -m pip install -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
+       docker-cli \
+ && if [ "$(uname -m)" = "armv7l" ]; then export PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple; fi \
+ && python3 -m pip install --no-cache-dir -c /tmp/dnsrobocert/constraints.txt /tmp/dnsrobocert/*.whl \
  && mkdir -p /etc/dnsrobocert /etc/letsencrypt \
  && rm -rf /tmp/dnsrobocert /var/lib/apt/lists/*
 
@@ -33,6 +33,6 @@ RUN mkdir -p /opt/dnsrobocert/bin \
  && ln -s /usr/local/bin/python /opt/dnsrobocert/bin/python
 
 COPY docker/run.sh /run.sh
-RUN chmod +x run.sh
+RUN chmod +x /run.sh
 
 CMD ["/run.sh"]
