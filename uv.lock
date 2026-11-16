@@ -1018,11 +1018,13 @@ dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
+    { name = "requests" },
     { name = "ruff" },
     { name = "types-pyopenssl" },
     { name = "types-pyyaml" },
     { name = "types-requests" },
     { name = "types-setuptools" },
+    { name = "urllib3" },
 ]
 doc = [
     { name = "piccolo-theme" },
@@ -1058,11 +1060,13 @@ dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
+    { name = "requests" },
     { name = "ruff" },
     { name = "types-pyopenssl" },
     { name = "types-pyyaml" },
     { name = "types-requests" },
     { name = "types-setuptools" },
+    { name = "urllib3" },
 ]
 doc = [
     { name = "piccolo-theme" },

@@ -92,3 +92,86 @@ def test_hook_cmd_quotes_arguments() -> None:
 
     args = shlex.split(command)
     assert args[-4:] == ["-c", '/tmp/a b/"$(evil)".yml', "-l", "x; rm -rf /"]
+
+
+_ISSUE_CONFIG = """\
+draft: true
+profiles:
+- name: test
+  provider: test
+certificates:
+- domains: [keep.example.com]
+  profile: test
+"""
+
+
+def _issue_workspace(tmp_path, live_dirs):
+    config_path = tmp_path / "config.yml"
+    config_path.write_text(_ISSUE_CONFIG)
+    for name in live_dirs:
+        (tmp_path / "live" / name).mkdir(parents=True)
+    return config_path
+
+
+def test_issue_revokes_certificates_removed_from_config(tmp_path):
+    config_path = _issue_workspace(
+        tmp_path, ["keep.example.com", "old.example.com", "README"]
+    )
+
+    with (
+        mock.patch("dnsrobocert.core.certbot.certonly"),
+        mock.patch("dnsrobocert.core.certbot.revoke") as revoke,
+    ):
+        assert certbot._issue(str(config_path), str(tmp_path), mock.MagicMock())
+
+    revoke.assert_called_once()
+    assert revoke.call_args.args[2] == "old.example.com"
+
+
+def test_issue_returns_false_when_a_certificate_fails(tmp_path):
+    config_path = _issue_workspace(tmp_path, ["keep.example.com"])
+
+    with mock.patch("dnsrobocert.core.certbot.certonly", side_effect=RuntimeError):
+        assert not certbot._issue(str(config_path), str(tmp_path), mock.MagicMock())
+
+
+def test_issue_returns_false_on_invalid_config(tmp_path):
+    assert not certbot._issue(
+        str(tmp_path / "missing.yml"), str(tmp_path), mock.MagicMock()
+    )
+
+
+def test_revoke_targets_certificate_of_lineage(tmp_path):
+    config_path = _issue_workspace(tmp_path, [])
+
+    with mock.patch("dnsrobocert.core.utils.execute") as execute:
+        certbot.revoke(
+            str(config_path), str(tmp_path), "old.example.com", mock.MagicMock()
+        )
+
+    command = execute.call_args[0][0]
+    assert command[command.index("--cert-path") + 1] == str(
+        tmp_path / "live" / "old.example.com" / "cert.pem"
+    )
+
+
+def test_account_skipped_without_email(tmp_path):
+    config_path = _issue_workspace(tmp_path, [])
+
+    with mock.patch("dnsrobocert.core.utils.execute") as execute:
+        certbot.account(str(config_path), str(tmp_path), mock.MagicMock())
+
+    execute.assert_not_called()
+
+
+def test_account_registers_with_email(tmp_path):
+    config_path = tmp_path / "config.yml"
+    config_path.write_text("acme:\n  email_account: me@example.com\n" + _ISSUE_CONFIG)
+
+    with mock.patch("dnsrobocert.core.utils.execute") as execute:
+        certbot.account(str(config_path), str(tmp_path), mock.MagicMock())
+
+    command = execute.call_args[0][0]
+    assert "register" in command
+    certbot_args = command[command.index("register") :]
+    assert certbot_args[certbot_args.index("-m") + 1] == "me@example.com"
