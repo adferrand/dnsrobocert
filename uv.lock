@@ -996,16 +996,12 @@ source = { editable = "." }
 dependencies = [
     { name = "acme" },
     { name = "certbot" },
-    { name = "cffi" },
     { name = "colorama" },
     { name = "coloredlogs" },
     { name = "cryptography" },
     { name = "dns-lexicon", extra = ["full"] },
     { name = "dnspython" },
     { name = "jsonschema" },
-    { name = "lxml" },
-    { name = "pem" },
-    { name = "pyopenssl" },
     { name = "pyyaml" },
     { name = "schedule" },
     { name = "tldextract" },
@@ -1019,10 +1015,8 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
     { name = "ruff" },
-    { name = "types-pyopenssl" },
     { name = "types-pyyaml" },
     { name = "types-requests" },
-    { name = "types-setuptools" },
 ]
 doc = [
     { name = "piccolo-theme" },
@@ -1036,18 +1030,14 @@ doc = [
 requires-dist = [
     { name = "acme", specifier = ">=4" },
     { name = "certbot", specifier = ">=4" },
-    { name = "cffi", specifier = ">=1" },
     { name = "colorama", specifier = ">=0" },
     { name = "coloredlogs", specifier = ">=14" },
-    { name = "cryptography", specifier = ">=2" },
+    { name = "cryptography", specifier = ">=39" },
     { name = "dns-lexicon", extras = ["full"], specifier = ">=3.14.0" },
     { name = "dnspython", specifier = ">=2.1.0" },
     { name = "jsonschema", specifier = ">=3" },
-    { name = "lxml", specifier = ">=4" },
-    { name = "pem", specifier = ">=20" },
-    { name = "pyopenssl", specifier = ">=19" },
     { name = "pyyaml", specifier = ">=5" },
-    { name = "schedule", specifier = ">=0" },
+    { name = "schedule", specifier = ">=1" },
     { name = "tldextract", specifier = ">=3" },
 ]
 
@@ -1059,10 +1049,8 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
     { name = "ruff" },
-    { name = "types-pyopenssl" },
     { name = "types-pyyaml" },
     { name = "types-requests" },
-    { name = "types-setuptools" },
 ]
 doc = [
     { name = "piccolo-theme" },
@@ -2005,15 +1993,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pem"
-version = "23.1.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/05/86/16c0b6789816f8d53f2f208b5a090c9197da8a6dae4d490554bb1bedbb09/pem-23.1.0.tar.gz", hash = "sha256:06503ff2441a111f853ce4e8b9eb9d5fedb488ebdbf560115d3dd53a1b4afc73", size = 43796, upload-time = "2023-06-21T10:24:40.539Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c9/97/8299a481ae6c08494b5d53511e6a4746775d8a354c685c69d8796b2ed482/pem-23.1.0-py3-none-any.whl", hash = "sha256:78bbb1e75b737891350cb9499cbba31da5d59545f360f44163c0bc751cad55d3", size = 9195, upload-time = "2023-06-21T10:24:39.164Z" },
-]
-
-[[package]]
 name = "piccolo-theme"
 version = "0.24.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2953,31 +2932,6 @@ wheels = [
 ]
 
 [[package]]
-name = "types-cffi"
-version = "2.1.0.20260827"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "types-setuptools" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/04/bb/dbb844365103e4dc6ea52cdae0946c3ca55a7b8587e6f351710d7ee5bb78/types_cffi-2.1.0.20260827.tar.gz", hash = "sha256:53d1604771ad4ff09a1a90d6f6980ab36bebb6c39476dcc5bbf4896fa510d736", size = 18150, upload-time = "2026-08-27T12:07:21.754Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/0c/fc/690c243ddac627901f1448f5cb29ca3b5463774a00ac932862c60d7ce5cf/types_cffi-2.1.0.20260827-py3-none-any.whl", hash = "sha256:851b6ffa5b962c577a2330b98ac0b60c56c904d086726276946388f58a0cffaf", size = 20525, upload-time = "2026-08-27T12:07:20.836Z" },
-]
-
-[[package]]
-name = "types-pyopenssl"
-version = "24.1.0.20240722"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "cryptography" },
-    { name = "types-cffi" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/93/29/47a346550fd2020dac9a7a6d033ea03fccb92fa47c726056618cc889745e/types-pyOpenSSL-24.1.0.20240722.tar.gz", hash = "sha256:47913b4678a01d879f503a12044468221ed8576263c1540dcb0484ca21b08c39", size = 8458, upload-time = "2024-07-22T02:32:22.558Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/98/05/c868a850b6fbb79c26f5f299b768ee0adc1f9816d3461dcf4287916f655b/types_pyOpenSSL-24.1.0.20240722-py3-none-any.whl", hash = "sha256:6a7a5d2ec042537934cfb4c9d4deb0e16c4c6250b09358df1f083682fe6fda54", size = 7499, upload-time = "2024-07-22T02:32:21.232Z" },
-]
-
-[[package]]
 name = "types-pyyaml"
 version = "6.0.12.20261030"
 source = { registry = "https://pypi.org/simple" }
@@ -2996,15 +2950,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a6/15/63ec82f647272ae3df5124def156344ab8856d29d8c4931947f1f15c003b/types_requests-2.33.0.20261030.tar.gz", hash = "sha256:42d75eb02ed0f8220904c8fc08d3129742e7fce42fd5cf706395c8bb4c0ad990", size = 25538, upload-time = "2026-10-30T07:50:39.413Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/95/35/77ed86be430bd179d34905d62cdb5ba6747c635737092088fcf03c753c61/types_requests-2.33.0.20261030-py3-none-any.whl", hash = "sha256:06cfc2e92399bf46eda78a65cd0e2203d29ebbeede78b4ab0a5922f749ce1492", size = 21450, upload-time = "2026-10-30T07:50:38.247Z" },
-]
-
-[[package]]
-name = "types-setuptools"
-version = "84.0.0.20261006"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/fc/36/012e992d81f3c3575e6428d53c2bbe266858cf1b7df7335476ab99f17908/types_setuptools-84.0.0.20261006.tar.gz", hash = "sha256:0f123655f44390a15ec62c9fa30b57f6dafe53014524d28b62cab1edbc303059", size = 46604, upload-time = "2026-10-06T08:15:27.42Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/de/24/add82014f533f2ebf62088b39db86d6a341bb0fd94af50b3a3c1e8886683/types_setuptools-84.0.0.20261006-py3-none-any.whl", hash = "sha256:f435ec88f8f2319316969e37b5a1ca49496b276889124de249b422b061b492fe", size = 70326, upload-time = "2026-10-06T08:15:26.289Z" },
 ]
 
 [[package]]
