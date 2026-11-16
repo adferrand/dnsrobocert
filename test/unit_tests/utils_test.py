@@ -15,6 +15,8 @@ import pytest
 from dnsrobocert.core import utils
 
 posix_only = pytest.mark.skipif(not utils.POSIX_MODE, reason="POSIX only")
+# Snap packages only exist on Linux.
+snap_only = pytest.mark.skipif(not utils.POSIX_MODE, reason="Snap is Linux only")
 
 
 def test_execute_runs_command_with_unbuffered_env() -> None:
@@ -127,6 +129,7 @@ def test_validate_snap_environment_noop_outside_snap(
     utils.validate_snap_environment(argparse.Namespace(config="/x/.y", directory="/z"))
 
 
+@snap_only
 def test_validate_snap_environment_rejects_hidden_paths(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -142,6 +145,7 @@ def test_validate_snap_environment_rejects_hidden_paths(
     assert raised.value.code == 1
 
 
+@snap_only
 def test_validate_snap_environment_accepts_home_paths(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -163,5 +167,9 @@ def test_get_default_args(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> No
     monkeypatch.setenv("SNAP", "/snap/dnsrobocert")
     monkeypatch.setenv("SNAP_REAL_HOME", str(tmp_path))
     defaults = utils.get_default_args()
-    assert defaults["config"] == str(tmp_path / "dnsrobocert" / "dnsrobocert.yml")
-    assert defaults["directory"] == str(tmp_path / "dnsrobocert" / "letsencrypt")
+    assert os.path.normpath(defaults["config"]) == str(
+        tmp_path / "dnsrobocert" / "dnsrobocert.yml"
+    )
+    assert os.path.normpath(defaults["directory"]) == str(
+        tmp_path / "dnsrobocert" / "letsencrypt"
+    )
