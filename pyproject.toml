@@ -9,7 +9,7 @@ description = "A tool to manage your DNS-challenged TLS certificates"
 license = "MIT"
 keywords = ["dnsrobocert"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: System Administrators",
     "License :: OSI Approved :: MIT License",
@@ -34,15 +34,11 @@ dependencies = [
     "acme>=4",
     "certbot>=4",
     "dns-lexicon[full]>=3.14.0",
-    "cryptography>=2",
-    "cffi>=1",
-    "lxml>=4",
+    "cryptography>=39",
     "dnspython>=2.1.0",
     "jsonschema>=3",
-    "pem>=20",
-    "pyopenssl>=19",
     "pyyaml>=5",
-    "schedule>=0",
+    "schedule>=1",
     "coloredlogs>=14",
     "colorama>=0",
     "tldextract>=3",
@@ -64,9 +60,7 @@ dev = [
     "pytest-sugar",
     "ruff",
     "types-PyYAML",
-    "types-pyOpenSSL",
     "types-requests",
-    "types-setuptools",
 ]
 doc = ["sphinx", "piccolo-theme", "toml"]
 
