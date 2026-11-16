@@ -22,7 +22,11 @@ except ImportError:
     POSIX_MODE = False
 
 LOGGER = logging.getLogger(__name__)
-coloredlogs.install(logger=LOGGER)
+
+
+def configure_logging(level: str = "INFO") -> None:
+    """Install the colored log handler once, on the root DNSroboCert logger."""
+    coloredlogs.install(level=level, logger=logging.getLogger("dnsrobocert"))
 
 
 def execute(

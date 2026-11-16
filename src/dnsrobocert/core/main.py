@@ -11,14 +11,12 @@ import time
 import traceback
 from typing import Any
 
-import coloredlogs
 import yaml
 
 from dnsrobocert import get_version
 from dnsrobocert.core import background, certbot, config, legacy, utils
 
-LOGGER = logging.getLogger(__name__)
-coloredlogs.install(logger=LOGGER)
+LOGGER = logging.getLogger("dnsrobocert.core.main")  # Also valid when run as __main__.
 
 
 def _process_config(
@@ -45,7 +43,7 @@ def _process_config(
     certbot.account(runtime_config_path, directory_path, lock)
 
     LOGGER.info("Creating missing certificates if needed (~1min for each)")
-    return certbot._issue(runtime_config_path, directory_path, lock)
+    return certbot.issue(runtime_config_path, directory_path, lock)
 
 
 class _Daemon:
@@ -144,7 +142,20 @@ def main(args: list[str] | None = None) -> None:
         help="if set, DNSroboCert will process only once certificates (creation, renewal, deletion) then return immediately",
     )
 
+    parser.add_argument(
+        "--log-level",
+        default="INFO",
+        type=str.upper,
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="set the logging verbosity (default: INFO)",
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"DNSroboCert {get_version()}"
+    )
+
     parsed_args = parser.parse_args(args)
+
+    utils.configure_logging(parsed_args.log_level)
 
     utils.validate_snap_environment(parsed_args)
 

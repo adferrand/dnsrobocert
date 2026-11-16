@@ -7,13 +7,11 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from random import random
 
-import coloredlogs
 import schedule
 
 from dnsrobocert.core import certbot
 
 LOGGER = logging.getLogger(__name__)
-coloredlogs.install(logger=LOGGER)
 
 
 @contextmanager

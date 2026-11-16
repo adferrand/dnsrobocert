@@ -7,7 +7,6 @@ import warnings
 from importlib.resources import as_file, files
 from typing import Any
 
-import coloredlogs
 import jsonschema
 import yaml
 from yaml import YAMLError
@@ -15,7 +14,6 @@ from yaml import YAMLError
 from dnsrobocert.core import utils
 
 LOGGER = logging.getLogger(__name__)
-coloredlogs.install(logger=LOGGER)
 
 
 def load(config_path: str) -> dict[str, Any] | None:
@@ -42,7 +40,10 @@ Configuration file is not a valid YAML file.\
         LOGGER.error(message)
         return None
 
-    with as_file(files("dnsrobocert") / "schema.yml") as schema_path, open(schema_path) as file_h:
+    with (
+        as_file(files("dnsrobocert") / "schema.yml") as schema_path,
+        open(schema_path) as file_h,
+    ):
         schema = yaml.load(file_h.read(), yaml.SafeLoader)
 
     if not config:
@@ -197,6 +198,7 @@ def _business_check(config: dict[str, Any]) -> None:
             "Property delegated_subdomain from profile section is not used anymore and is deprecated. "
             "Please remove it as it will become invalid in a future section",
             DeprecationWarning,
+            stacklevel=2,
         )
 
     # Check that each files_mode and dirs_mode is a valid POSIX mode

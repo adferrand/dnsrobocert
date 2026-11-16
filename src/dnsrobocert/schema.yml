@@ -1,7 +1,7 @@
 $schema: http://json-schema.org/draft-07/schema#
-$id: http://pacalis.net/dnsrobocert.schema.json
-title: NamedCrypt Configuration
-description: The YAML/JSON configuration for NamedCrypt
+$id: https://adferrand.github.io/dnsrobocert/schema.json
+title: DNSroboCert Configuration
+description: The YAML/JSON configuration for DNSroboCert
 type: object
 properties:
   draft:

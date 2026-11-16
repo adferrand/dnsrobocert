@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from dnsrobocert.core import main
 
 
@@ -47,3 +49,27 @@ certificates:
     assert certonly.called
     assert not revoke.called
     assert background.worker.called
+
+
+def test_version_flag(capsys: pytest.CaptureFixture[str]) -> None:
+    with pytest.raises(SystemExit) as raised:
+        main.main(["--version"])
+
+    assert raised.value.code == 0
+    assert capsys.readouterr().out.startswith("DNSroboCert ")
+
+
+def test_invalid_log_level_is_rejected() -> None:
+    with pytest.raises(SystemExit) as raised:
+        main.main(["--log-level", "LOUD"])
+
+    assert raised.value.code == 2
+
+
+@patch("dnsrobocert.core.main._watch_config")
+def test_log_level_flag_configures_logging(watch: MagicMock) -> None:
+    with patch("dnsrobocert.core.main.utils.configure_logging") as configure:
+        main.main(["--log-level", "debug", "-c", "config.yml", "-d", "dir"])
+
+    configure.assert_called_once_with("DEBUG")
+    watch.assert_called_once()

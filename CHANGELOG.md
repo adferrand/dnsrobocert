@@ -1,6 +1,9 @@
 # Changelog
 
 ## master - CURRENT
+### Added
+* New `--version` and `--log-level` command line flags.
+
 ### Fixed
 * The propagation check of DNS challenges now verifies the TXT token value, instead of only checking that the record exists.
 * `--one-shot` now exits with a non-zero code when a certificate could not be processed or the configuration is invalid.
@@ -17,6 +20,7 @@
 * Docker images are published with provenance and SBOM attestations, and PyPI releases use trusted publishing.
 
 ### Modified
+* The JSON schema title and identifier now refer to DNSroboCert instead of another project.
 * The `pem` dependency, which was unused, is removed. Minimal versions of `cryptography` (39) and `schedule` (1) are now accurate.
 * The deprecated Docker image `adferrand/letsencrypt-dns` is not published anymore. Existing tags remain available,
   but new releases are only published as `adferrand/dnsrobocert`. See the migration guide in the documentation.
