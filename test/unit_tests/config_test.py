@@ -167,3 +167,21 @@ def test_dirs_mode_error_message() -> None:
         config._business_check(
             {"acme": {"certs_permissions": {"files_mode": 0o640, "dirs_mode": 0o1000}}}
         )
+
+
+def test_validation_error_does_not_leak_config(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    config_path = tmp_path / "config.yml"
+    config_path.write_text("""\
+draft: not-a-boolean
+profiles:
+- name: one
+  provider: dummy
+  provider_options:
+    auth_token: SUPERSECRET
+""")
+
+    assert config.load(str(config_path)) is None
+    assert "SUPERSECRET" not in caplog.text
+    assert "/draft" in caplog.text

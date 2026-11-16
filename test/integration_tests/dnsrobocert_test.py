@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import json
 import os
 import platform
@@ -23,6 +24,15 @@ from dnsrobocert.core import main
 _PEBBLE_VERSION = "v2.6.0"
 _ASSETS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
 _CHALLTESTSRV_PORT = 8000
+
+# SHA-256 of the release archives for _PEBBLE_VERSION, keyed by "<asset>-<os>-<arch>".
+# Update them together with _PEBBLE_VERSION.
+_ARCHIVE_SHA256 = {
+    "pebble-linux-amd64": "ce5d87e1f674934c134b7cbcbc468e3df420994a17e77bdbf7aec611e2d373b9",
+    "pebble-windows-amd64": "51d2ecf3d48a5d6a34bb5e023e9beb534ea79ea8a3f18b4c13073f91b7fb3abe",
+    "pebble-challtestsrv-linux-amd64": "6ee564612600963a4dba11776f1f7127d1ac5dfe905b88a6ddd562908c88ef7b",
+    "pebble-challtestsrv-windows-amd64": "919ee953afa9f06c95efd5523aaf092f180d486904ae16af4c9d7c6a3330a9c9",
+}
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -53,11 +63,19 @@ def _fetch_asset(asset: str, os_kind: str, arch: str, suffix: str) -> str:
             asset_url = f"https://github.com/letsencrypt/pebble/releases/download/{_PEBBLE_VERSION}/{asset}-{os_kind}-{arch}.tar.gz"
             response = requests.get(asset_url)
             response.raise_for_status()
+
+            actual_sha256 = hashlib.sha256(response.content).hexdigest()
+            expected_sha256 = _ARCHIVE_SHA256[f"{asset}-{os_kind}-{arch}"]
+            if actual_sha256 != expected_sha256:
+                raise RuntimeError(
+                    f"Checksum mismatch for {asset_url}: "
+                    f"expected {expected_sha256}, got {actual_sha256}."
+                )
             with open(archive_path, "wb") as file_h:
                 file_h.write(response.content)
 
             with tarfile.open(archive_path) as archive:
-                archive.extractall(workdir)
+                archive.extractall(workdir, filter="data")
                 shutil.copyfile(
                     os.path.join(
                         workdir,

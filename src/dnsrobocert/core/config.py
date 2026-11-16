@@ -59,9 +59,7 @@ Configuration file is empty.\
         node = "/" + "/".join([str(item) for item in e.path])
         message = f"""\
 Error while validating dnsrobocert configuration for node path {node}:
-{e.message}.
------
-{raw_config}\
+{e.message}.\
 """
         LOGGER.error(message)
         return None
@@ -72,9 +70,7 @@ Error while validating dnsrobocert configuration for node path {node}:
     except ValueError as e:
         message = f"""\
 Error while validating dnsrobocert configuration:
-{e!s}
------
-{raw_config}\
+{e!s}\
 """
         LOGGER.error(message)
         return None

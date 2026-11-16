@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import os
 import os.path
+import shlex
 import subprocess
 import sys
 import time
@@ -253,7 +254,9 @@ def _autocmd(certificate: dict[str, Any]) -> None:
                 if isinstance(command, list):
                     utils.execute(["docker", "exec", container, *command])
                 else:
-                    utils.execute(f"docker exec {container} {command}", shell=True)
+                    utils.execute(
+                        f"docker exec {shlex.quote(container)} {command}", shell=True
+                    )
 
 
 def _deploy_hook(certificate: dict[str, Any]) -> None:

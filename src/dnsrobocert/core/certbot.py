@@ -3,6 +3,8 @@ from __future__ import annotations
 import logging
 import os
 import re
+import shlex
+import subprocess
 import sys
 import threading
 
@@ -215,12 +217,14 @@ def revoke(
 
 
 def _hook_cmd(hook_type: str, config_path: str, lineage: str | None = None) -> str:
-    command = (
-        f'{sys.executable} -m dnsrobocert.core.hooks -t {hook_type} -c "{config_path}"'
-    )
+    # Certbot runs hooks through a shell: every dynamic part must be quoted.
+    args = [sys.executable, "-m", "dnsrobocert.core.hooks", "-t", hook_type]
+    args.extend(["-c", config_path])
     if lineage:
-        command = f'{command} -l "{lineage}"'
-    return command
+        args.extend(["-l", lineage])
+    if os.name == "nt":
+        return subprocess.list2cmdline(args)
+    return shlex.join(args)
 
 
 if __name__ == "__main__":

@@ -359,6 +359,11 @@ be defined in each relevant certificate configuration.
 
 .. warning::
 
+    **Security notice**: access to the Docker socket is equivalent to root access on the host. Anyone able to
+    control a process with this socket mounted can start a privileged container and take over the machine. Mount it
+    only if you need ``autorestart`` or ``autocmd``, and only if you trust the DNSroboCert configuration and all the
+    software running in the container.
+
     The following paragraphs describe the ``autorestart`` and ``autocmd`` features. To allow them to work properly,
     DNSroboCert must have access to the Docker client socket file or the Podman socket. Usually at path:
     
