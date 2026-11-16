@@ -8,7 +8,7 @@ and useful tools to ensure code quality in the project.
 General design principles
 =========================
 
-DNSroboCert is coded entirely in Python, and uses features available starting with Python 3.6+.
+DNSroboCert is coded entirely in Python, and uses features available starting with Python 3.11+.
 
 It sits on top of Certbot_ and Lexicon_. Here are the repartition of the roles:
 
@@ -23,6 +23,34 @@ It sits on top of Certbot_ and Lexicon_. Here are the repartition of the roles:
     to issue/renew DNS-01 challenged based certificates,
   * orchestrates the post-deploy processing (``autocmd``, ``autorestart``, files rights...),
   * executes a a cron job to trigger regularly the `Certbot renewal process`_.
+
+Architecture overview
+=====================
+
+DNSroboCert runs several processes. This is important to keep in mind when working on the code, in particular for
+logging and for the configuration, that is loaded again in each process.
+
+.. code-block:: text
+
+    dnsrobocert (main process)
+    |-- watches the configuration file, validates it, and writes a runtime copy
+    |-- a background thread triggers the renewal twice a day
+    `-- for each action, starts a Certbot subprocess (register, certonly, revoke)
+        `-- Certbot calls hooks, each one being a new ``dnsrobocert.core.hooks`` process
+            |-- auth: creates the TXT entry with Lexicon, then waits for its propagation
+            |-- cleanup: deletes the TXT entry with Lexicon
+            `-- deploy: PFX export, permissions, autorestart, autocmd, deploy hook
+
+The main modules are:
+
+* ``main``: command line, configuration watch loop and one-shot mode,
+* ``config``: loading, environment variables injection, validation (``schema.yml`` and business checks),
+* ``certbot``: builds the Certbot command lines, and revokes the certificates removed from the configuration,
+* ``hooks`` and ``challenge``: the Certbot hooks and the DNS operations. They run inside Certbot, so they
+  write on the standard output to be captured by Certbot instead of using the logging of the main process,
+* ``background``: the renewal scheduling,
+* ``legacy``: migration of the former ``domains.conf`` configuration,
+* ``utils``: subprocess execution, permissions, and snap helpers.
 
 .. _Certbot: https://github.com/certbot
 .. _RFC-8555: https://tools.ietf.org/html/rfc8555
@@ -93,8 +121,8 @@ Code quality
 The project DNSroboCert tries to follows the up-to-date recommended guideline in Python development:
 
 * DNSroboCert logic is tested with a pyramidal approach (unit tests + integration tests) using Pytest_.
-* The code is formatted using Black_ and Isort_ to keep as possible unified and standardized writing conventions.
-* The code is linted with Flake8_ and statically checked using MyPy_.
+  The integration test runs DNSroboCert against Pebble_, a test ACME server downloaded on the first execution.
+* The code is formatted, linted and import-sorted using Ruff_, and statically checked using MyPy_.
 
 Please ensure that your code is compliant with this guideline before submitting a PR:
 
@@ -102,7 +130,7 @@ Please ensure that your code is compliant with this guideline before submitting 
 
 .. code-block:: console
 
-    pytest test
+    uv run pytest test
 
 .. warning::
 
@@ -112,15 +140,27 @@ Please ensure that your code is compliant with this guideline before submitting 
 
 .. code-block:: console
 
-    flake8 src test utils
-    mypy src
+    uv run ruff check src test
+    uv run mypy src
 
 3. Reformat your code:
 
 .. code-block:: console
 
-    isort -rc src test utils
-    black src test utils
+    uv run ruff format src test
+
+All these checks (and the tests with a minimal coverage of 85%) are also available through Tox_, as run
+by the continuous integration:
+
+.. code-block:: console
+
+    uvx --with tox-uv tox
+
+You can also run Ruff automatically before each commit using pre-commit_:
+
+.. code-block:: console
+
+    uvx pre-commit install
 
 Submitting a PR
 ===============
@@ -128,7 +168,8 @@ Submitting a PR
 Well, you know what to do ;)
 
 .. _Pytest: https://docs.pytest.org/en/latest/
-.. _Black: https://github.com/psf/black
-.. _Isort: https://pypi.org/project/isort/
-.. _Flake8: https://flake8.pycqa.org/en/latest/
+.. _Pebble: https://github.com/letsencrypt/pebble
+.. _Ruff: https://docs.astral.sh/ruff/
 .. _MyPy: http://mypy-lang.org/
+.. _Tox: https://tox.wiki/
+.. _pre-commit: https://pre-commit.com/

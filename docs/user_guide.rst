@@ -41,7 +41,7 @@ Installation on the host
 
 .. note::
 
-    * DNSroboCert requires Python 3.6+.
+    * DNSroboCert requires Python 3.11+.
     * It can be installed on Linux, Mac OS or Windows.
     * For Linux and Mac OS, running as a privileged user (eg. root) is recommended.
     * For Windows, running as a privileged user (eg. Administrator) is required.
@@ -49,7 +49,7 @@ Installation on the host
 The recommended way is to use Pipx_, a tool that extends Pip_ and is specifically designed to
 install a Python program in a isolated and dedicated environment.
 
-You need Python 3.6+ installed on your machine.
+You need Python 3.11+ installed on your machine.
 
 Install `pipx` using `pip`:
 
@@ -288,6 +288,37 @@ Dynamic configuration
 DNSroboCert check constantly for modifications in its configuration file. You can live edit it: DNSroboCert
 will proceed to issue new certificates as soon as you configuration file is written to the disk.
 
+If the new configuration is invalid, DNSroboCert logs the validation error (with the path of the faulty node
+in the file) and does nothing until the file is fixed.
+
+Removing certificates
+---------------------
+
+.. warning::
+
+    DNSroboCert manages **all** the certificates stored in the certificates directory (``/etc/letsencrypt/live``
+    in our examples), not only the ones it created.
+
+Each certificate found in this directory that does not match a certificate of the configuration file is
+**revoked and deleted**. In particular, removing a certificate from the ``certificates`` section, or removing the
+whole section, revokes the corresponding certificates at the next processing. This is also true for the certificates
+that were issued by another tool in the same directory. Keep a backup of the directory if you are unsure, and use
+the draft mode while you rework a configuration.
+
+Command line options
+--------------------
+
+``dnsrobocert`` accepts the following options:
+
+* ``--config``, ``-c``: path of the configuration file,
+* ``--directory``, ``-d``: path of the directory where certificates are stored,
+* ``--one-shot``, ``-o``: process the configuration once then exit, see `Run DNSroboCert in "one-shot" mode`_,
+* ``--log-level``: verbosity of the DNSroboCert logs, one of ``DEBUG``, ``INFO`` (default), ``WARNING``,
+  ``ERROR`` or ``CRITICAL``,
+* ``--version``: display the DNSroboCert version and exit.
+
+Run ``dnsrobocert --help`` to see the default values of the paths.
+
 Automated renewal
 -----------------
 
@@ -359,6 +390,65 @@ To use the "one-shot" mode, simply set the `--one-shot` flag to the command line
 .. code-block:: console
 
     dnsrobocert --config /path/to/config.yml --directory /path/to/letsencrypt --one-shot
+
+The exit code tells if the processing succeeded, so it can be used by a scheduler or a monitoring tool:
+
+* ``0``: the configuration is valid and all certificates have been processed (or the configuration is in draft mode),
+* ``1``: the configuration is invalid, or at least one certificate could not be processed. The reason is
+  available in the logs.
+
+Troubleshooting
+===============
+
+Nothing happens
+---------------
+
+Check the logs. If you see ``Configuration file is in draft mode: no action will be done``, set ``draft`` to
+``false`` in the configuration file. Also check that DNSroboCert reads the file you expect (``--config``).
+
+The configuration is rejected
+-----------------------------
+
+The error message gives the path of the faulty node, for instance ``/profiles/0/provider``. If it mentions an
+environment variable that does not exist, the configuration file uses a ``${VARIABLE}`` placeholder
+that is not set in the environment of DNSroboCert. Use ``$${VARIABLE}`` to write a literal ``${VARIABLE}``.
+
+.. note::
+
+    The full configuration is not displayed in the logs, to avoid leaking credentials.
+
+The DNS challenge fails
+-----------------------
+
+* Check that the TXT entry ``_acme-challenge.<your domain>`` is created in the DNS zone by the provider:
+  an error in the credentials or the zone name is reported by the provider in the logs.
+* DNS changes can take time to be visible. Increase ``sleep_time`` in the profile, and set ``max_checks`` to
+  let DNSroboCert verify that the TXT entries are visible with the expected value before asking the validation.
+* If ``_acme-challenge`` is a CNAME to another zone, set ``follow_cnames`` on the certificate.
+
+Let's Encrypt refuses to issue certificates
+-------------------------------------------
+
+Let's Encrypt applies rate limits. While you are testing your configuration, set ``acme.staging`` to ``true``
+to use the staging servers, then go back to production once the issuance works.
+
+Files have the wrong owner or permissions
+-----------------------------------------
+
+Use ``acme.certs_permissions`` to set the user, the group and the modes applied to the certificates folders and files.
+See the `Configuration reference`_.
+
+``autorestart`` or ``autocmd`` fail
+-----------------------------------
+
+These features need access to the Docker or Podman socket, see the warning in the `Configuration reference`_.
+If the logs mention a missing socket, check the volume mounted into the container.
+
+Getting more information
+------------------------
+
+Start DNSroboCert with ``--log-level DEBUG`` for more verbose DNSroboCert logs. The detailed logs of Certbot
+are written in the ``logs`` folder of the certificates directory.
 
 
 .. _Pipx: https://github.com/pipxproject/pipx

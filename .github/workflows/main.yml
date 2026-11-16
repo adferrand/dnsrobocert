@@ -83,6 +83,15 @@ jobs:
           python-version: "3.13"
       - name: Run tox
         run: uvx --with tox-uv tox -e ${{ matrix.toxenv }}
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: Build the documentation, failing on any warning
+        run: uv run --group doc sphinx-build -W --keep-going -b html ./docs ./docs/_build
   event-file:
     runs-on: ubuntu-latest
     steps:

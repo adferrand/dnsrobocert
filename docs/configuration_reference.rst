@@ -138,8 +138,7 @@ Each profile is referenced by its ``name``, which can be used in one or more cer
           auth_username: USER
           auth_password: PASSWORD
 
-``profile`` properties
-----------------------
+.. rubric:: ``profile`` properties
 
 ``name``
 ~~~~~~~~
@@ -253,8 +252,7 @@ be defined in each relevant certificate configuration.
       reuse_key: false
       key_type: ecdsa
 
-``certificate`` properties
---------------------------
+.. rubric:: ``certificate`` properties
 
 ``profile``
 ~~~~~~~~~~~
