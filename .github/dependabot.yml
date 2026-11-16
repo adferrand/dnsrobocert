@@ -13,3 +13,10 @@ updates:
   directory: "/"
   schedule:
     interval: weekly
+  ignore:
+  # The Python minor version of the image is upgraded on purpose, once the wheels of all dependencies
+  # (eg. crc32c, python-pkcs11 from the Lexicon providers) are available: the slim image has no compiler.
+  - dependency-name: python
+    update-types:
+    - version-update:semver-major
+    - version-update:semver-minor
