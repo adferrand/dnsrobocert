@@ -189,3 +189,30 @@ Items that came out of the test and refactoring work.
 - **To decide:** a removal date and release for the legacy migration, then the
   rest can be done together with the typed configuration (item 14).
 - **Touches:** `hooks.py`, `main.py`, `legacy.py`.
+
+## Small leftovers
+
+Minor items, each a few lines, to batch in a cleanup pass.
+
+- **Schema:**
+  - The `email_account` pattern in `schema.yml` is lowercase-only, so
+    `John@Example.com` is rejected.
+  - The `directory_url` pattern is hard to read and may reject `localhost`.
+- **Typing:**
+  - `hooks._fix_permissions` is annotated `dict[str, str]` but holds ints.
+  - `passphrase: str` in `_pfx_export` can be `None`.
+  - `certbot.certonly`: `key_type` defaults to `"rsa"`, so `if key_type:` is
+    always true.
+- **Dead or deprecated code:**
+  - `delegated_subdomain` is deprecated but still passed to Lexicon
+    (`challenge.py`).
+  - The `if lineage:` guard in `config._business_check` is unreachable.
+- **Repository:**
+  - The root `config.yaml` (`acme: {}`) is an unexplained stub.
+  - `compose/.env` is tracked.
+  - The image uses Python 3.13 while CI tests 3.11 and 3.15.
+  - `test/integration_tests/interactive.py` is not mentioned in the developer
+    guide.
+- **Optional features:** notifications (webhook, healthcheck ping), `--check-config`,
+  `--dry-run`, a status or metrics endpoint, a certificate expiry report, and
+  parallel issuance of independent certificates.
