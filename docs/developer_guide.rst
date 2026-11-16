@@ -162,6 +162,31 @@ You can also run Ruff automatically before each commit using pre-commit_:
 
     uvx pre-commit install
 
+Changelog
+=========
+
+The changelog is built with Towncrier_ from small news fragments, instead of being edited directly (which
+caused merge conflicts between pull requests). Each pull request that is visible for users adds a file in the
+``newsfragments`` folder, named ``<pull request number>.<type>.md`` where the type is ``added``, ``changed``,
+``fixed``, ``security`` or ``removed``. For instance:
+
+.. code-block:: console
+
+    uv run towncrier create 1234.fixed.md
+
+The file contains a single sentence describing the change for the users. If there is no pull request number,
+use an orphan fragment like ``+short-description.added.md``. You can preview the result with:
+
+.. code-block:: console
+
+    uv run towncrier build --draft --version X.Y.Z
+
+Pull requests with no impact for users (tests, CI, internal refactoring) do not need a fragment: add the
+``skip-changelog`` label to the pull request to skip the check done by the continuous integration.
+
+When a release is created with ``utils/create_release.py``, the fragments are assembled into ``CHANGELOG.md`` and
+removed.
+
 Submitting a PR
 ===============
 
@@ -172,4 +197,5 @@ Well, you know what to do ;)
 .. _Ruff: https://docs.astral.sh/ruff/
 .. _MyPy: http://mypy-lang.org/
 .. _Tox: https://tox.wiki/
+.. _Towncrier: https://towncrier.readthedocs.io/
 .. _pre-commit: https://pre-commit.com/

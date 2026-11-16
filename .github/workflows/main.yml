@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, labeled, unlabeled]
   workflow_call:
 
 permissions:
@@ -92,6 +93,23 @@ jobs:
         uses: astral-sh/setup-uv@v7
       - name: Build the documentation, failing on any warning
         run: uv run --group doc sphinx-build -W --keep-going -b html ./docs ./docs/_build
+  changelog:
+    # A pull request that changes the behavior for users needs a news fragment (see newsfragments/README.md).
+    # Add the `skip-changelog` label to bypass this check (tests, CI, internal changes...).
+    if: >-
+      github.event_name == 'pull_request'
+      && github.actor != 'dependabot[bot]'
+      && !contains(github.event.pull_request.labels.*.name, 'skip-changelog')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: Check that a news fragment is provided
+        run: uv run towncrier check --compare-with origin/${{ github.base_ref }}
   event-file:
     runs-on: ubuntu-latest
     steps:

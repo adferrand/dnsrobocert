@@ -1,29 +1,6 @@
 # Changelog
 
-## master - CURRENT
-### Added
-* New `--version` and `--log-level` command line flags.
-
-### Fixed
-* The propagation check of DNS challenges now verifies the TXT token value, instead of only checking that the record exists.
-* `--one-shot` now exits with a non-zero code when a certificate could not be processed or the configuration is invalid.
-* A missing environment variable or an invalid YAML file in the configuration is now reported as a configuration error instead of an unhandled exception.
-* The error message for an invalid `dirs_mode` now displays the right value.
-* Existing `cert.pfx` links do not make PFX export fail anymore on redeployment.
-* `PYTHONUNBUFFERED` is now properly set for subprocesses.
-
-### Security
-* A configuration validation error does not dump the whole configuration (including provider credentials and passphrases) in the logs anymore.
-* Hook commands passed to Certbot and the container name of `autocmd` are now properly quoted.
-* The Docker image installs the Docker CLI from Debian instead of running a remote script, which also removes the Docker engine
-  from the image (about 700 MB less). Piwheels is now used only on armv7.
-* Docker images are published with provenance and SBOM attestations, and PyPI releases use trusted publishing.
-
-### Modified
-* The JSON schema title and identifier now refer to DNSroboCert instead of another project.
-* The `pem` dependency, which was unused, is removed. Minimal versions of `cryptography` (39) and `schedule` (1) are now accurate.
-* The deprecated Docker image `adferrand/letsencrypt-dns` is not published anymore. Existing tags remain available,
-  but new releases are only published as `adferrand/dnsrobocert`. See the migration guide in the documentation.
+<!-- towncrier release notes start -->
 
 ## 3.28.0 - 01/11/2026
 ### Added

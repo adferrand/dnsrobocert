@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import datetime
 import subprocess
 
 from packaging import version
@@ -35,29 +34,14 @@ def main():
         )
 
     try:
-        with open("CHANGELOG.md") as f:
-            changelog = f.read()
-
-        today = datetime.datetime.now(datetime.UTC)
-        changelog = changelog.replace(
-            "## master - CURRENT\n",
-
-            """\
-## master - CURRENT
-
-## {} - {}
-""".format(new_version, today.strftime("%d/%m/%Y")),
-        )
-
-        with open("CHANGELOG.md", "w") as f:
-            f.write(changelog)
-
         subprocess.check_call(
             f"uvx --from=toml-cli toml set --toml-path=pyproject.toml project.version {new_version}",
             shell=True,
         )
-        subprocess.check_call("uv run isort src test utils", shell=True)
-        subprocess.check_call("uv run black src test utils", shell=True)
+        # Assemble the news fragments into CHANGELOG.md, and remove them.
+        subprocess.check_call(
+            f"uv run towncrier build --yes --version {new_version}", shell=True
+        )
 
         subprocess.check_call(
             f'git commit -a -m "Version {new_version}"', shell=True

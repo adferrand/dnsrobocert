@@ -63,6 +63,7 @@ dev = [
     "ruff",
     "types-PyYAML",
     "types-requests",
+    "towncrier>=26.9.0",
 ]
 doc = ["sphinx", "piccolo-theme", "toml"]
 
@@ -114,3 +115,20 @@ commands = [["mypy", "src"]]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 ignore = ["E501"]  # Line length is handled by `ruff format`.
+
+[tool.towncrier]
+directory = "newsfragments"
+filename = "CHANGELOG.md"
+start_string = "<!-- towncrier release notes start -->\n"
+title_format = "## {version} - {project_date}"
+underlines = ["", "", ""]
+template = "newsfragments/_template.md.j2"
+issue_format = "([#{issue}](https://github.com/adferrand/dnsrobocert/pull/{issue}))"
+# Keep the section headings of the historical changelog.
+type = [
+    { directory = "added", name = "Added", showcontent = true },
+    { directory = "changed", name = "Modified", showcontent = true },
+    { directory = "fixed", name = "Fixed", showcontent = true },
+    { directory = "security", name = "Security", showcontent = true },
+    { directory = "removed", name = "Removed", showcontent = true },
+]

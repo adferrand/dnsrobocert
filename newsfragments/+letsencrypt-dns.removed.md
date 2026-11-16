@@ -1,0 +1,1 @@
+The deprecated Docker image `adferrand/letsencrypt-dns` is not published anymore. Existing tags remain available, but new releases are only published as `adferrand/dnsrobocert`. See the migration guide in the documentation.
