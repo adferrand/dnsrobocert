@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  dnsrobocert:
+    volumes:
+    - /srv/docker/volumes/dnsrobocert/letsencrypt:/etc/letsencrypt
+    - /srv/docker/volumes/dnsrobocert/dnsrobocert:/etc/dnsrobocert
+    - /etc/letsencrypt/letsencrypt-dns-hook.sh:/usr/local/bin/letsencrypt-dns-hook
+    - /etc/letsencrypt:/etc/letsencrypt.git
+    environment:
+    - VERSION=latest
+    # workaround for 30.09.2021 R3 expiration --preferred-chain "ISRG Root X1"
+    # doesn't work? Used /etc/letsencrypt/cli.ini with: preferred-chain = ISRG Root X1
+    - ACME_PREFERRED_CHAIN="ISRG Root X1"
+
