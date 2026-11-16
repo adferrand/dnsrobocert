@@ -83,3 +83,12 @@ certificates:
 
         mock_certonly.assert_called_once()
         assert mock_certonly.call_args.kwargs["acme_profile"] == "shortlived"
+
+
+def test_hook_cmd_quotes_arguments() -> None:
+    import shlex
+
+    command = certbot._hook_cmd("auth", '/tmp/a b/"$(evil)".yml', "x; rm -rf /")
+
+    args = shlex.split(command)
+    assert args[-4:] == ["-c", '/tmp/a b/"$(evil)".yml', "-l", "x; rm -rf /"]
