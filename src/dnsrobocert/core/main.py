@@ -22,7 +22,6 @@ LOGGER = logging.getLogger("dnsrobocert.core.main")  # Also valid when run as __
 def _process_config(
     config_path: str,
     directory_path: str,
-    runtime_config_path: str,
     lock: threading.Lock,
 ) -> bool:
     dnsrobocert_config = config.load(config_path)
@@ -34,16 +33,13 @@ def _process_config(
         LOGGER.info("Configuration file is in draft mode: no action will be done.")
         return True
 
-    with open(runtime_config_path, "w") as f:
-        f.write(yaml.dump(dnsrobocert_config))
-
     utils.configure_certbot_workspace(dnsrobocert_config, directory_path)
 
     LOGGER.info("Registering ACME account if needed.")
-    certbot.account(runtime_config_path, directory_path, lock)
+    certbot.account(config_path, directory_path, lock)
 
     LOGGER.info("Creating missing certificates if needed (~1min for each)")
-    return certbot.issue(runtime_config_path, directory_path, lock)
+    return certbot.issue(config_path, directory_path, lock)
 
 
 class _Daemon:
@@ -63,35 +59,32 @@ class _Daemon:
 def _watch_config(config_path: str, directory_path: str) -> None:
     LOGGER.info(f"Starting DNSroboCert {get_version()}.")
 
-    with tempfile.TemporaryDirectory() as workspace:
-        runtime_config_path = os.path.join(workspace, "dnsrobocert-runtime.yml")
-        certbot_lock = threading.Lock()
+    certbot_lock = threading.Lock()
 
-        with background.worker(runtime_config_path, directory_path, certbot_lock):
-            daemon = _Daemon()
-            previous_digest = ""
-            while not daemon.do_shutdown():
-                try:
-                    generated_config_path = legacy.migrate(config_path)
-                    effective_config_path = (
-                        generated_config_path if generated_config_path else config_path
+    with background.worker(config_path, directory_path, certbot_lock):
+        daemon = _Daemon()
+        previous_digest = ""
+        while not daemon.do_shutdown():
+            try:
+                generated_config_path = legacy.migrate(config_path)
+                effective_config_path = (
+                    generated_config_path if generated_config_path else config_path
+                )
+                digest = utils.digest(effective_config_path)
+
+                if digest != previous_digest:
+                    previous_digest = digest
+                    _process_config(
+                        effective_config_path,
+                        directory_path,
+                        certbot_lock,
                     )
-                    digest = utils.digest(effective_config_path)
+            except Exception as error:  # noqa
+                LOGGER.error("An error occurred during DNSroboCert watch:")
+                LOGGER.error(error)
+                traceback.print_exc(file=sys.stderr)
 
-                    if digest != previous_digest:
-                        previous_digest = digest
-                        _process_config(
-                            effective_config_path,
-                            directory_path,
-                            runtime_config_path,
-                            certbot_lock,
-                        )
-                except Exception as error:  # noqa
-                    LOGGER.error("An error occurred during DNSroboCert watch:")
-                    LOGGER.error(error)
-                    traceback.print_exc(file=sys.stderr)
-
-                time.sleep(1)
+            time.sleep(1)
 
     LOGGER.info("Exiting DNSroboCert.")
 
@@ -99,21 +92,18 @@ def _watch_config(config_path: str, directory_path: str) -> None:
 def _run_config(config_path: str, directory_path: str) -> bool:
     LOGGER.info("Running DNSroboCert...")
 
-    with tempfile.TemporaryDirectory() as workspace:
-        runtime_config_path = os.path.join(workspace, "dnsrobocert-runtime.yml")
-        certbot_lock = threading.Lock()
+    certbot_lock = threading.Lock()
 
-        generated_config_path = legacy.migrate(config_path)
-        effective_config_path = (
-            generated_config_path if generated_config_path else config_path
-        )
+    generated_config_path = legacy.migrate(config_path)
+    effective_config_path = (
+        generated_config_path if generated_config_path else config_path
+    )
 
-        return _process_config(
-            effective_config_path,
-            directory_path,
-            runtime_config_path,
-            certbot_lock,
-        )
+    return _process_config(
+        effective_config_path,
+        directory_path,
+        certbot_lock,
+    )
 
 
 def main(args: list[str] | None = None) -> None:
