@@ -5,13 +5,10 @@ import logging
 import os
 import signal
 import sys
-import tempfile
 import threading
 import time
 import traceback
 from typing import Any
-
-import yaml
 
 from dnsrobocert import get_version
 from dnsrobocert.core import background, certbot, config, legacy, utils
